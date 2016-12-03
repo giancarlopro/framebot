@@ -39,7 +39,7 @@ typedef struct _message{
     Chat forward_from_chat;
     long int forward_from_message_id;
     long int forward_date;
-    void * reply_to_message;
+    struct _message * reply_to_message;
     long int edit_date;
     char * text;
     MessageEntity ** entities;
