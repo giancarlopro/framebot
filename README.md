@@ -1,5 +1,30 @@
 # Telebot-TelegramBotAPI
+Description
 
-TODO
+## TODO
 type definition:
-* -User-
+* ~~**User**~~
+* ~~**Chat**~~
+* ~~**Message**~~
+* ~~**MessageEntity**~~
+* ~~**PhotoSize**~~
+* ~~**Audio**~~
+* ~~**Document**~~
+* ~~**Sticker**~~
+* ~~**Video**~~
+* ~~**Voice**~~
+* ~~**Contact**~~
+* ~~**Location**~~
+* ~~**Venue**~~
+* **UserProfilePhoto**
+* ~~**File**~~
+* **ReplyKeyboardMarkup**
+* **KeyboardButton**
+* **ReplyKeyboardRemove**
+* **InlineKeyboardMarkup**
+* **InlineKeyboardButton**
+* ~~**CallbackQuery**~~
+* **ForceReply**
+* **ChatMember**
+* **ResponseParameters**
+* **InputFile**
