@@ -1,6 +1,7 @@
+#include <telebot.h>
 #include <telebot_objects.h>
 
-User * newUser(long int id,char * first_name,char * last_name,char * username){
+User * telebot_user(long int id,char * first_name,char * last_name,char * username){
 
     User * _usr = (User *) malloc(sizeof(User));
 
@@ -25,14 +26,14 @@ User * newUser(long int id,char * first_name,char * last_name,char * username){
 
     return _usr;
 }
-void freeUser(User * usr){
+void telebot_user_free(User * usr){
     free(usr->first_name);
     free(usr->last_name);
     free(usr->username);
     free(usr);
 }
 
-Chat * newChat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators){
+Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators){
     Chat * _cht = (Chat *) malloc(sizeof(Chat));
 
     _cht->id = id;
@@ -71,7 +72,7 @@ Chat * newChat(long int id,char * type,char * title,char * username,char * first
 
     return _cht;
 }
-void freeChat(Chat * cht){
+void telebot_chat_free(Chat * cht){
     free(cht->type);
     free(cht->title);
     free(cht->username);

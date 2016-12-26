@@ -1,7 +1,10 @@
-#ifndef TBA_H_
-#define TBA_H_
+#ifndef TELEBOT_H
+#define TELEBOT_H
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <telebot_objects.h>
-
 
 #endif

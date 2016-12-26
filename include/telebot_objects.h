@@ -1,9 +1,5 @@
-#ifndef TELEBOT_OBJECTS_H_
-#define TELEBOT_OBJECTS_H_
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef TELEBOT_OBJECTS_H
+#define TELEBOT_OBJECTS_H
 
 typedef struct _user{
     long int id;
@@ -42,12 +38,12 @@ typedef struct _message{
     struct _message * reply_to_message;
     long int edit_date;
     char * text;
-    MessageEntity ** entities;
+    MessageEntity (* entities)[];
 }Message;
 
-User * newUser(long int id,char * first_name,char * last_name,char * username);
-void freeUser(User * usr);
+User * telebot_user(long int id,char * first_name,char * last_name,char * username);
+void telebot_user_free(User * usr);
 
-Chat * newChat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators);
-void freeChat(Chat * cht);
+Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators);
+void telebot_chat_free(Chat * cht);
 #endif // TELEBOT_OBJECTS_H_
