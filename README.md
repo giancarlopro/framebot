@@ -1,7 +1,12 @@
 # Telebot-TelegramBotAPI
 Description
 
-## TODO
+### Dependencias
+* [jansson](https://github.com/akheron/jansson)
+* [OpenSSL](https://github.com/openssl/openssl)
+* [libcurl](https://curl.haxx.se/libcurl/)
+
+### TODO
 type definition:
 * ~~**User**~~
 * ~~**Chat**~~
