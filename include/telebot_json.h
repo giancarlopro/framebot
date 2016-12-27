@@ -4,4 +4,6 @@
 #include <telebot_objects.h>
 #include <jansson.h>
 
+User * telebot_json_user(char * json);
+
 #endif

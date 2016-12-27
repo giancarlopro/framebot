@@ -119,11 +119,11 @@ typedef struct _venue{
 
 typedef struct _message{
     long int message_id;
-    User from;
+    User * from;
     long int date;
-    Chat chat;
-    User forward_from;
-    Chat forward_from_chat;
+    Chat * chat;
+    User * forward_from;
+    Chat * forward_from_chat;
     long int forward_from_message_id;
     long int forward_date;
     struct _message * reply_to_message;
@@ -190,10 +190,19 @@ typedef struct _update{
     ChoosenInlineResult * choosen_inline_result;
     CallbackQuery * callback_query;
 } Update;
-
+//User functions
 User * telebot_user(long int id,char * first_name,char * last_name,char * username);
 void telebot_user_free(User * usr);
-
+//Chat functions
 Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators);
 void telebot_chat_free(Chat * cht);
+//Message entity functions
+MessageEntity * telebot_message_entity(char * type,long int offset,long int length,char * url,User * user);
+void telebot_message_entity_free(MessageEntity * msgett);
+//Audio functions
+Audio * telebot_audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size);
+void telebot_audio_free(Audio * audio);
+
+Message * telebot_message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
+void telebot_message_free(Message * message);
 #endif // TELEBOT_OBJECTS_H_
