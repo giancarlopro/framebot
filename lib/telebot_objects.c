@@ -1,30 +1,15 @@
 #include <telebot.h>
 #include <telebot_objects.h>
 
-User * telebot_user(long int id,char * first_name,char * last_name,char * username){
+User * telebot_user(long int id,const char * first_name,const char * last_name,const char * username){
+    User * user = (User *) malloc(sizeof(User));
 
-    User * _usr = (User *) malloc(sizeof(User));
+    user->id = id;
+    user->first_name = telebot_memory_alloc_string(first_name);
+    user->last_name = telebot_memory_alloc_string(last_name);
+    user->username = telebot_memory_alloc_string(username);
 
-    _usr->id = id;
-
-    _usr->first_name = (char *)malloc(strlen(first_name) + 1);
-    strcpy(_usr->first_name,first_name);
-
-    if(last_name == NULL){
-        _usr->last_name = NULL;
-    }else{
-        _usr->last_name = (char *)malloc(strlen(last_name) + 1);
-        strcpy(_usr->last_name,last_name);
-    }
-
-    if(username == NULL){
-        _usr->username = NULL;
-    }else{
-        _usr->username = (char *)malloc(strlen(username) + 1);
-        strcpy(_usr->username,username);
-    }
-
-    return _usr;
+    return user;
 }
 void telebot_user_free(User * usr){
     free(usr->first_name);
@@ -35,7 +20,8 @@ void telebot_user_free(User * usr){
 
 Bot * telebot_bot(char * token){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
-    strcpy(bot->token,token);
+
+    bot->token = telebot_memory_alloc_string(token);
 
     //Call getMe function ...
     User * usr = NULL;
@@ -50,43 +36,18 @@ void telebot_bot_free(Bot * bot){
 }
 
 Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators){
-    Chat * _cht = (Chat *) malloc(sizeof(Chat));
+    Chat * chat = (Chat *) malloc(sizeof(Chat));
 
-    _cht->id = id;
-    _cht->all_members_are_administrators = all_members_are_administrators;
+    chat->id = id;
+    chat->all_members_are_administrators = all_members_are_administrators;
 
-    _cht->type = (char *) malloc(strlen(type) + 1);
-    strcpy(_cht->type,type);
+    chat->type = telebot_memory_alloc_string(type);
+    chat->title = telebot_memory_alloc_string(title);
+    chat->username = telebot_memory_alloc_string(username);
+    chat->first_name = telebot_memory_alloc_string(first_name);
+    chat->last_name = telebot_memory_alloc_string(last_name);
 
-    if(title != NULL){
-        _cht->title = (char *) malloc(strlen(title) + 1);
-        strcpy(_cht->title,title);
-    }else{
-        _cht->title = NULL;
-    }
-
-    if(username != NULL){
-        _cht->username = (char *) malloc(strlen(username) + 1);
-        strcpy(_cht->username,username);
-    }else{
-        _cht->username = NULL;
-    }
-
-    if(first_name != NULL){
-        _cht->first_name = (char *) malloc(strlen(first_name) + 1);
-        strcpy(_cht->first_name,first_name);
-    }else{
-        _cht->first_name = NULL;
-    }
-
-    if(last_name != NULL){
-        _cht->last_name = (char *) malloc(strlen(last_name) + 1);
-        strcpy(_cht->last_name,last_name);
-    }else{
-        _cht->last_name = NULL;
-    }
-
-    return _cht;
+    return chat;
 }
 void telebot_chat_free(Chat * cht){
     free(cht->type);
@@ -104,19 +65,8 @@ MessageEntity * telebot_message_entity(char * type,long int offset,long int leng
     msgett->length = length;
     msgett->user = user;
 
-    if(type == NULL){
-        msgett->type = NULL;
-    }else{
-        msgett->type = (char *)malloc(strlen(type) + 1);
-        strcpy(msgett->type,type);
-    }
-
-    if(url == NULL){
-        msgett->url = NULL;
-    }else{
-        msgett->url = (char *)malloc(strlen(url) + 1);
-        strcpy(msgett->url,url);
-    }
+    msgett->type = telebot_memory_alloc_string(type);
+    msgett->url = telebot_memory_alloc_string(url);
 
     return msgett;
 }
@@ -126,6 +76,14 @@ void telebot_message_entity_free(MessageEntity * msgett){
     telebot_user_free(msgett->user);
     free(msgett);
 }
+void telebot_message_entities_free(MessageEntity (* msgetts)[]){
+    int sz = sizeof(msgetts)/sizeof(MessageEntity);
+    int i;
+    for(i=0;i<sz;i++){
+        MessageEntity * msg = &(*msgetts)[i];
+        telebot_message_entity_free(msg);
+    }
+}
 
 Audio * telebot_audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size){
     Audio * audio = (Audio *)malloc(sizeof(Audio));
@@ -133,33 +91,10 @@ Audio * telebot_audio(char * file_id,long int duration,char * performer,char * t
     audio->duration = duration;
     audio->file_size = file_size;
 
-    if(file_id == NULL){
-        audio->file_id = NULL;
-    }else{
-        audio->file_id = (char *)malloc(strlen(file_id) + 1);
-        strcpy(audio->file_id,file_id);
-    }
-
-    if(performer == NULL){
-        audio->performer = NULL;
-    }else{
-        audio->performer = (char *)malloc(strlen(performer) + 1);
-        strcpy(audio->performer,performer);
-    }
-
-    if(title == NULL){
-        audio->title = NULL;
-    }else{
-        audio->title = (char *)malloc(strlen(title) + 1);
-        strcpy(audio->title,title);
-    }
-
-    if(mime_type == NULL){
-        audio->mime_type = NULL;
-    }else{
-        audio->mime_type = (char *)malloc(strlen(mime_type) + 1);
-        strcpy(audio->mime_type,mime_type);
-    }
+    audio->file_id = telebot_memory_alloc_string(file_id);
+    audio->performer = telebot_memory_alloc_string(performer);
+    audio->title = telebot_memory_alloc_string(title);
+    audio->mime_type = telebot_memory_alloc_string(mime_type);
 
     return audio;
 }
@@ -208,26 +143,9 @@ Message * telebot_message(long int message_id,User * from,long int date,Chat * c
     message->new_chat_photo = new_chat_photo;
     message->pinned_message = pinned_message;
     //STRINGS
-    if(text == NULL){
-        message->text = NULL;
-    }else{
-        message->text = (char *)malloc(strlen(text) + 1);
-        strcpy(message->text,text);
-    }
-
-    if(caption == NULL){
-        message->caption = NULL;
-    }else{
-        message->caption = (char *)malloc(strlen(caption) + 1);
-        strcpy(message->caption,caption);
-    }
-
-    if(new_chat_title == NULL){
-        message->new_chat_title = NULL;
-    }else{
-        message->new_chat_title = (char *)malloc(strlen(new_chat_title) + 1);
-        strcpy(message->new_chat_title,new_chat_title);
-    }
+    message->text = telebot_memory_alloc_string(text);
+    message->caption = telebot_memory_alloc_string(caption);
+    message->new_chat_title = telebot_memory_alloc_string(new_chat_title);
 
     return message;
 }
@@ -237,8 +155,8 @@ void telebot_message_free(Message * message){
     telebot_user_free(message->forward_from);
     telebot_chat_free(message->forward_from_chat);
     telebot_message_free(message->reply_to_message);
-    //telebot_entities_free(message->entities); //FREE THE ENTITIES
-    //telebot_audio_free(message->audio);
+    telebot_message_entities_free(message->entities); //FREE THE ENTITIES
+    telebot_audio_free(message->audio);
     //telebot_document_free(message->document);
     //telebot_game_free(message->game);
     //telebot_photo_free(message->photo);
