@@ -190,16 +190,20 @@ typedef struct _update{
     ChoosenInlineResult * choosen_inline_result;
     CallbackQuery * callback_query;
 } Update;
+
 //User functions
-User * telebot_user(long int id,const char * first_name,const char * last_name,const char * username);
+User * telebot_user(long int id, const char * first_name, const char * last_name, const char * username);
 void telebot_user_free(User * usr);
+
 //Chat functions
-Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators);
+Chat * telebot_chat(long int id, char * type, char * title, char * username, char * first_name, char * last_name, int all_members_are_administrators);
 void telebot_chat_free(Chat * cht);
+
 //Message entity functions
-MessageEntity * telebot_message_entity(char * type,long int offset,long int length,char * url,User * user);
+MessageEntity * telebot_message_entity(char * type, long int offset, long int length, char * url, User * user);
 void telebot_message_entity_free(MessageEntity * msgett);
 void telebot_message_entities_free(MessageEntity (* msgetts)[]);
+
 //Audio functions
 Audio * telebot_audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size);
 void telebot_audio_free(Audio * audio);
@@ -209,4 +213,5 @@ void telebot_message_free(Message * message);
 
 Bot * telebot_bot(char * token);
 void telebot_bot_free(Bot * bot);
+
 #endif // TELEBOT_OBJECTS_H_

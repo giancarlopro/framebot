@@ -1,7 +1,7 @@
 #include <telebot.h>
 #include <telebot_objects.h>
 
-User * telebot_user(long int id,const char * first_name,const char * last_name,const char * username){
+User * telebot_user(long int id, const char * first_name, const char * last_name, const char * username){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
@@ -11,12 +11,23 @@ User * telebot_user(long int id,const char * first_name,const char * last_name,c
 
     return user;
 }
+
+
+
 void telebot_user_free(User * usr){
-    free(usr->first_name);
-    free(usr->last_name);
-    free(usr->username);
+    if(usr->first_name)
+        free(usr->first_name);
+    
+    if(usr->last_name)
+        free(usr->last_name);
+    
+    if(usr->username)
+        free(usr->username);
+    
     free(usr);
 }
+
+
 
 Bot * telebot_bot(char * token){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
@@ -27,15 +38,25 @@ Bot * telebot_bot(char * token){
     User * usr = NULL;
 
     bot->user = usr;
+
     return bot;
 }
+
+
+
 void telebot_bot_free(Bot * bot){
-    free(bot->token);
+    
+    if(bot->token)
+        free(bot->token);
+
     telebot_user_free(bot->user);
+
     free(bot);
 }
 
-Chat * telebot_chat(long int id,char * type,char * title,char * username,char * first_name,char * last_name,int all_members_are_administrators){
+
+
+Chat * telebot_chat(long int id, char * type, char * title, char * username, char * first_name, char * last_name, int all_members_are_administrators){
     Chat * chat = (Chat *) malloc(sizeof(Chat));
 
     chat->id = id;
@@ -49,14 +70,30 @@ Chat * telebot_chat(long int id,char * type,char * title,char * username,char * 
 
     return chat;
 }
+
+
+
 void telebot_chat_free(Chat * cht){
-    free(cht->type);
-    free(cht->title);
-    free(cht->username);
-    free(cht->first_name);
-    free(cht->last_name);
+
+    if(cht->type)
+        free(cht->type);
+    
+    if(cht->title)
+        free(cht->title);
+    
+    if(cht->username)
+        free(cht->username);
+    
+    if(cht->first_name)
+        free(cht->first_name);
+    
+    if(cht->last_name)
+        free(cht->last_name);
+    
     free(cht);
 }
+
+
 
 MessageEntity * telebot_message_entity(char * type,long int offset,long int length,char * url,User * user){
     MessageEntity * msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
@@ -70,20 +107,37 @@ MessageEntity * telebot_message_entity(char * type,long int offset,long int leng
 
     return msgett;
 }
+
+
+
 void telebot_message_entity_free(MessageEntity * msgett){
-    free(msgett->type);
-    free(msgett->url);
+    
+    if(msgett->type)
+        free(msgett->type);
+    
+    if(msgett->url)
+        free(msgett->url);
+    
     telebot_user_free(msgett->user);
+    
     free(msgett);
 }
+
+
+
 void telebot_message_entities_free(MessageEntity (* msgetts)[]){
+    
     int sz = sizeof(msgetts)/sizeof(MessageEntity);
-    int i;
-    for(i=0;i<sz;i++){
-        MessageEntity * msg = &(*msgetts)[i];
+    size_t id;
+
+    for(id = 0; id < sz; id++){
+        MessageEntity * msg = &(*msgetts)[id];
         telebot_message_entity_free(msg);
     }
+
 }
+
+
 
 Audio * telebot_audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size){
     Audio * audio = (Audio *)malloc(sizeof(Audio));
@@ -98,13 +152,26 @@ Audio * telebot_audio(char * file_id,long int duration,char * performer,char * t
 
     return audio;
 }
+
+
+
 void telebot_audio_free(Audio * audio){
-    free(audio->file_id);
-    free(audio->performer);
-    free(audio->title);
-    free(audio->mime_type);
+    if(audio->file_id)
+        free(audio->file_id);
+    
+    if(audio->performer)
+        free(audio->performer);
+    
+    if(audio->title)
+        free(audio->title);
+    
+    if(audio->mime_type)
+        free(audio->mime_type);
+    
     free(audio);
 }
+
+
 
 Message * telebot_message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
     Message * message = (Message *)malloc(sizeof(Message));
@@ -149,6 +216,9 @@ Message * telebot_message(long int message_id,User * from,long int date,Chat * c
 
     return message;
 }
+
+
+
 void telebot_message_free(Message * message){
     telebot_user_free(message->from);
     telebot_chat_free(message->chat);
