@@ -1,10 +1,10 @@
-#include <telebot_network.h>
+#include <network.h>
 
-void telebot_network_init(){
+void network_init(){
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-char * telebot_network_request(Bot * bot,char * method){
+char * network_request(Bot * bot,char * method){
 	//https://api.telegram.org/bot 28
 	//312367410:AAE0GKFSHt8CId9sQ8yKOODnRF8j-Kk_avQ 45
 

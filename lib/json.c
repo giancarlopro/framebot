@@ -1,6 +1,6 @@
-#include <telebot_json.h>
+#include <json.h>
 
-User * telebot_json_user(char * json){
+User * json_user(char * json){
 	json_t * user;
 	json_error_t error;
 
@@ -13,11 +13,11 @@ User * telebot_json_user(char * json){
 		last_name = json_object_get(user, "last_name");
 		username = json_object_get(user, "username");
 
-		User * usr = telebot_user(json_integer_value(id),json_string_value(first_name),json_string_value(last_name),json_string_value(username));
+		User * usr = user(json_integer_value(id),json_string_value(first_name),json_string_value(last_name),json_string_value(username));
 		return usr;
 	}
 
 	json_decref(user);
-	
+
 	return NULL;
 }
