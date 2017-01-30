@@ -207,6 +207,6 @@ void telebot_audio_free(Audio * audio);
 Message * telebot_message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
 void telebot_message_free(Message * message);
 
-Bot * telebot_bot(char * token);
+Bot * telebot_bot(char * token,User * user);
 void telebot_bot_free(Bot * bot);
 #endif // TELEBOT_OBJECTS_H_

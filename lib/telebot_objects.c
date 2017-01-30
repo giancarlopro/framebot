@@ -18,15 +18,12 @@ void telebot_user_free(User * usr){
     free(usr);
 }
 
-Bot * telebot_bot(char * token){
+Bot * telebot_bot(char * token,User * user){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
 
     bot->token = telebot_memory_alloc_string(token);
+    bot->user = user;
 
-    //Call getMe function ...
-    User * usr = NULL;
-
-    bot->user = usr;
     return bot;
 }
 void telebot_bot_free(Bot * bot){
@@ -104,6 +101,87 @@ void telebot_audio_free(Audio * audio){
     free(audio->title);
     free(audio->mime_type);
     free(audio);
+}
+
+PhotoSize * telebot_photo_size(char * file_id,int width,int height,long int file_size){
+    PhotoSize * photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
+    photoSize->file_id = telebot_memory_alloc_string(file_id);
+    photoSize->width = width;
+    photoSize->height = height;
+    photoSize->file_size = file_size;
+}
+void telebot_photo_size_free(PhotoSize * photoSize){
+    free(photoSize->file_id);
+    free(photoSize);
+}
+void telebot_photo_sizes_free(PhotoSize *(* photoSize)){
+    int sz = sizeof photoSize;//sizeof(PhotoSize);
+    printf("sz=%s\n",sz );
+    int i;
+    for(i=0;i<sz;i++){
+        PhotoSize * phSz = &(*photoSize)[i];
+        telebot_photo_size_free(phSz);
+    }
+}
+
+Document * telebot_document(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size){
+    Document * document = (Document *)malloc(sizeof(Document));
+
+    document->file_id = telebot_memory_alloc_string(file_id);
+    document->thumb = thumb;
+    document->file_name = telebot_memory_alloc_string(file_name);
+    document->mime_type = telebot_memory_alloc_string(mime_type);
+    document->file_size = file_size;
+
+    return document;
+}
+void telebot_document_free(Document * document){
+    free(document->file_id);
+    telebot_photo_size_free(document->thumb);
+    free(document->file_name);
+    free(document->mime_type);
+    free(document);
+}
+
+Animation * telebot_animation(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size){
+    Animation * animation = (Animation *)malloc(sizeof(Animation));
+
+    animation->file_id = telebot_memory_alloc_string(file_id);
+    animation->thumb = thumb;
+    animation->file_name = telebot_memory_alloc_string(file_name);
+    animation->mime_type = telebot_memory_alloc_string(mime_type);
+    animation->file_size = file_size;
+
+    return animation;
+}
+void telebot_animation_free(Animation * animation){
+    free(animation->file_id);
+    free(animation->file_name);
+    free(animation->mime_type);
+    telebot_photo_size_free(animation->thumb);
+    free(animation);
+}
+
+Game * telebot_game(char * title,char * description,PhotoSize (*photo)[],char * text,MessageEntity (*text_entities)[],Animation * animation){
+    Game * game = (Game *)malloc(sizeof(Game));
+
+    game->title = telebot_memory_alloc_string(title);
+    game->description = telebot_memory_alloc_string(description);
+    game->photo = photo;
+    game->text = telebot_memory_alloc_string(text);
+    game->text_entities = text_entities;
+    game->animation = animation;
+
+    return game;
+}
+void telebot_game_free(Game * game){
+    free(game->title);
+    free(game->description);
+    telebot_photo_sizes_free(game->photo);
+    free(game->text);
+    telebot_message_entities_free(game->text_entities);
+    telebot_animation_free(game->animation);
+    free(game);
 }
 
 Message * telebot_message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
