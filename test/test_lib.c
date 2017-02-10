@@ -1,23 +1,14 @@
 #include <telebot.h>
+#include <curl/curl.h>
 
 int main(){
+    curl_global_init(CURL_GLOBAL_ALL);
 
-	PhotoSize (* photoSize)[];
-	PhotoSize phSz[2];
-	photoSize = &phSz;
+    CURL * curl = curl_easy_init();
+    curl_easy_setopt(curl,CURLOPT_URL,"https://www.google.com");
 
-	phSz[0].file_id = alloc_string("Giancarlo");
-	phSz[0].file_size = 10000;
-	phSz[0].height = 10000;
-	phSz[0].width = 10000;
-	//phSz[1] = photo_size("12345",100,100,1000);
-
-	printf("ID: %s\nSize: %d\nH: %d\nW: %d\n\n",phSz[0].file_id,phSz[0].file_size,phSz[0].height,phSz[0].width);
-
-	photo_sizes_free(photoSize);
-	//photo_size_free(photoSize[0]);
-
-    printf("ID: %s\nSize: %d\nH: %d\nW: %d\n\n",phSz[0].file_id,phSz[0].file_size,phSz[0].height,phSz[0].width);
-
+    if(curl_easy_perform(curl) == CURLE_OK){
+        printf("OK!");
+    }
 	return 0;
 }

@@ -1,7 +1,6 @@
 #include <telebot.h>
-#include <objects.h>
 
-User * user(long int id, const char * first_name, const char * last_name, const char * username){
+User * user(long int id, char * first_name, char * last_name, char * username){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
@@ -24,7 +23,7 @@ void user_free(User * usr){
     free(usr);
 }
 
-Bot * bot(char * token){
+Bot * bot(char * token,User * user){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
 
     bot->token = alloc_string(token);
@@ -110,19 +109,6 @@ void message_entity_free(MessageEntity * msgett){
 
     free(msgett);
 }
-void message_entities_free(MessageEntity (* msgetts)[]){
-
-    int sz = sizeof(msgetts)/sizeof(MessageEntity);
-    size_t id;
-
-    for(id = 0; id < sz; id++){
-        MessageEntity * msg = &(*msgetts)[id];
-        message_entity_free(msg);
-    }
-
-}
-
-
 
 Audio * audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size){
     Audio * audio = (Audio *)malloc(sizeof(Audio));
@@ -158,23 +144,44 @@ void audio_free(Audio * audio){
 
 PhotoSize * photo_size(char * file_id,int width,int height,long int file_size){
     PhotoSize * photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
+
     photoSize->file_id = alloc_string(file_id);
     photoSize->width = width;
     photoSize->height = height;
     photoSize->file_size = file_size;
+    photoSize->next = NULL;
+
+    return photoSize;
 }
 void photo_size_free(PhotoSize * photoSize){
-    free(photoSize->file_id);
-    free(photoSize);
-}
-void photo_sizes_free(PhotoSize *(* photoSize)){
-    int sz = sizeof photoSize;//sizeof(PhotoSize);
-    printf("sz=%s\n",sz );
-    int i;
-    for(i=0;i<sz;i++){
-        PhotoSize * phSz = &(*photoSize)[i];
-        photo_size_free(phSz);
+    PhotoSize * aux = photoSize, * tmp;
+    while(aux){
+        if(aux->file_id)
+            free(aux->file_id);
+
+        tmp = aux;
+        aux = aux->next;
+        free(tmp);
     }
+}
+void photo_size_add(PhotoSize * root,PhotoSize * newps){
+    PhotoSize * aux = root->next;
+
+    while(aux != NULL)
+        aux = aux->next;
+
+    aux->next = newps;
+}
+PhotoSize * photo_size_get(PhotoSize * root, int i){
+    int j = 0;
+    PhotoSize * aux = root;
+    while(aux){
+        if(j == i)
+            return aux;
+        j++;
+        aux = aux->next;
+    }
+    return NULL;
 }
 
 Document * document(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size){
@@ -215,7 +222,7 @@ void animation_free(Animation * animation){
     free(animation);
 }
 
-Game * game(char * title,char * description,PhotoSize (*photo)[],char * text,MessageEntity (*text_entities)[],Animation * animation){
+Game * game( char * title, char * description, PhotoSize * photo,char * text, MessageEntity * text_entities, Animation * animation){
     Game * game = (Game *)malloc(sizeof(Game));
 
     game->title = alloc_string(title);
@@ -230,9 +237,9 @@ Game * game(char * title,char * description,PhotoSize (*photo)[],char * text,Mes
 void game_free(Game * game){
     free(game->title);
     free(game->description);
-    photo_sizes_free(game->photo);
+    photo_size_free(game->photo);
     free(game->text);
-    message_entities_free(game->text_entities);
+    message_entity_free(game->text_entities);
     animation_free(game->animation);
     free(game);
 }
@@ -364,7 +371,7 @@ void venue_free(Venue * _venue){
     free(_venue);
 }
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
     Message * message = (Message *)malloc(sizeof(Message));
 
     //PRIMITIVE TYPES
@@ -419,7 +426,7 @@ void message_free(Message * message){
     if(message->reply_to_message)
         message_free(message->reply_to_message);
     if(message->entities)
-        message_entities_free(message->entities); //FREE THE ENTITIES
+        message_entity_free(message->entities); //FREE THE ENTITIES
     if(message->audio)
         audio_free(message->audio);
     if(message->document)
@@ -427,7 +434,7 @@ void message_free(Message * message){
     if(message->game)
         game_free(message->game);
     if(message->photo)
-        photo_free(message->photo);
+        //photo_free(message->photo);
     if(message->sticker)
         sticker_free(message->sticker);
     if(message->video)
@@ -444,9 +451,39 @@ void message_free(Message * message){
         user_free(message->new_chat_member);
     if(message->left_chat_member)
         user_free(message->left_chat_member);
-    if(message->photo)
-        photo_free(message->new_chat_photo);
     if(message->pinned_message)
         message_free(message->pinned_message);
     free(message);
+}
+
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result,CallbackQuery * callback_query){
+    Update * oupdate = (Update *)malloc(sizeof(Update));
+
+    oupdate->update_id = update_id;
+    oupdate->message = message;
+    oupdate->edited_message = edited_message;
+    oupdate->channel_post = channel_post;
+    oupdate->edited_channel_post = edited_channel_post;
+    oupdate->inline_query = inline_query;
+    oupdate->choosen_inline_result = choosen_inline_result;
+    oupdate->callback_query = callback_query;
+
+    return oupdate;
+}
+void update_free(Update * oupdate){
+    if(oupdate->message)
+        free(oupdate->message);
+    if(oupdate->edited_message)
+        free(oupdate->edited_message);
+    if(oupdate->channel_post)
+        free(oupdate->channel_post);
+    if(oupdate->edited_channel_post)
+        free(oupdate->edited_channel_post);
+    if(oupdate->inline_query)
+        free(oupdate->inline_query);
+    if(oupdate->choosen_inline_result)
+        free(oupdate->choosen_inline_result);
+    if(oupdate->callback_query)
+        free(oupdate->callback_query);
+    free(oupdate);
 }

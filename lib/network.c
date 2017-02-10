@@ -4,14 +4,11 @@ void network_init(){
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-char * network_request(Bot * bot,char * method){
-	//https://api.telegram.org/bot 28
-	//312367410:AAE0GKFSHt8CId9sQ8yKOODnRF8j-Kk_avQ 45
+int network_request(Bot * bot,char * method){
+	size_t url_sz = strlen(bot->token) + strlen(API_URL) + strlen(method) + 2;
+	char * url = (char *)malloc(url_sz);
 
-	size_t msz = strlen(bot->token) + strlen(API_URL) + strlen(method) + 2;
-	char * url = (char *)malloc(msz);
-
-	strcat(url, API_URL);
+	strcpy(url, API_URL);
 	strcat(url, bot->token);
 	strcat(url,"/");
 	strcat(url,method);
@@ -21,8 +18,22 @@ char * network_request(Bot * bot,char * method){
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 
-	CURLcode res;
-	res = curl_easy_perform(curl);
+	FILE * buff = fopen("test.txt","w");//= tmpfile();
+	char * buffer = (char *)malloc(MAX_BUFFER_SIZE);
 
-	return url;
+	if(buff){
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, buff);
+
+		CURLcode res = curl_easy_perform(curl);
+		if(res == CURLE_OK)
+			fscanf(buff,"%s",buffer);
+        return res;
+	}
+
+
+	//return buffer;
+}
+
+User * get_me(Bot * bot){
+	return NULL;
 }

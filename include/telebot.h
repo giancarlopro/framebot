@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include <objects.h>
+#include <memory.h>
 #include <json.h>
 
 Update * get_updates(Bot * bot);

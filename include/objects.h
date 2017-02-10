@@ -45,6 +45,7 @@ typedef struct _photo_size{
     int width;
     int height;
     long int file_size;
+    struct _photo_size * next;
 } PhotoSize;
 
 typedef struct _document{
@@ -66,9 +67,9 @@ typedef struct _animation{
 typedef struct _game{
     char * title;
     char * description;
-    PhotoSize (*photo)[];
+    PhotoSize * photo;//Array
     char * text;
-    MessageEntity (*text_entities)[];
+    MessageEntity * text_entities;//Array
     Animation * animation;
 } Game;
 
@@ -129,11 +130,11 @@ typedef struct _message{
     struct _message * reply_to_message;
     long int edit_date;
     char * text;
-    MessageEntity (* entities)[];
+    MessageEntity * entities;//Array
     Audio * audio;
     Document * document;
     Game * game;
-    PhotoSize (*photo)[];
+    PhotoSize * photo;//Array
     Sticker * sticker;
     Video * video;
     Voice * voice;
@@ -144,7 +145,7 @@ typedef struct _message{
     User * new_chat_member;
     User * left_chat_member;
     char * new_chat_title;
-    PhotoSize (*new_chat_photo)[];
+    PhotoSize * new_chat_photo;//Array
     int delete_chat_photo;
     int group_chat_created;
     int supergroup_chat_created;
@@ -192,7 +193,7 @@ typedef struct _update{
 } Update;
 
 //User functions
-User * user(long int id, const char * first_name, const char * last_name, const char * username);
+User * user(long int id, char * first_name, char * last_name, char * username);
 void user_free(User * usr);
 
 //Chat functions
@@ -208,7 +209,7 @@ void message_entities_free(MessageEntity (* msgetts)[]);
 Audio * audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size);
 void audio_free(Audio * audio);
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity (* entities)[],Audio * audio,Document * document,Game * game,PhotoSize (*photo)[],Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize (*new_chat_photo)[],int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
 void message_free(Message * message);
 
 Bot * bot(char * token,User * user);

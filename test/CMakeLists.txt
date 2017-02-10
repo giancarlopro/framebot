@@ -4,4 +4,4 @@ project(TelebotTest)
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_executable(test_lib test_lib.c)
-target_link_libraries(test_lib libcurl_imp jansson telebotlibrary)
+target_link_libraries(test_lib jansson telebotlibrary curldll)
