@@ -5,10 +5,25 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <objects.h>
-#include <memory.h>
-#include <json.h>
+//cURL Fix
+#pragma comment(lib, "wldap32.lib" )
+#pragma comment(lib, "crypt32.lib" )
+#pragma comment(lib, "Ws2_32.lib")
+#define CURL_STATICLIB
+// --//--
 
-Update * get_updates(Bot * bot);
+#include <curl/curl.h>
+#include <jansson.h>
+
+#include <memory.h>
+#include <objects.h>
+#include <network.h>
+#include <json.h>
+#include <param.h>
+
+void telebot_init();
+Bot * telebot(char *token);
+User * get_me(char *token);
+Update *get_updates(Bot *bot, Param *p);
 
 #endif

@@ -190,6 +190,8 @@ typedef struct _update{
     InlineQuery * inline_query;
     ChoosenInlineResult * choosen_inline_result;
     CallbackQuery * callback_query;
+
+	struct _update *next;
 } Update;
 
 //User functions
@@ -209,10 +211,47 @@ void message_entities_free(MessageEntity (* msgetts)[]);
 Audio * audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size);
 void audio_free(Audio * audio);
 
+PhotoSize * photo_size(char * file_id,int width,int height,long int file_size);
+void photo_size_free(PhotoSize * photoSize);
+void photo_size_add(PhotoSize * root,PhotoSize * newps);
+PhotoSize * photo_size_get(PhotoSize * root, int i);
+
+Document * document(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size);
+void document_free(Document * document);
+
+Animation * animation(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size);
+void animation_free(Animation * animation);
+
+Game * game( char * title, char * description, PhotoSize * photo,char * text, MessageEntity * text_entities, Animation * animation);
+void game_free(Game * game);
+
+Sticker * sticker(char * file_id,int width,int height,PhotoSize * thumb,char * emoji,long int file_size);
+void sticker_free(Sticker * _sticker);
+
+Video * video(char * file_id,int width,int height,long int duration,PhotoSize * thumb,char * mime_type,long int file_size);
+void video_free(Video * _video);
+
+Voice * voice(char * file_id,long int duration,char * mime_type,long int file_size);
+void voice_free(Voice * _voice);
+
+Contact * contact(char * phone_number,char * first_name,char * last_name,long int user_id);
+void contact_free(Contact * _contact);
+
+Location * location(float latitude,float longitude);
+void location_free(Location * _location);
+
+Venue * venue(Location * location,char * title,char * address,char * foursquare_id);
+void venue_free(Venue * _venue);
+
 Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
 void message_free(Message * message);
 
 Bot * bot(char * token,User * user);
 void bot_free(Bot * bot);
+
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result, CallbackQuery * callback_query);
+void update_free(Update * oupdate);
+void update_add(Update *dest, Update *src);
+Update *update_get(Update *u, int index);
 
 #endif // OBJECTS_H_

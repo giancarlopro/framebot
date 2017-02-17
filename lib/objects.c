@@ -1,6 +1,6 @@
 #include <telebot.h>
 
-User * user(long int id, char * first_name, char * last_name, char * username){
+User * user(long int id, char *first_name, char *last_name, char *username){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
@@ -29,11 +29,6 @@ Bot * bot(char * token,User * user){
     bot->token = alloc_string(token);
     bot->user = user;
 
-    //Call getMe function ...
-    User * usr = NULL;
-
-    bot->user = usr;
-
     return bot;
 }
 void bot_free(Bot * bot){
@@ -60,9 +55,6 @@ Chat * chat(long int id, char * type, char * title, char * username, char * firs
 
     return chat;
 }
-
-
-
 void chat_free(Chat * cht){
 
     if(cht->type)
@@ -82,8 +74,6 @@ void chat_free(Chat * cht){
 
     free(cht);
 }
-
-
 
 MessageEntity * message_entity(char * type,long int offset,long int length,char * url,User * user){
     MessageEntity * msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
@@ -123,9 +113,6 @@ Audio * audio(char * file_id,long int duration,char * performer,char * title,cha
 
     return audio;
 }
-
-
-
 void audio_free(Audio * audio){
     if(audio->file_id)
         free(audio->file_id);
@@ -390,7 +377,7 @@ Message * message(long int message_id,User * from,long int date,Chat * chat,User
     message->from = from;
     message->chat = chat;
     message->forward_from = forward_from;
-    message->forward_from_chat;
+    message->forward_from_chat = forward_from_chat;
     message->reply_to_message = reply_to_message;
     message->entities = entities;
     message->audio = audio;
@@ -468,6 +455,8 @@ Update * update(long int update_id, Message * message, Message * edited_message,
     oupdate->choosen_inline_result = choosen_inline_result;
     oupdate->callback_query = callback_query;
 
+	oupdate->next = NULL;
+
     return oupdate;
 }
 void update_free(Update * oupdate){
@@ -485,5 +474,25 @@ void update_free(Update * oupdate){
         free(oupdate->choosen_inline_result);
     if(oupdate->callback_query)
         free(oupdate->callback_query);
+
+	if (oupdate->next)
+		update_free(oupdate->next);
+
     free(oupdate);
+}
+void update_add(Update *dest, Update *src) {
+	Update *tmp = dest;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = src;
+}
+Update *update_get(Update *u, int index) {
+	int i = 0;
+	Update *tmp = u;
+	for (; tmp->next; i++) {
+		if (i == index)
+			return tmp;
+		tmp = tmp->next;
+	}
+	return NULL;
 }

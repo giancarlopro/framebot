@@ -1,11 +1,21 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <curl/curl.h>
 #include <telebot.h>
 
 #define API_URL "https://api.telegram.org/bot"
-#define MAX_BUFFER_SIZE 1024*30
+#define MAX_BUFFER_SIZE (1024*30)
 
+typedef struct _mem_store {
+	char *content;
+	size_t size;
+} MemStore;
+typedef MemStore* MemStorePtr;
+
+void network_init();
+MemStore * mem_store();
+void mem_store_free(MemStore * memStore);
+size_t mem_write_callback(void *content, size_t size, size_t nmemb, void *userp);
+MemStore *call_method(char *token, char *method);
 
 #endif

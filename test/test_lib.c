@@ -1,14 +1,22 @@
 #include <telebot.h>
+
+#pragma comment(lib, "wldap32.lib" )
+#pragma comment(lib, "crypt32.lib" )
+#pragma comment(lib, "Ws2_32.lib")
+#define CURL_STATICLIB 
 #include <curl/curl.h>
 
+#define TOKEN "312367410:AAE0GKFSHt8CId9sQ8yKOODnRF8j-Kk_avQ"
+
 int main(){
-    curl_global_init(CURL_GLOBAL_ALL);
+	telebot_init();
 
-    CURL * curl = curl_easy_init();
-    curl_easy_setopt(curl,CURLOPT_URL,"https://www.google.com");
+	Bot *bot = telebot(TOKEN);
 
-    if(curl_easy_perform(curl) == CURLE_OK){
-        printf("OK!");
-    }
+	Update *up = get_updates(bot,NULL);
+
+	if(up)
+		printf("Mensagem: %s", up->message->text);
+
 	return 0;
 }
