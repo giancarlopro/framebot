@@ -10,7 +10,7 @@ typedef struct _param{
     size_t param_size;
 }Param;
 
-Param *param(char *base);
+Param *param();
 void param_add(Param *p, char *key, char *value);
 char *param_parse(Param *p);
 void param_free(Param *p);

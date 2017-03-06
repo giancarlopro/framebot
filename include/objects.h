@@ -192,6 +192,7 @@ typedef struct _update{
     CallbackQuery * callback_query;
 
 	struct _update *next;
+	
 } Update;
 
 //User functions
@@ -253,5 +254,6 @@ Update * update(long int update_id, Message * message, Message * edited_message,
 void update_free(Update * oupdate);
 void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
+size_t update_len(Update *u);
 
 #endif // OBJECTS_H_

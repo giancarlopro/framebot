@@ -496,3 +496,10 @@ Update *update_get(Update *u, int index) {
 	}
 	return NULL;
 }
+size_t update_len(Update *u) {
+	int i;
+	Update *tmp = u;
+	for (i = 0; tmp; i++)
+		tmp = tmp->next;
+	return i;
+}

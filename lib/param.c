@@ -1,11 +1,12 @@
 #include <telebot.h>
 
-Param *param(char *base){
+Param *param(){
     Param *pparam = (Param *)malloc(sizeof(Param));
-    pparam->data = (char *)malloc(strlen(base) + 1);
-    strcpy(pparam->data,base);
+    //pparam->data = (char *)malloc(strlen(base) + 1);
+    //strcpy(pparam->data,base);
+	pparam->data = (char *)malloc(1);
 
-    pparam->length = strlen(pparam->data);
+	pparam->length = 0;// strlen(pparam->data);
     pparam->param_size = 0;
     pparam->last_encoded = NULL;
 

@@ -57,3 +57,31 @@ Update *get_updates(Bot *bot, Param *p) {
 	}
 	return NULL;
 }
+
+int send_message(Bot *bot, char *chat_id, char *text, Param *extra) {
+	if (!chat_id || !text)
+		return -1;
+
+	MemStore *json;
+	if (extra) {
+		param_add(extra, "chat_id", chat_id);
+		param_add(extra, "text", text);
+		json = call_method_wp(bot->token, "sendMessage", param_parse(extra));
+	} else {
+		Param *tmp = param();
+		param_add(tmp, "chat_id", chat_id);
+		param_add(tmp, "text", text);
+		json = call_method_wp(bot->token, "sendMessage", param_parse(tmp));
+	}
+	if (!json)
+		return -1;
+	json_t *root = load(json->content);
+
+	if (root) {
+		json_t *ok;
+		ok = json_object_get(root, "ok");
+		if (json_is_true(ok))
+			return 1;
+	}
+	return 0;
+}

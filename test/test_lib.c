@@ -14,9 +14,16 @@ int main(){
 	Bot *bot = telebot(TOKEN);
 
 	Update *up = get_updates(bot,NULL);
+	Update *tmp = NULL;
+	int i = 0;
+	for (; i < update_len(up); i++) {
+		tmp = update_get(up, i);
 
-	if(up)
-		printf("Mensagem: %s", up->message->text);
+		if (tmp && tmp->message) {
+			
+			printf("Mensagem %d: %s\n", (i + 1), tmp->message->text);
+		}
+	}
 
 	return 0;
 }

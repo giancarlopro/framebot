@@ -106,7 +106,7 @@ PhotoSize * photo_size_parse(json_t *json){
 	    height = json_object_get(pphoto_size,"height");
 	    file_size = json_object_get(pphoto_size,"file_size");
 
-	    PhotoSize * ophoto_size = photo_size(json_string_value(file_id),json_integer_value(width),json_string_value(height),json_integer_value(file_size));
+	    PhotoSize * ophoto_size = photo_size(json_string_value(file_id),json_integer_value(width),json_integer_value(height),json_integer_value(file_size));
 
 	    json_decref(pphoto_size);
 	    return ophoto_size;
@@ -147,8 +147,8 @@ Animation * animation_parse(json_t *json){
 	    mime_type = json_object_get(panimation,"mime_type");
 	    file_size = json_object_get(panimation,"file_size");
 
-	    PhotoSize * othumb = photo_size_parse(thumb);
-	    Document * oanimation = document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
+	    PhotoSize *othumb = photo_size_parse(thumb);
+	    Animation *oanimation = document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
 
 	    json_decref(panimation);
 	    return oanimation;
@@ -208,7 +208,7 @@ Video * video_parse(json_t *json){
 	json_t * pvideo = json;
 
 	if(pvideo && json_is_object(pvideo)){
-		json_t *file_id, *width, *height, *duration, *thumb, *mime_type, *emoji, *file_size;
+		json_t *file_id, *width, *height, *duration, *thumb, *mime_type, *file_size;
 
 		file_id = json_object_get(pvideo,"file_id");
 		width = json_object_get(pvideo,"width");

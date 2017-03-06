@@ -61,3 +61,11 @@ MemStore * call_method(char *token, char *method){
 
 	return NULL;
 }
+
+MemStore *call_method_wp(char *token, char *method, char *params) {
+	size_t len = strlen(method) + strlen(params) + 1;
+	char *tmp = (char *)malloc(len);
+	MemStore *ms = call_method(token, tmp);
+	free(tmp);
+	return ms;
+}
