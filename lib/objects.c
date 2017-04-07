@@ -487,9 +487,13 @@ void update_add(Update *dest, Update *src) {
 	tmp->next = src;
 }
 Update *update_get(Update *u, int index) {
+
+	//if (index == 0) return u;
+
 	int i = 0;
 	Update *tmp = u;
-	for (; tmp->next; i++) {
+
+	for (; tmp; i++) {
 		if (i == index)
 			return tmp;
 		tmp = tmp->next;

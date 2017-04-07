@@ -15,6 +15,7 @@ int main(){
 
 	Update *up = get_updates(bot,NULL);
 	Update *tmp = NULL;
+
 	int i = 0;
 	for (; i < update_len(up); i++) {
 		tmp = update_get(up, i);
@@ -22,6 +23,9 @@ int main(){
 		if (tmp && tmp->message) {
 			
 			printf("Mensagem %d: %s\n", (i + 1), tmp->message->text);
+			printf("[SENDING] 'Hello human' to %d@%s", tmp->message->from->id, tmp->message->from->username);
+
+			send_message(bot, tmp->message->chat->id, "Hello human", NULL);
 		}
 	}
 
