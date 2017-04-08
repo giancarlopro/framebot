@@ -58,21 +58,27 @@ Update *get_updates(Bot *bot, Param *p) {
 	return NULL;
 }
 
-int send_message(Bot *bot, char *chat_id, char *text, Param *extra) {
+int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 	if (!chat_id || !text)
 		return -1;
 
 	MemStore *json;
+
+	char *method_base = NULL;
 	if (extra) {
-		param_add(extra, "chat_id", chat_id);
-		param_add(extra, "text", text);
-		json = call_method_wp(bot->token, "sendMessage", param_parse(extra));
+		method_base = format("sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
+
+		free(extra);
 	} else {
-		Param *tmp = param();
-		param_add(tmp, "chat_id", chat_id);
-		param_add(tmp, "text", text);
-		json = call_method_wp(bot->token, "sendMessage", param_parse(tmp));
+		method_base = format("sendMessage?chat_id=%ld&text=%s", chat_id, text);
 	}
+	
+	printf("\n\n%s\n\n", method_base);
+
+	json = call_method(bot->token, method_base);
+
+	free(method_base);
+
 	if (!json)
 		return -1;
 	json_t *root = load(json->content);

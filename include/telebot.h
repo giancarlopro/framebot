@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <string.h>
 
 //cURL Fix
@@ -20,6 +21,7 @@
 #include <network.h>
 #include <json.h>
 #include <param.h>
+#include <format.h>
 
 void telebot_init();
 Bot * telebot(char *token);
