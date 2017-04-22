@@ -2,6 +2,7 @@
 
 void telebot_init() {
 	network_init();
+	log_init();
 }
 
 Bot * telebot(char *token) {
@@ -25,17 +26,17 @@ User *get_me(char *token) {
 	}
 	return NULL;
 }
-/* Offset: 10 digits
- * Limit:  3 digits
- * timeout: 10 digits
- */
-Update *get_updates(Bot *bot, Param *p) {
+
+Update *get_updates(Bot *bot, char *extra) {
 	MemStore *json;
-	if(p){
-		json = call_method(bot->token,param_parse(p));
+	if(extra){
+		char *base = format("getUpdates?%s", extra);
+		json = call_method(bot->token, base);
+		free(base);
 	}else{
 		json = call_method(bot->token,"getUpdates");
 	}
+
 	//printf("%s", json->content);
 	json_t *root = load(json->content);
 	if(root){
@@ -73,7 +74,7 @@ int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 		method_base = format("sendMessage?chat_id=%ld&text=%s", chat_id, text);
 	}
 	
-	printf("\n\n%s\n\n", method_base);
+	//printf("\n\n%s\n\n", method_base);
 
 	json = call_method(bot->token, method_base);
 
@@ -90,4 +91,12 @@ int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 			return 1;
 	}
 	return 0;
+}
+
+void telebot_polling(Bot *bot) {
+	printf("\nStarting to handle messages!");
+	while (1) {
+		handle_updates(bot, format("limit=%d", 20));
+		Sleep(1000);
+	}
 }
