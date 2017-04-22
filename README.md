@@ -1,5 +1,6 @@
 # Telebot-TelegramBotAPI
-Description
+ [![Build Status](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI.svg?branch=master)](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI)
+
 
 ### Dependencias
 * [jansson](https://github.com/akheron/jansson)
