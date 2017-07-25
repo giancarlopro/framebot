@@ -6,22 +6,26 @@
 #define CURL_STATICLIB 
 #include <curl/curl.h>
 
-#define TOKEN "312367410:AAE0GKFSHt8CId9sQ8yKOODnRF8j-Kk_avQ"
+#define TOKEN "376446484:AAELGNbpTneKZgPKtlazpwjDQBYTyYH-KfI"
 
 int main(){
+	char *message_error;
+
 	telebot_init();
 
+	/* return token authentication or not */
 	Bot *bot = telebot(TOKEN);
+	if(bot == NULL){
+		printf("%s\n", PRINT_ETOKEN);
+		exit(-1);
+	}
 
-	Update *up = get_updates(bot,NULL);
+	Update *update_msg = get_updates(bot, NULL);
 	Update *tmp = NULL;
 
-	telebot_polling(bot);
-	return 0;
-
 	int i = 0, j;
-	for (; i < update_len(up); i++) {
-		tmp = update_get(up, i);
+	for (; i < update_len(update_msg); i++) {
+		tmp = update_get(update_msg, i);
 
 		if (tmp && tmp->message) {
 			

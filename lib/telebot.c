@@ -5,8 +5,9 @@ void telebot_init() {
 	log_init();
 }
 
+/* Authentic bot token */
 Bot * telebot(char *token) {
-	User *bot_user = get_me(token);//aqui
+	User *bot_user = get_me(token);
 	if (bot_user) {
 		Bot *obot = bot(token, bot_user);
 		return obot;
@@ -15,7 +16,10 @@ Bot * telebot(char *token) {
 	return NULL;
 }
 
+/* A simple method for testing your bot's auth token */
 User *get_me(char *token) {
+
+	char *message_error;
 	MemStore *data = call_method(token, "getMe");
 
 	if (data) {
@@ -24,9 +28,15 @@ User *get_me(char *token) {
 		if (ouser)
 			return ouser;
 	}
+
+	message_error = malloc(strlen(token) + strlen(ETOKEN));
+	sprintf(message_error, "%s %s", ETOKEN, token);
+	update_log(message_error);
+
 	return NULL;
 }
 
+/* Pull new message 'bot'*/
 Update *get_updates(Bot *bot, char *extra) {
 	MemStore *json;
 	if(extra){
@@ -59,6 +69,7 @@ Update *get_updates(Bot *bot, char *extra) {
 	return NULL;
 }
 
+/* send message to telegram */
 int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 	if (!chat_id || !text)
 		return -1;
@@ -96,7 +107,7 @@ int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 void telebot_polling(Bot *bot) {
 	printf("\nStarting to handle messages!");
 	while (1) {
-		handle_updates(bot, format("limit=%d", 20));
-		Sleep(1000);
+		//handle_updates(bot, format("limit=%d", 20));
+		//Sleep(1000);
 	}
 }

@@ -11,3 +11,5 @@ char * alloc_string(char * str){
 
     return (char *)NULL;
 }
+
+

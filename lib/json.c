@@ -13,11 +13,11 @@ json_t * load(char * json){
 }
 
 User * user_parse(json_t * json){
-	//json_t * puser = json;
+
 	json_t *puser = json;
 
 	if(puser && json_is_object(puser)){
-		json_t *id,*first_name,*last_name,*username;
+		json_t *id, *first_name, *last_name, *username;
 		id = json_object_get(puser, "id");
 		first_name = json_object_get(puser, "first_name");
 		last_name = json_object_get(puser, "last_name");

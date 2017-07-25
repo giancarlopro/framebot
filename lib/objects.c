@@ -23,7 +23,7 @@ void user_free(User * usr){
     free(usr);
 }
 
-Bot * bot(char * token,User * user){
+Bot * bot(char * token, User * user){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
 
     bot->token = alloc_string(token);

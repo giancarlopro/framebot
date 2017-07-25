@@ -6,6 +6,9 @@
 #include <stdarg.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 //cURL Fix
 #pragma comment(lib, "wldap32.lib" )
@@ -14,9 +17,12 @@
 #define CURL_STATICLIB
 // --//--
 
+#define CSCREEN "\e[1;1H\e[2J"
+
 #include <curl/curl.h>
 #include <jansson.h>
 #include <omp.h>
+
 
 #include <memory.h>
 #include <objects.h>
