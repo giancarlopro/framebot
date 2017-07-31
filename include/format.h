@@ -4,5 +4,6 @@
 #include <telebot.h>
 
 char *format(char *format, ...);
+char *remove_newline(char *str);
 
 #endif

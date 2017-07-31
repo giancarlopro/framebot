@@ -31,8 +31,6 @@ void log_init() {
 	size_t size_path_log, size_pwd;
 	FILE *f_log;
 
-	printf("%s", CSCREEN);
-	printf("LOG:\n");
 
 	pwd = getcwd(NULL, 0);
 	size_pwd = strlen(pwd);
@@ -192,7 +190,7 @@ int create_dir_chat_log(char *log_dir_chat){
 		printf("OK\n");
 	}
 	else {
-		printf("alredy exist dir chat log\n");
+		printf("already exist dir chat log\n");
 	}
 	fflush(stdout);
 
@@ -223,4 +221,23 @@ int create_dir_log(char *log_dir){
 	fflush(stdout);
 
 	return 0;
+}
+
+void get_me_log(User *ouser){
+
+	size_t size_str_log;
+	char *str;
+
+	if(ouser){
+		size_str_log = strlen(ouser->username) + 20;
+		str = malloc(size_str_log);
+		snprintf(str, size_str_log, GETME_LOG, ouser->id, ouser->username);
+		update_log(str);
+	}
+	else{
+		size_str_log = strlen(GETME_ELOG) + 1;
+		str = malloc(size_str_log);
+		snprintf(str, size_str_log, GETME_ELOG);
+		update_log(str);
+	}
 }

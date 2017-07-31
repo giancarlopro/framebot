@@ -7,8 +7,8 @@
 
 
 #define START_API 		"----- Start API -----"
-#define ETOKEN 			"Failed to authenticate token \n\tmethod(telegram): getME\n\tToken: "
-#define PRINT_ETOKEN	"Failed to authenticate"
+#define GETME_LOG 		"token Authentication: ok id_bot=%ld username=%s"
+#define GETME_ELOG		"Failed to authenticate"
 
 
 struct _log {
@@ -25,4 +25,5 @@ void update_log_chat(char *str, size_t *id_chat);
 int create_log_bot (char *path_bot_log);
 int create_dir_chat_log(char *log_dir);
 int create_dir_log(char *log_dir);
+void get_me_log(User *ouser);
 #endif

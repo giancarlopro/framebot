@@ -3,6 +3,6 @@
 
 #include <telebot.h>
 
-char * alloc_string(char * str);
+char * alloc_string(const char * str);
 
 #endif

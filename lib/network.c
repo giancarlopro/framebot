@@ -77,3 +77,56 @@ MemStore *call_method_wp(char *token, char *method, char *params) {
 
 	return ms;
 }
+
+void *handle_network(void *vbot) {
+	Bot *bot = (Bot *) vbot;
+	Update *update;
+
+	receives->bot = bot;
+
+
+	while(1){
+		update = get_updates(receives->bot, NULL);
+		if(update){
+			if(!receives->update)
+				receives->update = update;
+			else{
+				update_add(receives->update, update);
+			}
+		}
+
+		handle_send_network();
+
+		sleep(2);
+	}
+}
+
+int handle_send_network(){
+
+	int result_send;
+	long int message_id;
+	char *text, *extra;
+	long int id_chat;
+	Send *send;
+	Bot *bot;
+
+	if(gives->send){
+		send = gives->send;
+		bot = gives->bot;
+		id_chat = send->id_chat;
+		text = send->text;
+		extra = send->extra;
+
+		result_send = send_message(bot, send->id_chat, send->text, send->extra);
+		
+		if(result_send == 0){
+			printf("ERRO enviar %lu\n", id_chat);
+		}
+
+		/* region critic */
+		gives->send = send->next;
+
+	}
+
+	return 0;
+}

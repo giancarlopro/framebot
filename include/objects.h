@@ -195,56 +195,86 @@ typedef struct _update{
 	
 } Update;
 
+typedef struct _send {
+    long int message_id;
+    long int id_chat;
+    char *text;
+    char *extra;
+    struct _send *next;
+} Send;
+
+typedef struct _send_error{
+    long int message_id;
+    char *text;
+} Send_error;
+
+typedef struct _receive {
+    Bot *bot;
+    Update *update;
+    Send_error *error;
+} Receives;
+
+typedef struct _gives {
+    Bot *bot;
+    Send *send;
+} Gives;
+
+
+/* comunication threads */
+Receives    *receives;   /* receives data of telegram    */
+Gives       *gives;      /* send data to telegram        */
+    
+
 //User functions
-User * user(long int id, char * first_name, char * last_name, char * username);
+User * user(long int id, const char * first_name, const char * last_name, const char * username);
 void user_free(User * usr);
 
 //Chat functions
-Chat * chat(long int id, char * type, char * title, char * username, char * first_name, char * last_name, int all_members_are_administrators);
+Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators);
 void chat_free(Chat * cht);
 
 //Message entity functions
-MessageEntity * message_entity(char * type, long int offset, long int length, char * url, User * user);
+MessageEntity * message_entity(const char * type, long int offset, long int length, const char * url, User * user);
 void message_entity_free(MessageEntity * msgett);
 void message_entities_free(MessageEntity (* msgetts)[]);
 
 //Audio functions
-Audio * audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size);
+Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size);
 void audio_free(Audio * audio);
 
-PhotoSize * photo_size(char * file_id,int width,int height,long int file_size);
+PhotoSize * photo_size(const char * file_id, int width, int height, long int file_size);
 void photo_size_free(PhotoSize * photoSize);
 void photo_size_add(PhotoSize * root,PhotoSize * newps);
 PhotoSize * photo_size_get(PhotoSize * root, int i);
 
-Document * document(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size);
+Document * document(const char * file_id, PhotoSize * thumb, const char * file_name, const char * mime_type, long int file_size);
 void document_free(Document * document);
 
-Animation * animation(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size);
+Animation * animation(const char * file_id,PhotoSize * thumb, const char * file_name, const char * mime_type,long int file_size);
 void animation_free(Animation * animation);
 
-Game * game( char * title, char * description, PhotoSize * photo,char * text, MessageEntity * text_entities, Animation * animation);
+Game * game( const char * title, const char * description, PhotoSize * photo, const char * text, MessageEntity * text_entities, Animation * animation);
 void game_free(Game * game);
 
-Sticker * sticker(char * file_id,int width,int height,PhotoSize * thumb,char * emoji,long int file_size);
+Sticker * sticker(const char * file_id, int width, int height,PhotoSize * thumb, const char * emoji, long int file_size);
 void sticker_free(Sticker * _sticker);
 
-Video * video(char * file_id,int width,int height,long int duration,PhotoSize * thumb,char * mime_type,long int file_size);
+Video * video(const char * file_id, int width, int height, long int duration,PhotoSize * thumb, const char * mime_type,long int file_size);
 void video_free(Video * _video);
 
-Voice * voice(char * file_id,long int duration,char * mime_type,long int file_size);
+Voice * voice(const char * file_id,long int duration,const char * mime_type,long int file_size);
 void voice_free(Voice * _voice);
 
-Contact * contact(char * phone_number,char * first_name,char * last_name,long int user_id);
+Contact * contact(const char * phone_number,const char * first_name,const char * last_name,long int user_id);
 void contact_free(Contact * _contact);
 
 Location * location(float latitude,float longitude);
 void location_free(Location * _location);
 
-Venue * venue(Location * location,char * title,char * address,char * foursquare_id);
+Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id);
 void venue_free(Venue * _venue);
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
 void message_free(Message * message);
 
 Bot * bot(char * token,User * user);

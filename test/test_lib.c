@@ -6,21 +6,22 @@
 #define CURL_STATICLIB 
 #include <curl/curl.h>
 
-#define TOKEN "376446484:AAELGNbpTneKZgPKtlazpwjDQBYTyYH-KfI"
+#define TOKEN 	"376446484:AAELGNbpTneKZgPKtlazpwjDQBYTyYH-KfI"
 
 int main(){
-	char *message_error;
 
 	telebot_init();
 
 	/* return token authentication or not */
 	Bot *bot = telebot(TOKEN);
 	if(bot == NULL){
-		printf("%s\n", PRINT_ETOKEN);
+		printf("%s\n", GETME_ELOG);
 		exit(-1);
 	}
 
-	Update *update_msg = get_updates(bot, NULL);
+	telebot_polling(bot);
+
+/*	Update *update_msg = get_updates(bot, NULL);
 	Update *tmp = NULL;
 
 	int i = 0, j;
@@ -36,7 +37,7 @@ int main(){
 
 			printf("\n[RETURNED:] %d", j);
 		}
-	}
+	}*/
 
 	return 0;
 }

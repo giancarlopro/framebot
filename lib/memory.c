@@ -1,6 +1,6 @@
 #include <memory.h>
 
-char * alloc_string(char * str){
+char * alloc_string(const char * str){
 
     if(str != NULL){
         char * nstr = (char *)malloc(strlen(str) + 1);
@@ -11,5 +11,3 @@ char * alloc_string(char * str){
 
     return (char *)NULL;
 }
-
-

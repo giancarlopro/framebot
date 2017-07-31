@@ -11,6 +11,17 @@ char *escape_string(char *str) {
 	return NULL;
 }
 
+char *remove_newline(char *str){
+	size_t size_str;
+
+	size_str = strlen(str);
+
+	if(str[size_str - 1] == '\n')
+		str[size_str - 1] = '\0';
+
+	return str;
+}
+
 char *format(char *formats, ...) {
 
 	va_list params;

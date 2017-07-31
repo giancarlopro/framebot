@@ -1,15 +1,17 @@
 #include <telebot.h>
 
-User * user(long int id, char *first_name, char *last_name, char *username){
+User * user(long int id, const char *first_name, const char *last_name, const char *username){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
-    user->first_name = alloc_string(first_name);
-    user->last_name = alloc_string(last_name);
-    user->username = alloc_string(username);
+    user->first_name    = alloc_string(first_name);
+    user->last_name     = alloc_string(last_name);
+    user->username      = alloc_string(username);
 
     return user;
 }
+
+
 void user_free(User * usr){
     if(usr->first_name)
         free(usr->first_name);
@@ -31,6 +33,8 @@ Bot * bot(char * token, User * user){
 
     return bot;
 }
+
+
 void bot_free(Bot * bot){
 
     if(bot->token)
@@ -41,7 +45,8 @@ void bot_free(Bot * bot){
     free(bot);
 }
 
-Chat * chat(long int id, char * type, char * title, char * username, char * first_name, char * last_name, int all_members_are_administrators){
+
+Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators){
     Chat * chat = (Chat *) malloc(sizeof(Chat));
 
     chat->id = id;
@@ -55,6 +60,8 @@ Chat * chat(long int id, char * type, char * title, char * username, char * firs
 
     return chat;
 }
+
+
 void chat_free(Chat * cht){
 
     if(cht->type)
@@ -75,7 +82,7 @@ void chat_free(Chat * cht){
     free(cht);
 }
 
-MessageEntity * message_entity(char * type,long int offset,long int length,char * url,User * user){
+MessageEntity * message_entity(const char * type, long int offset, long int length, const char * url, User * user){
     MessageEntity * msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
 
     msgett->offset = offset;
@@ -87,6 +94,8 @@ MessageEntity * message_entity(char * type,long int offset,long int length,char 
 
     return msgett;
 }
+
+
 void message_entity_free(MessageEntity * msgett){
 
     if(msgett->type)
@@ -100,7 +109,7 @@ void message_entity_free(MessageEntity * msgett){
     free(msgett);
 }
 
-Audio * audio(char * file_id,long int duration,char * performer,char * title,char * mime_type,long int file_size){
+Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size){
     Audio * audio = (Audio *)malloc(sizeof(Audio));
 
     audio->duration = duration;
@@ -113,6 +122,8 @@ Audio * audio(char * file_id,long int duration,char * performer,char * title,cha
 
     return audio;
 }
+
+
 void audio_free(Audio * audio){
     if(audio->file_id)
         free(audio->file_id);
@@ -129,7 +140,8 @@ void audio_free(Audio * audio){
     free(audio);
 }
 
-PhotoSize * photo_size(char * file_id,int width,int height,long int file_size){
+
+PhotoSize * photo_size(const char * file_id,int width,int height,long int file_size){
     PhotoSize * photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
 
     photoSize->file_id = alloc_string(file_id);
@@ -140,6 +152,8 @@ PhotoSize * photo_size(char * file_id,int width,int height,long int file_size){
 
     return photoSize;
 }
+
+
 void photo_size_free(PhotoSize * photoSize){
     PhotoSize * aux = photoSize, * tmp;
     while(aux){
@@ -151,6 +165,8 @@ void photo_size_free(PhotoSize * photoSize){
         free(tmp);
     }
 }
+
+
 void photo_size_add(PhotoSize * root,PhotoSize * newps){
     PhotoSize * aux = root->next;
 
@@ -159,6 +175,8 @@ void photo_size_add(PhotoSize * root,PhotoSize * newps){
 
     aux->next = newps;
 }
+
+
 PhotoSize * photo_size_get(PhotoSize * root, int i){
     int j = 0;
     PhotoSize * aux = root;
@@ -171,7 +189,7 @@ PhotoSize * photo_size_get(PhotoSize * root, int i){
     return NULL;
 }
 
-Document * document(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size){
+Document * document(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
     Document * document = (Document *)malloc(sizeof(Document));
 
     document->file_id = alloc_string(file_id);
@@ -182,6 +200,8 @@ Document * document(char * file_id,PhotoSize * thumb,char * file_name,char * mim
 
     return document;
 }
+
+
 void document_free(Document * document){
     free(document->file_id);
     photo_size_free(document->thumb);
@@ -190,7 +210,7 @@ void document_free(Document * document){
     free(document);
 }
 
-Animation * animation(char * file_id,PhotoSize * thumb,char * file_name,char * mime_type,long int file_size){
+Animation * animation(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
     Animation * animation = (Animation *)malloc(sizeof(Animation));
 
     animation->file_id = alloc_string(file_id);
@@ -201,6 +221,8 @@ Animation * animation(char * file_id,PhotoSize * thumb,char * file_name,char * m
 
     return animation;
 }
+
+
 void animation_free(Animation * animation){
     free(animation->file_id);
     free(animation->file_name);
@@ -209,7 +231,7 @@ void animation_free(Animation * animation){
     free(animation);
 }
 
-Game * game( char * title, char * description, PhotoSize * photo,char * text, MessageEntity * text_entities, Animation * animation){
+Game * game( const char * title, const char * description, PhotoSize * photo, const char * text, MessageEntity * text_entities, Animation * animation){
     Game * game = (Game *)malloc(sizeof(Game));
 
     game->title = alloc_string(title);
@@ -221,6 +243,8 @@ Game * game( char * title, char * description, PhotoSize * photo,char * text, Me
 
     return game;
 }
+
+
 void game_free(Game * game){
     free(game->title);
     free(game->description);
@@ -231,7 +255,7 @@ void game_free(Game * game){
     free(game);
 }
 
-Sticker * sticker(char * file_id,int width,int height,PhotoSize * thumb,char * emoji,long int file_size){
+Sticker * sticker(const char * file_id,int width,int height,PhotoSize * thumb,const char * emoji,long int file_size){
     Sticker * _sticker = (Sticker *)malloc(sizeof(Sticker));
 
     _sticker->file_id = alloc_string(file_id);
@@ -245,6 +269,8 @@ Sticker * sticker(char * file_id,int width,int height,PhotoSize * thumb,char * e
 
     return _sticker;
 }
+
+
 void sticker_free(Sticker * _sticker){
     if(_sticker->file_id)
         free(_sticker->file_id);
@@ -258,7 +284,7 @@ void sticker_free(Sticker * _sticker){
     free(_sticker);
 }
 
-Video * video(char * file_id,int width,int height,long int duration,PhotoSize * thumb,char * mime_type,long int file_size){
+Video * video(const char * file_id,int width,int height,long int duration,PhotoSize * thumb,const char * mime_type,long int file_size){
     Video * _video = (Video *)malloc(sizeof(Video));
 
     _video->file_id = alloc_string(file_id);
@@ -273,6 +299,8 @@ Video * video(char * file_id,int width,int height,long int duration,PhotoSize * 
 
     return _video;
 }
+
+
 void video_free(Video * _video){
     if(_video->file_id)
         free(_video->file_id);
@@ -283,7 +311,7 @@ void video_free(Video * _video){
     free(_video);
 }
 
-Voice * voice(char * file_id,long int duration,char * mime_type,long int file_size){
+Voice * voice(const char * file_id,long int duration,const char * mime_type,long int file_size){
     Voice * _voice = (Voice *)malloc(sizeof(Voice));
 
     _voice->file_id = alloc_string(file_id);
@@ -294,6 +322,8 @@ Voice * voice(char * file_id,long int duration,char * mime_type,long int file_si
 
     return _voice;
 }
+
+
 void voice_free(Voice * _voice){
     if(_voice->file_id)
         free(_voice->file_id);
@@ -302,7 +332,7 @@ void voice_free(Voice * _voice){
     free(_voice);
 }
 
-Contact * contact(char * phone_number,char * first_name,char * last_name,long int user_id){
+Contact * contact(const char * phone_number,const char * first_name,const char * last_name,long int user_id){
     Contact * _contact = (Contact *)malloc(sizeof(Contact));
 
     _contact->phone_number = alloc_string(phone_number);
@@ -313,6 +343,8 @@ Contact * contact(char * phone_number,char * first_name,char * last_name,long in
 
     return _contact;
 }
+
+
 void contact_free(Contact * _contact){
     if(_contact->phone_number)
         free(_contact->phone_number);
@@ -331,11 +363,12 @@ Location * location(float latitude,float longitude){
 
     return _location;
 }
+
 void location_free(Location * _location){
     free(_location);
 }
 
-Venue * venue(Location * location,char * title,char * address,char * foursquare_id){
+Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id){
     Venue * _venue = (Venue *)malloc(sizeof(Venue));
 
     _venue->location = location;
@@ -346,6 +379,7 @@ Venue * venue(Location * location,char * title,char * address,char * foursquare_
 
     return _venue;
 }
+
 void venue_free(Venue * _venue){
     if(_venue->location)
         location_free(_venue->location);
@@ -358,7 +392,7 @@ void venue_free(Venue * _venue){
     free(_venue);
 }
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
     Message * message = (Message *)malloc(sizeof(Message));
 
     //PRIMITIVE TYPES
@@ -401,6 +435,8 @@ Message * message(long int message_id,User * from,long int date,Chat * chat,User
 
     return message;
 }
+
+
 void message_free(Message * message){
     if(message->from)
         user_free(message->from);
@@ -443,6 +479,7 @@ void message_free(Message * message){
     free(message);
 }
 
+
 Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result,CallbackQuery * callback_query){
     Update * oupdate = (Update *)malloc(sizeof(Update));
 
@@ -459,6 +496,8 @@ Update * update(long int update_id, Message * message, Message * edited_message,
 
     return oupdate;
 }
+
+
 void update_free(Update * oupdate){
     if(oupdate->message)
         free(oupdate->message);
@@ -480,15 +519,21 @@ void update_free(Update * oupdate){
 
     free(oupdate);
 }
+
+
+
 void update_add(Update *dest, Update *src) {
 	Update *tmp = dest;
-	while (tmp->next)
+	
+    while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = src;
+	
+    src->next = NULL;
+    tmp->next = src;
 }
-Update *update_get(Update *u, int index) {
 
-	//if (index == 0) return u;
+
+Update *update_get(Update *u, int index) {
 
 	int i = 0;
 	Update *tmp = u;
@@ -500,6 +545,7 @@ Update *update_get(Update *u, int index) {
 	}
 	return NULL;
 }
+
 size_t update_len(Update *u) {
 	int i;
 	Update *tmp = u;

@@ -25,6 +25,7 @@ User * user_parse(json_t * json){
 
 		User * ouser = user(json_integer_value(id),json_string_value(first_name),json_string_value(last_name),json_string_value(username));
 		json_decref(puser);
+
 		return ouser;
 	}
 	return NULL;
@@ -148,7 +149,7 @@ Animation * animation_parse(json_t *json){
 	    file_size = json_object_get(panimation,"file_size");
 
 	    PhotoSize *othumb = photo_size_parse(thumb);
-	    Animation *oanimation = document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
+	    Animation *oanimation = (Animation *)document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
 
 	    json_decref(panimation);
 	    return oanimation;

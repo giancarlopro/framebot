@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <limits.h>
 
 //cURL Fix
 #pragma comment(lib, "wldap32.lib" )
@@ -21,7 +22,7 @@
 
 #include <curl/curl.h>
 #include <jansson.h>
-#include <omp.h>
+#include <pthread.h>
 
 
 #include <memory.h>
@@ -29,12 +30,13 @@
 #include <network.h>
 #include <json.h>
 #include <format.h>
-#include <threading.h>
 #include <log.h>
 
 void telebot_init();
 Bot * telebot(char *token);
 User * get_me(char *token);
 Update *get_updates(Bot *bot, char *extra);
-
+void handle_data(Bot *bot);
+void telebot_polling(Bot *bot);
+int send_message(Bot *bot, long int chat_id, char *text, char *extra);
 #endif

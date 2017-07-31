@@ -1,6 +1,8 @@
 #include <telebot.h>
 
 void telebot_init() {
+	printf("%s", CSCREEN);
+
 	network_init();
 	log_init();
 }
@@ -19,19 +21,19 @@ Bot * telebot(char *token) {
 /* A simple method for testing your bot's auth token */
 User *get_me(char *token) {
 
-	char *message_error;
+	char *message_log;
 	MemStore *data = call_method(token, "getMe");
 
 	if (data) {
 		User *ouser = get_me_parse(data->content);
 		mem_store_free(data);
-		if (ouser)
+		if (ouser){
+			get_me_log(ouser);
 			return ouser;
+		}
 	}
 
-	message_error = malloc(strlen(token) + strlen(ETOKEN));
-	sprintf(message_error, "%s %s", ETOKEN, token);
-	update_log(message_error);
+	get_me_log(NULL);
 
 	return NULL;
 }
@@ -70,7 +72,7 @@ Update *get_updates(Bot *bot, char *extra) {
 }
 
 /* send message to telegram */
-int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
+int send_message(Bot *bot, long int chat_id, char *text, char *extra) {
 	if (!chat_id || !text)
 		return -1;
 
@@ -105,9 +107,41 @@ int send_message(Bot *bot, char *chat_id, char *text, char *extra) {
 }
 
 void telebot_polling(Bot *bot) {
-	printf("\nStarting to handle messages!");
-	while (1) {
-		//handle_updates(bot, format("limit=%d", 20));
-		//Sleep(1000);
+
+	receives	= malloc(sizeof(Receives));
+	gives 		= malloc(sizeof(Gives));
+
+	receives->update 	= NULL;
+	receives->error 	= NULL;
+	gives->send 		= NULL;
+
+	pthread_t *thread;
+
+	pthread_create(thread, NULL, handle_network, (void *) bot);
+	handle_data(bot);
+}
+
+void handle_data(Bot *bot){
+	
+	gives->bot = bot;
+	Update 	*update;
+	Message *message;
+	Send 	*send;
+
+	while(1){
+		if(receives->update){
+			update = receives->update;
+			send = (Send *) malloc (sizeof (Send));
+			send->message_id = update->message->message_id;
+			send->id_chat = update->message->chat->id;
+			send->text = alloc_string(update->message->text);
+			send->extra = NULL;
+			send->next= NULL;
+
+			gives->send = send;
+		}
+		else{
+			sleep(2);
+		}
 	}
 }
