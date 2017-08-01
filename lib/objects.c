@@ -549,7 +549,12 @@ Update *update_get(Update *u, int index) {
 size_t update_len(Update *u) {
 	int i;
 	Update *tmp = u;
-	for (i = 0; tmp; i++)
+
+    if(!tmp)
+        return 0;
+
+	for (i = 1; tmp; i++)
 		tmp = tmp->next;
+
 	return i;
 }
