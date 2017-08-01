@@ -24,7 +24,6 @@ User * user_parse(json_t * json){
 		username = json_object_get(puser, "username");
 
 		User * ouser = user(json_integer_value(id),json_string_value(first_name),json_string_value(last_name),json_string_value(username));
-		json_decref(puser);
 
 		return ouser;
 	}
@@ -47,7 +46,6 @@ Chat * chat_parse(json_t *json){
 
 		Chat * ochat = chat(json_integer_value(id),json_string_value(type),json_string_value(title),json_string_value(username),json_string_value(first_name),json_string_value(last_name),json_boolean_value(all_members_are_administrators));
 
-		json_decref(pchat);
 		return ochat;
 	}
 	return NULL;
@@ -69,7 +67,6 @@ MessageEntity * message_entity_parse(json_t *json){
 		User * puser = user_parse(user);
 		MessageEntity * omessage_entity = message_entity(json_string_value(type),json_integer_value(offset),json_integer_value(length),json_string_value(url),puser);
 
-		json_decref(pmessage_entity);
 		return omessage_entity;
 	}
 	return NULL;
@@ -90,7 +87,6 @@ Audio * audio_parse(json_t *json){
 
 		Audio * oaudio = audio(json_string_value(file_id),json_integer_value(duration),json_string_value(performer),json_string_value(title),json_string_value(mime_type),json_integer_value(file_size));
 
-		json_decref(paudio);
 		return oaudio;
 	}
 	return NULL;
@@ -109,7 +105,6 @@ PhotoSize * photo_size_parse(json_t *json){
 
 	    PhotoSize * ophoto_size = photo_size(json_string_value(file_id),json_integer_value(width),json_integer_value(height),json_integer_value(file_size));
 
-	    json_decref(pphoto_size);
 	    return ophoto_size;
 	}
 	return NULL;
@@ -130,7 +125,6 @@ Document * document_parse(json_t *json){
 		PhotoSize * othumb = photo_size_parse(thumb);
 		Document * odocument = document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
 
-		json_decref(pdocument);
 		return odocument;
 	}
 	return NULL;
@@ -151,7 +145,6 @@ Animation * animation_parse(json_t *json){
 	    PhotoSize *othumb = photo_size_parse(thumb);
 	    Animation *oanimation = (Animation *)document(json_string_value(file_id),othumb,json_string_value(file_name),json_string_value(mime_type),json_integer_value(file_size));
 
-	    json_decref(panimation);
 	    return oanimation;
 	}
 	return NULL;
@@ -176,7 +169,6 @@ Game * game_parse(json_t *json){
 
 		Game * ogame = game(json_string_value(title), json_string_value(description), ophoto,json_string_value(text), otext_entities, oanimation);
 
-		json_decref(pgame);
 		return ogame;
 	}
 	return NULL;
@@ -199,7 +191,6 @@ Sticker * sticker_parse(json_t *json){
 
 		Sticker * osticker = sticker(json_string_value(file_id), json_integer_value(width), json_integer_value(height), othumb, json_string_value(emoji), json_integer_value(file_size));
 
-		json_decref(psticker);
 		return osticker;
 	}
 	return NULL;
@@ -223,7 +214,6 @@ Video * video_parse(json_t *json){
 
 		Video * ovideo = video(json_string_value(file_id), json_integer_value(width), json_integer_value(height), json_integer_value(duration), othumb, json_string_value(mime_type), json_integer_value(file_size));
 
-		json_decref(pvideo);
 		return ovideo;
 	}
 	return NULL;
@@ -242,7 +232,6 @@ Voice * voice_parse(json_t *json){
 
 		Voice * ovoice = voice(json_string_value(file_id), json_integer_value(duration), json_string_value(mime_type), json_integer_value(file_size));
 
-		json_decref(pvoice);
 		return ovoice;
 	}
 	return NULL;
@@ -261,7 +250,6 @@ Contact * contact_parse(json_t *json){
 
 		Contact * ocontact = contact(json_string_value(phone_number), json_string_value(first_name), json_string_value(last_name), json_integer_value(user_id));
 
-		json_decref(pcontact);
 		return ocontact;
 	}
 	return NULL;
@@ -278,7 +266,6 @@ Location * location_parse(json_t *json){
 
 		Location * olocation = location(json_real_value(latitude), json_real_value(longitude));
 
-		json_decref(plocation);
 		return olocation;
 	}
 	return NULL;
@@ -299,7 +286,6 @@ Venue * venue_parse(json_t *json){
 
 		Venue * ovenue = venue(olocation, json_string_value(title), json_string_value(address), json_string_value(foursquare_id));
 
-		json_decref(pvenue);
 		return ovenue;
 	}
 	return NULL;
@@ -396,7 +382,6 @@ Message * message_parse(json_t *json){
 
 		Message * omessage = message(json_integer_value(message_id), ofrom, json_integer_value(date), ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id), json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, json_string_value(caption), ocontact, olocation, ovenue, onew_chat_member, oleft_chat_member, json_string_value(new_chat_title), onew_chat_photo, json_integer_value(delete_chat_photo), json_integer_value(group_chat_created), json_integer_value(supergroup_chat_created), json_integer_value(channel_chat_created), json_integer_value(migrate_to_chat_id), json_integer_value(migrate_from_chat_id), opinned_message);
 
-		json_decref(pmessage);
 		return omessage;
 	}
 	return NULL;
@@ -424,7 +409,6 @@ Update * update_parse(json_t *json){
 
 		Update * oupdate = update(json_integer_value(update_id), omessage, oedited_message, ochannel_post, oedited_channel_post, NULL, NULL, NULL);
 
-		json_decref(pupdate);
 		return oupdate;
 	}
 	return NULL;

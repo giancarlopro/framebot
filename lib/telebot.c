@@ -64,6 +64,9 @@ Update *get_updates(Bot *bot, char *extra) {
 				for (; i < size; i++) {
 					update_add(up, update_parse(json_array_get(result, i)));
 				}
+
+				json_decref(root);
+
 				return up;
 			}
 		}
@@ -100,8 +103,11 @@ int send_message(Bot *bot, long int chat_id, char *text, char *extra) {
 	if (root) {
 		json_t *ok;
 		ok = json_object_get(root, "ok");
-		if (json_is_true(ok))
+		if (json_is_true(ok)){
+			json_decref(root);
+
 			return 1;
+		}
 	}
 	return 0;
 }
