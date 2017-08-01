@@ -60,7 +60,7 @@ Update *get_updates(Bot *bot, char *extra) {
 
 			if(size > 0){
 				Update *up = update_parse(json_array_get(result, 0));
-				int i = 1;
+				size_t i = 1;
 				for (; i < size; i++) {
 					update_add(up, update_parse(json_array_get(result, i)));
 				}
