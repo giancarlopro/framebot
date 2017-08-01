@@ -121,9 +121,9 @@ void telebot_polling(Bot *bot) {
 	receives->error 	= NULL;
 	gives->send 		= NULL;
 
-	pthread_t *thread;
+	pthread_t thread;
 
-	pthread_create(thread, NULL, handle_network, (void *) bot);
+	pthread_create(&thread, NULL, handle_network, (void *) bot);
 	handle_data(bot);
 }
 
