@@ -514,9 +514,6 @@ void update_free(Update * oupdate){
     if(oupdate->callback_query)
         free(oupdate->callback_query);
 
-	if (oupdate->next)
-		update_free(oupdate->next);
-
     free(oupdate);
 }
 
