@@ -551,7 +551,7 @@ size_t update_len(Update *u) {
 	for (i = 1; tmp; i++)
 		tmp = tmp->next;
 
-	return i;
+	return (i - 1);
 }
 
 size_t send_len(Send *u) {
@@ -564,7 +564,7 @@ size_t send_len(Send *u) {
     for (i = 1; tmp; i++)
         tmp = tmp->next;
 
-    return i;
+    return (i - 1);
 }
 
 void send_add(Send *dest, Send *src) {

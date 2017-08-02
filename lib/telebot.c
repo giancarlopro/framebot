@@ -146,8 +146,6 @@ void handle_data(Bot *bot){
 		}
 		pthread_mutex_unlock(&cthread.lock_receives);
 
-		printf("--%lu--", size_updates);
-
 		/* test */
 		if(size_updates){
 			if(!send)
@@ -167,8 +165,6 @@ void handle_data(Bot *bot){
 				last_send->next = NULL;
 				last_send = last_send->next;
 				
-				printf("aaaaaaa%d", i);
-				fflush(stdout);
 
 				next = update->next;
 
@@ -181,7 +177,6 @@ void handle_data(Bot *bot){
 				pthread_mutex_unlock(&cthread.lock_receives);
 			}
 
-			printf("1111111111");
 			fflush(stdout);
 			pthread_mutex_lock(&cthread.lock_gives);
 			{
