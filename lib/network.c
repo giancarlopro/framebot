@@ -110,7 +110,7 @@ int handle_send_network(){
 	Send *send;
 	Bot *bot;
 
-	if(gives->send){
+	/*if(gives->send){
 		send = gives->send;
 		bot = gives->bot;
 		id_chat = send->id_chat;
@@ -124,9 +124,9 @@ int handle_send_network(){
 		}
 
 		/* region critic */
-		gives->send = send->next;
+		/*gives->send = send->next;
 
-	}
+	}*/
 
 	return 0;
 }

@@ -573,6 +573,5 @@ void send_add(Send *dest, Send *src) {
     while (tmp->next)
         tmp = tmp->next;
     
-    src->next = NULL;
     tmp->next = src;
 }

@@ -134,7 +134,7 @@ void handle_data(Bot *bot){
 	gives->bot = bot;
 	Update 	*update, *next;
 	Message *message;
-	Send 	*send, *last_send;
+	Send 	*send = NULL, *last_send;
 	size_t size_updates, i;
 
 	while(1){
@@ -152,24 +152,30 @@ void handle_data(Bot *bot){
 				send = (Send *) malloc (sizeof (Send));
 			last_send = send;
 
-			for(i = 1; i <= size_updates; i++){
-				if(i)
+			for(i = 0; i < size_updates; i++){
+				if(i){
 					last_send = (Send *) malloc(sizeof(Send));
+				}
 
-				send->message_id = update->message->message_id;
-				send->id_chat = update->message->chat->id;
-				send->text = alloc_string(update->message->text);
-				send->extra = NULL;
-				send->next= NULL;
+				last_send->message_id = update->message->message_id;
+				last_send->id_chat = update->message->chat->id;
+				last_send->text = alloc_string(update->message->text);
+				last_send->extra = NULL;
+				last_send->next= NULL;
 
-				last_send->next = NULL;
-				last_send = last_send->next;
-				
+				printf("\n%s\n", last_send->text);
 
-				next = update->next;
+				if(i){
+					send_add(send, last_send);
+					last_send = last_send->next;
+				}
+				else{
+					last_send = last_send->next;
+				}
 
 				pthread_mutex_lock(&cthread.lock_receives);
 				{
+					next = update->next;
 					update_free(update);
 					update = next;
 					receives->update = update;
@@ -177,14 +183,17 @@ void handle_data(Bot *bot){
 				pthread_mutex_unlock(&cthread.lock_receives);
 			}
 
-			fflush(stdout);
+
 			pthread_mutex_lock(&cthread.lock_gives);
 			{
-				send_add(gives->send, send);
+				if(!gives->send)
+					gives->send = send;
+				else
+					send_add(gives->send, send);
 			}
 			pthread_mutex_unlock(&cthread.lock_gives);
 		}
 
-		sleep(4);
+		sleep(1);
 	}
 }
