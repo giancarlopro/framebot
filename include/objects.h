@@ -286,4 +286,7 @@ void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
 size_t update_len(Update *u);
 
+size_t send_len(Send *u);
+void send_add(Send *dest, Send *src);
+
 #endif // OBJECTS_H_

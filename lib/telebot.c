@@ -122,6 +122,8 @@ void telebot_polling(Bot *bot) {
 	gives->send 		= NULL;
 
 	pthread_t thread;
+	pthread_mutex_init(&cthread.lock_receives, NULL);
+	pthread_mutex_init(&cthread.lock_gives, NULL);
 
 	pthread_create(&thread, NULL, handle_network, (void *) bot);
 	handle_data(bot);
@@ -130,24 +132,64 @@ void telebot_polling(Bot *bot) {
 void handle_data(Bot *bot){
 	
 	gives->bot = bot;
-	Update 	*update;
+	Update 	*update, *next;
 	Message *message;
-	Send 	*send;
+	Send 	*send, *last_send;
+	size_t size_updates, i;
 
 	while(1){
-		if(receives->update){
-			update = receives->update;
-			send = (Send *) malloc (sizeof (Send));
-			send->message_id = update->message->message_id;
-			send->id_chat = update->message->chat->id;
-			send->text = alloc_string(update->message->text);
-			send->extra = NULL;
-			send->next= NULL;
 
-			gives->send = send;
+		pthread_mutex_lock(&cthread.lock_receives);
+		{
+			update = receives->update;
+			size_updates = update_len(update);
 		}
-		else{
-			sleep(2);
+		pthread_mutex_unlock(&cthread.lock_receives);
+
+		printf("--%lu--", size_updates);
+
+		/* test */
+		if(size_updates){
+			if(!send)
+				send = (Send *) malloc (sizeof (Send));
+			last_send = send;
+
+			for(i = 1; i <= size_updates; i++){
+				if(i)
+					last_send = (Send *) malloc(sizeof(Send));
+
+				send->message_id = update->message->message_id;
+				send->id_chat = update->message->chat->id;
+				send->text = alloc_string(update->message->text);
+				send->extra = NULL;
+				send->next= NULL;
+
+				last_send->next = NULL;
+				last_send = last_send->next;
+				
+				printf("aaaaaaa%d", i);
+				fflush(stdout);
+
+				next = update->next;
+
+				pthread_mutex_lock(&cthread.lock_receives);
+				{
+					update_free(update);
+					update = next;
+					receives->update = update;
+				}
+				pthread_mutex_unlock(&cthread.lock_receives);
+			}
+
+			printf("1111111111");
+			fflush(stdout);
+			pthread_mutex_lock(&cthread.lock_gives);
+			{
+				send_add(gives->send, send);
+			}
+			pthread_mutex_unlock(&cthread.lock_gives);
 		}
+
+		sleep(4);
 	}
 }

@@ -32,6 +32,13 @@
 #include <format.h>
 #include <log.h>
 
+typedef struct _control_thread {
+	pthread_mutex_t lock_receives;
+	pthread_mutex_t lock_gives;
+} Cthread;
+
+Cthread cthread;
+
 void telebot_init();
 Bot * telebot(char *token);
 User * get_me(char *token);

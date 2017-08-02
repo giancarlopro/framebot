@@ -517,8 +517,6 @@ void update_free(Update * oupdate){
     free(oupdate);
 }
 
-
-
 void update_add(Update *dest, Update *src) {
 	Update *tmp = dest;
 	
@@ -554,4 +552,27 @@ size_t update_len(Update *u) {
 		tmp = tmp->next;
 
 	return i;
+}
+
+size_t send_len(Send *u) {
+    int i;
+    Send *tmp = u;
+
+    if(!tmp)
+        return 0;
+
+    for (i = 1; tmp; i++)
+        tmp = tmp->next;
+
+    return i;
+}
+
+void send_add(Send *dest, Send *src) {
+    Send *tmp = dest;
+    
+    while (tmp->next)
+        tmp = tmp->next;
+    
+    src->next = NULL;
+    tmp->next = src;
 }
