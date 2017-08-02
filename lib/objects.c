@@ -542,7 +542,7 @@ Update *update_get(Update *u, int index) {
 }
 
 size_t update_len(Update *u) {
-	int i;
+	size_t i;
 	Update *tmp = u;
 
     if(!tmp)
@@ -555,7 +555,7 @@ size_t update_len(Update *u) {
 }
 
 size_t send_len(Send *u) {
-    int i;
+    size_t i;
     Send *tmp = u;
 
     if(!tmp)
