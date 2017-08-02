@@ -523,7 +523,6 @@ void update_add(Update *dest, Update *src) {
     while (tmp->next)
 		tmp = tmp->next;
 	
-    src->next = NULL;
     tmp->next = src;
 }
 
