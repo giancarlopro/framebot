@@ -388,12 +388,18 @@ Message * message_parse(json_t *json){
 }
 
 Update * update_parse(json_t *json){
+	static long int last_update_id = 0; 
+	long int current_update_id;
 	json_t * pupdate = json;
 
 	if(pupdate && json_is_object(pupdate)){
 		json_t *update_id, *message, *edited_message, *channel_post, *edited_channel_post, *inline_query, *choosen_inline_result, *callback_query;
 
 		update_id = json_object_get(pupdate,"update_id");
+		current_update_id = urrentjson_integer_value(update_id);
+		if(current_update_id < last_update_id)	
+			return NULL;
+		last_update_id = current_update_id;
 		message = json_object_get(pupdate,"message");
 		edited_message = json_object_get(pupdate,"edited_message");
 		channel_post = json_object_get(pupdate,"channel_post");
