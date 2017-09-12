@@ -7,8 +7,8 @@
 #define MAX_BUFFER_SIZE (1024 * 30)
 
 typedef struct _mem_store {
-	char *content;
-	size_t size;
+    char *content;
+    size_t size;
 } MemStore;
 typedef MemStore* MemStorePtr;
 

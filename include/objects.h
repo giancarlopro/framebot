@@ -195,36 +195,6 @@ typedef struct _update{
 	
 } Update;
 
-typedef struct _send {
-    long int message_id;
-    long int id_chat;
-    char *text;
-    char *extra;
-    struct _send *next;
-} Send;
-
-typedef struct _send_error{
-    long int message_id;
-    char *text;
-} Send_error;
-
-typedef struct _receive {
-    Bot *bot;
-    Update *update;
-    Send_error *error;
-} Receives;
-
-typedef struct _gives {
-    Bot *bot;
-    Send *send;
-} Gives;
-
-
-/* comunication threads */
-Receives    *receives;   /* receives data of telegram    */
-Gives       *gives;      /* send data to telegram        */
-    
-
 //User functions
 User * user(long int id, const char * first_name, const char * last_name, const char * username);
 void user_free(User * usr);
@@ -285,8 +255,5 @@ void update_free(Update * oupdate);
 void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
 size_t update_len(Update *u);
-
-size_t send_len(Send *u);
-void send_add(Send *dest, Send *src);
 
 #endif // OBJECTS_H_

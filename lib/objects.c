@@ -392,7 +392,17 @@ void venue_free(Venue * _venue){
     free(_venue);
 }
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date,const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message){
+Message * message(long int message_id,User * from, long int date, Chat * chat,
+                  User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,
+                  long int forward_date,Message * reply_to_message,long int edit_date,
+                  const char * text,MessageEntity * entities,Audio * audio,Document * document,
+                  Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,
+                  const char * caption,Contact * contact,Location * location,Venue * venue,
+                  User * new_chat_member,User * left_chat_member,const char * new_chat_title,
+                  PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,
+                  int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,
+                  long int migrate_from_chat_id,Message * pinned_message){
+    
     Message * message = (Message *)malloc(sizeof(Message));
 
     //PRIMITIVE TYPES
@@ -551,26 +561,4 @@ size_t update_len(Update *u) {
 		tmp = tmp->next;
 
 	return (i - 1);
-}
-
-size_t send_len(Send *u) {
-    size_t i;
-    Send *tmp = u;
-
-    if(!tmp)
-        return 0;
-
-    for (i = 1; tmp; i++)
-        tmp = tmp->next;
-
-    return (i - 1);
-}
-
-void send_add(Send *dest, Send *src) {
-    Send *tmp = dest;
-    
-    while (tmp->next)
-        tmp = tmp->next;
-    
-    tmp->next = src;
 }

@@ -152,21 +152,16 @@ int create_log_bot (char *path_bot_log){
 			return -1;
 		}
 
-		printf("\tcreate file log: ");
+
 		f_log = fopen(path_bot_log, "a");
 		if(!f_log){
-			printf("false");
 			printf("\n\nfile = %s\n\tCreate Denied log\
 \tCriar Negado Log\n\n", path_bot_log);
 			exit(-1);
 		}
-		printf("OK\n");
+
 		fclose(f_log);
 	}
-	else {
-		printf("already exist file bot log\n");
-	}
-	fflush(stdout);
 
 	return 0;
 }
@@ -185,14 +180,8 @@ int create_dir_chat_log(char *log_dir_chat){
 			return -1;
 		}
 
-		printf("\tcreate dir log chat: ");
 		mkdir(log_dir_chat, S_IRWXU | S_IRGRP);
-		printf("OK\n");
 	}
-	else {
-		printf("already exist dir chat log\n");
-	}
-	fflush(stdout);
 
 	return 0;
 }
@@ -211,14 +200,8 @@ int create_dir_log(char *log_dir){
 			return -1;
 		}
 
-		printf("\tcreate dir log: ");
 		mkdir(log_dir, S_IRWXU | S_IRGRP );
-		printf("OK\n");
 	}
-	else {
-		printf("already exist dir log\n");
-	}
-	fflush(stdout);
 
 	return 0;
 }

@@ -24,20 +24,14 @@
 #include <jansson.h>
 #include <pthread.h>
 
-
 #include <memory.h>
 #include <objects.h>
 #include <network.h>
 #include <json.h>
 #include <format.h>
 #include <log.h>
-
-typedef struct _control_thread {
-	pthread_mutex_t lock_receives;
-	pthread_mutex_t lock_gives;
-} Cthread;
-
-Cthread cthread;
+#include <json_user.h>
+#include <config.h>
 
 void telebot_init();
 Bot * telebot(char *token);
@@ -45,5 +39,9 @@ User * get_me(char *token);
 Update *get_updates(Bot *bot, char *extra);
 void handle_data(Bot *bot);
 void telebot_polling(Bot *bot);
+int to_process_message(Bot *bot, Message *message);
+char *comands_bot(const char *text);
 int send_message(Bot *bot, long int chat_id, char *text, char *extra);
+void to_message(Bot *bot, Update *update);
+
 #endif
