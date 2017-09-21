@@ -30,6 +30,7 @@ User * user_parse(json_t * json){
 
         return ouser;
     }
+
     return NULL;
 }
 
@@ -37,7 +38,8 @@ Chat * chat_parse(json_t *json){
     json_t * pchat = json;
 
     if(json_is_object(pchat)){
-        json_t *id,*type,*title,*username,*first_name,*last_name,*all_members_are_administrators;
+        json_t *id, *type, *title, *username, *first_name,
+        *last_name, *all_members_are_administrators;
 
         id = json_object_get(pchat,"id");
         type = json_object_get(pchat,"type");
@@ -104,7 +106,7 @@ Audio * audio_parse(json_t *json){
 PhotoSize * photo_size_parse(json_t *json){
     json_t * pphoto_size = json;
 
-    if(json_is_object(pphoto_size)){
+    if(json_is_object(pphoto_size) && is_active_image(USE_IMAGE)) {
         json_t *file_id, *width, *height, *file_size;
 
         file_id = json_object_get(pphoto_size,"file_id");
@@ -117,13 +119,14 @@ PhotoSize * photo_size_parse(json_t *json){
 
         return ophoto_size;
     }
+
     return NULL;
 }
 
 Document * document_parse(json_t *json){
     json_t * pdocument = json;
 
-    if(json_is_object(pdocument)){
+    if(json_is_object(pdocument) && document_option(USE_DOCUMENT)){
         json_t *file_id, *thumb, *file_name, *mime_type, *file_size;
 
         file_id = json_object_get(pdocument,"file_id");
@@ -132,12 +135,15 @@ Document * document_parse(json_t *json){
         mime_type = json_object_get(pdocument,"mime_type");
         file_size = json_object_get(pdocument,"file_size");
 
-        PhotoSize * othumb = photo_size_parse(thumb);
-        Document * odocument = document(json_string_value(file_id), othumb, json_string_value(file_name),
-                                        json_string_value(mime_type), json_integer_value(file_size));
+    //    if(document_option(json_string_value())) {
+            PhotoSize * othumb = photo_size_parse(thumb);
+            Document * odocument = document(json_string_value(file_id), othumb, json_string_value(file_name),
+                                            json_string_value(mime_type), json_integer_value(file_size));
 
-        return odocument;
+            return odocument;
+    //    }
     }
+
     return NULL;
 }
 
@@ -308,6 +314,7 @@ Venue * venue_parse(json_t *json){
 
         return ovenue;
     }
+
     return NULL;
 }
 
@@ -316,7 +323,9 @@ Message * message_parse(json_t *json){
 
     if(json_is_object(pmessage)){
         //Numbers
-        json_t *message_id, *date, *forward_from_message_id, *forward_date, *edit_date, *delete_chat_photo, *group_chat_created, *supergroup_chat_created, *channel_chat_created, *migrate_to_chat_id, *migrate_from_chat_id;
+        json_t *message_id, *date, *forward_from_message_id, *forward_date,
+        *edit_date, *delete_chat_photo, *group_chat_created, *supergroup_chat_created,
+        *channel_chat_created, *migrate_to_chat_id, *migrate_from_chat_id;
 
         message_id = json_object_get(pmessage,"message_id");
         date = json_object_get(pmessage,"date");
@@ -335,6 +344,7 @@ Message * message_parse(json_t *json){
         text = json_object_get(pmessage,"text");
         caption = json_object_get(pmessage,"caption");
         new_chat_title = json_object_get(pmessage,"new_chat_title");
+
         //Arrays
         json_t *entities, *photo, *new_chat_photo;
 
@@ -346,6 +356,7 @@ Message * message_parse(json_t *json){
 
         new_chat_photo = json_object_get(pmessage,"new_chat_photo");
         PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
+
         //Objects
         json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *contact, *location, *venue, *new_chat_member, *left_chat_member, *pinned_message;
 
@@ -445,6 +456,7 @@ Update * update_parse(json_t *json){
 
         return oupdate;
     }
+
     return NULL;
 }
 

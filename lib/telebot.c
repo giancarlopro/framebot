@@ -63,7 +63,6 @@ Update *get_updates(Bot *bot, char *extra) {
     if(json_is_object(root)) {
         ok = json_object_get(root, "ok");
 
-
         if(json_is_true(ok)) {
             result = json_object_get(root, "result");
             update_len = json_array_size(result);
@@ -116,6 +115,7 @@ int send_message(Bot *bot, long int chat_id, char *text, char *extra) {
 
     if (!json)
         return -1;
+
     root = load(json->content);
 
     if (json_is_object(root)) {
@@ -134,40 +134,36 @@ void telebot_polling(Bot *bot) {
 
     Update *updates, *up;
 
-    updates = get_updates(bot, NULL);
+    while(1){
+        updates = get_updates(bot, NULL);
 
-    up = updates;
+        up = updates;
 
-    while(up){
+        while(up){
 
-        if(up->message)
-            to_message(bot, up);
+            if(up->message)
+                to_message(bot, up);
 
-        up = up->next;
+            up = up->next;
+        }
+
+        sleep(1);
     }
 }
 
 void to_message(Bot *bot, Update *update) {
-    char *response;
+    char *response = NULL;
+    int local_space = 0;
     Update *tmp_update, *up = update;
 
-    while(up){
-        response = search_command(up->message->text);
+    printf("%s\n", up->message->text);
 
-        if(!response) {
-            printf("Comando não encontrado\n");
-        }
-        else { 
-            send_message(bot, up->message->chat->id, response, NULL);
-        }
-        tmp_update = up->next;
-        update_free(up);
-        up = tmp_update;
+    response = search_command(up->message->text, &local_space);
+
+    if(!response) {
+        printf("name %s | id %ld\n", up->message->from->username, up->message->from->id);
     }
-
-}
-
-void to_edited_message(Update *update){
-
-
+    else {
+        send_message(bot, up->message->chat->id, response, NULL);
+    }
 }

@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <limits.h>
+#include <ctype.h>
+
 
 //cURL Fix
 #pragma comment(lib, "wldap32.lib" )
@@ -18,7 +20,33 @@
 #define CURL_STATICLIB
 // --//--
 
+/* clear windows */
 #define CSCREEN "\e[1;1H\e[2J"
+
+/* color */
+#define CBLACK    "\033[22;30m" /* black */
+#define CRED      "\033[22;31m" /* red */
+#define CGREEN    "\033[22;32m" /* green */
+#define CBROWN    "\033[22;33m" /* brown */
+#define CBLUE     "\033[22;34m" /* blue */
+#define CMAGENTA  "\033[22;35m" /* magenta */
+#define CCYAN     "\033[22;36m" /* cyan */
+#define CGRAY     "\033[22;37m" /* gray */
+#define CDGRAY    "\033[01;30m" /* dark gray */
+#define CLRED     "\033[01;31m" /* light red */
+#define CLGREEN   "\033[01;32m" /* light green */
+#define CYELLOW   "\033[01;33m" /* yellow */
+#define CLBLUE    "\033[01;34m" /* light blue */
+#define CLMAGENTA "\033[01;35m" /* light magenta */
+#define CLCYAN    "\033[01;36m" /* light cyan */
+#define CWHITE    "\033[01;37m" /* white */
+#define CRESET    "\e[0;37m"    /* default */
+
+
+/* type bool */
+typedef int bool;
+#define true  1
+#define false 0
 
 #include <curl/curl.h>
 #include <jansson.h>
