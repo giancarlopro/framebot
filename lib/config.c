@@ -3,22 +3,45 @@
 #define OPTION_LEN 25
 #define OPTION_VALUE_LEN 100
 
+const char imgtype[][10] = {
+	{"jpeg"}, {"jpg"}, {"wbmp"}, {"png"},
+	{"jpg2"}, {"jp2"}, {"bmp"},
+};
+
 static struct _optconfig opt[] = {
-	{0,  "use_image",      0, true, true},
-	{1,  "size_image",	   0, true, false},
-	{2,  "count_image",    0, true, false},
-	{3,  "use_document",   0, true, true},
-	{4,  "size_document",  0, true, false},
-	{5,  "count_document", 0, true, false},
-	{6,  "use_gifs", 	   0, true, true},
-	{7,  "count_gifs", 	   0, true, false},
-	{8,  "use_audio", 	   0, true, true},
-	{9,  "size_audio", 	   0, true, false},
-	{10, "count_audio",    0, true, false},
-	{11, "use_sticker",    0, true, true},
-	{12, "count_sticker",  0, true, false},
-	{13, "token", 0, false, false},
-	{14, NULL, 0, false}
+
+	{0,  "image_use",      0, true, true },
+	{1,  "image_size",	   0, true, false},
+	{2,  "image_count",    0, true, false},
+	
+	{3,  "document_use",   0, true, true },
+	{4,  "document_size",  0, true, false},
+	{5,  "document_count", 0, true, false},
+	
+	{6,  "gif_use", 	   0, true, true },
+	{7,  "gif_count", 	   0, true, false},
+	
+	{8,  "audio_use", 	   0, true, true },
+	{9,  "audio_size", 	   0, true, false},
+	{10, "audio_count",    0, true, false},
+	
+	{11, "sticker_use",    0, true, true },
+	{12, "sticker_count",  0, true, false},
+	
+	{13, "video_use",      0, true, true },
+	{14, "video_size",     0, true, false},
+	{15, "video_count",    0, true, false},
+	
+	{16, "voice_use",      0, true, true },
+	{17, "voice_size",     0, true, false},
+	{18, "voice_count",    0, true, false},
+
+	{19, "contact_use", 0, true, true},
+	{20, "contact_count", 0, true, false},
+	
+	{21, "token",          0, false, false},
+	
+	{22, NULL, 0, false, false}
 };
 
 static struct _cfgconfig *config = NULL;
@@ -70,14 +93,14 @@ static size_t to_process_line_config(char * line_config) {
 
 	line = line_config;
 
-	if(line[i] == '/' || continued_command == 1) {
+	if(line[i] == '#'){
+
+	}
+
+	else if(line[i] == '/' || continued_command == 1) {
 		if(active_commands == 1){
 			error = to_command_config(line);
 		}
-	}
-
-	else if(line[i] == '#'){
-
 	}
 
 	else if(line[i] == '&'){
@@ -594,6 +617,8 @@ static void insert_option(char *option, char *option_value, bool only_number) {
 
 }
 
+
+
 long kbext(char *str_size) {
 	size_t i;
 	bool kb = false, mb = false;
@@ -633,6 +658,8 @@ long kbext(char *str_size) {
 	return -1;
 }
 
+
+
 static void error_option(char *option, size_t current_line, bool error_value) {
 	bool space = true, tabulation = true, first_valid = false;
 	char *char_option = option;
@@ -666,95 +693,204 @@ static void error_option(char *option, size_t current_line, bool error_value) {
 }
 
 
+/* IMAGE */
+bool image_is_activated() {
 
-
-bool is_active_image(int image_index) {
-
-	if(opt[image_index].value.bool_value == true)
+	if(opt[INDEX_IMAGE_USE].value.bool_value == true)
 		return true;
 
 	return false;
 }
 
+bool image_size(long int size) {
 
-
-
-bool size_image(int index_image, size_t size) {
-	if(opt[index_image].value.long_value > size)
+	if(opt[INDEX_IMAGE_SIZE].value.long_value >= size)
 		return true;
 
 	return false;
 }
 
+bool image_count( ) {
+	/* still without */
+	return true;
+}
+/* END IMAGE */
 
 
-int count_image(int index_image) {
 
+
+/* DOCUMENT */
+bool document_is_activated() {
+
+	if(opt[INDEX_DOCUMENT_USE].value.bool_value == true) {
+		return true;
+	}
+
+	return false;
 }
 
+bool document_size(long int size) {
 
+	if(opt[INDEX_DOCUMENT_SIZE].value.long_value >= size)
+		return true;
 
-
-int document_option(int document_option) {
-	static int id_use = 3;
-	static int id_size = 4;
-	static int id_count = 5;
-
-	if(document_option == USE_DOCUMENT) {
-		if(opt[id_use].value.bool_value == true)
-			return true;
-		else 
-			return false;	
-	}
-	else if(document_option == COUNT_DOCUMENT) {
-		/* without */
-	}
-	else if(document_option == SIZE_DOCUMENT) {
-		/* without */
-	}
+	return false;
 }
 
+bool document_count() {
+	/* still without */
+	return true;
+}
+/* END DOCUMENT */
 
 
-int gifs_option(int gifs_option) {
-	static int id_use = 6;
-	static int id_size = 7;
 
-	if(gifs_option == USE_GIFS) {
 
-	}
-	else if(gifs_option == COUNT_GIFS) {
+/* GIFS */
+bool gif_is_activated() {
 
-	}
+	if(opt[INDEX_GIF_USE].value.bool_value == true)
+		return true;
+
+	return false;
 }
 
+bool gif_count() {
+	/* still without */
+	return true;
+}
+/* END GIFS */
 
 
-int audio_option(int audio_option) {
-	static int id_use = 8;
-	static int id_size = 9;
-	static int id_count = 10;
 
-	if(audio_option == USE_AUDIO) {
 
-	}
-	else if(audio_option == COUNT_AUDIO) {
+/* AUDIO */
+bool audio_is_activated() {
+	
+	if(opt[INDEX_AUDIO_USE].value.bool_value == true)
+		return true;
 
-	}
-	else if(audio_option == SIZE_AUDIO) {
-
-	}
+	return false;
 }
 
+bool audio_size(long int size) {
 
-int sticker_option(int sticker_option) {
-	static int id_use = 11;
-	static int id_count = 12;
+	if(opt[INDEX_AUDIO_SIZE].value.long_value >= size)
+		return true;
 
-	if(sticker_option == USE_STICKER) {
+	return false;
+}
+
+bool audio_count() {
+	/* still without */
+	return true;
+}
+/* END AUDIO */
+
+
+
+
+/* STICKER */
+bool sticker_is_activated() {
+
+	if(opt[INDEX_STICKER_USE].value.bool_value == true)
+		return true;
+
+	return false;
+}
+
+bool sticker_count() {
+	/* still without */
+	return false;	
+}
+/* END STICKER */
+
+
+
+/* VIDEO */
+bool video_is_activated() {
+
+	if(opt[INDEX_VIDEO_USE].value.bool_value == true)
+		return true;
+
+	return false;
+}
+
+bool video_size(long int size) {
+
+	if(opt[INDEX_VIDEO_SIZE].value.long_value >= size)
+		return true;
+
+	return false;
+}
+
+bool video_count() {
+	/* still without */
+	return true;
+}
+/* END VIDEO */
+
+
+
+/* VOICE */
+bool voice_is_activated() {
+	
+	if(opt[INDEX_VOICE_USE].value.bool_value == true)
+		return true;
+
+	return false;
+}
+
+bool voice_size(long int size) {
+
+	if(opt[INDEX_VOICE_SIZE].value.long_value >= size)
+		return true;
+
+	return false;
+}
+
+bool voice_count() {
+	/* still without */
+	return true;
+}
+/* END VOICE */
+
+
+
+/* CONTACT */
+bool contact_is_activated() {
+
+	if(opt[INDEX_CONTACT_USE].value.bool_value == true)
+		return true;
+
+	return false;
+}
+
+bool contact_count() {
+	/* still without */
+	return true;
+}
+/* END CONTACT */
+
+
+
+bool format_type(const char *type) {
+
+	if(image_is_activated() && strstr(type, "image") != NULL) {
+		return true;
+	}
+	else if(audio_is_activated() && strstr(type, "audio") != NULL) {
+		return true;
+	}
+	else if(video_is_activated() && strstr(type, "video") != NULL) {
+		return true;
+	}
+	else if(gif_is_activated() && strstr(type, "gif") != NULL) {
+		return true;
+	}
+	else if(document_is_activated()){
 
 	}
-	else if(sticker_option == COUNT_STICKER) {
 
-	}
+	return false;
 }

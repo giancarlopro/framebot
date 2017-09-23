@@ -78,6 +78,7 @@ MessageEntity * message_entity_parse(json_t *json){
 
         return omessage_entity;
     }
+
     return NULL;
 }
 
@@ -103,16 +104,19 @@ Audio * audio_parse(json_t *json){
     return NULL;
 }
 
-PhotoSize * photo_size_parse(json_t *json){
+PhotoSize * photo_size_parse(json_t *json) {
     json_t * pphoto_size = json;
 
-    if(json_is_object(pphoto_size) && is_active_image(USE_IMAGE)) {
+    if(json_is_object(pphoto_size) && image_is_activated()) {
         json_t *file_id, *width, *height, *file_size;
 
         file_id = json_object_get(pphoto_size,"file_id");
         width = json_object_get(pphoto_size,"width");
         height = json_object_get(pphoto_size,"height");
+        
         file_size = json_object_get(pphoto_size,"file_size");
+        if(!image_size(json_integer_value(file_size)))
+            return NULL;
 
         PhotoSize * ophoto_size = photo_size(json_string_value(file_id), json_integer_value(width),
                                              json_integer_value(height), json_integer_value(file_size));
@@ -126,22 +130,24 @@ PhotoSize * photo_size_parse(json_t *json){
 Document * document_parse(json_t *json){
     json_t * pdocument = json;
 
-    if(json_is_object(pdocument) && document_option(USE_DOCUMENT)){
+    if(json_is_object(pdocument)){
         json_t *file_id, *thumb, *file_name, *mime_type, *file_size;
 
         file_id = json_object_get(pdocument,"file_id");
         thumb = json_object_get(pdocument,"thumb");
         file_name = json_object_get(pdocument,"file_name");
+
         mime_type = json_object_get(pdocument,"mime_type");
+        if(!format_type(json_string_value(mime_type)))
+            return NULL;
+
         file_size = json_object_get(pdocument,"file_size");
 
-    //    if(document_option(json_string_value())) {
-            PhotoSize * othumb = photo_size_parse(thumb);
-            Document * odocument = document(json_string_value(file_id), othumb, json_string_value(file_name),
+        PhotoSize * othumb = photo_size_parse(thumb);
+        Document * odocument = document(json_string_value(file_id), othumb, json_string_value(file_name),
                                             json_string_value(mime_type), json_integer_value(file_size));
 
             return odocument;
-    //    }
     }
 
     return NULL;
@@ -165,6 +171,7 @@ Animation * animation_parse(json_t *json){
 
         return oanimation;
     }
+
     return NULL;
 }
 
@@ -196,7 +203,7 @@ Game * game_parse(json_t *json){
 Sticker * sticker_parse(json_t *json){
     json_t * psticker = json;
 
-    if(json_is_object(psticker)){
+    if(json_is_object(psticker) && sticker_is_activated() && sticker_count()){
         json_t *file_id, *width, *height, *thumb, *emoji, *file_size;
 
         file_id = json_object_get(psticker,"file_id");
@@ -214,13 +221,14 @@ Sticker * sticker_parse(json_t *json){
 
         return osticker;
     }
+
     return NULL;
 }
 
 Video * video_parse(json_t *json){
     json_t * pvideo = json;
 
-    if(json_is_object(pvideo)){
+    if(json_is_object(pvideo) && video_is_activated() && video_count()){
         json_t *file_id, *width, *height, *duration, *thumb, *mime_type, *file_size;
 
         file_id = json_object_get(pvideo,"file_id");
@@ -229,7 +237,10 @@ Video * video_parse(json_t *json){
         duration = json_object_get(pvideo,"duration");
         thumb = json_object_get(pvideo,"thumb");
         mime_type = json_object_get(pvideo,"mime_type");
+        
         file_size = json_object_get(pvideo,"file_size");
+        if(video_size(json_integer_value(file_size)))
+            return NULL;
 
         PhotoSize * othumb = photo_size_parse(thumb);
 
@@ -239,32 +250,36 @@ Video * video_parse(json_t *json){
 
         return ovideo;
     }
+
     return NULL;
 }
 
 Voice * voice_parse(json_t *json){
     json_t * pvoice = json;
 
-    if(json_is_object(pvoice)){
+    if(json_is_object(pvoice) && voice_is_activated() && voice_count()){
         json_t *file_id, *duration, *mime_type, *file_size;
 
         file_id = json_object_get(pvoice,"file_id");
         duration = json_object_get(pvoice,"duration");
         mime_type = json_object_get(pvoice,"mime_type");
         file_size = json_object_get(pvoice,"file_size");
+        if(!voice_size(json_integer_value(file_size)))
+            return NULL;
 
         Voice * ovoice = voice(json_string_value(file_id), json_integer_value(duration),
                                json_string_value(mime_type),json_integer_value(file_size));
 
         return ovoice;
     }
+
     return NULL;
 }
 
 Contact * contact_parse(json_t *json){
     json_t * pcontact = json;
 
-    if(json_is_object(pcontact)){
+    if(json_is_object(pcontact) && contact_is_activated() && contact_count()){
         json_t *phone_number, *first_name, *last_name, *user_id;
 
         phone_number = json_object_get(pcontact,"phone_number");
@@ -293,6 +308,7 @@ Location * location_parse(json_t *json){
 
         return olocation;
     }
+
     return NULL;
 }
 
