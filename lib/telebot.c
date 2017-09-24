@@ -167,3 +167,60 @@ void to_message(Bot *bot, Update *update) {
         send_message(bot, up->message->chat->id, response, NULL);
     }
 }
+/* Gets Chat Object */
+Chat *get_chat (Bot *bot, char *chat_id) {
+
+    if (!chat_id)
+        return NULL;
+
+    char *method_base = format("getChat?chat_id=%s", chat_id);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            return chat_parse(result);
+        }
+    }
+
+    return NULL;
+}
+/**
+ * Changes the title of the given chat_id
+ *
+ * Return code:
+ *  -1 You don't have permissions
+ *  -2 Missing arguments
+ */
+int set_chat_title (Bot *bot, char *chat_id, char *title) {
+
+    if(!chat_id || !title)
+        return -2;
+    
+    char *method_base = format("setChatTitle?chat_id=%s&title=%s", chat_id, title);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            if (json_is_true(result)) {
+                json_decref(root);
+                return 1;
+            }
+        }
+    }
+
+    return -1;
+}
