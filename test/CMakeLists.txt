@@ -13,4 +13,10 @@ endif()
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_executable(test_lib test_lib.c)
-target_link_libraries(test_lib jansson libcurl.so telebotlibrary)
+
+if (WIN32)
+	target_link_libraries(test_lib jansson libcurl_a telebotlibrary)
+endif (win32)
+if (UNIX)
+	target_link_libraries(test_lib jansson libcurl.so telebotlibrary)
+endif (UNIX)
