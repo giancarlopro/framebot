@@ -77,5 +77,6 @@ int send_message(Bot *bot, long int chat_id, char *text, char *extra);
 void to_message(Bot *bot, Update *update);
 int set_chat_title (Bot *bot, char *chat_id, char *title);
 Chat *get_chat(Bot *bot, char *chat_id);
+ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id);
 
 #endif

@@ -224,3 +224,29 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
 
     return -1;
 }
+/** 
+ * 
+*/
+ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id) {
+
+    if (!chat_id || !user_id)
+        return NULL;
+
+    char *method_base = format("getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            return chat_member_parse(result);
+        }
+    }
+
+    return NULL;
+}
