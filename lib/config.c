@@ -45,7 +45,7 @@ static struct _optconfig opt[] = {
 };
 
 static struct _cfgconfig *config = NULL;
-static int continued_command = 0;
+static bool continued_command = false;
 static size_t current_line = 0;
 
 
@@ -68,7 +68,6 @@ void read_config(){
 
 			if(line_config && *line_config != '\n' && *line_config != 0){
 				error = to_process_line_config(line_config);
-
 				if(error > 0)
 					error_read(error, current_line);
 
@@ -89,7 +88,8 @@ void read_config(){
 
 static size_t to_process_line_config(char * line_config) {
 	char *line, *command;
-	size_t i = 0, active_commands = 1, error = 0;
+	size_t i = 0, error = 0;
+	bool active_commands = true;
 
 	line = line_config;
 
@@ -97,8 +97,8 @@ static size_t to_process_line_config(char * line_config) {
 
 	}
 
-	else if(line[i] == '/' || continued_command == 1) {
-		if(active_commands == 1){
+	else if(line[i] == '/' || continued_command == true) {
+		if(active_commands == true){
 			error = to_command_config(line);
 		}
 	}
@@ -122,21 +122,25 @@ static size_t to_process_line_config(char * line_config) {
 
 static size_t to_command_config (char *line_config) {
 
+
+
 	size_t line_config_len = strlen (line_config), /* tamanho da linha */
-		   active_bar_command = 0,  /* ativado significa que o primeiro caracter existi */
-		   active_command 	  = 0,	/* ativado ele obtém o comando sem contra-barra */
-		   error_caracter     = 0,  /* identifica a posição do erro na linha */
-		   active_quotes      = 0, 	/* aspas simples 1-2 aspas duplas 3-4 */
-		   active_equals      = 0, 	/* Ativado significa que chegou no iqual entre comando e valor */
-		   active_value       = 0, 	/* ativado obtém o valorde resposta do comando */
-		   off_caracter       = 0,	/* ativado significa que o próximocaracter não será interpretado */
 		   i 				  = 0,	/* posição do caractere que está sendo processado */
-		   number_line        = 0,	/* numero de linha do resultado de um comando através do \ */
-		   space 			  = 0;
+		   index              = 0;
+
+	bool   active_command     = false,
+		   active_value       = false,
+   		   active_bar_command = false,
+   		   active_equals      = false,
+   		   single_quotes      = false,
+   		   double_quotes      = false,
+   		   off_caracter       = false,
+   		   error_caracter     = false,
+   		   space              = false;
+
 
 	char  *command,             /* comando para string inteira */
 		  *value,               /* valor para string inteira */
-		  *c,                   /* usado para andar em cada caractere do var command */
 		  *line = line_config;  /* usado para andar em cada caracter do line_config  */
 
 	command = (char *) malloc (line_config_len);
@@ -145,82 +149,74 @@ static size_t to_command_config (char *line_config) {
 	memset (value, '\0', line_config_len);
 	memset (command, '\0', line_config_len);
 
-	c = command;
-
-	if (continued_command == 0) {
+	if (continued_command == false) {
 		
 		while (*line && *line != '\n') {
-		
 			i++;
-		
 			/* primeiro caracter. Começo do nome do comando */
 			if (*line == '/' && i == 1) {
-				++active_bar_command;
-				++active_command;
-				*c = *line;
-				c++;
+				active_bar_command = true;
+				active_command = true;;
+				command[index++] = *line;
 			}
 			/* bloco para obter comando */
-			else if (active_bar_command == 1 && active_equals == 0 && active_command == 1) {
+			else if (active_bar_command == true && active_equals == false && active_command == true) {
 				/* fim do campo comando na linha*/
 				if (*line == '=' && i > 2) {
-					++active_equals;
-					--active_command;
-					*c = '\0';
+					active_equals = true;
+					active_command = false;
+					command[index++] = '\0';
 				}
 				else if (*line == ' ' && i > 2) {
 					++space;
-					--active_command;
-					*c = '\0';
+					active_command = false;
+					command[index++] = '\0';
 				}
 				/* caracter 0 - 9 */
 				else if ( (int) *line >= 48 && (int) *line <= 57) {
-					*c = *line;
+					command[index++] = *line;
 				}
 				/* A - Z */
 				else if ( (int) *line >= 65 && (int) *line <= 90) {
-					*c = *line;
+					command[index++] = *line;
 				}
 				/* a - z */
 				else if ( (int) *line >= 97 && (int) *line <= 122) {
-					*c = *line;
+					command[index++] = *line;
 				}
 				/* outro caracter que não seja alfanumérico */
 				else {
-					error_caracter = i;
+					error_caracter = true;
 					break;
 				}
-
-				/* próximo índice no array */
-				c++;
 			}
-			else if (active_quotes == 0 && (active_equals == 1 || space == 1)) {
-				if (*line == '\'' && active_equals == 1){
-					active_quotes = 1;
-					active_value++;
+			else if (active_equals == true || space == true) {
+				if (*line == '\'' && active_equals == true){
+					single_quotes = 1;
+					active_value = true;
 					line++;
 					break;
 				}
 
 				else if (*line == '\"' && active_equals == 1){
-					active_quotes = 3;
-					active_value++;
+					double_quotes = true;
+					active_value = true;;
 					line++;
 					break;
 				}
 
 				else if (*line == '=') {
-					if (active_equals == 0) {
-						++active_equals;
+					if (active_equals == false) {
+						active_equals = true;
 					}
 
 					else {
-						error_caracter = i;
+						error_caracter = true;
 					}
 				}
 				else if (*line != ' ')
 				{
-					error_caracter = i;
+					error_caracter = true;
 				}
 			}
 
@@ -228,25 +224,30 @@ static size_t to_command_config (char *line_config) {
 		}
 	}
 
-	if(error_caracter > 0 && active_bar_command == 1 && active_equals == 1 && active_quotes > 0)
+	if(error_caracter == true || (error_caracter == true && active_bar_command == true && active_equals == true && (single_quotes == true || double_quotes == true)))
 		return i; /* Error caracter */
 
-	if(continued_command == 0)
+	if(continued_command == false)
 		insert_command(command);
 
-	error_caracter = to_response_command_config (line, value, active_quotes, i);
+	i = to_response_command_config (line, value, single_quotes, double_quotes, i);
 
+	if(strlen(line_config) == (i + 1))
+		return 0;
 
-	return error_caracter;
+	return i;
 }
 
 
 
 
 
-static size_t to_response_command_config (char *line, char *value, size_t active_quotes, size_t i) {
-	size_t off_caracter = 0, error_caracter = 0;
-	char *v = value;
+static size_t to_response_command_config (char *line, char *value, bool single_quotes, bool double_quotes, size_t i) {
+
+	size_t index = 0;
+
+	bool off_caracter = false,
+	     error_caracter = false;
 
 	while (*line && *line != '\n') {
 		i++;
@@ -255,28 +256,24 @@ static size_t to_response_command_config (char *line, char *value, size_t active
 		if (*line == '\\') {
 			/* Se off_caracter é 0 e quando chegar a 1 
 			 * o caracter não será interpretado normalmente*/
-			if (off_caracter == 0) {
-				++off_caracter;
+			if (off_caracter == false) {
+				off_caracter = true;
 				line++;
 				continue;
 			}
 			else {
-				--off_caracter;
-				if ((int)off_caracter == -1) {
-					error_caracter = i;
-					break;
-				}
-				*v = *line;
+				off_caracter = false;
+				value[index++] = *line;
 			}
 		}
 		else if (*line == '\'') {
-			if (off_caracter == 1) {
-				--off_caracter;
-				*v = *line;
+			if (off_caracter == true) {
+				off_caracter = false;
+				value[index++] = *line;
 			}
-			else if (off_caracter == 0) {
-				if (active_quotes == 1) {
-					*v = '\0';
+			else if (off_caracter == false) {
+				if (single_quotes == true) {
+					value[index++] = '\0';
 					break;
 				}
 				else {
@@ -286,17 +283,17 @@ static size_t to_response_command_config (char *line, char *value, size_t active
 			}
 		}
 		else if (*line == '\"') {
-			if (off_caracter == 1) {
-				--off_caracter;
-				*v = *line;
+			if (off_caracter == true) {
+				off_caracter = false;
+				value[index++] = *line;
 			}
-			else if (off_caracter == 0) {
-				if (active_quotes == 3) {
-					*v = '\0';
+			else if (off_caracter == false) {
+				if (double_quotes == true) {
+					value[index++] = '\0';
 					break;
 				}
-				else if (continued_command == 1) {
-					*v = '\0';
+				else if (continued_command == true) {
+					value[index++] = '\0';
 					break;
 				}
 				else{
@@ -310,25 +307,22 @@ static size_t to_response_command_config (char *line, char *value, size_t active
 			break;
 		}
 		else {
-			*v = *line;
+			value[index++] = *line;
 		}
-		
-		if (off_caracter == 0)
-			v++;   
 
 		line++;
 	}
 
-	if (off_caracter > 0 ) {
-		continued_command = 1;
+	if (off_caracter == true ) {
+		continued_command = true;
 	}
 	else {
-		continued_command = 0;
+		continued_command = false;
 	}
 
 	insert_response_command (value);
 
-	return error_caracter;
+	return i;
 }
 
 
@@ -402,7 +396,7 @@ static void insert_response_command (char *response_command){
 		strcat (config_response->response, response_command);
 	}
 
-	if (continued_command == 0) {
+	if (continued_command == false) {
 		count = 0;
 	}
 }
@@ -704,7 +698,7 @@ bool image_is_activated() {
 
 bool image_size(long int size) {
 
-	if(opt[INDEX_IMAGE_SIZE].value.long_value >= size)
+	if(opt[INDEX_IMAGE_SIZE].value.long_value >= size || opt[INDEX_IMAGE_SIZE].value.long_value == 0)
 		return true;
 
 	return false;
@@ -731,7 +725,7 @@ bool document_is_activated() {
 
 bool document_size(long int size) {
 
-	if(opt[INDEX_DOCUMENT_SIZE].value.long_value >= size)
+	if(opt[INDEX_DOCUMENT_SIZE].value.long_value >= size || opt[INDEX_DOCUMENT_SIZE].value.long_value == 0)
 		return true;
 
 	return false;
@@ -775,7 +769,7 @@ bool audio_is_activated() {
 
 bool audio_size(long int size) {
 
-	if(opt[INDEX_AUDIO_SIZE].value.long_value >= size)
+	if(opt[INDEX_AUDIO_SIZE].value.long_value >= size || opt[INDEX_AUDIO_SIZE].value.long_value == 0)
 		return true;
 
 	return false;
@@ -818,7 +812,7 @@ bool video_is_activated() {
 
 bool video_size(long int size) {
 
-	if(opt[INDEX_VIDEO_SIZE].value.long_value >= size)
+	if(opt[INDEX_VIDEO_SIZE].value.long_value >= size || opt[INDEX_VIDEO_SIZE].value.long_value == 0)
 		return true;
 
 	return false;
@@ -843,7 +837,7 @@ bool voice_is_activated() {
 
 bool voice_size(long int size) {
 
-	if(opt[INDEX_VOICE_SIZE].value.long_value >= size)
+	if(opt[INDEX_VOICE_SIZE].value.long_value >= size || opt[INDEX_VOICE_SIZE].value.long_value == 0)
 		return true;
 
 	return false;
