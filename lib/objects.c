@@ -562,3 +562,38 @@ size_t update_len(Update *u) {
 
 	return (i - 1);
 }
+
+ChatMember *chat_member(User *user, char *status, long int until_date, bool can_be_edited,
+                        bool can_change_info, bool can_post_messages, bool can_edit_messages,
+                        bool can_delete_messages, bool can_invite_users, bool can_restrict_members,
+                        bool can_pin_messages, bool can_promote_members, bool can_send_messages,
+                        bool can_send_media_messages, bool can_send_other_messages, 
+                        bool can_add_web_page_previews) {
+    
+    ChatMember *_cmember = (ChatMember *) malloc(sizeof(ChatMember));
+
+    _cmember->user = user;
+    _cmember->status = alloc_string(status);
+    _cmember->until_date = until_date;
+    _cmember->can_be_edited = can_be_edited;
+    _cmember->can_change_info = can_change_info;
+    _cmember->can_post_messages = can_post_messages;
+    _cmember->can_edit_messages = can_edit_messages;
+    _cmember->can_delete_messages = can_delete_messages;
+    _cmember->can_invite_users = can_invite_users;
+    _cmember->can_restrict_members = can_restrict_members;
+    _cmember->can_pin_messages =can_pin_messages;
+    _cmember->can_promote_members = can_promote_members;
+    _cmember->can_send_messages = can_send_messages;
+    _cmember->can_send_media_messages = can_send_media_messages;
+    _cmember->can_send_other_messages = can_send_other_messages;
+    _cmember->can_add_web_page_previews = can_add_web_page_previews;
+    
+    return _cmember;
+}
+
+void chat_member_free(ChatMember *chatMember) {
+    user_free(chatMember->user);
+    free(chatMember->status);
+    free(chatMember);
+}
