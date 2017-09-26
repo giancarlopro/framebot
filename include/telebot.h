@@ -7,8 +7,17 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/stat.h>
+#include <sys/stat.h>  
+
+#ifdef __linux__
 #include <unistd.h>
+#elif _WIN32
+#include <Windows.h>
+#include <io.h>
+#else
+# error "Only windows or Linux"
+#endif
+
 #include <limits.h>
 #include <ctype.h>
 
