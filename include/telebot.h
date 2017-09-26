@@ -71,8 +71,8 @@ typedef int bool;
 #include <config.h>
 
 void telebot_init();
-Bot * telebot(char *token);
-User * get_me(char *token);
+Bot * telebot(const char *token);
+User * get_me(const char *token);
 Update *get_updates(Bot *bot, char *extra);
 void handle_data(Bot *bot);
 void telebot_polling(Bot *bot);

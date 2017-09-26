@@ -3,11 +3,6 @@
 #define OPTION_LEN 25
 #define OPTION_VALUE_LEN 100
 
-const char imgtype[][10] = {
-	{"jpeg"}, {"jpg"}, {"wbmp"}, {"png"},
-	{"jpg2"}, {"jp2"}, {"bmp"},
-};
-
 static struct _optconfig opt[] = {
 
 	{0,  "image_use",      0, true, true },
@@ -651,6 +646,11 @@ long kbext(char *str_size) {
 
 	return -1;
 }
+
+const char *get_token() {
+	return opt[INDEX_TOKEN].value.str_value;
+}
+
 
 
 

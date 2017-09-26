@@ -247,7 +247,7 @@ void venue_free(Venue * _venue);
 Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
 void message_free(Message * message);
 
-Bot * bot(char * token,User * user);
+Bot * bot(const char * token, User * user);
 void bot_free(Bot * bot);
 
 Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result, CallbackQuery * callback_query);

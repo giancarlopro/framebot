@@ -56,6 +56,8 @@ struct _optconfig {
 #define INDEX_CONTACT_USE 19
 #define INDEX_CONTACT_COUNT 20
 
+#define INDEX_TOKEN 21
+
 void read_config();
 static size_t to_process_line_config(char * line_config);
 static size_t to_command_config(char *line_config);
@@ -66,10 +68,13 @@ static void insert_response_command(char *response_command);
 static struct _cfgconfig *last_config();
 static void list_command();
 char * search_command(char *command, int *i);
+
 static int read_option(char *line);
 static void insert_option(char *option, char *option_value, bool only_number);
 static void error_option(char *option, size_t current_line, bool error_value);
 char *str_cpy(char *dest,  char *src, size_t char_len);
+
+const char *get_token();
 
 /* IMAGE */
 bool image_is_activated();

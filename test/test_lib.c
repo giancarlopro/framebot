@@ -6,15 +6,12 @@
 #define CURL_STATICLIB 
 #include <curl/curl.h>
 
-#define TOKEN       "376446484:AAELGNbpTneKZgPKtlazpwjDQBYTyYH-KfI"
-#define USERNAME    ""
-
 int main(){
 
     telebot_init();
 
     /* return token authentication or not */
-    Bot *bot = telebot(TOKEN);
+    Bot *bot = telebot(get_token());
     if(bot == NULL){
         printf("%s\n", GETME_ELOG);
         exit(-1);

@@ -8,7 +8,7 @@ void telebot_init() {
 }
 
 /* Authentic bot token */
-Bot * telebot(char *token) {
+Bot * telebot(const char *token) {
     User *bot_user;
 
     bot_user = get_me(token);
@@ -22,7 +22,7 @@ Bot * telebot(char *token) {
 }
 
 /* A simple method for testing your bot's auth token */
-User *get_me(char *token) {
+User *get_me(const char *token) {
     User *ouser;
     char *message_log;
 
