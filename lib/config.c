@@ -411,7 +411,7 @@ static void list_command (){
 		if(p_opt->opt == NULL)
 			break;
 		if(p_opt->only_number == true)
-			if(p_opt->value_boolean == true)
+			if(p_opt->only_boolean == true)
 				printf(CRESET "Option: %s%s %s = %s%d%s\n", CCYAN, p_opt->opt, CRESET, CCYAN, p_opt->value.bool_value, CRESET);
 			else
 				printf(CRESET "Option: %s%s %s = %s%d%s\n", CCYAN, p_opt->opt, CRESET, CCYAN, p_opt->value.long_value, CRESET);
@@ -574,10 +574,10 @@ static void insert_option(char *option, char *option_value, bool only_number) {
 				if(p_opt->only_number == true) {
 					number = atol(opt_value);
 				
-					if(number > 0 && p_opt->value_boolean == true) {
+					if(number > 0 && p_opt->only_boolean == true) {
 						p_opt->value.bool_value = true;
 					}
-					else if(number == 0 && p_opt->value_boolean == true) {
+					else if(number == 0 && p_opt->only_boolean == true) {
 						p_opt->value.bool_value = false;
 					}
 					else {

@@ -16,7 +16,7 @@ struct _optconfig {
 		char     str_value[100];
 	} value;
 	bool only_number;
-	bool value_boolean;
+	bool only_boolean;
 };
 
 
