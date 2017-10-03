@@ -30,33 +30,27 @@ struct _optconfig {
 #define INDEX_DOCUMENT_SIZE 4
 #define INDEX_DOCUMENT_COUNT 5
 
-/* gifs option */
-#define INDEX_GIF_USE 6
-#define INDEX_GIF_COUNT 7
-
 /* audio option */
-#define INDEX_AUDIO_USE 8
-#define INDEX_AUDIO_SIZE 9
-#define INDEX_AUDIO_COUNT 10
-
-/* sticker option */
-#define INDEX_STICKER_USE 11
-#define INDEX_STICKER_COUNT 12
+#define INDEX_AUDIO_USE 6
+#define INDEX_AUDIO_SIZE 7
+#define INDEX_AUDIO_COUNT 8
 
 /* video option */
-#define INDEX_VIDEO_USE 13
-#define INDEX_VIDEO_SIZE 14
-#define INDEX_VIDEO_COUNT 15
+#define INDEX_VIDEO_USE 9
+#define INDEX_VIDEO_SIZE 10
+#define INDEX_VIDEO_COUNT 11
 
 /* voice option */
-#define INDEX_VOICE_USE 16
-#define INDEX_VOICE_SIZE 17
-#define INDEX_VOICE_COUNT 18
+#define INDEX_VOICE_USE 12
+#define INDEX_VOICE_SIZE 13
+#define INDEX_VOICE_COUNT 14
 
-#define INDEX_CONTACT_USE 19
-#define INDEX_CONTACT_COUNT 20
+#define INDEX_CONTACT_USE 15
+#define INDEX_CONTACT_COUNT 16
 
-#define INDEX_TOKEN 21
+#define INDEX_LOG 17
+
+#define INDEX_TOKEN 18
 
 void read_config();
 static size_t to_process_line_config(char * line_config);
