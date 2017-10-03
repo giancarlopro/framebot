@@ -25,12 +25,14 @@ static struct _optconfig opt[] = {
 	{13, "voice_size",     0, true, false},
 	{14, "voice_count",    0, true, false},
 
-	{15, "contact_use",    0, true, true},
+	{15, "contact_use",    0, true, true },
 	{16, "contact_count",  0, true, false},
 	
-	{17, "token",          0, false, false},
+	{17, "log",            0, false, false},
+
+	{18, "token",          0, false, false},
 	
-	{18, NULL, 0, false, false}
+	{19, NULL, 0, false, false}
 };
 
 static struct _cfgconfig *config = NULL;
