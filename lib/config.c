@@ -734,25 +734,6 @@ bool document_count() {
 
 
 
-
-/* GIFS */
-bool gif_is_activated() {
-
-	if(opt[INDEX_GIF_USE].value.bool_value == true)
-		return true;
-
-	return false;
-}
-
-bool gif_count() {
-	/* still without */
-	return true;
-}
-/* END GIFS */
-
-
-
-
 /* AUDIO */
 bool audio_is_activated() {
 	
@@ -775,24 +756,6 @@ bool audio_count() {
 	return true;
 }
 /* END AUDIO */
-
-
-
-
-/* STICKER */
-bool sticker_is_activated() {
-
-	if(opt[INDEX_STICKER_USE].value.bool_value == true)
-		return true;
-
-	return false;
-}
-
-bool sticker_count() {
-	/* still without */
-	return false;	
-}
-/* END STICKER */
 
 
 
