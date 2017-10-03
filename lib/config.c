@@ -642,12 +642,6 @@ long kbext(char *str_size) {
 	return -1;
 }
 
-const char *get_token() {
-	return opt[INDEX_TOKEN].value.str_value;
-}
-
-
-
 
 static void error_option(char *option, size_t current_line, bool error_value) {
 	bool space = true, tabulation = true, first_valid = false;
@@ -824,6 +818,15 @@ bool contact_count() {
 }
 /* END CONTACT */
 
+
+const char *get_log() {
+	return opt[INDEX_LOG].value.str_value;
+}
+
+
+const char *get_token() {
+	return opt[INDEX_TOKEN].value.str_value;
+}
 
 
 bool format_type(const char *type) {
