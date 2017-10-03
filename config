@@ -1,5 +1,34 @@
-&commands
-/info="api_bot"
-/geral="autor=Ródgger Bruno e Gi\"\'an"
-/name="Ródgger"
+#Config of Telebot
 
+/info="api_bot"
+/geral   =   "au\\\\tor\'\"=Ródgger\' Bruno e \'Gian \
+1231231\"23"
+/name="Ródgger"
+/command1="comando encontrado no config\
+com quebra linha"
+
+#GENERAL OPTION 
+
+image_use = 1
+#maximum download of image. 0kb mean any size
+image_size = 2000kb
+
+#maximum count each user
+image_count = 10
+
+document_use = 1
+document_size = 10kb
+document_count = 11
+audio_use = 1
+audio_size = 1000mb
+audio_count = 13
+video_use = 0
+video_size = 0kb
+video_count = 0
+voice_use = 0
+voice_size = 0kb
+voice_count = 0
+contact_use = 0
+contact_count = 0
+token = token here
+#end

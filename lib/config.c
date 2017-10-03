@@ -6,43 +6,36 @@
 static struct _optconfig opt[] = {
 
 	{0,  "image_use",      0, true, true },
-	{1,  "image_size",	   0, true, false},
+	{1,  "image_size",     0, true, false},
 	{2,  "image_count",    0, true, false},
 	
 	{3,  "document_use",   0, true, true },
 	{4,  "document_size",  0, true, false},
 	{5,  "document_count", 0, true, false},
 	
-	{6,  "gif_use", 	   0, true, true },
-	{7,  "gif_count", 	   0, true, false},
+	{6,  "audio_use",      0, true, true },
+	{7,  "audio_size",     0, true, false},
+	{8,  "audio_count",    0, true, false},
 	
-	{8,  "audio_use", 	   0, true, true },
-	{9,  "audio_size", 	   0, true, false},
-	{10, "audio_count",    0, true, false},
+	{9, "video_use",       0, true, true },
+	{10, "video_size",     0, true, false},
+	{11, "video_count",    0, true, false},
 	
-	{11, "sticker_use",    0, true, true },
-	{12, "sticker_count",  0, true, false},
-	
-	{13, "video_use",      0, true, true },
-	{14, "video_size",     0, true, false},
-	{15, "video_count",    0, true, false},
-	
-	{16, "voice_use",      0, true, true },
-	{17, "voice_size",     0, true, false},
-	{18, "voice_count",    0, true, false},
+	{12, "voice_use",      0, true, true },
+	{13, "voice_size",     0, true, false},
+	{14, "voice_count",    0, true, false},
 
-	{19, "contact_use", 0, true, true},
-	{20, "contact_count", 0, true, false},
+	{15, "contact_use",    0, true, true},
+	{16, "contact_count",  0, true, false},
 	
-	{21, "token",          0, false, false},
+	{17, "token",          0, false, false},
 	
-	{22, NULL, 0, false, false}
+	{18, NULL, 0, false, false}
 };
 
 static struct _cfgconfig *config = NULL;
 static bool continued_command = false;
 static size_t current_line = 0;
-
 
 
 void read_config(){
