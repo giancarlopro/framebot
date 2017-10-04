@@ -32,13 +32,8 @@ User *get_me(const char *token) {
         ouser = get_me_parse(data->content);
         mem_store_free(data);
 
-        if (ouser){
-            get_me_log(ouser);
-            return ouser;
-        }
+        return ouser;
     }
-
-    get_me_log(NULL);
 
     return NULL;
 }
