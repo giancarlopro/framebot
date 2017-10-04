@@ -7,10 +7,11 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/stat.h>  
+
 
 #ifdef __linux__
 #include <unistd.h>
+#include <sys/stat.h>
 #elif _WIN32
 #include <Windows.h>
 #include <io.h>
