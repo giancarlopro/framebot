@@ -99,6 +99,10 @@ bool voice_count();
 bool contact_is_activated();
 bool contact_count();
 
+const char *get_log();
+
+const char *get_token();
+
 bool format_type(const char *type);
 long kbext(char *str_size);
 
