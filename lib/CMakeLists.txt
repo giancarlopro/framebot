@@ -10,11 +10,13 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}
 endif()
 
 include_directories (${PROJECT_SOURCE_DIR}/../include)
+
 if (WIN32)
 add_library(telebotlibrary telebot.c memory.c objects.c json.c network.c memory.c format.c w_log.c config.c)
 target_link_libraries(test_lib jansson libcurl_a telebotlibrary)
+
 else (UNIX)
 add_library(telebotlibrary telebot.c memory.c objects.c json.c network.c memory.c format.c l_log.c config.c)
 target_link_libraries(telebotlibrary jansson libcurl.so)
-endif ()
 
+endif ()
