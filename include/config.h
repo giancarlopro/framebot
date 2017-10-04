@@ -80,10 +80,6 @@ bool document_is_activated();
 bool document_size(long int size);
 bool document_count();
 
-/* GIFS */
-bool gif_is_activated();
-bool gif_count();
-
 /* AUDIO */
 bool audio_is_activated();
 bool audio_size(long int size);
@@ -98,10 +94,6 @@ bool video_count();
 bool voice_is_activated();
 bool voice_size(long int size);
 bool voice_count();
-
-/* STICKER */
-bool sticker_is_activated();
-bool sticker_count();
 
 /* CONTACT */
 bool contact_is_activated();
