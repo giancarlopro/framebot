@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.7)
 project(TelebotLibrary)
 
-FIND_PACKAGE( OpenMP REQUIRED)
+FIND_PACKAGE(OpenMP REQUIRED)
 if(OPENMP_FOUND)
 message("OPENMP FOUND")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -10,5 +10,11 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}
 endif()
 
 include_directories (${PROJECT_SOURCE_DIR}/../include)
+if (WIN32)
+add_library(telebotlibrary telebot.c memory.c objects.c json.c network.c memory.c format.c log.c config.c)
+target_link_libraries(test_lib jansson libcurl_a telebotlibrary)
+else (UNIX)
 add_library(telebotlibrary telebot.c memory.c objects.c json.c network.c memory.c format.c log.c config.c)
 target_link_libraries(telebotlibrary jansson libcurl.so)
+endif ()
+
