@@ -562,8 +562,11 @@ static void insert_option(char *option, char *option_value, bool only_number) {
 		if(strcmp(p_opt->opt, optn) == 0) {
 			found = true;
 
+			if(strcmp(p_opt->opt, "log") && opt_value[0] == '0') {
+				p_opt->value.str_value[0] = '\0';
+				break;
+			}
 			if(strlen(opt_value) > 0){
-				
 				if(strstr(optn, "size") != NULL) {
 					
 					if(kbext(opt_value) == -1)
