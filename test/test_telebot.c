@@ -41,6 +41,8 @@ int main(void) {
 
     test_set_chat_title(test_bot);
     test_get_chat_member(test_bot);
+
+    send_message(test_bot, -220937252, "Testandoooo", NULL);
     
     return 0;
 }

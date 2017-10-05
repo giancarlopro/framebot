@@ -89,45 +89,25 @@ Update *get_updates (Bot *bot, char *extra) {
 
     return NULL;
 }
-
-/* send message to telegram */
+/**
+ * Sends the given message to the given chat.
+ * TODO:
+ *  - Change the type of 'chat_id'
+ */
 int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
-    MemStore *json;
-    char *method_base = NULL;
-    json_t *root, *ok;
+    if (!text || chat_id == 0) {
+        return 0;
+    }
 
-
-    if (!chat_id || !text)
-        return -1;
-
+    json_t *is_send_message;
     if (extra) {
-        method_base = format("sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
-
+        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
         free(extra);
     } else {
-        method_base = format("sendMessage?chat_id=%ld&text=%s", chat_id, text);
+        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
     }
-    
 
-    json = call_method(bot->token, method_base);
-
-    free(method_base);
-
-    if (!json)
-        return -1;
-
-    root = load(json->content);
-
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-    
-        if (json_is_true(ok)){
-            json_decref(root);
-
-            return 1;
-        }
-    }
-    return 0;
+    return json_is_object(is_send_message);
 }
 
 void telebot_polling(Bot *bot) {
@@ -204,7 +184,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
 
 /**
  * Generic method to handle Telegram API Methods responses
- * TODO
+ * TODO:
  *  - Error filtering
  */
 json_t *generic_method_call (Bot *bot, char *formats, ...) {
