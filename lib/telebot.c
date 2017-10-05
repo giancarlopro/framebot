@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <telebot.h>
 
 void telebot_init() {
@@ -32,6 +33,7 @@ User *get_me(const char *token) {
         ouser = get_me_parse(data->content);
         mem_store_free(data);
 
+        return ouser;
     }
 
     return NULL;

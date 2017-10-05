@@ -1,3 +1,4 @@
+
 #ifndef LOG_H
 #define LOG_H
 
@@ -10,20 +11,13 @@
 #define GETME_LOG 		"token Authentication: ok id_bot=%ld username=%s"
 #define GETME_ELOG		"Failed to authenticate"
 
+enum Etype {t_image, t_document, t_voice, t_video, t_contact} type;
 
-struct _log {
-	char *folder;
-	char *chat;
-	char *prefix;
-};
-
-int log_update(Update *update);
+char *get_file(long int user_log, enum Etype type);
+bool insert_file(long int user_log, enum Etype type, char *current);
+bool cp_file(long int user_log, enum Etype type, char *current);
+bool text_log(long int user_log, char *extra, long int date, char *text);
 void log_init();
-int file_exists(char *name);
-void update_log(char *log);
-void update_log_chat(char *str, size_t *id_chat);
-int create_log_bot (char *path_bot_log);
-int create_dir_chat_log(char *log_dir);
-int create_dir_log(char *log_dir);
-void get_me_log(User *ouser);
+
+
 #endif
