@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 #include <telebot.h>
 
-void telebot_init() {
+void telebot_init () {
 
     network_init();
     log_init();
@@ -23,6 +22,7 @@ Bot * telebot(const char *token) {
 }
 
 /* A simple method for testing your bot's auth token */
+
 User *get_me(const char *token) {
     User *ouser;
     char *message_log;
@@ -41,7 +41,7 @@ User *get_me(const char *token) {
 
 
 /* Pull new message 'bot'*/
-Update *get_updates(Bot *bot, char *extra) {
+Update *get_updates (Bot *bot, char *extra) {
     MemStore *json;
     char *base;
     size_t update_len, i;
@@ -86,45 +86,25 @@ Update *get_updates(Bot *bot, char *extra) {
 
     return NULL;
 }
+/**
+ * Sends the given message to the given chat.
+ * TODO:
+ *  - Change the type of 'chat_id'
+ */
+int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
+    if (!text || chat_id == 0) {
+        return 0;
+    }
 
-/* send message to telegram */
-int send_message(Bot *bot, long int chat_id, char *text, char *extra) {
-    MemStore *json;
-    char *method_base = NULL;
-    json_t *root, *ok;
-
-
-    if (!chat_id || !text)
-        return -1;
-
+    json_t *is_send_message;
     if (extra) {
-        method_base = format("sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
-
+        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
         free(extra);
     } else {
-        method_base = format("sendMessage?chat_id=%ld&text=%s", chat_id, text);
+        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
     }
-    
 
-    json = call_method(bot->token, method_base);
-
-    free(method_base);
-
-    if (!json)
-        return -1;
-
-    root = load(json->content);
-
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-    
-        if (json_is_true(ok)){
-            json_decref(root);
-
-            return 1;
-        }
-    }
-    return 0;
+    return json_is_object(is_send_message);
 }
 
 void telebot_polling(Bot *bot) {
@@ -164,84 +144,64 @@ void to_message(Bot *bot, Update *update) {
         send_message(bot, up->message->chat->id, response, NULL);
     }
 }
-/* Gets Chat Object */
+/**
+ * Returns the Chat object of the given chat_id
+ */ 
 Chat *get_chat (Bot *bot, char *chat_id) {
 
-    if (!chat_id)
-        return NULL;
-
-    char *method_base = format("getChat?chat_id=%s", chat_id);
-    MemStore *json = call_method(bot->token, method_base);
-    free(method_base);
-
-    json_t *root = load(json->content),
-           *ok,
-           *result;
-
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-        if (json_is_true(ok)) {
-            result = json_object_get(root, "result");
-            return chat_parse(result);
-        }
-    }
-
-    return NULL;
+    if (!chat_id) 
+        return 0;
+    
+    json_t *chat_res = generic_method_call(bot, "getChat?chat_id=%s", chat_id);
+    return chat_parse(chat_res);
 }
 /**
  * Changes the title of the given chat_id
- *
- * Return code:
- *  -1 You don't have permissions
- *  -2 Missing arguments
+ * Returns 1 in success, 0 otherwise
  */
 int set_chat_title (Bot *bot, char *chat_id, char *title) {
 
     if(!chat_id || !title)
-        return -2;
+        return 0;
     
-    char *method_base = format("setChatTitle?chat_id=%s&title=%s", chat_id, title);
-    MemStore *json = call_method(bot->token, method_base);
-    free(method_base);
-
-    json_t *root = load(json->content),
-           *ok,
-           *result;
-
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-        if (json_is_true(ok)) {
-            result = json_object_get(root, "result");
-            if (json_is_true(result)) {
-                json_decref(root);
-                return 1;
-            }
-        }
-    }
-
-    return -1;
+    json_t *is_chat_title = generic_method_call(bot, "setChatTitle?chat_id=%s&title=%s", chat_id, title);
+    return json_is_true(is_chat_title);
 }
-/** 
- * 
-*/
-ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id) {
+/**
+ * Returns the requested ChatMember object.
+ */
+ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
 
     if (!chat_id || !user_id)
         return NULL;
+    
+    json_t *chat_member = generic_method_call(bot, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    return chat_member_parse(chat_member);
+}
 
-    char *method_base = format("getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
-    MemStore *json = call_method(bot->token, method_base);
+/**
+ * Generic method to handle Telegram API Methods responses
+ * TODO:
+ *  - Error filtering
+ */
+json_t *generic_method_call (Bot *bot, char *formats, ...) {
+    va_list params;
+    va_start(params, formats);
+
+    char *method_base = vsformat(formats, params);
+    MemStore *response = call_method(bot->token, method_base);
     free(method_base);
 
-    json_t *root = load(json->content),
+    json_t *root = load(response->content),
            *ok,
            *result;
-
+    
+    mem_store_free(response);
+    
     if (json_is_object(root)) {
         ok = json_object_get(root, "ok");
         if (json_is_true(ok)) {
-            result = json_object_get(root, "result");
-            return chat_member_parse(result);
+            return json_object_get(root, "result");
         }
     }
 

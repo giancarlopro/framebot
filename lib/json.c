@@ -516,7 +516,7 @@ ChatMember *chat_member_parse (json_t *json) {
  * API Methods
  */
 
-User *get_me_parse(char * json) {
+User *get_me_parse (char * json) {
     json_t *root = load(json);
 
     if (json_is_object(root)) {

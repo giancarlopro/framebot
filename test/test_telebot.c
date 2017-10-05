@@ -27,9 +27,9 @@ void test_get_chat_member(Bot *bot) {
     char test_chat_member_string[] = "{\"user\":{\"id\":124296363,\"is_bot\":false,\"first_name\":\"Gian\",\"username\":\"niiag\",\"language_code\":\"pt-BR\"},\"status\":\"creator\"}";
     ChatMember *test_chat_member = chat_member_parse(load(test_chat_member_string));
 
-    ChatMember *chat_member = get_chat_member(bot, test_chat_id, test_user_id);
+    ChatMember *ochat_member = get_chat_member(bot, test_chat_id, test_user_id);
 
-    if (strcmp(test_chat_member->status, chat_member->status) == 0 && (test_chat_member->user->id == chat_member->user->id)) {
+    if (strcmp(test_chat_member->status, ochat_member->status) == 0 && (test_chat_member->user->id == ochat_member->user->id)) {
         printf("\n[!] get_chat_member() OK!");
     }
 }
@@ -41,6 +41,8 @@ int main(void) {
 
     test_set_chat_title(test_bot);
     test_get_chat_member(test_bot);
+
+    send_message(test_bot, -220937252, "Testandoooo", NULL);
     
     return 0;
 }
