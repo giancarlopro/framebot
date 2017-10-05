@@ -22,7 +22,7 @@ char *remove_newline(char *str){
 	return str;
 }
 
-char *format(char *formats, ...) {
+char *format (char *formats, ...) {
 
 	va_list params;
 	va_start(params, formats);
@@ -32,6 +32,14 @@ char *format(char *formats, ...) {
 	vsprintf(buffer, formats, params);
 
 	va_end(params);
+
+	return buffer;
+}
+
+char *vsformat (char *formats, va_list params) {
+	char *buffer = (char *) malloc(MAX_URL_SZ);
+
+	vsprintf(buffer, formats, params);
 
 	return buffer;
 }
