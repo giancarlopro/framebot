@@ -28,10 +28,10 @@ static struct _optconfig opt[] = {
 	{15, "contact_use",    0, true, true },
 	{16, "contact_count",  0, true, false},
 	
-	/* put token manually
-	 * {17, "log", .value={.str_value={"<<<here>>>"}}, false, false} */
 	{17, "log",            0, false, false},
 
+	/* put token manually
+	 * {17, "log", .value={.str_value={"<<<here>>>"}}, false, false} */
 	{18, "token",          0, false, false},
 	
 	{19, NULL, 0, false, false}
