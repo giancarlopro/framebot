@@ -843,9 +843,6 @@ bool format_type(const char *type) {
 	else if(video_is_activated() && strstr(type, "video") != NULL) {
 		return true;
 	}
-	else if(gif_is_activated() && strstr(type, "gif") != NULL) {
-		return true;
-	}
 	else if(document_is_activated()){
 
 	}

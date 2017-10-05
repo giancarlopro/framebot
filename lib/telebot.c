@@ -32,16 +32,11 @@ User *get_me(const char *token) {
         ouser = get_me_parse(data->content);
         mem_store_free(data);
 
-        if (ouser){
-            get_me_log(ouser);
-            return ouser;
-        }
     }
-
-    get_me_log(NULL);
 
     return NULL;
 }
+
 
 /* Pull new message 'bot'*/
 Update *get_updates(Bot *bot, char *extra) {
@@ -166,4 +161,87 @@ void to_message(Bot *bot, Update *update) {
     else {
         send_message(bot, up->message->chat->id, response, NULL);
     }
+}
+/* Gets Chat Object */
+Chat *get_chat (Bot *bot, char *chat_id) {
+
+    if (!chat_id)
+        return NULL;
+
+    char *method_base = format("getChat?chat_id=%s", chat_id);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            return chat_parse(result);
+        }
+    }
+
+    return NULL;
+}
+/**
+ * Changes the title of the given chat_id
+ *
+ * Return code:
+ *  -1 You don't have permissions
+ *  -2 Missing arguments
+ */
+int set_chat_title (Bot *bot, char *chat_id, char *title) {
+
+    if(!chat_id || !title)
+        return -2;
+    
+    char *method_base = format("setChatTitle?chat_id=%s&title=%s", chat_id, title);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            if (json_is_true(result)) {
+                json_decref(root);
+                return 1;
+            }
+        }
+    }
+
+    return -1;
+}
+/** 
+ * 
+*/
+ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id) {
+
+    if (!chat_id || !user_id)
+        return NULL;
+
+    char *method_base = format("getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    MemStore *json = call_method(bot->token, method_base);
+    free(method_base);
+
+    json_t *root = load(json->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            result = json_object_get(root, "result");
+            return chat_member_parse(result);
+        }
+    }
+
+    return NULL;
 }

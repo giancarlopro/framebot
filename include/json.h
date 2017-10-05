@@ -22,5 +22,6 @@ Message * message_parse(json_t *json);
 Update * update_parse(json_t *json);
 User * get_me_parse(char * json);
 int valid_update(long int update_id);
+ChatMember *chat_member_parse (json_t *json);
 
 #endif
