@@ -20,24 +20,17 @@ Bot * telebot(const char *token) {
 
     return NULL;
 }
+/**
+ * Returns a User object of the owner bot.
+ */ 
+User *get_me (const char *token) {
+    
+    if (!token)
+        return NULL;
 
-/* A simple method for testing your bot's auth token */
-User *get_me(const char *token) {
-    User *ouser;
-    char *message_log;
-
-    MemStore *data = call_method(token, "getMe");
-
-    if (data) {
-        ouser = get_me_parse(data->content);
-        mem_store_free(data);
-
-        return ouser;
-    }
-
-    return NULL;
+    json_t *get_me_res = generic_method_call(token, "getMe");
+    return user_parse(get_me_res);
 }
-
 
 /* Pull new message 'bot'*/
 Update *get_updates (Bot *bot, char *extra) {
