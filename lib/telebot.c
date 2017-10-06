@@ -22,7 +22,6 @@ Bot * telebot(const char *token) {
 }
 
 /* A simple method for testing your bot's auth token */
-
 User *get_me(const char *token) {
     User *ouser;
     char *message_log;
@@ -98,10 +97,10 @@ int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
 
     json_t *is_send_message;
     if (extra) {
-        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
+        is_send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
         free(extra);
     } else {
-        is_send_message = generic_method_call(bot, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
+        is_send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
     }
 
     return json_is_object(is_send_message);
@@ -152,7 +151,7 @@ Chat *get_chat (Bot *bot, char *chat_id) {
     if (!chat_id) 
         return 0;
     
-    json_t *chat_res = generic_method_call(bot, "getChat?chat_id=%s", chat_id);
+    json_t *chat_res = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
     return chat_parse(chat_res);
 }
 /**
@@ -164,7 +163,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
     if(!chat_id || !title)
         return 0;
     
-    json_t *is_chat_title = generic_method_call(bot, "setChatTitle?chat_id=%s&title=%s", chat_id, title);
+    json_t *is_chat_title = generic_method_call(bot->token, "setChatTitle?chat_id=%s&title=%s", chat_id, title);
     return json_is_true(is_chat_title);
 }
 /**
@@ -175,7 +174,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
     if (!chat_id || !user_id)
         return NULL;
     
-    json_t *chat_member = generic_method_call(bot, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
     return chat_member_parse(chat_member);
 }
 
@@ -184,12 +183,12 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
  * TODO:
  *  - Error filtering
  */
-json_t *generic_method_call (Bot *bot, char *formats, ...) {
+json_t *generic_method_call (char *token, char *formats, ...) {
     va_list params;
     va_start(params, formats);
 
     char *method_base = vsformat(formats, params);
-    MemStore *response = call_method(bot->token, method_base);
+    MemStore *response = call_method(token, method_base);
     free(method_base);
 
     json_t *root = load(response->content),
