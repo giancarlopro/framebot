@@ -9,9 +9,8 @@ void telebot_init () {
 
 /* Authentic bot token */
 Bot * telebot(const char *token) {
-    User *bot_user;
 
-    bot_user = get_me(token);
+    User *bot_user = get_me(token);
     
     if (bot_user) {
         Bot *obot = bot(token, bot_user);
@@ -31,52 +30,35 @@ User *get_me (const char *token) {
     json_t *get_me_res = generic_method_call(token, "getMe");
     return user_parse(get_me_res);
 }
-
-/* Pull new message 'bot'*/
+/**
+ * Returns the updates list
+ */ 
 Update *get_updates (Bot *bot, char *extra) {
-    MemStore *json;
-    char *base;
-    size_t update_len, i;
-    json_t *root = NULL, *ok, *result;
-    Update *up = NULL, *_up = NULL;
 
-    if(extra){
-        base = format("getUpdates?%s", extra);
-        json = call_method(bot->token, base);
-        free(base);
-    }else{
-        json = call_method(bot->token, "getUpdates");
+    json_t *update_array;
+    if (extra) {
+        update_array = generic_method_call(bot->token, "getUpdates?%s", extra);
+    } else {
+        update_array = generic_method_call(bot->token, "getUpdates");
     }
+    
+    size_t length, i;
+    length = json_array_size(update_array);
 
-    root = load(json->content);
-    if(json_is_object(root)) {
-        ok = json_object_get(root, "ok");
+    Update *up = NULL, *_temp = NULL;
 
-        if(json_is_true(ok)) {
-            result = json_object_get(root, "result");
-            update_len = json_array_size(result);
+    if (length > 0) {
+        up = update_parse(json_array_get(update_array, 0));
 
-            if(update_len > 0) {
-                for (i = 0; i < update_len; i++) {
-                    if(!up) {
-                        up = update_parse(json_array_get(result, i));
-                        continue;
-                    }
-                    _up = update_parse(json_array_get(result, i));
-                    if(_up != NULL)
-                        update_add(up, _up);
-                }
-
-                if(up){
-                    json_decref(root);
-                    return up;
-                }
+        for (i = 1; i < length; i++) {
+            _temp = update_parse(json_array_get(update_array, i));
+            if (_temp) {
+                update_add(up, _temp);
             }
         }
-        json_decref(root);
     }
 
-    return NULL;
+    return up;
 }
 /**
  * Sends the given message to the given chat.
