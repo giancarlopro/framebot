@@ -516,29 +516,6 @@ ChatMember *chat_member_parse (json_t *json) {
     }
 }
 
-/* date: 14/02/2017
- * API Methods
- */
-
-User *get_me_parse (char * json) {
-    json_t *root = load(json);
-
-    if (json_is_object(root)) {
-        json_t *ok = json_object_get(root, "ok");
-
-        if (json_is_true(ok)) {
-            json_t *result = json_object_get(root, "result");
-
-            User * ouser = user_parse(result);
-
-            json_decref(root);
-            return ouser;
-        }
-        json_decref(root);
-    }
-    return NULL;
-}
-
 int valid_update(long int update_id){
     static long int update_last_valid = 0;
 
