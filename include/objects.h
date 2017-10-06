@@ -3,9 +3,11 @@
 
 typedef struct _user{
     long int id;
-    char * first_name;
-    char * last_name;
-    char * username;
+    bool is_bot;
+    char *first_name;
+    char *last_name;
+    char *username;
+    char *language_code;
 } User;
 
 typedef struct _bot{
@@ -215,8 +217,8 @@ typedef struct _chat_member {
 } ChatMember;
 
 //User functions
-User * user(long int id, const char * first_name, const char * last_name, const char * username);
-void user_free(User * usr);
+User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, char *language_code);
+void user_free(User *usr);
 
 //Chat functions
 Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators);

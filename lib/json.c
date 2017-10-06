@@ -14,19 +14,23 @@ json_t * load(char * json){
     return NULL;
 }
 
-User * user_parse(json_t * json){
+User * user_parse(json_t *json){
 
     json_t *puser = json;
 
     if(json_is_object(puser)){
-        json_t *id, *first_name, *last_name, *username;
+        json_t *id, *is_bot, *first_name, *last_name, *username, *language_code;
+
         id = json_object_get(puser, "id");
+        is_bot = json_object_get(puser, "is_bot");
         first_name = json_object_get(puser, "first_name");
         last_name = json_object_get(puser, "last_name");
         username = json_object_get(puser, "username");
+        language_code = json_object_get(puser, "language_code");
 
-        User * ouser = user(json_integer_value(id), json_string_value(first_name),
-                            json_string_value(last_name), json_string_value(username));
+        User * ouser = user(json_integer_value(id), json_is_true(is_bot),
+                            json_string_value(first_name), json_string_value(last_name),
+                            json_string_value(username), json_string_value(language_code));
 
         return ouser;
     }

@@ -13,11 +13,14 @@ endif()
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_executable(test_lib test_lib.c)
+add_executable(libtest test_telebot.c)
 
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 	target_link_libraries(test_lib jansson libcurl.so telebotlibrary)
+	target_link_libraries(libtest jansson libcurl.so telebotlibrary)
 endif (CMAKE_SYSTEM_NAME STREQUAL Linux)
 
 if (WIN32)
 	target_link_libraries(test_lib jansson libcurl_a telebotlibrary)
+	target_link_libraries(libtest jansson libcurl.so telebotlibrary)
 endif (WIN32)
