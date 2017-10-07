@@ -154,6 +154,16 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
     json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
     return chat_member_parse(chat_member);
 }
+/**
+ * Changes the given chat or channel description
+ */
+bool set_chat_description (Bot *bot, char *chat_id, char *description) {
+    if (!chat_id || !description) 
+        return false;
+    
+    json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s", chat_id, description);
+    return json_is_true(is_description);
+}
 
 /**
  * Generic method to handle Telegram API Methods responses
