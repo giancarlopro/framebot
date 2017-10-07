@@ -156,7 +156,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
  * Changes the given chat or channel description
  */
 bool set_chat_description (Bot *bot, char *chat_id, char *description) {
-    if (!chat_id || !description) 
+    if (!chat_id) 
         return false;
     
     json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s", chat_id, description);
@@ -171,6 +171,16 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
     
     json_t *count = generic_method_call(bot->token, "getChatMemberCount?chat_id=%s", chat_id);
     return json_integer_value(count);
+}
+/**
+ * Ban a chat user
+ */
+bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date) {
+    if(!chat_id || !user_id)
+        return false;
+
+    json_t *is_kicked = generic_method_call(bot->token, "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
+    return json_is_true(is_kicked);
 }
 /**
  * Generic method to handle Telegram API Methods responses
