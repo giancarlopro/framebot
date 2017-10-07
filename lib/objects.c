@@ -1,12 +1,14 @@
 #include <telebot.h>
 
-User * user(long int id, const char *first_name, const char *last_name, const char *username){
+User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, char *language_code){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
+    user->is_bot = is_bot;
     user->first_name    = alloc_string(first_name);
     user->last_name     = alloc_string(last_name);
     user->username      = alloc_string(username);
+    user->language_code = alloc_string(language_code);
 
     return user;
 }
@@ -21,6 +23,9 @@ void user_free(User * usr){
 
     if(usr->username)
         free(usr->username);
+    
+    if(usr->language_code)
+        free(usr->language_code);
 
     free(usr);
 }

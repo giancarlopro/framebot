@@ -2,11 +2,11 @@
 
 static long int valid_update_id;
 
-json_t * load(char * json){
-    json_t * pload;
+json_t * load(char *json){
+    json_t *pload;
     json_error_t error;
 
-    pload = json_loads(json,0,&error);
+    pload = json_loads(json, 0, &error);
 
     if(pload)
         return pload;
@@ -14,19 +14,23 @@ json_t * load(char * json){
     return NULL;
 }
 
-User * user_parse(json_t * json){
+User * user_parse(json_t *json){
 
     json_t *puser = json;
 
     if(json_is_object(puser)){
-        json_t *id, *first_name, *last_name, *username;
+        json_t *id, *is_bot, *first_name, *last_name, *username, *language_code;
+
         id = json_object_get(puser, "id");
+        is_bot = json_object_get(puser, "is_bot");
         first_name = json_object_get(puser, "first_name");
         last_name = json_object_get(puser, "last_name");
         username = json_object_get(puser, "username");
+        language_code = json_object_get(puser, "language_code");
 
-        User * ouser = user(json_integer_value(id), json_string_value(first_name),
-                            json_string_value(last_name), json_string_value(username));
+        User * ouser = user(json_integer_value(id), json_is_true(is_bot),
+                            json_string_value(first_name), json_string_value(last_name),
+                            json_string_value(username), json_string_value(language_code));
 
         return ouser;
     }
@@ -484,22 +488,22 @@ ChatMember *chat_member_parse (json_t *json) {
                *can_pin_messages, *can_promote_members, *can_send_messages,
                *can_send_media_messages, *can_send_other_messages, *can_add_web_page_previews;
                
-        user                   = json_object_get(json, "user");
-        status                 = json_object_get(json, "status");
-        until_date             = json_object_get(json, "until_date");
-        can_be_edited          = json_object_get(json, "can_be_edited");
-        can_change_info        = json_object_get(json, "can_change_info");
-        can_post_messages      = json_object_get(json, "can_post_messages");
-        can_edit_messages      = json_object_get(json, "can_edit_messages");
-        can_delete_messages    = json_object_get(json, "can_delete_messages");
-        can_invite_users       = json_object_get(json, "can_invite_users");
-        can_restrict_members   = json_object_get(json, "can_restrict_members");
-        can_pin_messages       = json_object_get(json, "can_pin_messages");
-        can_promote_members    = json_object_get(json, "can_promote_members");
-        can_send_messages      = json_object_get(json, "can_send_messages");
-        can_send_media_messages = json_object_get(json, "can_send_media_messages");
-        can_send_other_messages = json_object_get(json, "can_send_other_messages");
-        can_add_web_page_previews = json_object_get(json, "can_add_web_page_previews");
+        user                        = json_object_get(json, "user");
+        status                      = json_object_get(json, "status");
+        until_date                  = json_object_get(json, "until_date");
+        can_be_edited               = json_object_get(json, "can_be_edited");
+        can_change_info             = json_object_get(json, "can_change_info");
+        can_post_messages           = json_object_get(json, "can_post_messages");
+        can_edit_messages           = json_object_get(json, "can_edit_messages");
+        can_delete_messages         = json_object_get(json, "can_delete_messages");
+        can_invite_users            = json_object_get(json, "can_invite_users");
+        can_restrict_members        = json_object_get(json, "can_restrict_members");
+        can_pin_messages            = json_object_get(json, "can_pin_messages");
+        can_promote_members         = json_object_get(json, "can_promote_members");
+        can_send_messages           = json_object_get(json, "can_send_messages");
+        can_send_media_messages     = json_object_get(json, "can_send_media_messages");
+        can_send_other_messages     = json_object_get(json, "can_send_other_messages");
+        can_add_web_page_previews   = json_object_get(json, "can_add_web_page_previews");
 
         ChatMember *ochatmember = chat_member(user_parse(user), json_string_value(status), json_integer_value(until_date),
             json_boolean_value(can_be_edited), json_boolean_value(can_change_info), json_boolean_value(can_post_messages),
@@ -510,29 +514,6 @@ ChatMember *chat_member_parse (json_t *json) {
         
         return ochatmember;
     }
-}
-
-/* date: 14/02/2017
- * API Methods
- */
-
-User *get_me_parse (char * json) {
-    json_t *root = load(json);
-
-    if (json_is_object(root)) {
-        json_t *ok = json_object_get(root, "ok");
-
-        if (json_is_true(ok)) {
-            json_t *result = json_object_get(root, "result");
-
-            User * ouser = user_parse(result);
-
-            json_decref(root);
-            return ouser;
-        }
-        json_decref(root);
-    }
-    return NULL;
 }
 
 int valid_update(long int update_id){
