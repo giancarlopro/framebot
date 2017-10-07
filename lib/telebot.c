@@ -162,7 +162,16 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s", chat_id, description);
     return json_is_true(is_description);
 }
-
+/**
+ * Returns the number of members in the given chat
+ */ 
+int get_chat_member_count (Bot *bot, char *chat_id) {
+    if (!chat_id)
+        return false;
+    
+    json_t *count = generic_method_call(bot->token, "getChatMemberCount?chat_id=%s", chat_id);
+    return json_integer_value(count);
+}
 /**
  * Generic method to handle Telegram API Methods responses
  * TODO:
