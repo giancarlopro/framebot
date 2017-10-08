@@ -88,5 +88,6 @@ json_t *generic_method_call (const char *token, char *formats, ...);
 bool set_chat_description (Bot *bot, char *chat_id, char *description);
 int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
+restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date, bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages, bool can_add_web_page_previews);
 
 #endif

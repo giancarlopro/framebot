@@ -185,6 +185,40 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
     return json_is_true(is_kicked);
 }
 /**
+ * restrictChatMember
+ * Use this method to restrict a user in a supergroup. 
+ * The bot must be an administrator in the supergroup
+ * for this to work and must have the appropriate admin rights. 
+ * Pass True for all boolean parameters to lift restrictions from a user. 
+ * Returns True on success.
+ */
+bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
+                           bool can_send_messages, bool can_send_media_messages,
+                           bool can_send_other_messages, bool can_add_web_page_previews) {
+    
+    if (!chat_id || !user_id) 
+        return false;
+    
+    char base[300];
+    strcpy(base, "restrictChatMember?chat_id=%s&user_id=%s&until_date=%ld");
+
+    if (can_send_messages) {
+        strcat(base, "&can_send_messages=True");
+    }
+    if (can_send_media_messages) {
+        strcat(base, "&can_send_media_messages=True");
+    }
+    if (can_send_other_messages) {
+        strcat(base, "&can_send_other_messages=True");
+    }
+    if (can_add_web_page_previews) {
+        strcat(base, "&can_add_web_page_previews=True");
+    }
+
+    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id, until_date);
+    return json_is_true(is_restricted);
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
