@@ -219,6 +219,21 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
     return json_is_true(is_restricted);
 }
 /**
+ * unbanChatMember
+ * Use this method to unban a previously kicked user in a supergroup or channel. 
+ * The user will not return to the group or channel automatically, 
+ * but will be able to join via link, etc. 
+ * The bot must be an administrator for this to work. 
+ * Returns True on success.
+ */
+bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
+    if (!chat_id || !user_id)
+        return false;
+    
+    json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    return json_is_true(is_unbanned);
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
