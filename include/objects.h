@@ -217,7 +217,7 @@ typedef struct _chat_member {
 } ChatMember;
 
 //User functions
-User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, char *language_code);
+User *user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code);
 void user_free(User *usr);
 
 //Chat functions

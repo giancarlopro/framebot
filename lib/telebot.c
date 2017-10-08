@@ -187,7 +187,7 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
  * TODO:
  *  - Error filtering
  */
-json_t *generic_method_call (char *token, char *formats, ...) {
+json_t *generic_method_call (const char *token, char *formats, ...) {
     va_list params;
     va_start(params, formats);
 
