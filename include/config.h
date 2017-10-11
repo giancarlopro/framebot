@@ -1,5 +1,5 @@
-#ifndef CONFIG__
-#define CONFIG__
+#ifndef CONFIG_H
+#define CONFIG_H
 
 struct _cfgconfig {
 	char *command;
