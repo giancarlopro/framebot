@@ -93,5 +93,6 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members);
+char *export_chat_invite_link (Bot *bot, char *chat_id);
 
 #endif

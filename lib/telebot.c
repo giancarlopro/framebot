@@ -271,6 +271,22 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
     return json_is_true(is_restricted);
 }
 /**
+ * exportChatInviteLink
+ * Use this method to export an invite link to a supergroup or a channel.
+ * The bot must be an administrator in the chat for this to work
+ * and must have the appropriate admin rights.
+ * Returns exported invite link as String on success.
+ * 
+ * You must release the returned string
+ */
+char *export_chat_invite_link (Bot *bot, char *chat_id) {
+    if (!chat_id) 
+        return NULL;
+    
+    json_t *invite_link = generic_method_call(bot->token, "exportChatInviteLink");
+    return alloc_string(json_string_value(invite_link));
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
