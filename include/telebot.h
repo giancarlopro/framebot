@@ -70,6 +70,7 @@ typedef int bool;
 #include <log.h>
 #include <json_user.h>
 #include <config.h>
+#include <util.h>
 
 void telebot_init();
 Bot * telebot(const char *token);
@@ -91,5 +92,6 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date, bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages, bool can_add_web_page_previews);
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
+bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members);
 
 #endif

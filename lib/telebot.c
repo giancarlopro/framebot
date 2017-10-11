@@ -245,6 +245,31 @@ bool leave_chat (Bot *bot, char *chat_id) {
     return json_is_true(is_leave);
 }
 /**
+ * promoteChatMember
+ * Use this method to promote or demote a user in a supergroup or a channel.
+ * The bot must be an administrator in the chat for this to work
+ * and must have the appropriate admin rights.
+ * Pass False for all boolean parameters to demote a user.
+ * Returns True on success.
+ */
+bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
+                          bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+                          bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+                          bool can_promote_members) {
+    if (!chat_id || !user_id) 
+        return false;
+    
+    char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
+    base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages", can_post_messages,
+                                  "can_edit_messages", can_edit_messages, "can_delete_messages", can_delete_messages,
+                                  "can_invite_users", can_invite_users, "can_restrict_members", can_restrict_members,
+                                  "can_pin_messages", can_pin_messages, "can_promote_members", can_promote_members
+                                );
+
+    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id);
+    return json_is_true(is_restricted);
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
