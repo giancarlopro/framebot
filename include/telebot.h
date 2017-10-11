@@ -84,7 +84,7 @@ void to_message(Bot *bot, Update *update);
 int set_chat_title (Bot *bot, char *chat_id, char *title);
 Chat *get_chat(Bot *bot, char *chat_id);
 ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id);
-json_t *generic_method_call (char *token, char *formats, ...);
+json_t *generic_method_call (const char *token, char *formats, ...);
 
 
 #endif

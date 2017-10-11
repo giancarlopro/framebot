@@ -1,6 +1,6 @@
 #include <telebot.h>
 
-User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, char *language_code){
+User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code){
     User * user = (User *) malloc(sizeof(User));
 
     user->id = id;
