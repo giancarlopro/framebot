@@ -267,6 +267,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
                                 );
 
     json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id);
+    free(base);
     return json_is_true(is_restricted);
 }
 /**
