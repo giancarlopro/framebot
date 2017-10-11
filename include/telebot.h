@@ -90,5 +90,6 @@ int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date, bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages, bool can_add_web_page_previews);
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
+bool leave_chat (Bot *bot, char *chat_id);
 
 #endif

@@ -234,6 +234,17 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
     return json_is_true(is_unbanned);
 }
 /**
+ * leaveChat
+ * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+ */
+bool leave_chat (Bot *bot, char *chat_id) {
+    if (!chat_id) 
+        return false;
+    
+    json_t *is_leave = generic_method_call(bot->token, "leaveChat?chat_id=%s", chat_id);
+    return json_is_true(is_leave);
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
