@@ -54,7 +54,7 @@
 
 
 /* type bool */
-typedef int bool;
+typedef short bool;
 #define true  1
 #define false 0
 
