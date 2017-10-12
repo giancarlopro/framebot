@@ -830,6 +830,15 @@ const char *get_log() {
 
 
 const char *get_token() {
+	size_t log_len = strlen(opt[INDEX_TOKEN].value.str_value);
+
+	while(1){
+		if(opt[INDEX_TOKEN].value.str_value[log_len] == '/')
+			opt[INDEX_TOKEN].value.str_value[log_len] == '\0';
+		else
+			break;
+	}
+
 	return opt[INDEX_TOKEN].value.str_value;
 }
 
