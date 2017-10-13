@@ -127,6 +127,7 @@ bool text_log(long int user_log, char *extra, long int date, char *text) {
 
 void log_init(){
 	directory_log = get_log();
+	printf("00(%s)", directory_log);
 
 	if(mkdir(directory_log, S_IRWXU | S_IRWXU | S_IXGRP | S_IROTH | S_IXOTH) == -1){
 		if(errno == EEXIST){
