@@ -2,11 +2,11 @@
 
 void telebot_init () {
 
-    network_init();
-    log_init();
 #ifndef CONFIG_DEFAULT /* read or not read config file */
     read_config();
 #endif
+    network_init();
+    log_init();
 }
 
 /* Authentic bot token */
