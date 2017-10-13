@@ -71,7 +71,7 @@ void read_config(){
 		list_command();
 	}
 	else {
-		printf(CLRED "Not Found config");
+		printf(CLRED "Couldn't read config" CRESET);
 	}
 }
 
@@ -825,20 +825,20 @@ bool contact_count() {
 
 
 const char *get_log() {
+	size_t log_len = strlen(opt[INDEX_LOG].value.str_value);
+
+	while(1){
+		if(opt[INDEX_LOG].value.str_value[--log_len] == '/')
+			opt[INDEX_LOG].value.str_value[log_len] = '\0';
+		else
+			break;
+	}
+
 	return opt[INDEX_LOG].value.str_value;
 }
 
 
 const char *get_token() {
-	size_t log_len = strlen(opt[INDEX_TOKEN].value.str_value);
-
-	while(1){
-		if(opt[INDEX_TOKEN].value.str_value[log_len] == '/')
-			opt[INDEX_TOKEN].value.str_value[log_len] == '\0';
-		else
-			break;
-	}
-
 	return opt[INDEX_TOKEN].value.str_value;
 }
 
