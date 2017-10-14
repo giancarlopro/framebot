@@ -17,7 +17,7 @@ char *get_file(long int user_log, enum Etype type, char *file_name);
 int access_log(const char *path);
 char *insert_file(long int user_log, enum Etype type, char *current);
 bool cp_file(long int user_log, enum Etype type, char *current);
-bool text_log(long int user_log, char *extra, long int date, char *text);
+bool text_log(long int user_log, char *extra, long int date, const char *text);
 void log_init();
 #elif _WIN32
 
