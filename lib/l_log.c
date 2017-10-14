@@ -12,17 +12,17 @@ char *get_file(long int user_log, enum Etype type, char *file_name) {
 		path = malloc(path_len);
 
 		if(type == t_image)
-			snprintf(path, path_len, "%s/%lu/image/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/image/%s", directory_log, user_log, file_name);
 		else if(type == t_document)
-			snprintf(path, path_len, "%s/%lu/document/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/document/%s", directory_log, user_log, file_name);
 		else if(type == t_voice)
-			snprintf(path, path_len, "%s/%lu/voice/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/voice/%s", directory_log, user_log, file_name);
 		else if(type == t_audio)
-			snprintf(path, path_len, "%s/%lu/audio/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/audio/%s", directory_log, user_log, file_name);
 		else if(type == t_video)
-			snprintf(path, path_len, "%s/%lu/video/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/video/%s", directory_log, user_log, file_name);
 		else if(type == t_contact)
-			snprintf(path, path_len, "%s/%lu/contact/%s", directory_log, user_log, file_name);
+			snprintf(path, path_len, "%s/%ld/contact/%s", directory_log, user_log, file_name);
 
 
 		if(access_log(path) == 1)
@@ -53,7 +53,7 @@ char *insert_file(long int user, enum Etype type, char *name_file) {
 	if(exist == true){
 		path_user_len = strlen(directory_log) + 25;
 		path_user = malloc(path_user_len);
-		snprintf(path_user, path_user_len , "%s/%lu", directory_log, user);
+		snprintf(path_user, path_user_len , "%s/%ld", directory_log, user);
 
 		if((returned == access_log(path_user)) == -1)
 			goto log_error;
@@ -117,7 +117,7 @@ bool text_log(long int user_log, char *extra, long int date, char *text) {
 		path_len = strlen(directory_log) + 25;
 		path = malloc(path_len);
 
-		snprintf(path, path_len, "%s/%lu");
+		snprintf(path, path_len, "%s/%ld");
 
 		if(access_log(path) == -1){
 
