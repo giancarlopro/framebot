@@ -109,20 +109,52 @@ log_error_user:
 	return name_file;
 }
 
-bool text_log(long int user_log, char *extra, long int date, char *text) {
-	if(exist == true){
-		char *path;
-		size_t path_len;
+bool text_log(long int user_log, char *extra, long int date, const char *text) {
+	char *path, fdate[25];
+	size_t path_len;
+	int returned;
+	struct tm *loctime;
+	FILE *fd_log;
 
-		path_len = strlen(directory_log) + 25;
+	if(exist == true){
+		path_len = strlen(directory_log) + 30;
 		path = malloc(path_len);
 
-		snprintf(path, path_len, "%s/%ld");
+		snprintf(path, path_len, "%s/%ld", directory_log, user_log);
 
-		if(access_log(path) == -1){
-
+		if((returned = access_log(path)) == -1){
+			goto error_path;
 		}
+		if(returned == 0){
+			if(mkdir(path, S_IRWXU | S_IRWXU | S_IXGRP | S_IROTH | S_IXOTH) == -1)
+				goto error_path;
+		}
+
+		strcat(path, "/log");
+
+		if((returned = access_log(path))== -1){
+			goto error_path;
+		}
+
+		fd_log = fopen(path, "a");
+		if(!fd_log)
+			goto error_path;
+
+		loctime = localtime(&date);
+		strftime(fdate, 25, "%F %T", loctime);
+
+		fprintf(fd_log, "\n %s\nid: %ld\extra: %s\nmessage: %s\n", fdate, user_log, extra, text);
+
+
+		free(path);
+
+		return true;
 	}
+
+
+error_path:
+	free(path);
+	return false;
 }
 
 void log_init(){
