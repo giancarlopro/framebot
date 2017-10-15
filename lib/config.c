@@ -636,13 +636,13 @@ long kbext(char *str_size) {
 	if(kb == true) {
 		size = atol(str_size);
 		size = size * 1024;
-		sprintf(str_size, "%lu", size);
+		sprintf(str_size, "%ld", size);
 		return size;		
 	}
 	else if(mb == true) {
 		size = atol(str_size);
 		size = (size *1024) * 1024;  
-		sprintf(str_size, "%lu", size);
+		sprintf(str_size, "%ld", size);
 		return size;
 	}
 
