@@ -615,7 +615,9 @@ long kbext(char *str_size) {
 	long int size = 0;
 	char str[50];
 
-	for(i = 0; i < strlen(str_size); i++) {
+	size = strlen(str_size);
+
+	for(i = 0; i < size; i++) {
 
 		if((str_size[i] < 48 || str_size[i] > 57) && i > 0) {
 		
