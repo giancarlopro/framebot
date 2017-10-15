@@ -165,7 +165,7 @@ typedef struct _inline_query{
     char * offset;
 } InlineQuery;
 
-typedef struct _choosen_inline_result{
+typedef struct _chosen_inline_result{
     char * result_id;
     User * from;
     Location * location;
@@ -270,6 +270,9 @@ void message_free(Message * message);
 
 Bot * bot(const char * token, User * user);
 void bot_free(Bot * bot);
+
+ChoosenInlineResult * choosen_inline_result (const char *result_id, User *from, Location *location, const char *inline_message_id, const char * query);
+void choosen_inline_result_free(ChoosenInlineResult * cir);
 
 Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result, CallbackQuery * callback_query);
 void update_free(Update * oupdate);

@@ -513,18 +513,34 @@ Update * update(long int update_id, Message * message, Message * edited_message,
 
 
 void update_free(Update * oupdate){
-    if(oupdate->message)
+    if(oupdate->message){
+        message_free(oupdate->message);
         free(oupdate->message);
-    if(oupdate->edited_message)
+    }
+
+    if(oupdate->edited_message){
+        message_free(oupdate->edited_message);
         free(oupdate->edited_message);
-    if(oupdate->channel_post)
+    }
+
+    if(oupdate->channel_post){
+        message_free(oupdate->channel_post);
         free(oupdate->channel_post);
-    if(oupdate->edited_channel_post)
+    }
+
+    if(oupdate->edited_channel_post){
+        message_free(oupdate->edited_channel_post);
         free(oupdate->edited_channel_post);
-    if(oupdate->inline_query)
+    }
+
+    if(oupdate->inline_query){
         free(oupdate->inline_query);
-    if(oupdate->choosen_inline_result)
+    }
+
+    if(oupdate->choosen_inline_result){
         free(oupdate->choosen_inline_result);
+    }
+
     if(oupdate->callback_query)
         free(oupdate->callback_query);
 
@@ -600,4 +616,44 @@ void chat_member_free(ChatMember *chatMember) {
     user_free(chatMember->user);
     free(chatMember->status);
     free(chatMember);
+}
+
+ChoosenInlineResult * choosen_inline_result(const char *result_id, User *from,
+                                             Location *location, const char *inline_message_id, const char * query) {
+
+    ChoosenInlineResult * cir = (ChoosenInlineResult *) malloc (sizeof(ChoosenInlineResult));
+
+    cir->result_id = alloc_string(result_id);
+    cir->from      = from;
+    cir->location  = location;
+    cir->inline_message_id = alloc_string(inline_message_id);
+    cir->query     = alloc_string(query);
+
+    return cir;
+}
+
+void chosen_inline_result_free(ChoosenInlineResult * cir){
+    if(cir->result_id){
+        free(cir->result_id);
+    }
+
+    if(cir->from){
+        user_free(cir->from);
+        free(cir->from);
+    }
+
+    if(cir->location) {
+        location_free(cir->location);
+        free(cir->location);
+    }
+
+    if(cir->inline_message_id){
+        free(cir->inline_message_id);
+    }
+
+    if(cir->query){
+        free(cir->query);
+    }
+
+    free(cir);
 }
