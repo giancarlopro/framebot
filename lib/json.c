@@ -516,14 +516,14 @@ ChatMember *chat_member_parse (json_t *json) {
     }
 }
 
-int valid_update(long int update_id){
+bool valid_update(long int update_id){
     static long int update_last_valid = 0;
 
     if(update_last_valid < update_id){
         update_last_valid = update_id;
 
-        return 1;
+        return true;
     }
 
-    return -1;
+    return false;
 }
