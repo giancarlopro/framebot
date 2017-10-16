@@ -23,7 +23,7 @@ Update * update_parse(json_t *json);
 User * get_me_parse(char * json);
 bool valid_update(long int update_id);
 ChatMember *chat_member_parse (json_t *json);
-ChoosenInlineResult * choosen_inline_result_parse(json_t * json);
+ChosenInlineResult * choosen_inline_result_parse(json_t * json);
 
 
 #endif

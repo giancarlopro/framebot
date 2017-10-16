@@ -171,7 +171,7 @@ typedef struct _chosen_inline_result{
     Location * location;
     char * inline_message_id;
     char * query;
-} ChoosenInlineResult;
+} ChosenInlineResult;
 
 typedef struct _callback_query{
     char * id;
@@ -190,7 +190,7 @@ typedef struct _update{
     Message * channel_post;
     Message * edited_channel_post;
     InlineQuery * inline_query;
-    ChoosenInlineResult * choosen_inline_result;
+    ChosenInlineResult * chosen_inline_result;
     CallbackQuery * callback_query;
 
 	struct _update *next;
@@ -271,10 +271,10 @@ void message_free(Message * message);
 Bot * bot(const char * token, User * user);
 void bot_free(Bot * bot);
 
-ChoosenInlineResult * choosen_inline_result (const char *result_id, User *from, Location *location, const char *inline_message_id, const char * query);
-void choosen_inline_result_free(ChoosenInlineResult * cir);
+ChosenInlineResult * chosen_inline_result (const char *result_id, User *from, Location *location, const char *inline_message_id, const char * query);
+void chosen_inline_result_free(ChosenInlineResult * cir);
 
-Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result, CallbackQuery * callback_query);
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result, CallbackQuery * callback_query);
 void update_free(Update * oupdate);
 void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);

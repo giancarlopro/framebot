@@ -338,7 +338,7 @@ Venue * venue_parse(json_t *json){
     return NULL;
 }
 
-ChoosenInlineResult * choosen_inline_result_parse(json_t * json){
+ChosenInlineResult * chosen_inline_result_parse(json_t * json){
     json_t * pcir = json;
 
     if(json_is_object(pcir)){
@@ -353,13 +353,13 @@ ChoosenInlineResult * choosen_inline_result_parse(json_t * json){
         User * ouser = user_parse(from);
         Location * olocation = location_parse(location);
 
-        ChoosenInlineResult *
-        ochoosen_inline_result = choosen_inline_result(json_string_value(result_id),
+        ChosenInlineResult *
+        ochosen_inline_result = chosen_inline_result(json_string_value(result_id),
                                                    ouser, olocation,
                                                    json_string_value(inline_message_id),
                                                    json_string_value(query));
 
-        return ochoosen_inline_result;
+        return ochosen_inline_result;
     }
 
     return NULL;

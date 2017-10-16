@@ -494,7 +494,7 @@ void message_free(Message * message){
 }
 
 
-Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChoosenInlineResult * choosen_inline_result,CallbackQuery * callback_query){
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result,CallbackQuery * callback_query){
     Update * oupdate = (Update *)malloc(sizeof(Update));
 
     oupdate->update_id = update_id;
@@ -503,7 +503,7 @@ Update * update(long int update_id, Message * message, Message * edited_message,
     oupdate->channel_post = channel_post;
     oupdate->edited_channel_post = edited_channel_post;
     oupdate->inline_query = inline_query;
-    oupdate->choosen_inline_result = choosen_inline_result;
+    oupdate->chosen_inline_result = chosen_inline_result;
     oupdate->callback_query = callback_query;
 
 	oupdate->next = NULL;
@@ -537,8 +537,8 @@ void update_free(Update * oupdate){
         free(oupdate->inline_query);
     }
 
-    if(oupdate->choosen_inline_result){
-        free(oupdate->choosen_inline_result);
+    if(oupdate->chosen_inline_result){
+        free(oupdate->chosen_inline_result);
     }
 
     if(oupdate->callback_query)
@@ -618,10 +618,10 @@ void chat_member_free(ChatMember *chatMember) {
     free(chatMember);
 }
 
-ChoosenInlineResult * choosen_inline_result(const char *result_id, User *from,
+ChosenInlineResult * chosen_inline_result(const char *result_id, User *from,
                                              Location *location, const char *inline_message_id, const char * query) {
 
-    ChoosenInlineResult * cir = (ChoosenInlineResult *) malloc (sizeof(ChoosenInlineResult));
+    ChosenInlineResult * cir = (ChosenInlineResult *) malloc (sizeof(ChosenInlineResult));
 
     cir->result_id = alloc_string(result_id);
     cir->from      = from;
@@ -632,7 +632,7 @@ ChoosenInlineResult * choosen_inline_result(const char *result_id, User *from,
     return cir;
 }
 
-void chosen_inline_result_free(ChoosenInlineResult * cir){
+void chosen_inline_result_free(ChosenInlineResult * cir){
     if(cir->result_id){
         free(cir->result_id);
     }
