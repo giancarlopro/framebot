@@ -490,6 +490,7 @@ void message_free(Message * message){
         user_free(message->left_chat_member);
     if(message->pinned_message)
         message_free(message->pinned_message);
+
     free(message);
 }
 
@@ -513,33 +514,23 @@ Update * update(long int update_id, Message * message, Message * edited_message,
 
 
 void update_free(Update * oupdate){
-    if(oupdate->message){
+    if(oupdate->message)
         message_free(oupdate->message);
-        free(oupdate->message);
-    }
 
-    if(oupdate->edited_message){
+    if(oupdate->edited_message)
         message_free(oupdate->edited_message);
-        free(oupdate->edited_message);
-    }
 
-    if(oupdate->channel_post){
+    if(oupdate->channel_post)
         message_free(oupdate->channel_post);
-        free(oupdate->channel_post);
-    }
 
-    if(oupdate->edited_channel_post){
+    if(oupdate->edited_channel_post)
         message_free(oupdate->edited_channel_post);
-        free(oupdate->edited_channel_post);
-    }
 
-    if(oupdate->inline_query){
+    if(oupdate->inline_query)
         free(oupdate->inline_query);
-    }
 
-    if(oupdate->chosen_inline_result){
+    if(oupdate->chosen_inline_result)
         free(oupdate->chosen_inline_result);
-    }
 
     if(oupdate->callback_query)
         free(oupdate->callback_query);

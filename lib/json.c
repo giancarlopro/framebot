@@ -478,7 +478,7 @@ Update * update_parse(json_t *json){
     json_t * pupdate = json;
 
     if(json_is_object(pupdate)){
-        json_t *update_id, *message, *edited_message, *channel_post, *edited_channel_post, *inline_query, *choosen_inline_result, *callback_query;
+        json_t *update_id, *message, *edited_message, *channel_post, *edited_channel_post, *inline_query, *chosen_inline_result, *callback_query;
 
         update_id = json_object_get(pupdate,"update_id");
         if(valid_update(json_integer_value(update_id)) == -1)
@@ -489,7 +489,7 @@ Update * update_parse(json_t *json){
         channel_post = json_object_get(pupdate,"channel_post");
         edited_channel_post = json_object_get(pupdate,"edited_channel_post");
         inline_query = json_object_get(pupdate,"inline_query");
-        choosen_inline_result = json_object_get(pupdate,"choosen_inline_result");
+        chosen_inline_result = json_object_get(pupdate,"choosen_inline_result");
         callback_query = json_object_get(pupdate,"callback_query");
 
         Message * omessage = message_parse(message);
@@ -497,9 +497,11 @@ Update * update_parse(json_t *json){
         Message * ochannel_post = message_parse(channel_post);
         Message * oedited_channel_post = message_parse(edited_channel_post);
 
+        ChosenInlineResult * cir = chosen_inline_result_parse(chosen_inline_result);
+
         Update * oupdate = update(  json_integer_value(update_id),
                                   omessage, oedited_message, ochannel_post, 
-                                  oedited_channel_post, NULL, NULL, NULL);
+                                  oedited_channel_post, NULL, cir, NULL);
 
         return oupdate;
     }
