@@ -497,11 +497,12 @@ Update * update_parse(json_t *json){
         Message * ochannel_post = message_parse(channel_post);
         Message * oedited_channel_post = message_parse(edited_channel_post);
 
-        ChosenInlineResult * cir = chosen_inline_result_parse(chosen_inline_result);
+        InlineQuery * oinline_query = inline_query_parse(inline_query);
+        ChosenInlineResult * ochosen_inline_result = chosen_inline_result_parse(chosen_inline_result);
 
         Update * oupdate = update(  json_integer_value(update_id),
                                   omessage, oedited_message, ochannel_post, 
-                                  oedited_channel_post, NULL, cir, NULL);
+                                  oedited_channel_post, oinline_query, ochosen_inline_result, NULL);
 
         return oupdate;
     }
@@ -543,6 +544,53 @@ ChatMember *chat_member_parse (json_t *json) {
         
         return ochatmember;
     }
+}
+
+InlineQuery * inline_query_parse(json_t * json){
+    if (json_is_object(json)) {
+        json_t *id, *from, *location, *query, *offset;
+
+        id = json_object_get(json, "id");
+        from = json_object_get(json, "from");
+        location = json_object_get(json, "location");
+        query = json_object_get(json, "query");
+        offset = json_object_get(json, "offset");
+
+        User * ouser = user_parse(from);
+        Location * olocation = location_parse(location);
+
+        InlineQuery * oinline_query = inline_query(json_string_value(id), ouser, olocation, json_string_value(query), json_string_value(offset));
+
+        return oinline_query;
+    }
+
+    return NULL;
+}
+
+CallbackQuery * callback_query_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *id, *from, *message, *inline_message_id, *chat_instance, *date, *game_short_name;
+
+        id = json_object_get(json , "id");
+        from = json_object_get(json , "from");
+        message = json_object_get(json, "message");
+        inline_message_id = json_object_get(json, "inline_message_id");
+        chat_instance = json_object_get(json, "chat_instance");
+        date = json_object_get(json, "date");
+        game_short_name = json_object_get(json, "game_short_name");
+
+        User * ouser = user_parse(from);
+        Message * omessage = message_parse(message);
+
+        CallbackQuery * ocallback_query = callback_query(json_string_value(id), ouser, omessage,
+                                        json_string_value(inline_message_id),
+                                        json_string_value(chat_instance),
+                                        json_string_value(date), json_string_value(game_short_name));
+
+        return ocallback_query;
+    }
+
+    return NULL;
 }
 
 bool valid_update(long int update_id){

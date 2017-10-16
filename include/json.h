@@ -24,6 +24,7 @@ User * get_me_parse(char * json);
 bool valid_update(long int update_id);
 ChatMember *chat_member_parse (json_t *json);
 ChosenInlineResult * choosen_inline_result_parse(json_t * json);
-
+InlineQuery * inline_query_parse(json_t * json);
+CallbackQuery * callback_query_parse(json_t * json);
 
 #endif

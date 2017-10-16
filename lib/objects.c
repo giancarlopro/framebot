@@ -648,3 +648,74 @@ void chosen_inline_result_free(ChosenInlineResult * cir){
 
     free(cir);
 }
+
+InlineQuery * inline_query(const char * id, User * user, Location * location, const char *query, const char * offset){
+
+    InlineQuery * inline_query = (InlineQuery *) malloc(sizeof(InlineQuery));
+
+    inline_query->id = alloc_string(id);
+    inline_query->from = user;
+    inline_query->location = location;
+    inline_query->query = alloc_string(query);
+    inline_query->offset = alloc_string(offset);
+
+    return inline_query;
+}
+
+void inline_query_free(InlineQuery * inline_query){
+    if(inline_query->id)
+        free(inline_query->id);
+
+    if(inline_query->from)
+        user_free(inline_query->from);
+
+    if(inline_query->location)
+        location_free(inline_query->location);
+
+    if(inline_query->query)
+        free(inline_query->query);
+
+    if(inline_query->offset)
+        free(inline_query->offset);
+
+    free(inline_query);
+}
+
+CallbackQuery * callback_query(const char * id, User * user, Message * message, const char * inline_message_id, const char * chat_instance, const char * data, const char * game_short_name) {
+    CallbackQuery * ocallbac_query = (CallbackQuery *) malloc(sizeof(CallbackQuery));
+
+    ocallbac_query->id = alloc_string(id);
+    ocallbac_query->from = user;
+    ocallbac_query->message = message;
+    ocallbac_query->inline_message_id = alloc_string(inline_message_id);
+    ocallbac_query->chat_instance = alloc_string(chat_instance);
+    ocallbac_query->data = alloc_string(data);
+    ocallbac_query->game_short_name = alloc_string(game_short_name);
+
+    return ocallbac_query;
+}
+
+void callback_query_free(CallbackQuery * callback_query){
+    if(callback_query->id)
+        free(callback_query->id);
+
+    if(callback_query->from)
+        user_free(callback_query->from);
+
+    if(callback_query->message)
+        message_free(callback_query->message);
+
+    if(callback_query->chat_instance)
+        free(callback_query->chat_instance);
+
+    if(callback_query->inline_message_id)
+        free(callback_query->inline_message_id);
+
+    if(callback_query->data)
+        free(callback_query->data);
+
+    if(callback_query->game_short_name)
+        free(callback_query->game_short_name);
+
+    free(callback_query);
+}
