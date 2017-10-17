@@ -216,6 +216,18 @@ typedef struct _chat_member {
     bool can_add_web_page_previews;
 } ChatMember;
 
+typedef struct _file{
+    char * file_id;
+    long file_size;
+    char * file_path;
+    struct _files * next;
+} File;
+
+typedef struct _user_profile_photos{
+    long total_count;
+    PhotoSize * photo_size;
+} UserProfilePhotos;
+
 //User functions
 User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code);
 void user_free(User *usr);
