@@ -2,6 +2,12 @@ Estrutura de dados da api bot
 
 Telegram
 
+tipos
+Update - Message - MessageEntity - PhotoSize - User - Chat - Audio
+Document - Game - Sticker - Video - Voice - Contact - Location
+Venue - Animation - InlineQuery - ChosenInlineResult - CallbackQuery ChatMember
+
+
 árvore da estrutura
 
 update
@@ -16,7 +22,7 @@ update
 -> next
 
 update - message
-(type message)
+(type Message)
 -> message_id                (long)
 -> date                      (long)
 -> forward_from_message_id   (long)
@@ -61,7 +67,7 @@ update - (type)message - entities
 -> url                       (char *)
 
 update - (type)message - photo
-(type photosize)
+(type PhotoSize)
 -> file_id                   (char *)
 -> width                     (int)
 -> height                    (int)
@@ -69,7 +75,7 @@ update - (type)message - photo
 -> next                      (next photosize)
 
 update - (type)message - new_chat_photo
-(type photosize)
+(type PhotoSize)
 -> file_id                   (char *)
 -> width                     (int)
 -> height                    (int)
@@ -77,14 +83,14 @@ update - (type)message - new_chat_photo
 -> next                      (next photosize)
 
 update - (type)message - from
-(type user)
+(type User)
 -> id                        (long)
 -> first_name                (char *)
 -> last_name                 (char *)
 -> username                  (char *)
 
 update - (type)message - chat
-(type chat)
+(type Chat)
 -> id                        (long)
 -> all_members_are_administrators (int)
 -> type                      (char *)
@@ -94,7 +100,7 @@ update - (type)message - chat
 -> last_name                 (char *)
 
 update - (type)message - forward_from_chat
-(type chat)
+(type Chat)
 -> id                        (long)
 -> all_members_are_administrators (int)
 -> type                      (char *)
@@ -104,14 +110,14 @@ update - (type)message - forward_from_chat
 -> last_name                 (char *)
 
 update - (type)message - forward_from
-(type user)
+(type User)
 -> id                        (long)
 -> first_name                (char *)
 -> last_name                 (char *)
 -> username                  (char *)
 
 update - (type)message - reply_to_message
-(type message)
+(type Message)
 -> message_id                (long)
 -> date                      (long)
 -> forward_from_message_id   (long)
@@ -148,7 +154,7 @@ update - (type)message - reply_to_message
 -> new_chat_title            (type new_chat_title)
 
 update - (type)message - audio
-(type audio)
+(type Audio)
 -> duration                  (long)
 -> file_size                 (long)
 -> file_id                   (char *)
@@ -157,7 +163,7 @@ update - (type)message - audio
 -> mime_type                 (char *)
 
 update - (type)message - document
-(type document)
+(type Document)
 -> file_id                   (char *)
 -> thumb (PhotoSize)         (type photosize)
 -> file_name                 (char *)
@@ -165,7 +171,7 @@ update - (type)message - document
 ->file_size                  (long)
 
 update - (type)message - game
-(type game)
+(type Game)
 -> title                     (char *)
 -> description               (char *)
 -> photo                     (type photosize)
@@ -174,7 +180,7 @@ update - (type)message - game
 -> animation                 (type animation)
 
 update - (type)message - sticker
-(type sticker)
+(type Sticker)
 -> file_id                   (char *)
 -> emoji                     (char *)
 -> width                     (int)
@@ -183,7 +189,7 @@ update - (type)message - sticker
 -> thumb                     (type photosize)
 
 update - (type)message - video
-(type video)
+(type Video)
 -> file_id                   (char *)
 -> mime_type                 (char *)
 -> width                     (int)
@@ -193,33 +199,33 @@ update - (type)message - video
 -> thumb                     (type photosize)
 
 update - (type)message - voice
-(type voice)
+(type Voice)
 -> file_id                   (char *)
 -> mime_type                 (char *)
 -> duration                  (long)
 -> file_size                 (int)
 
 update - (type)message - contact
-(type contact)
+(type Contact)
 -> phone_number              (char *)
 -> first_name                (char *)
 -> last_name                 (char *)
 -> user_id                   (long)
 
 update - (type)message - location
-(type location)
+(type Location)
 -> latitude                  (float)
 -> longetude                 (float)
 
 update - (type)message - venue
-(type venue)
+(type Venue)
 -> location (type location)
 -> title                     (char *)
 -> address                   (char *)
 ->foursquare_id              (char *)
 
 update - (type)message - new_chat_member
-(type user)
+(type User)
 -> id                        (long)
 -> first_name                (char *)
 ->last_name                  (char *)
@@ -232,8 +238,40 @@ update - (type)message - left_chat_member
 -> last_name                 (char *)
 -> username                  (char *)
 
+type Animation
+-> file_id
+-> thumb
+-> file_name
+-> mime_type
+-> file_size
+
+type InlineQuery
+-> id 					(char)
+-> from 				(from)
+-> location 			(Location)
+-> query 				(query)
+-> offset 				(offset)
+
+type ChosenInlineResult
+-> result_id 			(char)
+-> from 				(from)
+-> location 			(Location)
+-> inline_message_id	(char)
+-> query 				(char)
+
+type CallbackQuery
+-> id 					(char)
+-> from 				(User)
+-> message 				(Message)
+-> inline_message_id 	(char)
+-> chat_instace 		(char)
+-> data 				(char)
+-> game_short_name 		(char)
+
+
+
 update - (type)message - pinned_message
-(type message)
+(type Message)
 -> message_id                (long)
 -> date                      (long)
 -> forward_from_message_id   (long)
@@ -268,4 +306,3 @@ update - (type)message - pinned_message
 -> text                      (char *)
 -> caption                   (char *)
 -> new_chat_title            (type new_chat_title)
-
