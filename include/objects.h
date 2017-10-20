@@ -258,7 +258,6 @@ typedef struct _update{
     CallbackQuery * callback_query;
     ShippingQuery * shipping_query;
 	struct _update *next;
-	
 } Update;
 
 typedef struct _chat_member {

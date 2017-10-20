@@ -42,7 +42,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 
 /* send data to telegram */
 MemStore * call_method(const char *token, char *method){
-    size_t url_size = strlen(API_URL) + strlen(token) + strlen(method) + 2;
+    size_t url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
     char * url = (char *)malloc(url_size);
 
     strcpy(url, API_URL);
@@ -50,8 +50,7 @@ MemStore * call_method(const char *token, char *method){
     strcat(url, "/");
     strcat(url, method);
 
-  //  printf("\n->%s\n", url);
-    fflush(stdout);
+    url[url_size] = '\0';
 
     CURL * curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -67,7 +66,6 @@ MemStore * call_method(const char *token, char *method){
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, mem_write_callback);
 
     free(url);
-
 
     if (curl_easy_perform(curl) == CURLE_OK) {
         return buff;
