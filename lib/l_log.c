@@ -159,14 +159,14 @@ error_path:
 
 void log_init(){
 	directory_log = get_log();
-	printf("00(%s)", directory_log);
+	printf("\nlog = %s", directory_log);
 
 	if(mkdir(directory_log, S_IRWXU | S_IRWXU | S_IXGRP | S_IROTH | S_IXOTH) == -1){
 		if(errno == EEXIST){
 			exist = true;
 		}
 		else {
-			printf("error in the path to the log . . . verify config\npress enter to continue without log");
+			printf("\nerror in the path to the log\nverify config\npress enter to continue without log");
 			getchar();
 		}
 	}
