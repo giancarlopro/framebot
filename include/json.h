@@ -26,5 +26,11 @@ ChatMember *chat_member_parse (json_t *json);
 ChosenInlineResult * choosen_inline_result_parse(json_t * json);
 InlineQuery * inline_query_parse(json_t * json);
 CallbackQuery * callback_query_parse(json_t * json);
+VideoNote * video_note_parse(json_t * json);
+Invoice * invoice_parse(json_t * json);
+ShippingQuery * shipping_query_parse(json_t * json);
+ShippingAddress * shipping_address_parse(json_t * json);
+PreCheckoutQuery * pre_checkout_query_parse(json_t * json);
+OrderInfo * order_info_parse(json_t * json);
 
 #endif

@@ -94,6 +94,14 @@ typedef struct _video{
     long int file_size;
 } Video;
 
+typedef struct video_note{
+    char * file_id;
+    long length;
+    long duration;
+    PhotoSize * thumb;
+    long file_size;
+} VideoNote;
+
 typedef struct _voice{
     char * file_id;
     long int duration;
@@ -120,6 +128,56 @@ typedef struct _venue{
     char * foursquare_id;
 } Venue;
 
+typedef struct _invoice{
+    char * title;
+    char * description;
+    char * start_parameter;
+    char * currency;
+    long total_amount;
+} Invoice;
+
+typedef struct _shipping_address{
+    char * country_code;
+    char * state;
+    char * city;
+    char * street_line1;
+    char * street_line2;
+    char * post_code;
+} ShippingAddress;
+
+typedef struct _order_info{
+    char * name;
+    char * phone_number;
+    char * email;
+    ShippingAddress * shipping_address;
+} OrderInfo;
+
+typedef struct _successful_payment{
+    char * currency;
+    long total_amount;
+    char * invoice_payload;
+    char * shipping_option_id;
+    char * telegram_payment_charge_id;
+    char * provider_payment_charge_id;
+} SuccessfulPayment;
+
+typedef struct _shipping_query{
+    char * id;
+    User * from;
+    char * invoice_payload;
+    ShippingAddress * shipping_address;
+} ShippingQuery;
+
+typedef struct _pre_checkout_query{
+    char * id;
+    User * user;
+    char * currency;
+    long total_amount;
+    char * invoice_payload;
+    char * shipping_option_id;
+    OrderInfo * order_info;
+} PreCheckoutQuery;
+
 typedef struct _message{
     long int message_id;
     User * from;
@@ -128,11 +186,14 @@ typedef struct _message{
     User * forward_from;
     Chat * forward_from_chat;
     long int forward_from_message_id;
+    char * forward_signature;
     long int forward_date;
     struct _message * reply_to_message;
     long int edit_date;
+    char * author_signature;
     char * text;
     MessageEntity * entities;//Array
+    MessageEntity * caption_entities;
     Audio * audio;
     Document * document;
     Game * game;
@@ -140,6 +201,7 @@ typedef struct _message{
     Sticker * sticker;
     Video * video;
     Voice * voice;
+    VideoNote * video_note;
     char * caption;
     Contact * contact;
     Location * location;
@@ -155,6 +217,8 @@ typedef struct _message{
     long int migrate_to_chat_id;
     long int migrate_from_chat_id;
     struct _message * pinned_message;
+    Invoice * invoice;
+    SuccessfulPayment * successful_payment;
 } Message;
 
 typedef struct _inline_query{
@@ -192,7 +256,7 @@ typedef struct _update{
     InlineQuery * inline_query;
     ChosenInlineResult * chosen_inline_result;
     CallbackQuery * callback_query;
-
+    ShippingQuery * shipping_query;
 	struct _update *next;
 	
 } Update;
@@ -277,7 +341,7 @@ void location_free(Location * _location);
 Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id);
 void venue_free(Venue * _venue);
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message);
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice, VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message, Invoice * oinvoice);
 void message_free(Message * message);
 
 Bot * bot(const char * token, User * user);
@@ -286,7 +350,7 @@ void bot_free(Bot * bot);
 ChosenInlineResult * chosen_inline_result (const char *result_id, User *from, Location *location, const char *inline_message_id, const char * query);
 void chosen_inline_result_free(ChosenInlineResult * cir);
 
-Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result, CallbackQuery * callback_query);
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result, CallbackQuery * callback_query, ShippingQuery * shipping_query, PreCheckoutQuery * pre_checkout_query);
 void update_free(Update * oupdate);
 void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
@@ -300,5 +364,23 @@ void inline_query_free(InlineQuery * inline_query);
 
 CallbackQuery * callback_query(const char * id, User * user, Message * message, const char * inline_message_id, const char * chat_instance, const char * data, const char * game_short_name);
 void callback_query_free(CallbackQuery * callback_query);
+
+VideoNote * video_note(const char * file_id, long length, long duration, PhotoSize * photo_size, long file_size);
+void video_note_free(VideoNote * video_note);
+
+Invoice * invoice(const char * title, const char * description, const char * start_parameter, const char * currency, long total_amount);
+void invoice_free(Invoice * invoice);
+
+ShippingQuery * shipping_query(const char *id, User * from, const char * invoice_payload, ShippingAddress * shipping_address);
+void shipping_query_free(ShippingQuery * shipping_query);
+
+ShippingAddress * shipping_address(const char * country_code, const char * state, const char * city, const char * street_line1, const char * street_line2, const char * post_code);
+void shipping_address_free(ShippingAddress * shipping_address);
+
+OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address);
+void order_info_free(OrderInfo * order_info);
+
+PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info);
+void pre_checkout_query_free(PreCheckoutQuery * pcq);
 
 #endif // OBJECTS_H_

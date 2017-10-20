@@ -405,7 +405,7 @@ Message * message_parse(json_t *json){
         PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
 
         //Objects
-        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *contact, *location, *venue, *new_chat_member, *left_chat_member, *pinned_message;
+        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, *location, *venue, *new_chat_member, *left_chat_member, *pinned_message, *invoice;
 
         from = json_object_get(pmessage,"from");
         User * ofrom = user_parse(from);
@@ -440,6 +440,9 @@ Message * message_parse(json_t *json){
         voice = json_object_get(pmessage,"voice");
         Voice * ovoice = voice_parse(voice);
 
+        video_note = json_object_get(pmessage, "video_note");
+        VideoNote * ovideo_note = video_note_parse(video_note);
+
         contact = json_object_get(pmessage,"contact");
         Contact * ocontact = contact_parse(contact);
 
@@ -458,15 +461,18 @@ Message * message_parse(json_t *json){
         pinned_message = json_object_get(pmessage,"pinned_message");
         Message * opinned_message = message_parse(pinned_message);
 
+        invoice = json_object_get(json, "invoice");
+        Invoice * oinvoice = invoice_parse(invoice);
+
         Message * omessage = message(json_integer_value(message_id), ofrom, json_integer_value(date), 
                                      ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id), 
                                      json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), 
-                                     json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, 
+                                     json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
                                      json_string_value(caption), ocontact, olocation, ovenue, onew_chat_member, oleft_chat_member, 
                                      json_string_value(new_chat_title), onew_chat_photo, json_integer_value(delete_chat_photo), 
                                      json_integer_value(group_chat_created), json_integer_value(supergroup_chat_created), 
                                      json_integer_value(channel_chat_created), json_integer_value(migrate_to_chat_id), 
-                                     json_integer_value(migrate_from_chat_id), opinned_message);
+                                     json_integer_value(migrate_from_chat_id), opinned_message, oinvoice);
 
         return omessage;
     }
@@ -478,7 +484,9 @@ Update * update_parse(json_t *json){
     json_t * pupdate = json;
 
     if(json_is_object(pupdate)){
-        json_t *update_id, *message, *edited_message, *channel_post, *edited_channel_post, *inline_query, *chosen_inline_result, *callback_query;
+        json_t *update_id, *message, *edited_message, *channel_post,
+        *edited_channel_post, *inline_query, *chosen_inline_result,
+        *callback_query, *shipping_query, *pre_checkout_query;
 
         update_id = json_object_get(pupdate,"update_id");
         if(valid_update(json_integer_value(update_id)) == -1)
@@ -491,6 +499,9 @@ Update * update_parse(json_t *json){
         inline_query = json_object_get(pupdate,"inline_query");
         chosen_inline_result = json_object_get(pupdate,"choosen_inline_result");
         callback_query = json_object_get(pupdate,"callback_query");
+        shipping_query = json_object_get(pupdate, "shipping_query");
+        pre_checkout_query = json_object_get(pupdate, "pre_checkout_query");
+
 
         Message * omessage = message_parse(message);
         Message * oedited_message = message_parse(edited_message);
@@ -499,10 +510,16 @@ Update * update_parse(json_t *json){
 
         InlineQuery * oinline_query = inline_query_parse(inline_query);
         ChosenInlineResult * ochosen_inline_result = chosen_inline_result_parse(chosen_inline_result);
+        CallbackQuery * ocallback_query = callback_query_parse(callback_query);
+        ShippingQuery * oshipping_query = shipping_query_parse(shipping_query);
+        PreCheckoutQuery * opre_checkout_query = pre_checkout_query_parse(pre_checkout_query);
+
 
         Update * oupdate = update(  json_integer_value(update_id),
-                                  omessage, oedited_message, ochannel_post, 
-                                  oedited_channel_post, oinline_query, ochosen_inline_result, NULL);
+                                  omessage, oedited_message, ochannel_post,
+                                  oedited_channel_post, oinline_query,
+                                  ochosen_inline_result, ocallback_query,
+                                  oshipping_query, opre_checkout_query);
 
         return oupdate;
     }
@@ -593,6 +610,25 @@ CallbackQuery * callback_query_parse(json_t * json){
     return NULL;
 }
 
+VideoNote * video_note_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *file_id, *length, *duration, *thumb, *file_size;
+
+        file_id = json_object_get(json, "file_id");
+        length = json_object_get(json, "length");
+        duration = json_object_get(json, "duration");
+        thumb = json_object_get(json, "thumb");
+        file_size = json_object_get(json, "file_size");
+
+        PhotoSize * othumb = photo_size_parse(thumb);
+        VideoNote * ovideo_note = video_note(json_string_value(file_id), json_integer_value(length), json_integer_value(duration), othumb, json_integer_value(file_size));
+
+        return ovideo_note;
+    }
+
+    return NULL;
+}
+
 bool valid_update(long int update_id){
     static long int update_last_valid = 0;
 
@@ -604,3 +640,108 @@ bool valid_update(long int update_id){
 
     return false;
 }
+
+ShippingQuery * shipping_query_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *id, *from, *invoice_payload, *shipping_address;
+
+        id = json_object_get(json, "id");
+        from = json_object_get(json, "from");
+        invoice_payload = json_object_get(json, "invoice_payload");
+        shipping_address = json_object_get(json, "shipping_address");
+
+        User * ofrom = user_parse(from);
+        ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
+
+        ShippingQuery * oshipping_query = shipping_query(json_string_value(id), ofrom,
+                                                         json_string_value(invoice_payload),
+                                                         oshipping_address);
+
+        return oshipping_query;
+    }
+
+    return NULL;
+}
+
+Invoice * invoice_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *title, *description, * start_parameter, *currency, *total_amount;
+
+        title = json_object_get(json, "invoice");
+        description = json_object_get(json, "description");
+        start_parameter = json_object_get(json, "start_parameter");
+        currency = json_object_get(json, "currency");
+        total_amount = json_object_get(json, "total_amount");
+
+        Invoice * oinvoice = invoice(json_string_value(title), json_string_value(description),
+                                     json_string_value(start_parameter), json_string_value(currency),
+                                     json_integer_value(total_amount));
+
+        return oinvoice;
+    }
+
+    return NULL;
+}
+
+ShippingAddress * shipping_address_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *country_code, *state, *city, *street_line1, *street_line2, *post_code;
+
+        country_code = json_object_get(json, "country_code");
+        state = json_object_get(json, "state");
+        city = json_object_get(json, "city");
+        street_line1 = json_object_get(json, "street_line1");
+        street_line2 = json_object_get(json, "street_line2");
+        post_code = json_object_get(json, "post_code");
+
+        ShippingAddress * oshipping_address = shipping_address(json_string_value(country_code), json_string_value(state),
+                                                                json_string_value(city), json_string_value(street_line1),
+                                                                json_string_value(street_line2), json_string_value(post_code));
+
+        return oshipping_address;
+    }
+
+    return NULL;
+}
+
+PreCheckoutQuery * pre_checkout_query_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *id, *from, *currency, *total_amount, *invoice_payload, *shipping_option_id, *order_info;
+
+        id = json_object_get(json, "id");
+        from = json_object_get(json, "from");
+        currency = json_object_get(json, "currency");
+        total_amount = json_object_get(json, "total_amount");
+        invoice_payload = json_object_get(json, "invoice_payload");
+        shipping_option_id = json_object_get(json, "shipping_option_id");
+        order_info = json_object_get(json, "order_info");
+
+        User * ofrom = user_parse(from);
+        OrderInfo * oorder_info = order_info_parse(order_info);
+
+        PreCheckoutQuery * opre_checkout_query = pre_checkout_query(json_string_value(id), ofrom, json_string_value(currency), json_integer_value(total_amount), json_string_value(invoice_payload), json_string_value(shipping_option_id), oorder_info);
+
+        return opre_checkout_query;
+    }
+
+    return NULL;
+}
+
+OrderInfo * order_info_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *name, *phone_number, *email, *shipping_address;
+
+        name = json_object_get(json, "name");
+        phone_number = json_object_get(json, "phone_number");
+        email = json_object_get(json, "email");
+        shipping_address = json_object_get(json, "shipping_address");
+
+        ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
+        OrderInfo * oorder_info = order_info(json_string_value(name), json_string_value(phone_number), json_string_value(email), oshipping_address);
+
+        return oorder_info;
+    }
+
+    return NULL;
+}
+

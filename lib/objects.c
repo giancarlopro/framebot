@@ -401,11 +401,11 @@ Message * message(long int message_id,User * from, long int date, Chat * chat,
                   long int forward_date,Message * reply_to_message,long int edit_date,
                   const char * text,MessageEntity * entities,Audio * audio,Document * document,
                   Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,
-                  const char * caption,Contact * contact,Location * location,Venue * venue,
+                  VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,
                   User * new_chat_member,User * left_chat_member,const char * new_chat_title,
                   PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,
                   int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,
-                  long int migrate_from_chat_id,Message * pinned_message){
+                  long int migrate_from_chat_id,Message * pinned_message, Invoice  * oinvoice){
     
     Message * message = (Message *)malloc(sizeof(Message));
 
@@ -442,6 +442,7 @@ Message * message(long int message_id,User * from, long int date, Chat * chat,
     message->left_chat_member = left_chat_member;
     message->new_chat_photo = new_chat_photo;
     message->pinned_message = pinned_message;
+    message->video_note = video_note;
     //STRINGS
     message->text = alloc_string(text);
     message->caption = alloc_string(caption);
@@ -490,12 +491,14 @@ void message_free(Message * message){
         user_free(message->left_chat_member);
     if(message->pinned_message)
         message_free(message->pinned_message);
+    if(message->invoice)
+        invoice_free(message->invoice);
 
     free(message);
 }
 
 
-Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result,CallbackQuery * callback_query){
+Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result,CallbackQuery * callback_query, ShippingQuery * shipping_query, PreCheckoutQuery * pre_checkout_query){
     Update * oupdate = (Update *)malloc(sizeof(Update));
 
     oupdate->update_id = update_id;
@@ -718,4 +721,180 @@ void callback_query_free(CallbackQuery * callback_query){
         free(callback_query->game_short_name);
 
     free(callback_query);
+}
+
+VideoNote * video_note(const char * file_id, long length, long duration, PhotoSize * photo_size, long file_size){
+    VideoNote * ovide_note = (VideoNote *) malloc(sizeof(VideoNote));
+
+    ovide_note->file_id = alloc_string(file_id);
+    ovide_note->length = length;
+    ovide_note->duration = duration;
+    ovide_note->thumb = photo_size;
+    ovide_note->file_size = file_size;
+
+    return ovide_note;
+}
+
+void video_note_free(VideoNote * video_note){
+    if(video_note->file_id)
+        free(video_note->file_id);
+
+    if(video_note->thumb)
+        photo_size_free(video_note->thumb);
+
+    free(video_note);
+}
+
+Invoice * invoice(const char * title, const char * description, const char * start_parameter, const char * currency, long total_amount){
+    Invoice  * oinvoice = (Invoice *) malloc(sizeof(Invoice));
+
+    oinvoice->title = alloc_string(title);
+    oinvoice->description = alloc_string(description);
+    oinvoice->start_parameter = alloc_string(start_parameter);
+    oinvoice->currency = alloc_string(currency);
+    oinvoice->total_amount = total_amount;
+
+    return oinvoice;
+}
+
+void invoice_free(Invoice * invoice){
+    if(invoice->title)
+        free(invoice->title);
+
+    if(invoice->description)
+        free(invoice->description);
+
+    if(invoice->start_parameter)
+        free(invoice->start_parameter);
+
+    if(invoice->currency)
+        free(invoice->currency);
+
+    free(invoice);
+}
+
+ShippingQuery * shipping_query(const char *id, User * from, const char * invoice_payload, ShippingAddress * shipping_address){
+    ShippingQuery * oshipping_query = (ShippingQuery *) malloc(sizeof(ShippingQuery));
+
+    oshipping_query->id = alloc_string(id);
+    oshipping_query->from = from;
+    oshipping_query->invoice_payload = alloc_string(invoice_payload);
+    oshipping_query->shipping_address = shipping_address;
+
+    return oshipping_query;
+}
+
+void shipping_query_free(ShippingQuery * shipping_query){
+    if(shipping_query->id)
+        free(shipping_query->id);
+
+    if(shipping_query->from)
+        user_free(shipping_query->from);
+
+    if(shipping_query->invoice_payload)
+        free(shipping_query->invoice_payload);
+
+    if(shipping_query->shipping_address)
+        shipping_address_free(shipping_query->shipping_address);
+
+    free(shipping_query);
+}
+
+ShippingAddress * shipping_address(const char * country_code, const char * state, const char * city, const char * street_line1, const char * street_line2, const char * post_code){
+    ShippingAddress * oshipping_address = (ShippingAddress *) malloc(sizeof(ShippingAddress));
+
+    oshipping_address->country_code = alloc_string(country_code);
+    oshipping_address->state = alloc_string(state);
+    oshipping_address->city = alloc_string(city);
+    oshipping_address->street_line1 = alloc_string(street_line1);
+    oshipping_address->street_line2 = alloc_string(street_line2);
+    oshipping_address->post_code = alloc_string(post_code);
+
+    return oshipping_address;
+}
+
+void shipping_address_free(ShippingAddress * shipping_address){
+    if(shipping_address->country_code)
+        free(shipping_address->country_code);
+
+    if(shipping_address->state)
+        free(shipping_address->state);
+
+    if(shipping_address->city)
+        free(shipping_address->city);
+
+    if(shipping_address->street_line1)
+        free(shipping_address->street_line1);
+
+    if(shipping_address->street_line2)
+        free(shipping_address->street_line2);
+
+    if(shipping_address->post_code)
+        free(shipping_address->post_code);
+
+    free(shipping_address);
+}
+
+PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info){
+    PreCheckoutQuery * opre_checkout_query = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
+
+    opre_checkout_query->id = alloc_string(id);
+    opre_checkout_query->user = from;
+    opre_checkout_query->currency = alloc_string(currency);
+    opre_checkout_query->total_amount = total_amount;
+    opre_checkout_query->invoice_payload = alloc_string(invoice_payload);
+    opre_checkout_query->shipping_option_id = opre_checkout_query->shipping_option_id;
+    opre_checkout_query->order_info = order_info;
+
+    return opre_checkout_query;
+}
+
+void pre_checkout_query_free(PreCheckoutQuery * pcq){
+
+    if(pcq->id)
+        free(pcq->id);
+
+    if(pcq->user)
+        user_free(pcq->user);
+
+    if(pcq->currency)
+        free(pcq->currency);
+
+    if(pcq->invoice_payload)
+        free(pcq->invoice_payload);
+
+    if(pcq->shipping_option_id)
+        free(pcq->shipping_option_id);
+
+    if(pcq->order_info)
+        order_info_free(pcq->order_info);
+
+    free(pcq);
+}
+
+OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address){
+    OrderInfo * oorder_info = (OrderInfo *) malloc(sizeof(OrderInfo));
+
+    oorder_info->name =alloc_string(name);
+    oorder_info->phone_number = alloc_string(phone_number);
+    oorder_info->email = alloc_string(email);
+    oorder_info->shipping_address = shipping_address;
+
+    return oorder_info;
+}
+
+void order_info_free(OrderInfo * order_info){
+    if(order_info->name)
+        free(order_info->name);
+
+    if(order_info->phone_number)
+        free(order_info->phone_number);
+
+    if(order_info->email)
+        free(order_info->email);
+
+    if(order_info->shipping_address)
+        shipping_address_free(order_info->shipping_address);
+
+    free(order_info);
 }
