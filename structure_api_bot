@@ -5,7 +5,10 @@ Telegram
 tipos
 Update - Message - MessageEntity - PhotoSize - User - Chat - Audio
 Document - Game - Sticker - Video - Voice - Contact - Location
-Venue - Animation - InlineQuery - ChosenInlineResult - CallbackQuery ChatMember
+Venue - Animation - InlineQuery - ChosenInlineResult - CallbackQuery
+ChatMember - File - UserProfilePhotos - PreCheckoutQuery - ShippingQuery
+SuccessfulPayment - OrderInfo - ShippingAddress - Invoice - Contact
+VideoNote - PhotoSize
 
 
 árvore da estrutura
