@@ -1,6 +1,34 @@
 #include <telebot.h>
 
+#define BOLD         "\033[1m"
+#define COLOR_RESET  "\033[0m"
+#define BLACK  "\033[22;30m"
+#define RED    "\033[22;31m"
+#define GREEN  "\033[22;32m"
+#define BROWN  "\033[22;33m"
+#define BLUE   "\033[22;34m"
+#define MAGENTA "\033[22;35m"
+#define CYAN   "\033[22;36m"
+#define GRAY   "\033[22;37m"
+#define DARK_GRAY "\033[01;30m"
+#define LIGHT_RED "\033[01;31m"
+#define LIGHT_GREEN "\033[01;32m"
+#define YELLOW "\033[01;33m"
+#define LIGHT_BLUE "\033[01;34m"
+#define LIGHT_MAGENTA "\033[01;35m"
+#define LIGHT_CYAN "\033[01;36m"
+#define WHITE "\033[01;37m"
+
 const char *token;
+const char *type_struct[] = {"update", "message", "messageentity", "photosize",
+"document", "game", "sticker", "video", "voice", "contact", "location",
+"venue", "animation", "inlinequery", "choseninlineresult", "callbackquery",
+"chatmember", "file", "userprofilephotos", "precheckoutquery", "shippingquery",
+"successfulpayment", "orderinfo", "shippingaddress", "invoice", "contact",
+"videonote", "photosize", "user", "chat", "audio"};
+
+const char * variable_update[] = {"message", "edited_message", "channel_post", "edited_channel_post",
+"inline_query", "chosen_inline_result", "callback_query", "shipping_query"};
 
 void read_message(Update * update){
 	Message * message[] = {update->message, update->edited_message,
@@ -9,8 +37,17 @@ void read_message(Update * update){
 
 	while(i < 4){
 		if(message[i]){
-			printf("\ntype Message\n");
-			printf("\tmessage_id=%lu\n");
+			printf(GREEN"\n type Message\n", i);
+			if(i == 0)
+				printf(" update->message\n" COLOR_RESET);
+			else if(i == 1)
+				printf(" update->edited_message\n" COLOR_RESET);
+			else if(i == 2)
+				printf(" update->channel_post\n" COLOR_RESET);
+			else if(i == 3)
+				printf(" update->edited_channel_post\n" COLOR_RESET);
+
+			printf("\tmessage_id=%lu\n", message[i]->message_id);
 			if(message[i]->from)
 				printf("\ttfrom=(type User)\n");
 			else
@@ -214,7 +251,8 @@ void read_message(Update * update){
 void read_update(Update * update){
 
 	/*update*/
-	printf("\n\ntype Update\n");
+	printf(GREEN"\n\n type Update\n");
+	printf(" update\n" COLOR_RESET);
 	printf("\tupdate_id=%ld\n", update->update_id);
 	if(update->message){
 		printf("\tmessage=(type Message)\n");
@@ -271,15 +309,22 @@ void read_update(Update * update){
 	}
 
 	if(update->shipping_query){
-		printf("\tcallback_query=(without type shipping_query)\n");
+		printf("\tshipping_query=(without type shipping_query)\n");
 	}
 	else{
-		printf("\tcallback_query=NULL\n");
+		printf("\tshipping_query=NULL\n");
 	}
 
 	read_message(update);
 }
 
+void read_struct(char * name_struct){
+
+}
+
+void update_init(Update * update){
+
+}
 
 int main(int argc, char **argv){
 	telebot_init();
@@ -287,13 +332,13 @@ int main(int argc, char **argv){
 	if(argc != 2)
 		fprintf(stderr, "update <token>");
 
+
     Bot *bot = telebot(argv[1]);
 
 	Update * update = get_updates(bot, NULL);
 
-	printf("%ld\n-\n", update->update_id);
-
-	read_update(update);
+	if(update)
+		read_update(update);
 
 	return 0;
 }
