@@ -398,14 +398,14 @@ void venue_free(Venue * _venue){
 
 Message * message(long int message_id,User * from, long int date, Chat * chat,
                   User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,
-                  long int forward_date,Message * reply_to_message,long int edit_date,
-                  const char * text,MessageEntity * entities,Audio * audio,Document * document,
+                  const char * forward_signature, long int forward_date,Message * reply_to_message,long int edit_date,
+                  const char * author_signature, const char * text,MessageEntity * entities,Audio * audio,Document * document,
                   Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,
                   VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,
                   User * new_chat_member,User * left_chat_member,const char * new_chat_title,
                   PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,
                   int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,
-                  long int migrate_from_chat_id,Message * pinned_message, Invoice  * oinvoice){
+                  long int migrate_from_chat_id,Message * pinned_message, Invoice  * oinvoice, SuccessfulPayment * successful_payment){
     
     Message * message = (Message *)malloc(sizeof(Message));
 
@@ -443,10 +443,14 @@ Message * message(long int message_id,User * from, long int date, Chat * chat,
     message->new_chat_photo = new_chat_photo;
     message->pinned_message = pinned_message;
     message->video_note = video_note;
+    message->invoice = oinvoice;
+    message->successful_payment = successful_payment;
     //STRINGS
     message->text = alloc_string(text);
     message->caption = alloc_string(caption);
     message->new_chat_title = alloc_string(new_chat_title);
+    message->forward_signature = alloc_string(forward_signature);
+    message->author_signature = alloc_string(author_signature);
 
     return message;
 }
@@ -897,4 +901,40 @@ void order_info_free(OrderInfo * order_info){
         shipping_address_free(order_info->shipping_address);
 
     free(order_info);
+}
+
+SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id){
+    SuccessfulPayment * spayment = (SuccessfulPayment *) malloc(sizeof(oorder_info));
+
+    spayment->currency = alloc_string(currency);
+    spayment->total_amount = total_amount;
+    spayment->invoice_payload = alloc_string(invoice_payload);
+    spayment->shipping_option_id = alloc_string(shipping_option_id);
+    spayment->order_info = oorder_info;
+    spayment->telegram_payment_charge_id = alloc_string(telegram_payment_charge_id);
+    spayment->provider_payment_charge_id = alloc_string(provider_payment_charge_id);
+
+    return spayment;
+}
+
+void successful_payment_free(SuccessfulPayment * spayment){
+    if(spayment->currency)
+        free(spayment->currency);
+
+    if(spayment->invoice_payload)
+        free(spayment->invoice_payload);
+
+    if(spayment->shipping_option_id)
+        free(spayment->shipping_option_id);
+
+    if(spayment->order_info)
+        order_info_free(spayment->order_info);
+
+    if(spayment->telegram_payment_charge_id)
+        free(spayment->telegram_payment_charge_id);
+
+    if(spayment->provider_payment_charge_id)
+        free(spayment->provider_payment_charge_id);
+
+    free(spayment);
 }

@@ -385,12 +385,15 @@ Message * message_parse(json_t *json){
         channel_chat_created = json_object_get(pmessage,"channel_chat_created");
         migrate_to_chat_id = json_object_get(pmessage,"migrate_to_chat_id");
         migrate_from_chat_id = json_object_get(pmessage,"migrate_from_chat_id");
+
         //Strings
-        json_t *text, *caption, *new_chat_title;
+        json_t *text, *caption, *new_chat_title, *forward_signature, *author_signature;
 
         text = json_object_get(pmessage,"text");
         caption = json_object_get(pmessage,"caption");
         new_chat_title = json_object_get(pmessage,"new_chat_title");
+        forward_signature = json_object_get(pmessage, "forward_signature");
+        author_signature = json_object_get(pmessage, "author_signature");
 
         //Arrays
         json_t *entities, *photo, *new_chat_photo;
@@ -405,7 +408,8 @@ Message * message_parse(json_t *json){
         PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
 
         //Objects
-        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, *location, *venue, *new_chat_member, *left_chat_member, *pinned_message, *invoice;
+        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, *location, *venue,
+        *new_chat_member, *left_chat_member, *pinned_message, *invoice, *successful_payment;
 
         from = json_object_get(pmessage,"from");
         User * ofrom = user_parse(from);
@@ -461,18 +465,21 @@ Message * message_parse(json_t *json){
         pinned_message = json_object_get(pmessage,"pinned_message");
         Message * opinned_message = message_parse(pinned_message);
 
-        invoice = json_object_get(json, "invoice");
+        invoice = json_object_get(pmessage, "invoice");
         Invoice * oinvoice = invoice_parse(invoice);
 
+        successful_payment = json_object_get(pmessage, "successful_payment");
+        SuccessfulPayment * osuccessful_payment = successful_payment_parse(successful_payment);
+
         Message * omessage = message(json_integer_value(message_id), ofrom, json_integer_value(date), 
-                                     ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id), 
-                                     json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), 
-                                     json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
+                                     ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id),
+                                     json_string_value(forward_signature), json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), 
+                                     json_string_value(author_signature), json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
                                      json_string_value(caption), ocontact, olocation, ovenue, onew_chat_member, oleft_chat_member, 
                                      json_string_value(new_chat_title), onew_chat_photo, json_integer_value(delete_chat_photo), 
                                      json_integer_value(group_chat_created), json_integer_value(supergroup_chat_created), 
                                      json_integer_value(channel_chat_created), json_integer_value(migrate_to_chat_id), 
-                                     json_integer_value(migrate_from_chat_id), opinned_message, oinvoice);
+                                     json_integer_value(migrate_from_chat_id), opinned_message, oinvoice, osuccessful_payment);
 
         return omessage;
     }
@@ -745,3 +752,28 @@ OrderInfo * order_info_parse(json_t * json){
     return NULL;
 }
 
+SuccessfulPayment * successful_payment_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *currency, *total_amount, *invoice_payload, *shipping_option_id,
+        *order_info, *telegram_payment_charge_id, *provider_payment_charge_id;
+
+        currency = json_object_get(json, "currency");
+        total_amount = json_object_get(json, "total_amount");
+        invoice_payload = json_object_get(json, "invoice_payload");
+        shipping_option_id = json_object_get(json, "shipping_option_id");
+        order_info = json_object_get(json, "order_info");
+        telegram_payment_charge_id = json_object_get(json, "telegram_payment_charge_id");
+        provider_payment_charge_id = json_object_get(json, "provider_payment_charge_id");
+
+        OrderInfo * oorder_info = order_info_parse(order_info);
+
+        SuccessfulPayment * osuccessful_payment = successful_payment(json_string_value(currency), json_integer_value(total_amount),
+                                                                     json_string_value(invoice_payload), json_string_value(shipping_option_id),
+                                                                     oorder_info, json_string_value(telegram_payment_charge_id),
+                                                                     json_string_value(provider_payment_charge_id));
+
+        return osuccessful_payment;
+    }
+
+    return NULL;
+}

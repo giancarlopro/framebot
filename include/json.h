@@ -32,5 +32,7 @@ ShippingQuery * shipping_query_parse(json_t * json);
 ShippingAddress * shipping_address_parse(json_t * json);
 PreCheckoutQuery * pre_checkout_query_parse(json_t * json);
 OrderInfo * order_info_parse(json_t * json);
+SuccessfulPayment * successful_payment_parse(json_t * json);
+
 
 #endif

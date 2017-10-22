@@ -157,6 +157,7 @@ typedef struct _successful_payment{
     long total_amount;
     char * invoice_payload;
     char * shipping_option_id;
+    OrderInfo * order_info;
     char * telegram_payment_charge_id;
     char * provider_payment_charge_id;
 } SuccessfulPayment;
@@ -340,7 +341,7 @@ void location_free(Location * _location);
 Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id);
 void venue_free(Venue * _venue);
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,long int forward_date,Message * reply_to_message,long int edit_date, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice, VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message, Invoice * oinvoice);
+Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,const char * forward_signature, long int forward_date,Message * reply_to_message,long int edit_date, const char * author_signature, const char * text,MessageEntity * entities,Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice, VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message, Invoice * oinvoice, SuccessfulPayment * successful_payment);
 void message_free(Message * message);
 
 Bot * bot(const char * token, User * user);
@@ -381,5 +382,9 @@ void order_info_free(OrderInfo * order_info);
 
 PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info);
 void pre_checkout_query_free(PreCheckoutQuery * pcq);
+
+SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id);
+void successful_payment_free(SuccessfulPayment * spayment);
+
 
 #endif // OBJECTS_H_
