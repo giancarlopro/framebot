@@ -409,12 +409,15 @@ Message * message_parse(json_t *json){
         PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
 
         caption_entities = json_object_get(pmessage, "caption_entities");
+        length = json_array_size(caption_entities);
         MessageEntity * ocaption_entities = NULL, *_temp = NULL;
         ocaption_entities = message_entity_parse(json_array_get(caption_entities, 0));
-        for (i = 1; i < length; i++) {
-            _temp = message_entity_parse(json_array_get(caption_entities, i));
-            if (_temp)
-                message_entity_add(ocaption_entities, _temp);
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp = message_entity_parse(json_array_get(caption_entities, i));
+                if (_temp)
+                    message_entity_add(ocaption_entities, _temp);
+            }
         }
 
         //Objects

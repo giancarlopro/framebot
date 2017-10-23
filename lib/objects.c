@@ -462,6 +462,7 @@ Message * message(long int message_id,User * from, long int date, Chat * chat,
     message->forward_from_chat = forward_from_chat;
     message->reply_to_message = reply_to_message;
     message->entities = entities;
+    message->caption_entities = ocaption_entities;
     message->audio = audio;
     message->document = document;
     message->game = game;
