@@ -367,6 +367,7 @@ ChosenInlineResult * chosen_inline_result_parse(json_t * json){
 
 Message * message_parse(json_t *json){
     json_t * pmessage = json;
+    size_t length, i;
 
     if(json_is_object(pmessage)){
         //Numbers
@@ -396,7 +397,7 @@ Message * message_parse(json_t *json){
         author_signature = json_object_get(pmessage, "author_signature");
 
         //Arrays
-        json_t *entities, *photo, *new_chat_photo;
+        json_t *entities, *photo, *new_chat_photo, *caption_entities;
 
         entities = json_object_get(pmessage,"entities");
         MessageEntity * oentities = message_entity_parse(entities);
@@ -406,6 +407,15 @@ Message * message_parse(json_t *json){
 
         new_chat_photo = json_object_get(pmessage,"new_chat_photo");
         PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
+
+        caption_entities = json_object_get(pmessage, "caption_entities");
+        MessageEntity * ocaption_entities = NULL, *_temp = NULL;
+        ocaption_entities = message_entity_parse(json_array_get(caption_entities, 0));
+        for (i = 1; i < length; i++) {
+            _temp = message_entity_parse(json_array_get(caption_entities, i));
+            if (_temp)
+                message_entity_add(ocaption_entities, _temp);
+        }
 
         //Objects
         json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, *location, *venue,
@@ -474,7 +484,7 @@ Message * message_parse(json_t *json){
         Message * omessage = message(json_integer_value(message_id), ofrom, json_integer_value(date), 
                                      ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id),
                                      json_string_value(forward_signature), json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), 
-                                     json_string_value(author_signature), json_string_value(text), oentities, oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
+                                     json_string_value(author_signature), json_string_value(text), oentities, ocaption_entities,  oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
                                      json_string_value(caption), ocontact, olocation, ovenue, onew_chat_member, oleft_chat_member, 
                                      json_string_value(new_chat_title), onew_chat_photo, json_integer_value(delete_chat_photo), 
                                      json_integer_value(group_chat_created), json_integer_value(supergroup_chat_created), 

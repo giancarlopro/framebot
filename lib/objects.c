@@ -101,16 +101,50 @@ MessageEntity * message_entity(const char * type, long int offset, long int leng
 
 
 void message_entity_free(MessageEntity * msgett){
+    MessageEntity * cm = msgett, *tofree;
+    
+    if(!cm)
+        return;
 
-    if(msgett->type)
-        free(msgett->type);
+    while(cm){
+        if(msgett->type)
+            free(msgett->type);
 
-    if(msgett->url)
-        free(msgett->url);
+        if(msgett->url)
+            free(msgett->url);
 
-    user_free(msgett->user);
+        user_free(msgett->user);
 
-    free(msgett);
+        tofree = cm;
+        cm = cm->next;
+        free(tofree);
+    }
+}
+
+void message_entity_add(MessageEntity * dest, MessageEntity * src){
+    MessageEntity *tmp = dest;
+    
+    while (tmp->next)
+        tmp = tmp->next;
+    
+    tmp->next = src;
+}
+
+size_t message_entity_len(MessageEntity * message_entity){
+    size_t i;
+    MessageEntity *tmp = message_entity;
+
+    if(!tmp)
+        return 0;
+
+    for (i = 1; tmp; i++)
+        tmp = tmp->next;
+
+    return i;
+}
+
+MessageEntity * message_entity_get(MessageEntity * message_entity, int index){
+
 }
 
 Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size){
@@ -399,7 +433,7 @@ void venue_free(Venue * _venue){
 Message * message(long int message_id,User * from, long int date, Chat * chat,
                   User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,
                   const char * forward_signature, long int forward_date,Message * reply_to_message,long int edit_date,
-                  const char * author_signature, const char * text,MessageEntity * entities,Audio * audio,Document * document,
+                  const char * author_signature, const char * text,MessageEntity * entities, MessageEntity * ocaption_entities, Audio * audio,Document * document,
                   Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice,
                   VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,
                   User * new_chat_member,User * left_chat_member,const char * new_chat_title,
@@ -513,6 +547,8 @@ Update * update(long int update_id, Message * message, Message * edited_message,
     oupdate->inline_query = inline_query;
     oupdate->chosen_inline_result = chosen_inline_result;
     oupdate->callback_query = callback_query;
+    oupdate->shipping_query = shipping_query;
+    oupdate->pre_checkout_query = pre_checkout_query;
 
 	oupdate->next = NULL;
 
@@ -578,7 +614,7 @@ size_t update_len(Update *u) {
 	for (i = 1; tmp; i++)
 		tmp = tmp->next;
 
-	return (i - 1);
+	return i;
 }
 
 ChatMember *chat_member(User *user, const char *status, long int until_date, bool can_be_edited,
