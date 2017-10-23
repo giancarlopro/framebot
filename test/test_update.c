@@ -47,201 +47,201 @@ void read_message(Update * update){
 			else if(i == 3)
 				printf(" update->edited_channel_post\n" COLOR_RESET);
 
-			printf("\tmessage_id=%lu\n", message[i]->message_id);
+			printf(BLUE"\tmessage_id=%lu\n"COLOR_RESET, message[i]->message_id);
 			if(message[i]->from)
-				printf("\ttfrom=(type User)\n");
+				printf(BLUE"\ttfrom=(type User)\n"COLOR_RESET);
 			else
-				printf("\ttfrom=NULL\n");
+				printf("\ttfrom=NULL\n"COLOR_RESET);
 
 			if(message[i]->date)
-				printf("\ttdate=%ld\n", message[i]->date);
+				printf(BLUE"\ttdate=%ld\n"COLOR_RESET, message[i]->date);
 			else
-				printf("\ttdate=NULL\n");
+				printf("\ttdate=NULL\n"COLOR_RESET);
 
 			if(message[i]->chat)
-				printf("\ttchat=(type Chat)\n");
+				printf(BLUE"\ttchat=(type Chat)\n"COLOR_RESET);
 			else
-				printf("\ttchat=NULL\n");
+				printf("\ttchat=NULL\n"COLOR_RESET);
 
 			if(message[i]->forward_from)
-				printf("\ttforward_from=(type User)\n");
+				printf(BLUE"\ttforward_from=(type User)\n"COLOR_RESET);
 			else
-				printf("\ttforward_from=NULL\n");
+				printf("\ttforward_from=NULL\n"COLOR_RESET);
 
 			if(message[i]->forward_from_chat)
-				printf("\ttforward_from_chat=(type Chat)\n");
+				printf(BLUE"\ttforward_from_chat=(type Chat)\n"COLOR_RESET);
 			else
-				printf("\ttforward_from_chat=NULL\n");
+				printf("\ttforward_from_chat=NULL\n"COLOR_RESET);
 
 			if(message[i]->forward_from_message_id)
-				printf("\tforward_from_message_id=%ld\n", message[i]->forward_from_message_id);
+				printf(BLUE"\tforward_from_message_id=%ld\n"COLOR_RESET, message[i]->forward_from_message_id);
 			else
-				printf("\tforward_from_message_id=NULL\n");
+				printf("\tforward_from_message_id=NULL\n"COLOR_RESET);
 
 			if(message[i]->forward_signature)
-				printf("\tforward_signature=%s\n", message[i]->forward_signature);
+				printf(BLUE"\tforward_signature=%s\n"COLOR_RESET, message[i]->forward_signature);
 			else
-				printf("\tforward_signature=NULL\n");
+				printf("\tforward_signature=NULL\n"COLOR_RESET);
 
 			if(message[i]->forward_date)
-				printf("\tforward_date=%ld\n", message[i]->forward_date);
+				printf(BLUE"\tforward_date=%ld\n"COLOR_RESET, message[i]->forward_date);
 			else
-				printf("\tforward_date=NULL\n");
+				printf("\tforward_date=NULL\n"COLOR_RESET);
 
 			if(message[i]->reply_to_message)
-				printf("\treply_to_message=(type Message)\n");
+				printf(BLUE"\treply_to_message=(type Message)\n"COLOR_RESET);
 			else
-				printf("\treply_to_message=NULL\n");
+				printf("\treply_to_message=NULL\n"COLOR_RESET);
 		
 			if(message[i]->edit_date)
-				printf("\tedit_date=%ld\n", message[i]->edit_date);
+				printf(BLUE"\tedit_date=%ld\n"COLOR_RESET, message[i]->edit_date);
 			else
-				printf("\tedit_date=NULL\n");
+				printf("\tedit_date=NULL\n"COLOR_RESET);
 
 			if(message[i]->author_signature)
-				printf("\tauthor_signature=%s\n", message[i]->author_signature);
+				printf(BLUE"\tauthor_signature=%s\n"COLOR_RESET, message[i]->author_signature);
 			else
-				printf("\tauthor_signature=NULL\n");
+				printf("\tauthor_signature=NULL\n"COLOR_RESET);
 
 			if(message[i]->text)
-				printf("\ttext=%s\n", message[i]->text);
+				printf(BLUE"\ttext=%s\n"COLOR_RESET, message[i]->text);
 			else
-				printf("\ttext=NULL\n");
+				printf("\ttext=NULL\n"COLOR_RESET);
 
 			if(message[i]->entities)
-				printf("\tentities=(type MessageEntities)\n");
+				printf(BLUE"\tentities=(type MessageEntities)\n"COLOR_RESET);
 			else
-				printf("\tentities=NULL\n");
+				printf("\tentities=NULL\n"COLOR_RESET);
 
 			if(message[i]->caption_entities)
-				printf("\tcaption_entities=(type MessageEntities)\n");
+				printf(BLUE"\tcaption_entities=(type MessageEntities)\n"COLOR_RESET);
 			else
-				printf("\tcaption_entities=NULL\n");
+				printf("\tcaption_entities=NULL\n"COLOR_RESET);
 
 			if(message[i]->audio)
-				printf("\taudio=(type Audio)\n");
+				printf(BLUE"\taudio=(type Audio)\n"COLOR_RESET);
 			else
-				printf("\taudio=NULL\n");
+				printf("\taudio=NULL\n"COLOR_RESET);
 
 			if(message[i]->document)
-				printf("\tdocument=(type Document)\n");
+				printf(BLUE"\tdocument=(type Document)\n"COLOR_RESET);
 			else
-				printf("\tdocument=NULL\n");
+				printf("\tdocument=NULL\n"COLOR_RESET);
 
 			if(message[i]->game)
-				printf("\tgame=(type Game)\n");
+				printf(BLUE"\tgame=(type Game)\n"COLOR_RESET);
 			else
-				printf("\tgame=NULL\n");
+				printf("\tgame=NULL\n"COLOR_RESET);
 
 			if(message[i]->photo)
-				printf("\tphoto=(type PhotoSize)\n");
+				printf(BLUE"\tphoto=(type PhotoSize)\n"COLOR_RESET);
 			else
-				printf("\tphoto=NULL\n");
+				printf("\tphoto=NULL\n"COLOR_RESET);
 
 			if(message[i]->sticker)
-				printf("\tsticker=(type Sticker)\n");
+				printf(BLUE"\tsticker=(type Sticker)\n"COLOR_RESET);
 			else
-				printf("\tsticker=NULL\n");
+				printf("\tsticker=NULL\n"COLOR_RESET);
 
 			if(message[i]->video)
-				printf("\tvideo=(type Video)\n");
+				printf(BLUE"\tvideo=(type Video)\n"COLOR_RESET);
 			else
-				printf("\tvideo=NULL\n");
+				printf("\tvideo=NULL\n"COLOR_RESET);
 
 			if(message[i]->voice)
-				printf("\tvoice=(type Voice)\n");
+				printf(BLUE"\tvoice=(type Voice)\n"COLOR_RESET);
 			else
-				printf("\tvoice=NULL\n");
+				printf("\tvoice=NULL\n"COLOR_RESET);
 
 			if(message[i]->video_note)
-				printf("\tvideo_note=(type VideoNote)\n");
+				printf(BLUE"\tvideo_note=(type VideoNote)\n"COLOR_RESET);
 			else
-				printf("\tvideo_note=NULL\n");
+				printf("\tvideo_note=NULL\n"COLOR_RESET);
 
 			if(message[i]->caption)
-				printf("\tcaption=%s\n", message[i]->caption);
+				printf(BLUE"\tcaption=%s\n"COLOR_RESET, message[i]->caption);
 			else
-				printf("\tcaption=NULL\n");
+				printf("\tcaption=NULL\n"COLOR_RESET);
 
 			if(message[i]->contact)
-				printf("\tcontact=(type Contact)\n");
+				printf(BLUE"\tcontact=(type Contact)\n"COLOR_RESET);
 			else
-				printf("\tcontact=NULL\n");
+				printf("\tcontact=NULL\n"COLOR_RESET);
 
 			if(message[i]->location)
-				printf("\tlocation=(type Location)\n");
+				printf(BLUE"\tlocation=(type Location)\n"COLOR_RESET);
 			else
-				printf("\tlocation=NULL\n");
+				printf("\tlocation=NULL\n"COLOR_RESET);
 
 			if(message[i]->venue)
-				printf("\tvenue=(type Venue)\n");
+				printf(BLUE"\tvenue=(type Venue)\n"COLOR_RESET);
 			else
-				printf("\tvenue=NULL\n");
+				printf("\tvenue=NULL\n"COLOR_RESET);
 
 			if(message[i]->new_chat_member)
-				printf("\tnew_chat_member=(type User)\n");
+				printf(BLUE"\tnew_chat_member=(type User)\n"COLOR_RESET);
 			else
-				printf("\tnew_chat_member=NULL\n");
+				printf("\tnew_chat_member=NULL\n"COLOR_RESET);
 
 			if(message[i]->left_chat_member)
-				printf("\tleft_chat_member=(type User)\n");
+				printf(BLUE"\tleft_chat_member=(type User)\n"COLOR_RESET);
 			else
-				printf("\tleft_chat_member=NULL\n");
+				printf("\tleft_chat_member=NULL\n"COLOR_RESET);
 
 			if(message[i]->new_chat_title)
-				printf("\tnew_chat_title=%s\n", message[i]->new_chat_title);
+				printf(BLUE"\tnew_chat_title=%s\n"COLOR_RESET, message[i]->new_chat_title);
 			else
-				printf("\tnew_chat_title=NULL\n");
+				printf("\tnew_chat_title=NULL\n"COLOR_RESET);
 
 			if(message[i]->new_chat_photo)
-				printf("\tnew_chat_photo=(type PhotoSize)\n");
+				printf(BLUE"\tnew_chat_photo=(type PhotoSize)\n"COLOR_RESET);
 			else
-				printf("\tnew_chat_photo=NULL\n");
+				printf("\tnew_chat_photo=NULL\n"COLOR_RESET);
 
 			if(message[i]->delete_chat_photo)
-				printf("\tdelete_chat_photo=%d\n", message[i]->delete_chat_photo);
+				printf(BLUE"\tdelete_chat_photo=%d\n"COLOR_RESET, message[i]->delete_chat_photo);
 			else
-				printf("\tdelete_chat_photo=NULL\n");
+				printf("\tdelete_chat_photo=NULL\n"COLOR_RESET);
 
 			if(message[i]->group_chat_created)
-				printf("\tgroup_chat_created=%d\n", message[i]->group_chat_created);
+				printf(BLUE"\tgroup_chat_created=%d\n"COLOR_RESET, message[i]->group_chat_created);
 			else
-				printf("\tgroup_chat_created=NULL\n");
+				printf("\tgroup_chat_created=NULL\n"COLOR_RESET);
 
 			if(message[i]->supergroup_chat_created)
-				printf("\tsupergroup_chat_created=%d\n", message[i]->supergroup_chat_created);
+				printf(BLUE"\tsupergroup_chat_created=%d\n"COLOR_RESET, message[i]->supergroup_chat_created);
 			else
-				printf("\tsupergroup_chat_created=NULL\n");
+				printf("\tsupergroup_chat_created=NULL\n"COLOR_RESET);
 
 			if(message[i]->channel_chat_created)
-				printf("\tchannel_chat_created=%d\n", message[i]->channel_chat_created);
+				printf(BLUE"\tchannel_chat_created=%d\n"COLOR_RESET, message[i]->channel_chat_created);
 			else
-				printf("\tchannel_chat_created=NULL\n");
+				printf("\tchannel_chat_created=NULL\n"COLOR_RESET);
 
 			if(message[i]->migrate_to_chat_id)
-				printf("\tmigrate_to_chat_id=%ld\n", message[i]->migrate_to_chat_id);
+				printf(BLUE"\tmigrate_to_chat_id=%ld\n"COLOR_RESET, message[i]->migrate_to_chat_id);
 			else
-				printf("\tmigrate_to_chat_id=NULL\n");
+				printf("\tmigrate_to_chat_id=NULL\n"COLOR_RESET);
 
 			if(message[i]->migrate_from_chat_id)
-				printf("\tmigrate_from_chat_id=%ld\n");
+				printf(BLUE"\tmigrate_from_chat_id=%ld\n"COLOR_RESET);
 			else
-				printf("\tmigrate_from_chat_id=NULL\n");
+				printf("\tmigrate_from_chat_id=NULL\n"COLOR_RESET);
 
 			if(message[i]->pinned_message)
-				printf("\tpinned_message=(type Message)\n");
+				printf(BLUE"\tpinned_message=(type Message)\n"COLOR_RESET);
 			else
-				printf("\tpinned_message=NULL\n");
+				printf("\tpinned_message=NULL\n"COLOR_RESET);
 
 			if(message[i]->invoice)
-				printf("\tinvoice=(type Invoice)\n");
+				printf(BLUE"\tinvoice=(type Invoice)\n"COLOR_RESET);
 			else
-				printf("\tinvoice=NULL\n");
+				printf("\tinvoice=NULL\n"COLOR_RESET);
 
 			if(message[i]->successful_payment)
-				printf("\tsuccessful_payment=(type SuccessfulPayment)\n");
+				printf(BLUE"\tsuccessful_payment=(type SuccessfulPayment)\n"COLOR_RESET);
 			else
-				printf("\tsuccessful_payment=NULL\n");
+				printf("\tsuccessful_payment=NULL\n"COLOR_RESET);
 		}
 
 		i++;
@@ -252,67 +252,67 @@ void read_update(Update * update){
 
 	/*update*/
 	printf(GREEN"\n\n type Update\n");
-	printf(" update\n" COLOR_RESET);
-	printf("\tupdate_id=%ld\n", update->update_id);
+	printf(" update\n"COLOR_RESET);
+	printf(BLUE"\tupdate_id=%ld\n"COLOR_RESET, update->update_id);
 	if(update->message){
-		printf("\tmessage=(type Message)\n");
+		printf(BLUE"\tmessage=(type Message)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tmessage=NULL\n");
+		printf("\tmessage=NULL\n"COLOR_RESET);
 	}
 
 	fflush(stdout);
 	if(update->edited_message){
-		printf("\tedited_message=(type Message)\n");
+		printf(BLUE"\tedited_message=(type Message)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tedited_message=NULL\n");
+		printf(BLUE"\tedited_message=NULL\n"COLOR_RESET);
 	}
 
 
 	if(update->channel_post){
-		printf("\tchannel_post=(type Message)\n");
+		printf(BLUE"\tchannel_post=(type Message)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tchannel_post=NULL\n");
+		printf("\tchannel_post=NULL\n"COLOR_RESET);
 	}
 
 
 	if(update->edited_channel_post){
-		printf("\tedited_channel_post=(type Message)\n");
+		printf(BLUE"\tedited_channel_post=(type Message)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tedited_channel_post=NULL\n");
+		printf("\tedited_channel_post=NULL\n"COLOR_RESET);
 	}
 
 
 	if(update->inline_query){
-		printf("\tinline_query=(type InlineQuery)\n");
+		printf(BLUE"\tinline_query=(type InlineQuery)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tinline_query=NULL\n");
+		printf("\tinline_query=NULL\n"COLOR_RESET);
 	}
 
 
 	if(update->chosen_inline_result){
-		printf("\tchosen_inline_result=(type ChosenInlineResult)\n");
+		printf(BLUE"\tchosen_inline_result=(type ChosenInlineResult)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tchosen_inline_result=NULL\n");
+		printf("\tchosen_inline_result=NULL\n"COLOR_RESET);
 	}
 
 
 	if(update->callback_query)
-		printf("\tcallback_query=(type CallbackQuery)\n");
+		printf(BLUE"\tcallback_query=(type CallbackQuery)\n"COLOR_RESET);
 	else{
-		printf("\tcallback_query=NULL\n");
+		printf("\tcallback_query=NULL\n"COLOR_RESET);
 	}
 
 	if(update->shipping_query){
-		printf("\tshipping_query=(without type shipping_query)\n");
+		printf(BLUE"\tshipping_query=(without type shipping_query)\n"COLOR_RESET);
 	}
 	else{
-		printf("\tshipping_query=NULL\n");
+		printf("\tshipping_query=NULL\n"COLOR_RESET);
 	}
 
 	read_message(update);
@@ -336,6 +336,8 @@ int main(int argc, char **argv){
     Bot *bot = telebot(argv[1]);
 
 	Update * update = get_updates(bot, NULL);
+
+	printf("---%lu", update_len(update));
 
 	if(update)
 		read_update(update);
