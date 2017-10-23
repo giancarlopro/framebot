@@ -612,7 +612,7 @@ size_t update_len(Update *u) {
     if(!tmp)
         return 0;
 
-	for (i = 1; tmp; i++)
+	for (i = 0; tmp; i++)
 		tmp = tmp->next;
 
 	return i;
