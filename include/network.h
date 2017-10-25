@@ -9,8 +9,6 @@
 #define API_URL_FILE "https://api.telegram.org/file/bot"
 #define API_URL_FILE_LEN 33
 
-#define MAX_BUFFER_SIZE (1024 * 30)
-
 typedef struct _mem_store {
     char *content;
     size_t size;
