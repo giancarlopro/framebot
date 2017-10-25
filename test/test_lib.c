@@ -6,18 +6,20 @@
 #define CURL_STATICLIB 
 #include <curl/curl.h>
 
+#define TOKEN "TOKEN HERE"
+
 int main(){
 
     telebot_init();
 
     /* return token authentication or not */
-    Bot *bot = telebot(get_token());
+    Bot *bot = telebot(TOKEN);
     if(bot == NULL){
         printf("%s\n", GETME_ELOG);
         exit(-1);
     }
 
-    telebot_polling(bot);
+   // telebot_polling(bot);
 
 /*  Update *update_msg = get_updates(bot, NULL);
     Update *tmp = NULL;

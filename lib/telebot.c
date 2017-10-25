@@ -2,11 +2,11 @@
 
 void telebot_init () {
 
-#ifndef CONFIG_DEFAULT /* read or not read config file */
-    read_config();
-#endif
+//#ifndef CONFIG_DEFAULT /* read or not read config file */
+//    read_config();
+//#endif
     network_init();
-    log_init();
+/*    log_init();*/
 }
 
 /* Authentic bot token */
@@ -83,43 +83,6 @@ int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
     return json_is_object(is_send_message);
 }
 
-void telebot_polling(Bot *bot) {
-
-    Update *updates, *up;
-
-    while(1){
-        updates = get_updates(bot, NULL);
-
-        up = updates;
-
-        while(up){
-
-            if(up->message)
-                to_message(bot, up);
-
-            up = up->next;
-        }
-
-        sleep(1);
-    }
-}
-
-void to_message(Bot *bot, Update *update) {
-    char *response = NULL;
-    int local_space = 0;
-    Update *tmp_update, *up = update;
-
-    printf("%s\n", up->message->text);
-
-    response = search_command(up->message->text, &local_space);
-
-    if(!response) {
-        printf("name %s | id %ld\n", up->message->from->username, up->message->from->id);
-    }
-    else {
-        send_message(bot, up->message->chat->id, response, NULL);
-    }
-}
 /**
  * Returns the Chat object of the given chat_id
  */ 
