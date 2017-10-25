@@ -17,7 +17,6 @@ typedef struct _mem_store {
 } MemStore;
 typedef MemStore* MemStorePtr;
 
-void *handle_network(void *vbot);
 void network_init();
 MemStore * mem_store();
 void mem_store_free(MemStore * memStore);
