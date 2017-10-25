@@ -294,6 +294,19 @@ typedef struct _user_profile_photos{
     PhotoSize * photo_size;
 } UserProfilePhotos;
 
+typedef struct _keyboard_button {
+    char * text;
+    bool request_contact;
+    bool request_location;
+} KeyboardButton;
+
+typedef struct _reply_keyboard_markup {
+    KeyboardButton * keyboard_button;
+    bool resize_keyboard;
+    bool one_time_keyboard;
+    bool selective;
+} ReplyKeyboardMarkup;
+
 //User functions
 User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code);
 void user_free(User *usr);
