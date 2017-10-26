@@ -74,7 +74,7 @@ MemStore * call_method(const char *token, char *method){
     return NULL;
 }
 
-int call_method_download(const char * token, char * dir, File *ofile){
+char * call_method_download(const char * token, char * dir, File *ofile){
     FILE * binary;
     size_t path_len, url_size; 
     char * namefile, *path, *url;
@@ -100,12 +100,20 @@ int call_method_download(const char * token, char * dir, File *ofile){
     namefile = strstr(ofile->file_path, "/");
     namefile++;
 
-    path_len = strlen(dir) + strlen(namefile) + 2;
+    if(!dir)
+        path_len = strlen(namefile) + 2;
+    else
+        path_len = strlen(dir) + strlen(namefile) + 2;
 
     path = malloc(path_len);
-    strcpy(path, dir);
-    strcat(path, "/");
-    strcat(path, namefile);
+    if(dir){
+        strcpy(path, dir);
+        strcat(path, "/");
+        strcat(path, namefile);
+    }
+    else{
+        strcpy(path, namefile);
+    }
 
     binary = fopen(path, "wb");
 
@@ -115,9 +123,9 @@ int call_method_download(const char * token, char * dir, File *ofile){
     }
 
     if (curl_easy_perform(curl) == CURLE_OK)
-        return 1;
+        return path;
 
-    return -1;
+    return NULL;
 }
 
 MemStore *call_method_wp(char *token, char *method, char *params) {
