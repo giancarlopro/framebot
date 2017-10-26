@@ -68,9 +68,6 @@ typedef short bool;
 #include <network.h>
 #include <json.h>
 #include <format.h>
-#include <log.h>
-#include <json_user.h>
-#include <config.h>
 
 void telebot_init();
 Bot * telebot(const char *token);
@@ -86,6 +83,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title);
 Chat *get_chat(Bot *bot, char *chat_id);
 ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id);
 json_t *generic_method_call (const char *token, char *formats, ...);
+const char * get_file(char * dir, const char * file_id);
 
 
 #endif
