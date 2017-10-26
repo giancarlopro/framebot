@@ -27,6 +27,7 @@ Bot * telebot(const char *token) {
 }
 /**
  * Returns a User object of the owner bot.
+ * https://core.telegram.org/bots/api#getme
  */ 
 User *get_me (const char *token) {
     
@@ -38,6 +39,7 @@ User *get_me (const char *token) {
 }
 /**
  * Returns the updates list
+ * https://core.telegram.org/bots/api#getupdates
  */ 
 Update *get_updates (Bot *bot, char *extra) {
 
@@ -70,6 +72,7 @@ Update *get_updates (Bot *bot, char *extra) {
  * Sends the given message to the given chat.
  * TODO:
  *  - Change the type of 'chat_id'
+ * https://core.telegram.org/bots/api#sendmessage
  */
 int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
     if (!text || chat_id == 0) {
@@ -89,6 +92,7 @@ int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
 
 /**
  * Returns the Chat object of the given chat_id
+ * https://core.telegram.org/bots/api#getchat
  */ 
 Chat *get_chat (Bot *bot, char *chat_id) {
 
@@ -101,6 +105,7 @@ Chat *get_chat (Bot *bot, char *chat_id) {
 /**
  * Changes the title of the given chat_id
  * Returns 1 in success, 0 otherwise
+ * https://core.telegram.org/bots/api#setchattitle
  */
 int set_chat_title (Bot *bot, char *chat_id, char *title) {
 
@@ -112,6 +117,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
 }
 /**
  * Returns the requested ChatMember object.
+ * https://core.telegram.org/bots/api#getchatmember
  */
 ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
 
@@ -123,6 +129,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
 }
 /**
  * Changes the given chat or channel description
+ * https://core.telegram.org/bots/api#setchatdescription
  */
 bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     if (!chat_id) 
@@ -133,6 +140,7 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
 }
 /**
  * Returns the number of members in the given chat
+ *https://core.telegram.org/bots/api#getchatmemberscount
  */ 
 int get_chat_member_count (Bot *bot, char *chat_id) {
     if (!chat_id)
@@ -143,6 +151,7 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
 }
 /**
  * Ban a chat user
+ * https://core.telegram.org/bots/api#kickchatmember
  */
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date) {
     if(!chat_id || !user_id)
@@ -158,6 +167,7 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
  * for this to work and must have the appropriate admin rights. 
  * Pass True for all boolean parameters to lift restrictions from a user. 
  * Returns True on success.
+ * https://core.telegram.org/bots/api#restrictchatmember
  */
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
                            bool can_send_messages, bool can_send_media_messages,
@@ -192,6 +202,7 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
  * but will be able to join via link, etc. 
  * The bot must be an administrator for this to work. 
  * Returns True on success.
+ * https://core.telegram.org/bots/api#unbanchatmember
  */
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
     if (!chat_id || !user_id)
@@ -203,6 +214,7 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
 /**
  * leaveChat
  * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+ * https://core.telegram.org/bots/api#leavechat
  */
 bool leave_chat (Bot *bot, char *chat_id) {
     if (!chat_id) 
@@ -218,6 +230,7 @@ bool leave_chat (Bot *bot, char *chat_id) {
  * and must have the appropriate admin rights.
  * Pass False for all boolean parameters to demote a user.
  * Returns True on success.
+ * https://core.telegram.org/bots/api#promotechatmember
  */
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
                           bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
@@ -245,6 +258,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
  * Returns exported invite link as String on success.
  * 
  * You must release the returned string
+ * https://core.telegram.org/bots/api#exportchatinvitelink
  */
 char *export_chat_invite_link (Bot *bot, char *chat_id) {
     if (!chat_id) 
@@ -282,21 +296,19 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     return NULL;
 }
 
+/* 
+ * https://core.telegram.org/bots/api#getfile
+ */
 const char * get_file(char * dir, const char * file_id){
     json_t *get_file;
-
-    if(dir[strlen(dir) - 1] == '/')
-        dir[strlen(dir) - 1] = '\0';
 
     get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
 
     File * ofile = file_parse(get_file);
 
     if(ofile){
-        if(call_method_download(Token, dir, ofile))
-            return dir;
+        return call_method_download(Token, dir, ofile);
     }
 
     return NULL;
-
 }
