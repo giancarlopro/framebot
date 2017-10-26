@@ -100,12 +100,18 @@ char * call_method_download(const char * token, char * dir, File *ofile){
     namefile = strstr(ofile->file_path, "/");
     namefile++;
 
+    if(dir[strlen(dir) - 1] == '/')
+        dir[strlen(dir) - 1] = '\0';
+
     if(!dir)
         path_len = strlen(namefile) + 2;
     else
         path_len = strlen(dir) + strlen(namefile) + 2;
 
     path = malloc(path_len);
+    if(!path)
+        return NULL;
+
     if(dir){
         strcpy(path, dir);
         strcat(path, "/");
