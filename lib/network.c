@@ -74,10 +74,58 @@ MemStore * call_method(const char *token, char *method){
     return NULL;
 }
 
+int call_method_download(const char * token, char * dir, File *ofile){
+    FILE * binary;
+    size_t path_len, url_size; 
+    char * namefile, *path, *url;
+
+    url_size = API_URL_FILE_LEN + strlen(token) + strlen(ofile->file_path) + 2;
+    url = (char *)malloc(url_size);
+
+    strcpy(url, API_URL_FILE);
+    strcat(url, token);
+    strcat(url, "/");
+    strcat(url, ofile->file_path);
+
+    url[url_size] = '\0';
+
+    CURL * curl = curl_easy_init();
+    curl_easy_setopt(curl, CURLOPT_URL, url);
+
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+
+    free(url);
+
+    namefile = strstr(ofile->file_path, "/");
+    namefile++;
+
+    path_len = strlen(dir) + strlen(namefile) + 2;
+
+    path = malloc(path_len);
+    strcpy(path, dir);
+    strcat(path, "/");
+    strcat(path, namefile);
+
+    binary = fopen(path, "wb");
+
+    if(binary){
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)binary);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+    }
+
+    if (curl_easy_perform(curl) == CURLE_OK)
+        return 1;
+
+    return -1;
+}
+
 MemStore *call_method_wp(char *token, char *method, char *params) {
     size_t len = strlen(method) + strlen(params) + 1;
     char *tmp = (char *)malloc(len);
+
     MemStore *ms = call_method(token, tmp);
+
     free(tmp);
 
     return ms;

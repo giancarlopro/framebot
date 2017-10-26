@@ -791,3 +791,20 @@ SuccessfulPayment * successful_payment_parse(json_t * json){
 
     return NULL;
 }
+
+File * file_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *file_id, *file_size, *file_path;
+
+        file_id = json_object_get(json, "file_id");
+        file_size = json_object_get(json, "file_size");
+        file_path = json_object_get(json, "file_path");
+
+        File * ofile = file(json_string_value(file_id), json_integer_value(file_size),
+                            json_string_value(file_path));
+
+        return ofile;
+    }
+
+    return NULL;
+}

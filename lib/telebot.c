@@ -1,5 +1,7 @@
 #include <telebot.h>
 
+static const char * Token = NULL;
+
 void telebot_init () {
 
 //#ifndef CONFIG_DEFAULT /* read or not read config file */
@@ -16,6 +18,8 @@ Bot * telebot(const char *token) {
     
     if (bot_user) {
         Bot *obot = bot(token, bot_user);
+        Token = alloc_string(obot->token);
+
         return obot;
     }
 
@@ -174,4 +178,23 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     }
 
     return NULL;
+}
+
+const char * get_file(char * dir, const char * file_id){
+    json_t *get_file;
+
+    if(dir[strlen(dir) - 1] == '/')
+        dir[strlen(dir) - 1] = '\0';
+
+    get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
+
+    File * ofile = file_parse(get_file);
+
+    if(ofile){
+        if(call_method_download(Token, dir, ofile))
+            return dir;
+    }
+
+    return NULL;
+
 }

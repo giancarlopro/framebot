@@ -403,5 +403,6 @@ void pre_checkout_query_free(PreCheckoutQuery * pcq);
 SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id);
 void successful_payment_free(SuccessfulPayment * spayment);
 
+File * file(const char * file_id, long int file_size, const char * file_path);
 
 #endif // OBJECTS_H_

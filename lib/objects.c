@@ -975,3 +975,13 @@ void successful_payment_free(SuccessfulPayment * spayment){
 
     free(spayment);
 }
+
+File * file(const char * file_id, long int file_size, const char * file_path){
+    File * ofile = (File *) malloc(sizeof(File));
+
+    ofile->file_id = alloc_string(file_id);
+    ofile->file_size = file_size;
+    ofile->file_path = alloc_string(file_path);
+
+    return ofile;
+}
