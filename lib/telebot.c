@@ -152,6 +152,108 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
     return json_is_true(is_kicked);
 }
 /**
+ * restrictChatMember
+ * Use this method to restrict a user in a supergroup. 
+ * The bot must be an administrator in the supergroup
+ * for this to work and must have the appropriate admin rights. 
+ * Pass True for all boolean parameters to lift restrictions from a user. 
+ * Returns True on success.
+ */
+bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
+                           bool can_send_messages, bool can_send_media_messages,
+                           bool can_send_other_messages, bool can_add_web_page_previews) {
+    
+    if (!chat_id || !user_id) 
+        return false;
+    
+    char base[300];
+    strcpy(base, "restrictChatMember?chat_id=%s&user_id=%s&until_date=%ld");
+
+    if (can_send_messages) {
+        strcat(base, "&can_send_messages=True");
+    }
+    if (can_send_media_messages) {
+        strcat(base, "&can_send_media_messages=True");
+    }
+    if (can_send_other_messages) {
+        strcat(base, "&can_send_other_messages=True");
+    }
+    if (can_add_web_page_previews) {
+        strcat(base, "&can_add_web_page_previews=True");
+    }
+
+    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id, until_date);
+    return json_is_true(is_restricted);
+}
+/**
+ * unbanChatMember
+ * Use this method to unban a previously kicked user in a supergroup or channel. 
+ * The user will not return to the group or channel automatically, 
+ * but will be able to join via link, etc. 
+ * The bot must be an administrator for this to work. 
+ * Returns True on success.
+ */
+bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
+    if (!chat_id || !user_id)
+        return false;
+    
+    json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    return json_is_true(is_unbanned);
+}
+/**
+ * leaveChat
+ * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+ */
+bool leave_chat (Bot *bot, char *chat_id) {
+    if (!chat_id) 
+        return false;
+    
+    json_t *is_leave = generic_method_call(bot->token, "leaveChat?chat_id=%s", chat_id);
+    return json_is_true(is_leave);
+}
+/**
+ * promoteChatMember
+ * Use this method to promote or demote a user in a supergroup or a channel.
+ * The bot must be an administrator in the chat for this to work
+ * and must have the appropriate admin rights.
+ * Pass False for all boolean parameters to demote a user.
+ * Returns True on success.
+ */
+bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
+                          bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+                          bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+                          bool can_promote_members) {
+    if (!chat_id || !user_id) 
+        return false;
+    
+    char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
+    base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages", can_post_messages,
+                                  "can_edit_messages", can_edit_messages, "can_delete_messages", can_delete_messages,
+                                  "can_invite_users", can_invite_users, "can_restrict_members", can_restrict_members,
+                                  "can_pin_messages", can_pin_messages, "can_promote_members", can_promote_members
+                                );
+
+    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id);
+    free(base);
+    return json_is_true(is_restricted);
+}
+/**
+ * exportChatInviteLink
+ * Use this method to export an invite link to a supergroup or a channel.
+ * The bot must be an administrator in the chat for this to work
+ * and must have the appropriate admin rights.
+ * Returns exported invite link as String on success.
+ * 
+ * You must release the returned string
+ */
+char *export_chat_invite_link (Bot *bot, char *chat_id) {
+    if (!chat_id) 
+        return NULL;
+    
+    json_t *invite_link = generic_method_call(bot->token, "exportChatInviteLink");
+    return alloc_string(json_string_value(invite_link));
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
