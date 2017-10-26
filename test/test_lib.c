@@ -15,7 +15,6 @@ int main(){
     /* return token authentication or not */
     Bot *bot = telebot(TOKEN);
     if(bot == NULL){
-        printf("%s\n", GETME_ELOG);
         exit(-1);
     }
 
