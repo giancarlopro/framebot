@@ -288,7 +288,6 @@ typedef struct _file{
     char * file_id;
     long file_size;
     char * file_path;
-    struct _files * next;
 } File;
 
 typedef struct _user_profile_photos{
