@@ -93,5 +93,6 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members);
 char *export_chat_invite_link (Bot *bot, char *chat_id);
+const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size);
 
 #endif

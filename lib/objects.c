@@ -916,7 +916,7 @@ void pre_checkout_query_free(PreCheckoutQuery * pcq){
 OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address){
     OrderInfo * oorder_info = (OrderInfo *) malloc(sizeof(OrderInfo));
 
-    oorder_info->name =alloc_string(name);
+    oorder_info->name = alloc_string(name);
     oorder_info->phone_number = alloc_string(phone_number);
     oorder_info->email = alloc_string(email);
     oorder_info->shipping_address = shipping_address;
@@ -986,6 +986,16 @@ File * file(const char * file_id, long int file_size, const char * file_path){
     return ofile;
 }
 
+void file_free(File * ofile){
+    if(ofile->file_id)
+        free(ofile->file_id);
+
+    if(ofile->file_path)
+        free(ofile->file_path);
+
+    free(ofile);
+}
+
 void chat_member_add (ChatMember *dest, ChatMember *src) {
     ChatMember *tmp = dest;
     while(tmp)
@@ -1016,4 +1026,20 @@ size_t chat_member_len (ChatMember *chatMember) {
         tmp = tmp->next;
     }
     return i;
+}
+
+UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photo_size){
+    UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
+
+    oupp->total_count = total_count;
+    oupp->photos = photo_size;
+
+    return oupp;
+}
+
+void user_profile_photos_free(UserProfilePhotos * oupp){
+    if(oupp->photos)
+        photo_size_free(oupp->photos);
+
+    free(oupp);
 }

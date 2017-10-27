@@ -808,3 +808,29 @@ File * file_parse(json_t * json){
 
     return NULL;
 }
+
+UserProfilePhotos * user_profile_photos_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *total_count, *photos;
+        size_t length, i;
+
+        total_count = json_object_get(json, "total_count");
+
+        photos = json_object_get(json, "photos");
+        length = json_array_size(photos);
+        PhotoSize * ophotos = NULL, *_temp = NULL;
+        ophotos = photo_size_parse(json_array_get(photos, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp = photo_size_parse(json_array_get(photos, i));
+                if (_temp)
+                    photo_size_add(ophotos, _temp);
+            }
+        }
+        UserProfilePhotos * ouser_profile_photos = user_profile_photos(json_integer_value(total_count), ophotos);
+
+        return ouser_profile_photos;
+    }
+
+    return NULL;
+}

@@ -48,10 +48,13 @@ void read_message(Update * update){
 				printf(" update->edited_channel_post\n" COLOR_RESET);
 
 			printf(BLUE"\tmessage_id = %lu\n"COLOR_RESET, message[i]->message_id);
-			if(message[i]->from)
+			if(message[i]->from){
 				printf(BLUE"\ttfrom = (type User)\n"COLOR_RESET);
-			else
+				printf(BLUE"\ttfrom->id = %ld\n"COLOR_RESET, message[i]->from->id);
+			}
+			else{
 				printf("\ttfrom = NULL\n"COLOR_RESET);
+			}
 
 			if(message[i]->date)
 				printf(BLUE"\ttdate = %ld\n"COLOR_RESET, message[i]->date);

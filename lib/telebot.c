@@ -1,5 +1,10 @@
 #include <telebot.h>
 
+#define IMG_ALL 0
+#define MG_SMALL 1
+#define IMG_MEDIUM 2
+#define IMG_LARGE 3
+
 static const char * Token = NULL;
 
 void telebot_init () {
@@ -301,13 +306,58 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
  */
 const char * get_file(char * dir, const char * file_id){
     json_t *get_file;
+    char *path_file;
 
     get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
 
     File * ofile = file_parse(get_file);
 
+    path_file = call_method_download(Token, dir, ofile);
+
     if(ofile){
-        return call_method_download(Token, dir, ofile);
+        file_free(ofile);
+        return path_file;
+    }
+
+    return NULL;
+}
+
+/*
+ * https://core.telegram.org/bots/api#getuserprofilephotos
+ */
+const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size){
+    json_t * user_profile;
+    char *method, *path_file;
+    size_t photosze_len, method_len = 71;
+    int i;
+
+    method = malloc(method_len);
+
+    if(offset == 0 && limit == 0)
+        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld",
+                 user_id);
+    else if(offset == 0)
+        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?limit=%ld",
+                 user_id, limit);
+    else if(limit == 0)
+        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld",
+                 user_id, offset);
+    else
+        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
+                 user_id, offset, limit);
+
+    user_profile = generic_method_call(Token, method);
+
+    UserProfilePhotos * ouser_profile_photos = user_profile_photos_parse(user_profile);
+    if(!ouser_profile_photos)
+        return NULL;
+
+
+//    path_file = call_method_download(Token, dir, ofile);
+
+    if(ouser_profile_photos){
+        user_profile_photos_free(ouser_profile_photos);
+        return path_file;
     }
 
     return NULL;
