@@ -51,6 +51,11 @@ typedef struct _photo_size{
     struct _photo_size * next;
 } PhotoSize;
 
+typedef struct _photos{
+    PhotoSize * photo_size;
+    struct _photos * next;
+} Photos;
+
 typedef struct _document{
     char * file_id;
     PhotoSize * thumb;
