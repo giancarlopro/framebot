@@ -297,7 +297,7 @@ typedef struct _file{
 
 typedef struct _user_profile_photos{
     long total_count;
-    PhotoSize * photos;
+    Photos * photos;
 } UserProfilePhotos;
 
 typedef struct _keyboard_button {
@@ -415,8 +415,14 @@ void successful_payment_free(SuccessfulPayment * spayment);
 File * file(const char * file_id, long int file_size, const char * file_path);
 void file_free(File * ofile);
 
-UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photo_size);
+UserProfilePhotos * user_profile_photos(long int total_count, Photos * photo_size);
 void user_profile_photos_free(UserProfilePhotos * oupp);
 
+UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos);
+void user_profile_photos_free(UserProfilePhotos * oupp);
+
+Photos * photos(PhotoSize * photo_size);
+void photos_free(Photos * ophotos);
+void photos_add(Photos * dest, Photos * src);
 
 #endif // OBJECTS_H_

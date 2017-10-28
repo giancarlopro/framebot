@@ -35,5 +35,6 @@ OrderInfo * order_info_parse(json_t * json);
 SuccessfulPayment * successful_payment_parse(json_t * json);
 File * file_parse(json_t * json);
 UserProfilePhotos * user_profile_photos_parse(json_t * json);
+Photos * photos_parse(json_t * photos_parse);
 
 #endif

@@ -1028,18 +1028,42 @@ size_t chat_member_len (ChatMember *chatMember) {
     return i;
 }
 
-UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photo_size){
+UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos){
     UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
 
     oupp->total_count = total_count;
-    oupp->photos = photo_size;
+    oupp->photos = photos;
 
     return oupp;
 }
 
 void user_profile_photos_free(UserProfilePhotos * oupp){
     if(oupp->photos)
-        photo_size_free(oupp->photos);
+        photos_free(oupp->photos);
 
     free(oupp);
+}
+
+Photos * photos(PhotoSize * photo_size){
+    Photos * ophotos = (Photos *) malloc(sizeof(Photos));
+
+    ophotos->photo_size = photo_size;
+    ophotos->next = NULL;
+
+    return ophotos;
+}
+
+void photos_free(Photos * ophotos){
+    if(ophotos->photo_size)
+        photo_size_free(ophotos->photo_size);
+
+    free(ophotos);
+}
+
+void photos_add(Photos * dest, Photos * src){
+    Photos *tmp = dest;
+    while(tmp)
+        tmp = tmp->next;
+
+    tmp->next = src;
 }

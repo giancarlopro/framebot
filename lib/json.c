@@ -400,24 +400,51 @@ Message * message_parse(json_t *json){
         //Arrays
         json_t *entities, *photo, *new_chat_photo, *caption_entities;
 
-        entities = json_object_get(pmessage,"entities");
-        MessageEntity * oentities = message_entity_parse(entities);
+        entities = json_object_get(pmessage, "entities");
+        length = json_array_size(entities);
+        MessageEntity * oentities = NULL, *_temp_e = NULL;
+        oentities = message_entity_parse(json_array_get(entities, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp_e = message_entity_parse(json_array_get(entities, i));
+                if (_temp_e)
+                    message_entity_add(oentities, _temp_e);
+            }
+        }
 
-        photo = json_object_get(pmessage,"photo");
-        PhotoSize * ophoto = photo_size_parse(photo);
+        photo = json_object_get(pmessage, "photo");
+        length = json_array_size(photo);
+        PhotoSize * ophoto = NULL, *_temp_p = NULL;
+        ophoto = photo_size_parse(json_array_get(photo, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp_p = photo_size_parse(json_array_get(photo, i));
+                if (_temp_p)
+                    photo_size_add(ophoto, _temp_p);
+            }
+        }
 
-        new_chat_photo = json_object_get(pmessage,"new_chat_photo");
-        PhotoSize * onew_chat_photo = photo_size_parse(new_chat_photo);
+        new_chat_photo = json_object_get(pmessage, "new_chat_photo");
+        length = json_array_size(new_chat_photo);
+        PhotoSize * onew_chat_photo = NULL, *_temp_ncp = NULL;
+        onew_chat_photo = photo_size_parse(json_array_get(new_chat_photo, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp_ncp = photo_size_parse(json_array_get(new_chat_photo, i));
+                if (_temp_ncp)
+                    photo_size_add(onew_chat_photo, _temp_ncp);
+            }
+        }
 
         caption_entities = json_object_get(pmessage, "caption_entities");
         length = json_array_size(caption_entities);
-        MessageEntity * ocaption_entities = NULL, *_temp = NULL;
+        MessageEntity * ocaption_entities = NULL, *_temp_ce = NULL;
         ocaption_entities = message_entity_parse(json_array_get(caption_entities, 0));
         if (length > 0) {
             for (i = 1; i < length; i++) {
-                _temp = message_entity_parse(json_array_get(caption_entities, i));
-                if (_temp)
-                    message_entity_add(ocaption_entities, _temp);
+                _temp_ce = message_entity_parse(json_array_get(caption_entities, i));
+                if (_temp_ce)
+                    message_entity_add(ocaption_entities, _temp_ce);
             }
         }
 
@@ -818,18 +845,40 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
 
         photos = json_object_get(json, "photos");
         length = json_array_size(photos);
-        PhotoSize * ophotos = NULL, *_temp = NULL;
-        ophotos = photo_size_parse(json_array_get(photos, 0));
+        Photos * ophotos = NULL, *_temp = NULL;
+        ophotos = photos_parse(json_array_get(photos, 0));
         if (length > 0) {
             for (i = 1; i < length; i++) {
-                _temp = photo_size_parse(json_array_get(photos, i));
+                _temp = photos_parse(json_array_get(photos, i));
                 if (_temp)
-                    photo_size_add(ophotos, _temp);
+                    photos_add(ophotos, _temp);
             }
         }
         UserProfilePhotos * ouser_profile_photos = user_profile_photos(json_integer_value(total_count), ophotos);
 
         return ouser_profile_photos;
+    }
+
+    return NULL;
+}
+
+Photos * photos_parse(json_t * photos_parse){
+    if(json_is_object(photos_parse)){
+        size_t length, i;
+
+        PhotoSize * ophoto_size = NULL, *_temp = NULL;
+        length = json_array_size(photos_parse);
+        ophoto_size = photo_size_parse(json_array_get(photos_parse, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp = photo_size_parse(json_array_get(photos_parse, i));
+                if (_temp)
+                    photo_size_add(ophoto_size, _temp);
+            }
+        }
+        Photos * ophotos = photos(ophoto_size);
+
+        return ophotos;
     }
 
     return NULL;
