@@ -2,6 +2,8 @@
 
 User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code){
     User * user = (User *) malloc(sizeof(User));
+    if(!user)
+        return NULL;
 
     user->id = id;
     user->is_bot = is_bot;
@@ -32,6 +34,8 @@ void user_free(User * usr){
 
 Bot * bot(const char * token, User * user){
     Bot * bot = (Bot *)malloc(sizeof(Bot));
+    if(!bot)
+        return NULL;
 
     bot->token = alloc_string(token);
     bot->user = user;
@@ -52,6 +56,8 @@ void bot_free(Bot * bot){
 
 Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators){
     Chat * chat = (Chat *) malloc(sizeof(Chat));
+    if(!chat)
+        return NULL;
 
     chat->id = id;
     chat->all_members_are_administrators = all_members_are_administrators;
@@ -88,6 +94,8 @@ void chat_free(Chat * cht){
 
 MessageEntity * message_entity(const char * type, long int offset, long int length, const char * url, User * user){
     MessageEntity * msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
+    if(!msgett)
+        return NULL;
 
     msgett->offset = offset;
     msgett->length = length;
@@ -149,6 +157,8 @@ MessageEntity * message_entity_get(MessageEntity * message_entity, int index){
 
 Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size){
     Audio * audio = (Audio *)malloc(sizeof(Audio));
+    if(!audio)
+        return NULL;
 
     audio->duration = duration;
     audio->file_size = file_size;
@@ -181,6 +191,8 @@ void audio_free(Audio * audio){
 
 PhotoSize * photo_size(const char * file_id,int width,int height,long int file_size){
     PhotoSize * photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
+    if(!photoSize)
+        return NULL;
 
     photoSize->file_id = alloc_string(file_id);
     photoSize->width = width;
@@ -229,6 +241,8 @@ PhotoSize * photo_size_get(PhotoSize * root, int i){
 
 Document * document(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
     Document * document = (Document *)malloc(sizeof(Document));
+    if(!document)
+        return NULL;
 
     document->file_id = alloc_string(file_id);
     document->thumb = thumb;
@@ -250,6 +264,8 @@ void document_free(Document * document){
 
 Animation * animation(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
     Animation * animation = (Animation *)malloc(sizeof(Animation));
+    if(!animation)
+        return NULL;
 
     animation->file_id = alloc_string(file_id);
     animation->thumb = thumb;
@@ -271,6 +287,8 @@ void animation_free(Animation * animation){
 
 Game * game( const char * title, const char * description, PhotoSize * photo, const char * text, MessageEntity * text_entities, Animation * animation){
     Game * game = (Game *)malloc(sizeof(Game));
+    if(!game)
+        return NULL;
 
     game->title = alloc_string(title);
     game->description = alloc_string(description);
@@ -295,6 +313,8 @@ void game_free(Game * game){
 
 Sticker * sticker(const char * file_id,int width,int height,PhotoSize * thumb,const char * emoji,long int file_size){
     Sticker * _sticker = (Sticker *)malloc(sizeof(Sticker));
+    if(!_sticker)
+        return NULL;
 
     _sticker->file_id = alloc_string(file_id);
     _sticker->emoji = alloc_string(emoji);
@@ -324,6 +344,8 @@ void sticker_free(Sticker * _sticker){
 
 Video * video(const char * file_id,int width,int height,long int duration,PhotoSize * thumb,const char * mime_type,long int file_size){
     Video * _video = (Video *)malloc(sizeof(Video));
+    if(!_video)
+        return NULL;
 
     _video->file_id = alloc_string(file_id);
     _video->mime_type = alloc_string(mime_type);
@@ -351,6 +373,8 @@ void video_free(Video * _video){
 
 Voice * voice(const char * file_id,long int duration,const char * mime_type,long int file_size){
     Voice * _voice = (Voice *)malloc(sizeof(Voice));
+    if(!_voice)
+        return NULL;
 
     _voice->file_id = alloc_string(file_id);
     _voice->mime_type = alloc_string(mime_type);
@@ -372,6 +396,8 @@ void voice_free(Voice * _voice){
 
 Contact * contact(const char * phone_number,const char * first_name,const char * last_name,long int user_id){
     Contact * _contact = (Contact *)malloc(sizeof(Contact));
+    if(!_contact)
+        return NULL;
 
     _contact->phone_number = alloc_string(phone_number);
     _contact->first_name = alloc_string(first_name);
@@ -395,6 +421,8 @@ void contact_free(Contact * _contact){
 
 Location * location(float latitude,float longitude){
     Location * _location = (Location *)malloc(sizeof(Location));
+    if(!_location)
+        return NULL;
 
     _location->latitude = latitude;
     _location->longitude = longitude;
@@ -408,6 +436,8 @@ void location_free(Location * _location){
 
 Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id){
     Venue * _venue = (Venue *)malloc(sizeof(Venue));
+    if(!_venue)
+        return NULL;
 
     _venue->location = location;
 
@@ -442,6 +472,8 @@ Message * message(long int message_id,User * from, long int date, Chat * chat,
                   long int migrate_from_chat_id,Message * pinned_message, Invoice  * oinvoice, SuccessfulPayment * successful_payment){
     
     Message * message = (Message *)malloc(sizeof(Message));
+    if(!message)
+        return NULL;
 
     //PRIMITIVE TYPES
     message->message_id = message_id;
@@ -539,6 +571,8 @@ void message_free(Message * message){
 
 Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result,CallbackQuery * callback_query, ShippingQuery * shipping_query, PreCheckoutQuery * pre_checkout_query){
     Update * oupdate = (Update *)malloc(sizeof(Update));
+    if(!oupdate)
+        return NULL;
 
     oupdate->update_id = update_id;
     oupdate->message = message;
@@ -626,6 +660,8 @@ ChatMember *chat_member(User *user, const char *status, long int until_date, boo
                         bool can_add_web_page_previews) {
     
     ChatMember *_cmember = (ChatMember *) malloc(sizeof(ChatMember));
+    if(!_cmember)
+        return NULL;
 
     _cmember->user               = user;
     _cmember->status             = alloc_string(status);
@@ -657,6 +693,8 @@ ChosenInlineResult * chosen_inline_result(const char *result_id, User *from,
                                              Location *location, const char *inline_message_id, const char * query) {
 
     ChosenInlineResult * cir = (ChosenInlineResult *) malloc (sizeof(ChosenInlineResult));
+    if(!cir)
+        return NULL;
 
     cir->result_id = alloc_string(result_id);
     cir->from      = from;
@@ -696,6 +734,8 @@ void chosen_inline_result_free(ChosenInlineResult * cir){
 InlineQuery * inline_query(const char * id, User * user, Location * location, const char *query, const char * offset){
 
     InlineQuery * inline_query = (InlineQuery *) malloc(sizeof(InlineQuery));
+    if(!inline_query)
+        return NULL;
 
     inline_query->id = alloc_string(id);
     inline_query->from = user;
@@ -727,6 +767,8 @@ void inline_query_free(InlineQuery * inline_query){
 
 CallbackQuery * callback_query(const char * id, User * user, Message * message, const char * inline_message_id, const char * chat_instance, const char * data, const char * game_short_name) {
     CallbackQuery * ocallbac_query = (CallbackQuery *) malloc(sizeof(CallbackQuery));
+    if(!ocallbac_query)
+        return NULL;
 
     ocallbac_query->id = alloc_string(id);
     ocallbac_query->from = user;
@@ -766,6 +808,8 @@ void callback_query_free(CallbackQuery * callback_query){
 
 VideoNote * video_note(const char * file_id, long length, long duration, PhotoSize * photo_size, long file_size){
     VideoNote * ovide_note = (VideoNote *) malloc(sizeof(VideoNote));
+    if(!ovide_note)
+        return NULL;
 
     ovide_note->file_id = alloc_string(file_id);
     ovide_note->length = length;
@@ -788,6 +832,8 @@ void video_note_free(VideoNote * video_note){
 
 Invoice * invoice(const char * title, const char * description, const char * start_parameter, const char * currency, long total_amount){
     Invoice  * oinvoice = (Invoice *) malloc(sizeof(Invoice));
+    if(!oinvoice)
+        return NULL;
 
     oinvoice->title = alloc_string(title);
     oinvoice->description = alloc_string(description);
@@ -816,6 +862,8 @@ void invoice_free(Invoice * invoice){
 
 ShippingQuery * shipping_query(const char *id, User * from, const char * invoice_payload, ShippingAddress * shipping_address){
     ShippingQuery * oshipping_query = (ShippingQuery *) malloc(sizeof(ShippingQuery));
+    if(!oshipping_query)
+        return NULL;
 
     oshipping_query->id = alloc_string(id);
     oshipping_query->from = from;
@@ -843,6 +891,8 @@ void shipping_query_free(ShippingQuery * shipping_query){
 
 ShippingAddress * shipping_address(const char * country_code, const char * state, const char * city, const char * street_line1, const char * street_line2, const char * post_code){
     ShippingAddress * oshipping_address = (ShippingAddress *) malloc(sizeof(ShippingAddress));
+    if(!oshipping_address)
+        return NULL;
 
     oshipping_address->country_code = alloc_string(country_code);
     oshipping_address->state = alloc_string(state);
@@ -878,6 +928,8 @@ void shipping_address_free(ShippingAddress * shipping_address){
 
 PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info){
     PreCheckoutQuery * opre_checkout_query = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
+    if(!opre_checkout_query)
+        return NULL;
 
     opre_checkout_query->id = alloc_string(id);
     opre_checkout_query->user = from;
@@ -915,6 +967,8 @@ void pre_checkout_query_free(PreCheckoutQuery * pcq){
 
 OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address){
     OrderInfo * oorder_info = (OrderInfo *) malloc(sizeof(OrderInfo));
+    if(!order_info)
+        return NULL;
 
     oorder_info->name = alloc_string(name);
     oorder_info->phone_number = alloc_string(phone_number);
@@ -942,6 +996,8 @@ void order_info_free(OrderInfo * order_info){
 
 SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id){
     SuccessfulPayment * spayment = (SuccessfulPayment *) malloc(sizeof(oorder_info));
+    if(!spayment)
+        return NULL;
 
     spayment->currency = alloc_string(currency);
     spayment->total_amount = total_amount;
@@ -978,6 +1034,8 @@ void successful_payment_free(SuccessfulPayment * spayment){
 
 File * file(const char * file_id, long int file_size, const char * file_path){
     File * ofile = (File *) malloc(sizeof(File));
+    if(!ofile)
+        return NULL;
 
     ofile->file_id = alloc_string(file_id);
     ofile->file_size = file_size;
@@ -1030,6 +1088,8 @@ size_t chat_member_len (ChatMember *chatMember) {
 
 UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos){
     UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
+    if(!oupp)
+        return NULL;
 
     oupp->total_count = total_count;
     oupp->photos = photos;
@@ -1046,6 +1106,8 @@ void user_profile_photos_free(UserProfilePhotos * oupp){
 
 Photos * photos(PhotoSize * photo_size){
     Photos * ophotos = (Photos *) malloc(sizeof(Photos));
+    if(!ophotos)
+        return NULL;
 
     ophotos->photo_size = photo_size;
     ophotos->next = NULL;
