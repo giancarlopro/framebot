@@ -239,9 +239,9 @@ PhotoSize * photo_size_get(PhotoSize * root, int i){
     return NULL;
 }
 
-size_t photo_size_len(PhotoSize * ophoto_sise){
+size_t photo_size_len(PhotoSize * ophoto_size){
     size_t i;
-    PhotoSize *tmp = photos;
+    PhotoSize *tmp = ophoto_size;
 
     if(!tmp)
         return 0;
