@@ -702,6 +702,38 @@ void chat_member_free(ChatMember *chatMember) {
     free(chatMember);
 }
 
+void chat_member_add (ChatMember *dest, ChatMember *src) {
+    ChatMember *tmp = dest;
+    while(tmp)
+        tmp = tmp->next;
+    
+    tmp->next = src;
+}
+
+ChatMember *chat_member_get (ChatMember *chatMember, int index) {
+    ChatMember *tmp = chatMember;
+
+    int i;
+    for (i = 0; tmp; i++) {
+        if (i == index)
+            return tmp;
+        tmp = tmp->next;
+    }
+    return NULL;
+}
+
+size_t chat_member_len (ChatMember *chatMember) {
+    ChatMember *tmp = chatMember;
+    if (!tmp)
+        return 0;
+    
+    int i;
+    for (i = 0; tmp; i++) {
+        tmp = tmp->next;
+    }
+    return i;
+}
+
 ChosenInlineResult * chosen_inline_result(const char *result_id, User *from,
                                              Location *location, const char *inline_message_id, const char * query) {
 
@@ -1067,37 +1099,7 @@ void file_free(File * ofile){
     free(ofile);
 }
 
-void chat_member_add (ChatMember *dest, ChatMember *src) {
-    ChatMember *tmp = dest;
-    while(tmp)
-        tmp = tmp->next;
-    
-    tmp->next = src;
-}
 
-ChatMember *chat_member_get (ChatMember *chatMember, int index) {
-    ChatMember *tmp = chatMember;
-
-    int i;
-    for (i = 0; tmp; i++) {
-        if (i == index)
-            return tmp;
-        tmp = tmp->next;
-    }
-    return NULL;
-}
-
-size_t chat_member_len (ChatMember *chatMember) {
-    ChatMember *tmp = chatMember;
-    if (!tmp)
-        return 0;
-    
-    int i;
-    for (i = 0; tmp; i++) {
-        tmp = tmp->next;
-    }
-    return i;
-}
 
 UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos){
     UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));

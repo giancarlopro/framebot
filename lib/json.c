@@ -611,6 +611,21 @@ ChatMember *chat_member_parse (json_t *json) {
     }
 }
 
+ChatMember *chat_member_array_parse (json_t *cm_array) {
+    if (json_is_array(cm_array)) {
+        size_t i, sz = json_array_size(cm_array);
+
+        ChatMember *cm_temp = chat_member_parse(json_array_get(cm_array, 0));
+
+        for (i = 1; i < sz; i++) {
+            chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+        }
+
+        return cm_temp;
+    }
+    return NULL;
+}
+
 InlineQuery * inline_query_parse(json_t * json){
     if (json_is_object(json)) {
         json_t *id, *from, *location, *query, *offset;
