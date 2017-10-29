@@ -126,8 +126,8 @@ char * call_method_download(const char * token, char * dir, File *ofile){
     if(binary){
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)binary);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+        fclose(binary);
     }
-
     if (curl_easy_perform(curl) == CURLE_OK)
         return path;
 
