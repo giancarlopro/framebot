@@ -1,7 +1,11 @@
 #include <telebot.h>
 
+#define ISMALL 160
+#define IMEDIUM 320
+#define ILARGE 640
+
 #define IMG_ALL 0
-#define MG_SMALL 1
+#define IMG_SMALL 1
 #define IMG_MEDIUM 2
 #define IMG_LARGE 3
 
@@ -325,11 +329,10 @@ const char * get_file(char * dir, const char * file_id){
 /*
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size){
+UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit){
     json_t * user_profile;
-    char *method, *path_file;
-    size_t photosze_len, method_len = 71;
-    int i;
+    char *method;
+    size_t method_len = 71;
 
     method = malloc(method_len);
 
@@ -346,19 +349,11 @@ const char * get_user_profile_photos(char * dir, long user_id, long offset, long
         snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
                  user_id, offset, limit);
 
-    user_profile = generic_method_call(Token, method);
+    user_profile = generic_method_call(bot->token, method);
 
     UserProfilePhotos * ouser_profile_photos = user_profile_photos_parse(user_profile);
     if(!ouser_profile_photos)
         return NULL;
 
-
-//    path_file = call_method_download(Token, dir, ofile);
-
-    if(ouser_profile_photos){
-        user_profile_photos_free(ouser_profile_photos);
-        return path_file;
-    }
-
-    return NULL;
+    return ouser_profile_photos;
 }
