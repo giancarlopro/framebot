@@ -239,6 +239,19 @@ PhotoSize * photo_size_get(PhotoSize * root, int i){
     return NULL;
 }
 
+size_t photo_size_len(PhotoSize * ophoto_sise){
+    size_t i;
+    PhotoSize *tmp = photos;
+
+    if(!tmp)
+        return 0;
+
+    for (i = 1; tmp; i++)
+        tmp = tmp->next;
+
+    return i;
+}
+
 Document * document(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
     Document * document = (Document *)malloc(sizeof(Document));
     if(!document)

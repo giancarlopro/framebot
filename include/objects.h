@@ -336,6 +336,7 @@ PhotoSize * photo_size(const char * file_id, int width, int height, long int fil
 void photo_size_free(PhotoSize * photoSize);
 void photo_size_add(PhotoSize * root,PhotoSize * newps);
 PhotoSize * photo_size_get(PhotoSize * root, int i);
+size_t photo_size_len(PhotoSize * ophoto_sise);
 
 Document * document(const char * file_id, PhotoSize * thumb, const char * file_name, const char * mime_type, long int file_size);
 void document_free(Document * document);
