@@ -425,6 +425,6 @@ void user_profile_photos_free(UserProfilePhotos * oupp);
 Photos * photos(PhotoSize * photo_size);
 void photos_free(Photos * ophotos);
 void photos_add(Photos * dest, Photos * src);
-size_t photos_len(Photos *photos){
+size_t photos_len(Photos *photos);
 
 #endif // OBJECTS_H_
