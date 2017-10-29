@@ -1129,3 +1129,16 @@ void photos_add(Photos * dest, Photos * src){
 
     tmp->next = src;
 }
+
+size_t photos_len(Photos *photos){
+    size_t i;
+    Photos *tmp = photos;
+
+    if(!tmp)
+        return 0;
+
+    for (i = 1; tmp; i++)
+        tmp = tmp->next;
+
+    return i;
+}
