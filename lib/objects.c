@@ -1116,10 +1116,15 @@ Photos * photos(PhotoSize * photo_size){
 }
 
 void photos_free(Photos * ophotos){
-    if(ophotos->photo_size)
-        photo_size_free(ophotos->photo_size);
+    Photos * p = NULL;
+    while(ophotos){
+        if(ophotos->photo_size)
+            photo_size_free(ophotos->photo_size);
 
-    free(ophotos);
+        p = ophotos;
+        ophotos = ophotos->next;
+        free(ophotos);
+    }
 }
 
 void photos_add(Photos * dest, Photos * src){
