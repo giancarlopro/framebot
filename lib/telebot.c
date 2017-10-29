@@ -16,7 +16,6 @@ Bot * telebot(const char *token) {
     
     if (bot_user) {
         Bot *obot = bot(token, bot_user);
-        Token = alloc_string(obot->token);
 
         return obot;
     }
