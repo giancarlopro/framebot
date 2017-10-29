@@ -323,15 +323,15 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /* 
  * https://core.telegram.org/bots/api#getfile
  */
-const char * get_file(char * dir, const char * file_id){
+const char * get_file(Bot * bot, char * dir, const char * file_id){
     json_t *get_file;
     char *path_file;
 
-    get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
+    get_file = generic_method_call(bot->token, "getfile?file_id=%s", file_id);
 
     File * ofile = file_parse(get_file);
 
-    path_file = call_method_download(Token, dir, ofile);
+    path_file = call_method_download(bot->token, dir, ofile);
 
     if(ofile){
         file_free(ofile);
