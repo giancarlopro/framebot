@@ -20,12 +20,13 @@
 #define WHITE "\033[01;37m"
 
 const char *token;
+Bot *_bot;
 
 int _file(char * file_id){
 	char str[15];
 	strcpy(str, "CMakeFiles/");
 
-	get_file(str, file_id);
+	get_file(_bot, str, file_id);
 }
 
 void _message(Update * update){
@@ -47,9 +48,9 @@ int main(int argc, char **argv){
 	if(argc != 2)
 		fprintf(stderr, "update <token>");
 
-    Bot *bot = telebot(argv[1]);
+    _bot = telebot(argv[1]);
 
-	Update * update = get_updates(bot, NULL);
+	Update * update = get_updates(_bot, NULL);
 
 	update_length = update_len(update);
 
