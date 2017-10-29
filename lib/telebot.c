@@ -1,16 +1,5 @@
 #include <telebot.h>
 
-#define ISMALL 160
-#define IMEDIUM 320
-#define ILARGE 640
-
-#define IMG_ALL 0
-#define IMG_SMALL 1
-#define IMG_MEDIUM 2
-#define IMG_LARGE 3
-
-static const char * Token = NULL;
-
 void telebot_init () {
 
 //#ifndef CONFIG_DEFAULT /* read or not read config file */
