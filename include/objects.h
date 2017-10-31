@@ -3,7 +3,7 @@
 
 typedef struct _user{
     long int id;
-    bool is_bot;
+    bool is_bot:1;
     char *first_name;
     char *last_name;
     char *username;
@@ -22,7 +22,7 @@ typedef struct _chat{
     char * username;
     char * first_name;
     char * last_name;
-    int all_members_are_administrators;
+    bool all_members_are_administrators:1;
 } Chat;
 
 typedef struct _message_entity{
@@ -217,10 +217,10 @@ typedef struct _message{
     User * left_chat_member;
     char * new_chat_title;
     PhotoSize * new_chat_photo;//Array
-    int delete_chat_photo;
-    int group_chat_created;
-    int supergroup_chat_created;
-    int channel_chat_created;
+    bool delete_chat_photo:1;
+    bool group_chat_created:1;
+    bool supergroup_chat_created:1;
+    bool channel_chat_created:1;
     long int migrate_to_chat_id;
     long int migrate_from_chat_id;
     struct _message * pinned_message;
