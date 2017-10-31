@@ -72,7 +72,9 @@ Chat * chat_parse(json_t *json){
 
     if(json_is_object(pchat)){
         json_t *id, *type, *title, *username, *first_name,
-        *last_name, *all_members_are_administrators;
+        *last_name, *all_members_are_administrators, *photo,
+        *description, *invite_link, *pinned_message,
+        *sticker_set_name, *can_set_sticker_set;
 
         id = json_object_get(pchat,"id");
         type = json_object_get(pchat,"type");
@@ -81,6 +83,18 @@ Chat * chat_parse(json_t *json){
         first_name = json_object_get(pchat,"first_name");
         last_name = json_object_get(pchat,"last_name");
         all_members_are_administrators = json_object_get(pchat,"all_members_are_administrators");
+    
+        photo = json_object_get(json, "photo");
+        ChatPhoto * ochat_photo = chat_photo(photo);
+
+        description = json_object_get(json, "description");
+        invite_link = json_object_get(json, "invite_link");
+        
+        pinned_message = json_object_get(json, "pinned_message");
+        Message * opinned_message = message_parse(pinned_message);
+
+        sticker_set_name = json_object_get(json, "sticker_set_name");
+        can_set_sticker_set = json_object_get(json, "can_set_sticker_set");
 
         Chat * o_c = chat(
             json_integer_value(id),
@@ -89,7 +103,13 @@ Chat * chat_parse(json_t *json){
             json_string_value(username),
             json_string_value(first_name),
             json_string_value(last_name),
-            json_boolean_value(all_members_are_administrators)
+            json_boolean_value(all_members_are_administrators),
+            ochat_photo,
+            json_string_value(description),
+            json_string_value(invite_link),
+            opinned_message,
+            json_string_value(sticker_set_name),
+            json_string_value(can_set_sticker_set)
         );
 
         return o_c;
@@ -1089,4 +1109,20 @@ Photos * photos_parse(json_t * photos_parse){
     }
 
     return NULL;
+}
+
+ChatPhoto * chat_photo_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *small_file_id, *big_file_id;
+
+        small_file_id = json_object_get(json, "small_file_id");
+        big_file_id   = json_object_get(json, "big_file_id");
+
+        ChatPhoto * o_cp = chat_photo(
+            json_string_value(small_file_id),
+            json_string_value(big_file_id)
+        );
+
+        return o_cp;
+    }
 }

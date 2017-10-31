@@ -1186,3 +1186,14 @@ size_t photos_len(Photos *photos){
 
     return i;
 }
+
+ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
+    ChatPhoto * o_cp = (ChatPhoto *) malloc(sizeof(chatphoto));
+    if(!o_cp)
+        return NULL;
+
+    o_cp->small_file_id = small_file_id;
+    o_cp->big_file_id   = big_file_id; 
+
+    return o_cp;
+}

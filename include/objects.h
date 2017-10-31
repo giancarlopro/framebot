@@ -15,6 +15,11 @@ typedef struct _bot{
     User * user;
 } Bot;
 
+typedef struct _chat_photo{
+    char * small_file_id;
+    char * big_file_id;
+} ChatPhoto;
+
 typedef struct _chat{
     long int id;
     char * type;
@@ -23,6 +28,12 @@ typedef struct _chat{
     char * first_name;
     char * last_name;
     bool all_members_are_administrators:1;
+    ChatPhoto * photo;
+    char * description;
+    char * invite_link;
+    Message * pinned_message;
+    char * sticker_set_name;
+    bool can_set_sticker_set:1;
 } Chat;
 
 typedef struct _message_entity{
@@ -426,5 +437,8 @@ Photos * photos(PhotoSize * photo_size);
 void photos_free(Photos * ophotos);
 void photos_add(Photos * dest, Photos * src);
 size_t photos_len(Photos *photos);
+
+ChatPhoto * chatphoto(const char * small_file_id, const char * big_file_id);
+
 
 #endif // OBJECTS_H_
