@@ -85,7 +85,7 @@ Chat * chat_parse(json_t *json){
         all_members_are_administrators = json_object_get(pchat,"all_members_are_administrators");
     
         photo = json_object_get(json, "photo");
-        ChatPhoto * ochat_photo = chat_photo(photo);
+        ChatPhoto * ochat_photo = chat_photo_parse(photo);
 
         description = json_object_get(json, "description");
         invite_link = json_object_get(json, "invite_link");

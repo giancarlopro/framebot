@@ -78,7 +78,13 @@ void bot_free(Bot * bot){
 }
 
 
-Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators){
+Chat * chat(
+    long int id, const char * type, const char * title, const char * username,
+    const char * first_name, const char * last_name,
+    bool all_members_are_administrators, ChatPhoto * ochat_photo,
+    const char * description, const char * invite_link, Message * opinned_message,
+    const char * sticker_set_name, const char * can_set_sticker_set){
+
     Chat * chat = (Chat *) malloc(sizeof(Chat));
     if(!chat)
         return NULL;
@@ -1188,12 +1194,12 @@ size_t photos_len(Photos *photos){
 }
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
-    ChatPhoto * o_cp = (ChatPhoto *) malloc(sizeof(chatphoto));
+    ChatPhoto * o_cp = (ChatPhoto *) malloc(sizeof(ChatPhoto));
     if(!o_cp)
         return NULL;
 
-    o_cp->small_file_id = small_file_id;
-    o_cp->big_file_id   = big_file_id; 
+    o_cp->small_file_id = alloc_string(small_file_id);
+    o_cp->big_file_id   = alloc_string(big_file_id); 
 
     return o_cp;
 }
