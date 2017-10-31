@@ -1,8 +1,8 @@
-Estrutura de dados da api bot
+structure data
 
 Telegram
 
-tipos
+Types
 Update - Message - MessageEntity - PhotoSize - User - Chat - Audio
 Document - Game - Sticker - Video - Voice - Contact - Location
 Venue - Animation - InlineQuery - ChosenInlineResult - CallbackQuery
@@ -11,301 +11,194 @@ SuccessfulPayment - OrderInfo - ShippingAddress - Invoice - Contact
 VideoNote - PhotoSize
 
 
-árvore da estrutura
+all type
 
-update
--> update_id                 (long)
--> message                   (type message)
--> edited_message            (type message) (mensagem editada)
--> channel_post              (type message)
--> edited_channel_post       (type message)
--> inline_query              (type message)
--> choosen_inline            (type message)
--> callback_query            (type message)
+*type Update
+-> update_id              (long)
+-> message                (message)
+-> edited_message         (message)
+-> channel_post           (message)
+-> edited_channel_post    (message)
+-> inline_query           (InlineQuery)
+-> choosen_inline _result (ChosenInlineResult)
+-> callback_query         (CallbackQuery)
+-> shipping_query         (Shipping_Query)
+-> pre_checkout_query     (PreCheckoutQuery)
 -> next
 
-update - message
-(type Message)
+*type Message
 -> message_id                (long)
 -> date                      (long)
 -> forward_from_message_id   (long)
 -> forward_date              (long)
 -> edit_date                 (long)
--> delete_chat_photo         (int)
--> group_chat_created        (int)
--> supergroup_chat_created   (int)
--> channel_chat_created      (int)
+-> delete_chat_photo         (boolean)
+-> group_chat_created        (boolean)
+-> supergroup_chat_created   (boolean)
+-> channel_chat_created      (boolean)
 -> migrate_to_chat_id        (long)
--> migrate_from_chat_id      (long)
--> from                      (type user)
--> chat                      (type chat)
--> forward_from              (type user)
--> forward_from_chat         (type char)
--> reply_to_message          (type message)
--> entities                  (type message)
--> audio                     (type audio)
--> document                  (type document)
--> game                      (type game)
--> photo                     (type photosize)
--> sticker                   (type sticker)
--> video                     (type video)
--> voice                     (type voice)
--> contact                   (type contact)
--> location                  (type location)
--> venue                     (type venue)
--> new_chat_member           (type user)
--> left_chat_member          (type user)
--> new_chat_photo            (type photosize)
--> pinned_message            (type message)
--> text                      (char *)
--> caption                   (char *)
--> new_chat_title            (type new_chat_title)
+-> migrate_from_chat_id  (long)
+-> from                  (user)
+-> chat                  (chat)
+-> forward_from          (user)
+-> forward_from_chat  (chat)
+-> reply_to_message   (message)
+-> entities           (MessageEntity[])
+-> caption_entities   (MessageEntity[])
+-> audio              (audio)
+-> document           (document)
+-> game               (game)
+-> photo              (photosize[])
+-> sticker            (sticker)
+-> video              (video)
+-> voice              (voice)
+-> contact            (contact)
+-> location           (location)
+-> venue              (venue)
+-> new_chat_member    (user[])
+-> left_chat_member   (user)
+-> new_chat_photo     (photosize[])
+-> pinned_message     (message)
+-> text               (char *)
+-> caption            (char *)
+-> new_chat_title     (char *)
 
-update - (type)message - entities
-(type MessageEntity)
--> offset                    (long)
--> lenght                    (long)
--> user                      (type user)
--> type                      (char *)
--> url                       (char *)
+*type MessageEntity
+-> offset   (long)
+-> lenght   (long)
+-> user     (user)
+-> type     (char *)
+-> url      (char *)
 
-update - (type)message - photo
-(type PhotoSize)
--> file_id                   (char *)
--> width                     (int)
--> height                    (int)
--> fize_size                 (long)
--> next                      (next photosize)
+*type PhotoSize
+-> file_id      (char *)
+-> width        (int)
+-> height       (int)
+-> fize_size    (long)
+-> next         (next photosize)
 
-update - (type)message - new_chat_photo
-(type PhotoSize)
--> file_id                   (char *)
--> width                     (int)
--> height                    (int)
--> fize_size                 (long)
--> next                      (next photosize)
+*type User
+-> id             (long)
+-> is_bot         (bool)
+-> first_name     (char *)
+-> last_name      (char *)
+-> username       (char *)
+-> language_code  (char *)
 
-update - (type)message - from
-(type User)
+*type Chat
 -> id                        (long)
+-> type                      (char *)
+-> title                     (char *)
+-> username                  (char *)
 -> first_name                (char *)
 -> last_name                 (char *)
--> username                  (char *)
-
-update - (type)message - chat
-(type Chat)
--> id                        (long)
 -> all_members_are_administrators (int)
--> type                      (char *)
--> title                     (char *)
--> username                  (char *)
--> first_name                (char *)
--> last_name                 (char *)
-
-update - (type)message - forward_from_chat
-(type Chat)
--> id                        (long)
--> all_members_are_administrators (int)
--> type                      (char *)
--> title                     (char *)
--> username                  (char *)
--> first_name                (char *)
--> last_name                 (char *)
-
-update - (type)message - forward_from
-(type User)
--> id                        (long)
--> first_name                (char *)
--> last_name                 (char *)
--> username                  (char *)
-
-update - (type)message - reply_to_message
-(type Message)
--> message_id                (long)
--> date                      (long)
--> forward_from_message_id   (long)
--> forward_date              (long)
--> edit_date                 (long)
--> delete_chat_photo         (int)
--> group_chat_created        (int)
--> supergroup_chat_created   (int)
--> channel_chat_created      (int)
--> migrate_to_chat_id        (long)
--> migrate_from_chat_id      (long)
--> from                      (type user)
--> chat                      (type chat)
--> forward_from              (type user)
--> forward_from_chat         (type char)
--> reply_to_message          (type message)
--> entities                  (type message)
--> audio                     (type audio)
--> document                  (type document)
--> game                      (type game)
--> photo                     (type photosize)
--> sticker                   (type sticker)
--> video                     (type video)
--> voice                     (type voice)
--> contact                   (type contact)
--> location                  (type location)
--> venue                     (type venue)
--> new_chat_member           (type user)
--> left_chat_member          (type user)
--> new_chat_photo            (type photosize)
--> pinned_message            (type message)
--> text                      (char *)
--> caption                   (char *)
--> new_chat_title            (type new_chat_title)
-
-update - (type)message - audio
-(type Audio)
--> duration                  (long)
--> file_size                 (long)
--> file_id                   (char *)
--> performer                 (char *)
--> title                     (char *)
--> mime_type                 (char *)
-
-update - (type)message - document
-(type Document)
--> file_id                   (char *)
--> thumb (PhotoSize)         (type photosize)
--> file_name                 (char *)
--> mime_type                 (char *)
-->file_size                  (long)
-
-update - (type)message - game
-(type Game)
--> title                     (char *)
+-> photo                     (ChatPhoto)
 -> description               (char *)
--> photo                     (type photosize)
--> text                      (char *)
--> text_entities             (type messageentity)
--> animation                 (type animation)
+-> invite_link               (char *)
+-> pinned_message            (Message)
+-> sticker_set_name          (char *)
+-> can_set_sticker_set       (boolean)
 
-update - (type)message - sticker
-(type Sticker)
--> file_id                   (char *)
--> emoji                     (char *)
--> width                     (int)
--> height                    (int)
--> file_size                 (long)
--> thumb                     (type photosize)
+*type Audio
+-> duration     (long)
+-> file_size    (long)
+-> file_id      (char *)
+-> performer    (char *)
+-> title        (char *)
+-> mime_type    (char *)
 
-update - (type)message - video
-(type Video)
--> file_id                   (char *)
--> mime_type                 (char *)
--> width                     (int)
--> height                    (int)
--> duration                  (long)
--> file_size                 (long)
--> thumb                     (type photosize)
+*type Document
+-> file_id             (char *)
+-> thumb (PhotoSize)   (photosize)
+-> file_name           (char *)
+-> mime_type           (char *)
+->file_size            (long)
 
-update - (type)message - voice
-(type Voice)
--> file_id                   (char *)
--> mime_type                 (char *)
--> duration                  (long)
--> file_size                 (int)
+*type Game
+-> title          (char *)
+-> description    (char *)
+-> photo          (photosize)
+-> text           (char *)
+-> text_entities  (MessageEntity)
+-> animation      (Animation)
 
-update - (type)message - contact
-(type Contact)
--> phone_number              (char *)
--> first_name                (char *)
--> last_name                 (char *)
--> user_id                   (long)
+*type Sticker
+-> file_id     (char *)
+-> emoji       (char *)
+-> width       (int)
+-> height      (int)
+-> file_size   (long)
+-> thumb       (photosize)
 
-update - (type)message - location
-(type Location)
--> latitude                  (float)
--> longetude                 (float)
+*type Video
+-> file_id     (char *)
+-> mime_type   (char *)
+-> width       (int)
+-> height      (int)
+-> duration    (long)
+-> file_size   (long)
+-> thumb       (photosize)
 
-update - (type)message - venue
-(type Venue)
--> location (type location)
--> title                     (char *)
--> address                   (char *)
-->foursquare_id              (char *)
+*type Voice
+-> file_id    (char *)
+-> mime_type  (char *)
+-> duration   (long)
+-> file_size  (int)
 
-update - (type)message - new_chat_member
-(type User)
--> id                        (long)
--> first_name                (char *)
-->last_name                  (char *)
-->username                   (char *)
+*type VideoNote
+-> file_id       (char *)
+-> length        (long)
+-> duration      (long)
+-> thumb         (Photosize)
+-> file_size     (long)   
 
-update - (type)message - left_chat_member
-(type User)
--> id                        (long)
--> first_name                (char *)
--> last_name                 (char *)
--> username                  (char *)
+*type Contact
+-> phone_number (char *)
+-> first_name   (char *)
+-> last_name    (char *)
+-> user_id      (long)
 
-type Animation
--> file_id
--> thumb
--> file_name
--> mime_type
--> file_size
+*type Location
+-> latitude   (float)
+-> longetude  (float)
 
-type InlineQuery
--> id 					(char)
--> from 				(from)
--> location 			(Location)
--> query 				(query)
--> offset 				(offset)
+*type Venue
+-> location       (location)
+-> title          (char *)
+-> address        (char *)
+->foursquare_id   (char *)
 
-type ChosenInlineResult
--> result_id 			(char)
--> from 				(from)
--> location 			(Location)
--> inline_message_id	(char)
--> query 				(char)
+*type Animation
+-> file_id     (char *)
+-> thumb       (Photosize)
+-> file_name   (char *)
+-> mime_type   (char *)
+-> file_size   (char *)
 
-type CallbackQuery
--> id 					(char)
--> from 				(User)
--> message 				(Message)
--> inline_message_id 	(char)
--> chat_instace 		(char)
--> data 				(char)
--> game_short_name 		(char)
+*type InlineQuery
+-> id           (char *)
+-> from         (user)
+-> location     (Location)
+-> query        (char *)
+-> offset       (char *)
 
+*type ChosenInlineResult
+-> result_id          (char *)
+-> from               (user)
+-> location           (Location)
+-> inline_message_id  (char *)
+-> query              (char *)
 
+*type CallbackQuery
+-> id                  (char *)
+-> from                (User)
+-> message             (Message)
+-> inline_message_id   (char *)
+-> chat_instace        (char *)
+-> data                (char *)
+-> game_short_name     (char *)
 
-update - (type)message - pinned_message
-(type Message)
--> message_id                (long)
--> date                      (long)
--> forward_from_message_id   (long)
--> forward_date              (long)
--> edit_date                 (long)
--> delete_chat_photo         (int)
--> group_chat_created        (int)
--> supergroup_chat_created   (int)
--> channel_chat_created      (int)
--> migrate_to_chat_id        (long)
--> migrate_from_chat_id      (long)
--> from                      (type user)
--> chat                      (type chat)
--> forward_from              (type user)
--> forward_from_chat         (type char)
--> reply_to_message          (type message)
--> entities                  (type message)
--> audio                     (type audio)
--> document                  (type document)
--> game                      (type game)
--> photo                     (type photosize)
--> sticker                   (type sticker)
--> video                     (type video)
--> voice                     (type voice)
--> contact                   (type contact)
--> location                  (type location)
--> venue                     (type venue)
--> new_chat_member           (type user)
--> left_chat_member          (type user)
--> new_chat_photo            (type photosize)
--> pinned_message            (type message)
--> text                      (char *)
--> caption                   (char *)
--> new_chat_title            (type new_chat_title)
+*type UserProfilePhotos
+-> total_count   (long)
+-> photos        (PhotoSize[][])
