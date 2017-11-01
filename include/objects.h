@@ -62,11 +62,6 @@ typedef struct _photo_size{
     struct _photo_size * next;
 } PhotoSize;
 
-typedef struct _photos{
-    PhotoSize * photo_size;
-    struct _photos * next;
-} Photos;
-
 typedef struct _document{
     char * file_id;
     PhotoSize * thumb;
@@ -308,7 +303,7 @@ typedef struct _file{
 
 typedef struct _user_profile_photos{
     long total_count;
-    Photos * photos;
+    PhotoSize * photos;
 } UserProfilePhotos;
 
 typedef struct _keyboard_button {
@@ -488,16 +483,8 @@ void successful_payment_free(SuccessfulPayment * spayment);
 File * file(const char * file_id, long int file_size, const char * file_path);
 void file_free(File * ofile);
 
-UserProfilePhotos * user_profile_photos(long int total_count, Photos * photo_size);
+UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photo_size);
 void user_profile_photos_free(UserProfilePhotos * oupp);
-
-UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos);
-void user_profile_photos_free(UserProfilePhotos * oupp);
-
-Photos * photos(PhotoSize * photo_size);
-void photos_free(Photos * ophotos);
-void photos_add(Photos * dest, Photos * src);
-size_t photos_len(Photos *photos);
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id);
 

@@ -1131,7 +1131,7 @@ void file_free(File * ofile){
 
 
 
-UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos){
+UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photos){
     UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
     if(!oupp)
         return NULL;
@@ -1142,56 +1142,12 @@ UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos){
     return oupp;
 }
 
-void user_profile_photos_free(UserProfilePhotos * oupp){
+/*void user_profile_photos_free(UserProfilePhotos * oupp){
     if(oupp->photos)
-        photos_free(oupp->photos);
+        photo(oupp->photos);
 
     free(oupp);
-}
-
-Photos * photos(PhotoSize * photo_size){
-    Photos * ophotos = (Photos *) malloc(sizeof(Photos));
-    if(!ophotos)
-        return NULL;
-
-    ophotos->photo_size = photo_size;
-    ophotos->next = NULL;
-
-    return ophotos;
-}
-
-void photos_free(Photos * ophotos){
-    Photos * p = NULL;
-    while(ophotos){
-        if(ophotos->photo_size)
-            photo_size_free(ophotos->photo_size);
-
-        p = ophotos;
-        ophotos = ophotos->next;
-        free(ophotos);
-    }
-}
-
-void photos_add(Photos * dest, Photos * src){
-    Photos *tmp = dest;
-    while(tmp)
-        tmp = tmp->next;
-
-    tmp->next = src;
-}
-
-size_t photos_len(Photos *photos){
-    size_t i;
-    Photos *tmp = photos;
-
-    if(!tmp)
-        return 0;
-
-    for (i = 1; tmp; i++)
-        tmp = tmp->next;
-
-    return i;
-}
+}*/
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
     ChatPhoto * o_cp = (ChatPhoto *) malloc(sizeof(ChatPhoto));

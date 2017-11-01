@@ -1062,25 +1062,35 @@ File * file_parse(json_t * json){
 
 UserProfilePhotos * user_profile_photos_parse(json_t * json){
     if(json_is_object(json)){
-        json_t *total_count, *photos;
-        size_t length, i;
+        json_t *total_count, *photos, *array_photos;
+        size_t _length, i, length_, x;
 
         total_count = json_object_get(json, "total_count");
 
         photos = json_object_get(json, "photos");
-        length = json_array_size(photos);
-        Photos * ophotos = NULL, *_temp = NULL;
-        ophotos = photos_parse(json_array_get(photos, 0));
-        if (length > 0) {
-            for (i = 1; i < length; i++) {
-                _temp = photos_parse(json_array_get(photos, i));
-                if (_temp)
-                    photos_add(ophotos, _temp);
+        _length = json_array_size(photos);
+        PhotoSize * ophotos = NULL, *_temp = NULL, *first;
+        if (_length > 0) {
+            for (i = 0; i < _length; i++) {
+                array_photos = json_array_get(photos, 0);
+                ophotos = photo_size_parse(array_photos);
+                if(i == 0)
+                    first = ophotos;
+                length_ = json_array_size(json_array_get(photos, i));
+                for(x = 1; x < length_; x++){
+                    _temp = photo_size_parse(json_array_get(array_photos, x));
+                    if(_temp)
+                        photo_size_add(ophotos, _temp);
+                }
+                if(!((i + 1) == _length)){
+                    ophotos = (PhotoSize *) realloc(ophotos, (i + 2) * sizeof(PhotoSize));
+                    ophotos = (ophotos + (i + 1));
+                }
             }
         }
         UserProfilePhotos * oupp = user_profile_photos(
             json_integer_value(total_count),
-            ophotos
+            first
         );
 
         return oupp;
@@ -1089,27 +1099,6 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
     return NULL;
 }
 
-Photos * photos_parse(json_t * photos_parse){
-    if(json_is_object(photos_parse)){
-        size_t length, i;
-
-        PhotoSize * ophoto_size = NULL, *_temp = NULL;
-        length = json_array_size(photos_parse);
-        ophoto_size = photo_size_parse(json_array_get(photos_parse, 0));
-        if (length > 0) {
-            for (i = 1; i < length; i++) {
-                _temp = photo_size_parse(json_array_get(photos_parse, i));
-                if (_temp)
-                    photo_size_add(ophoto_size, _temp);
-            }
-        }
-        Photos * o_p = photos(ophoto_size);
-
-        return o_p;
-    }
-
-    return NULL;
-}
 
 ChatPhoto * chat_photo_parse(json_t * json){
     if(json_is_object(json)){
