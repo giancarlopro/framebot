@@ -487,6 +487,6 @@ UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photo_
 void user_profile_photos_free(UserProfilePhotos * oupp);
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id);
-
+void chat_photo_free(ChatPhoto * ochat_photo);
 
 #endif // OBJECTS_H_

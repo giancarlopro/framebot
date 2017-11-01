@@ -83,7 +83,7 @@ Chat * chat(
     const char * first_name, const char * last_name,
     bool all_members_are_administrators, ChatPhoto * ochat_photo,
     const char * description, const char * invite_link, Message * opinned_message,
-    const char * sticker_set_name, bool * can_set_sticker_set){
+    const char * sticker_set_name, bool can_set_sticker_set){
 
     Chat * chat = (Chat *) malloc(sizeof(Chat));
     if(!chat)
@@ -137,7 +137,7 @@ void chat_free(Chat * cht){
         message_free(cht->pinned_message);
 
     if(cht->sticker_set_name)
-        free(sticker_set_name);
+        free(cht->sticker_set_name);
 
     free(cht);
 }
