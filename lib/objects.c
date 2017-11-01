@@ -54,6 +54,7 @@ void user_free(User * usr){
         free(usr->language_code);
 
     free(usr);
+    usr = NULL;
 }
 
 Bot * bot(const char * token, User * user){
@@ -75,6 +76,7 @@ void bot_free(Bot * bot){
     user_free(bot->user);
 
     free(bot);
+    bot = NULL;
 }
 
 
@@ -140,6 +142,7 @@ void chat_free(Chat * cht){
         free(cht->sticker_set_name);
 
     free(cht);
+    cht = NULL;
 }
 
 MessageEntity * message_entity(const char * type, long int offset, long int length, const char * url, User * user){
@@ -176,6 +179,7 @@ void message_entity_free(MessageEntity * msgett){
         tofree = cm;
         cm = cm->next;
         free(tofree);
+        tofree = NULL;
     }
 }
 
@@ -236,6 +240,7 @@ void audio_free(Audio * audio){
         free(audio->mime_type);
 
     free(audio);
+    audio = NULL;
 }
 
 
@@ -259,6 +264,7 @@ void photo_size_free(PhotoSize * photoSize){
         free(photoSize->file_id);
 
     free(photoSize);
+    photoSize = NULL;
 }
 
 
@@ -318,6 +324,7 @@ void document_free(Document * document){
     free(document->file_name);
     free(document->mime_type);
     free(document);
+    document = NULL;
 }
 
 Animation * animation(const char * file_id,PhotoSize * thumb,const char * file_name,const char * mime_type,long int file_size){
@@ -341,6 +348,7 @@ void animation_free(Animation * animation){
     free(animation->mime_type);
     photo_size_free(animation->thumb);
     free(animation);
+    animation = NULL;
 }
 
 Game * game( const char * title, const char * description, PhotoSize * photo, const char * text, MessageEntity * text_entities, Animation * animation){
@@ -367,6 +375,7 @@ void game_free(Game * game){
     message_entity_free(game->text_entities);
     animation_free(game->animation);
     free(game);
+    game = NULL;
 }
 
 Sticker * sticker(const char * file_id,int width,int height,PhotoSize * thumb,const char * emoji,long int file_size){
@@ -398,6 +407,7 @@ void sticker_free(Sticker * _sticker){
         photo_size_free(_sticker->thumb);
 
     free(_sticker);
+    _sticker = NULL;
 }
 
 Video * video(const char * file_id,int width,int height,long int duration,PhotoSize * thumb,const char * mime_type,long int file_size){
@@ -427,6 +437,7 @@ void video_free(Video * _video){
     if(_video->thumb)
         free(_video->thumb);
     free(_video);
+    _video = NULL;
 }
 
 Voice * voice(const char * file_id,long int duration,const char * mime_type,long int file_size){
@@ -450,6 +461,7 @@ void voice_free(Voice * _voice){
     if(_voice->mime_type)
         free(_voice->mime_type);
     free(_voice);
+    _voice = NULL;
 }
 
 Contact * contact(const char * phone_number,const char * first_name,const char * last_name,long int user_id){
@@ -475,6 +487,7 @@ void contact_free(Contact * _contact){
     if(_contact->last_name)
         free(_contact->last_name);
     free(_contact);
+    _contact = NULL;
 }
 
 Location * location(float latitude,float longitude){
@@ -490,6 +503,7 @@ Location * location(float latitude,float longitude){
 
 void location_free(Location * _location){
     free(_location);
+    _location = NULL;
 }
 
 Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id){
@@ -516,6 +530,7 @@ void venue_free(Venue * _venue){
     if(_venue->foursquare_id)
         free(_venue->foursquare_id);
     free(_venue);
+    _venue = NULL;
 }
 
 Message * message(long int message_id,User * from, long int date, Chat * chat,
@@ -624,6 +639,7 @@ void message_free(Message * message){
         invoice_free(message->invoice);
 
     free(message);
+    message = NULL;
 }
 
 
@@ -643,7 +659,7 @@ Update * update(long int update_id, Message * message, Message * edited_message,
     oupdate->shipping_query = shipping_query;
     oupdate->pre_checkout_query = pre_checkout_query;
 
-	oupdate->next = NULL;
+    oupdate->next = NULL;
 
     return oupdate;
 }
@@ -675,39 +691,39 @@ void update_free(Update * oupdate){
 }
 
 void update_add(Update *dest, Update *src) {
-	Update *tmp = dest;
-	
+    Update *tmp = dest;
+    
     while (tmp->next)
-		tmp = tmp->next;
-	
+        tmp = tmp->next;
+    
     tmp->next = src;
 }
 
 
 Update *update_get(Update *u, int index) {
 
-	int i;
-	Update *tmp = u;
+    int i;
+    Update *tmp = u;
 
-	for (i = 0; tmp; i++) {
-		if (i == index)
-			return tmp;
-		tmp = tmp->next;
-	}
-	return NULL;
+    for (i = 0; tmp; i++) {
+        if (i == index)
+            return tmp;
+        tmp = tmp->next;
+    }
+    return NULL;
 }
 
 size_t update_len(Update *u) {
-	size_t i;
-	Update *tmp = u;
+    size_t i;
+    Update *tmp = u;
 
     if(!tmp)
         return 0;
 
-	for (i = 0; tmp; i++)
-		tmp = tmp->next;
+    for (i = 0; tmp; i++)
+        tmp = tmp->next;
 
-	return i;
+    return i;
 }
 
 ChatMember *chat_member(User *user, const char *status, long int until_date, bool can_be_edited,
@@ -745,6 +761,7 @@ void chat_member_free(ChatMember *chatMember) {
     user_free(chatMember->user);
     free(chatMember->status);
     free(chatMember);
+    chatMember = NULL;
 }
 
 void chat_member_add (ChatMember *dest, ChatMember *src) {
@@ -819,6 +836,7 @@ void chosen_inline_result_free(ChosenInlineResult * cir){
     }
 
     free(cir);
+    cir = NULL;
 }
 
 InlineQuery * inline_query(const char * id, User * user, Location * location, const char *query, const char * offset){
@@ -853,6 +871,7 @@ void inline_query_free(InlineQuery * inline_query){
         free(inline_query->offset);
 
     free(inline_query);
+    inline_query = NULL;
 }
 
 CallbackQuery * callback_query(const char * id, User * user, Message * message, const char * inline_message_id, const char * chat_instance, const char * data, const char * game_short_name) {
@@ -894,6 +913,7 @@ void callback_query_free(CallbackQuery * callback_query){
         free(callback_query->game_short_name);
 
     free(callback_query);
+    callback_query = NULL;
 }
 
 VideoNote * video_note(const char * file_id, long length, long duration, PhotoSize * photo_size, long file_size){
@@ -918,6 +938,7 @@ void video_note_free(VideoNote * video_note){
         photo_size_free(video_note->thumb);
 
     free(video_note);
+    video_note = NULL;
 }
 
 Invoice * invoice(const char * title, const char * description, const char * start_parameter, const char * currency, long total_amount){
@@ -948,6 +969,7 @@ void invoice_free(Invoice * invoice){
         free(invoice->currency);
 
     free(invoice);
+    invoice = NULL;
 }
 
 ShippingQuery * shipping_query(const char *id, User * from, const char * invoice_payload, ShippingAddress * shipping_address){
@@ -977,6 +999,7 @@ void shipping_query_free(ShippingQuery * shipping_query){
         shipping_address_free(shipping_query->shipping_address);
 
     free(shipping_query);
+    shipping_query = NULL;
 }
 
 ShippingAddress * shipping_address(const char * country_code, const char * state, const char * city, const char * street_line1, const char * street_line2, const char * post_code){
@@ -1014,6 +1037,7 @@ void shipping_address_free(ShippingAddress * shipping_address){
         free(shipping_address->post_code);
 
     free(shipping_address);
+    shipping_address = NULL;
 }
 
 PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info){
@@ -1053,6 +1077,7 @@ void pre_checkout_query_free(PreCheckoutQuery * pcq){
         order_info_free(pcq->order_info);
 
     free(pcq);
+    pcq = NULL;
 }
 
 OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address){
@@ -1082,6 +1107,7 @@ void order_info_free(OrderInfo * order_info){
         shipping_address_free(order_info->shipping_address);
 
     free(order_info);
+    order_info = NULL;
 }
 
 SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id){
@@ -1120,6 +1146,7 @@ void successful_payment_free(SuccessfulPayment * spayment){
         free(spayment->provider_payment_charge_id);
 
     free(spayment);
+    spayment = NULL;
 }
 
 File * file(const char * file_id, long int file_size, const char * file_path){
@@ -1142,6 +1169,7 @@ void file_free(File * ofile){
         free(ofile->file_path);
 
     free(ofile);
+    ofile = NULL;
 }
 
 
@@ -1167,6 +1195,7 @@ void user_profile_photos_free(UserProfilePhotos * oupp){
     }
 
     free(oupp);
+    oupp = NULL;
 }
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
@@ -1188,4 +1217,5 @@ void chat_photo_free(ChatPhoto * ochat_photo){
         free(ochat_photo->big_file_id);
 
     free(ochat_photo);
+    ochat_photo = NULL;
 }
