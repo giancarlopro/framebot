@@ -313,7 +313,7 @@ typedef struct _keyboard_button {
 } KeyboardButton;
 
 typedef struct _reply_keyboard_markup {
-    KeyboardButton * keyboard_button;
+    KeyboardButton ** keyboard_button;
     bool resize_keyboard;
     bool one_time_keyboard;
     bool selective;

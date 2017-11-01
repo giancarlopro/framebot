@@ -15,6 +15,11 @@ void upp(UserProfilePhotos * oupp){
 			l = l->next;
 		}
 	}
+
+	user_profile_photos_free(oupp);
+	if(!oupp)
+		printf("OK!");
+
 }
 
 

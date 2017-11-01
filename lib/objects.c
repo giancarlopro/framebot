@@ -255,15 +255,10 @@ PhotoSize * photo_size(const char * file_id,int width,int height,long int file_s
 
 
 void photo_size_free(PhotoSize * photoSize){
-    PhotoSize * aux = photoSize, * tmp;
-    while(aux){
-        if(aux->file_id)
-            free(aux->file_id);
+    if(photoSize->file_id)
+        free(photoSize->file_id);
 
-        tmp = aux;
-        aux = aux->next;
-        free(tmp);
-    }
+    free(photoSize);
 }
 
 
@@ -1162,12 +1157,17 @@ UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize ** photo
     return oupp;
 }
 
-/*void user_profile_photos_free(UserProfilePhotos * oupp){
-    if(oupp->photos)
-        photo(oupp->photos);
+void user_profile_photos_free(UserProfilePhotos * oupp){
+    size_t i, x;
+
+    if(oupp->photos){
+        for(i = 0; i < oupp->total_count; i++){
+                photo_size_free(oupp->photos[i]);
+        }
+    }
 
     free(oupp);
-}*/
+}
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
     ChatPhoto * o_cp = (ChatPhoto *) malloc(sizeof(ChatPhoto));
