@@ -1067,32 +1067,34 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
 
         total_count = json_object_get(json, "total_count");
 
+        PhotoSize ** ophotos = NULL, *_temp = NULL;
         photos = json_object_get(json, "photos");
         _length = json_array_size(photos);
-        PhotoSize *ophotos = NULL, *_temp = NULL, *first = NULL;
+
+        /* Array of Array PhotoSize */
+        ophotos = (PhotoSize **) malloc(_length * sizeof(PhotoSize));
         if (_length > 0) {
             for (i = 0; i < _length; i++) {
-                array_photos = json_array_get(photos, 0);
-                if(i == 0)
-                    first = ophotos;
+                array_photos = json_array_get(photos, i);
                 length_ = json_array_size(array_photos);
+
                 if(length_ > 0){
-                    ophotos = photo_size_parse(json_array_get(array_photos, 0));
+                    ophotos[i] = photo_size_parse(json_array_get(array_photos, 0));
+
                     for(x = 1; x < length_; x++){
                         _temp = photo_size_parse(json_array_get(array_photos, x));
                         if(_temp)
-                            photo_size_add(ophotos, _temp);
+                            photo_size_add(ophotos[i], _temp);
                     }
-                    if(!((i + 1) == _length)){
-                        ophotos = (PhotoSize *) realloc(ophotos, (i + 2) * sizeof(PhotoSize));
-                        ophotos = (ophotos + (i + 2));
-                    }
+
                 }
+
             }
         }
+
         UserProfilePhotos * oupp = user_profile_photos(
             json_integer_value(total_count),
-            first
+            ophotos
         );
 
         return oupp;

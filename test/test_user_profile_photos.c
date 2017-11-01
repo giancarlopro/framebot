@@ -1,6 +1,22 @@
-#include "../include/telebot.h"
+#include <telebot.h>
 
 Bot * _bot;
+
+
+void upp(UserProfilePhotos * oupp){
+	int i, x, q;
+	PhotoSize * l;
+	printf("%ld", oupp->total_count);
+	for(i = 0; i < oupp->total_count; i++){
+		l = oupp->photos[i];
+		for(x = 0; x < photo_size_len(oupp->photos[i]); x++){
+			if(l->file_id)
+				printf("photos[%d][%d]{\n\tfile_id=%s\n\twidth=%d\n\theight=%d\n\tfile_size=%ld\n}\n", i, x, l->file_id, l->width, l->height, l->file_size);
+			l = l->next;
+		}
+	}
+}
+
 
 int main(int argc, char *argv[]){
 	telebot_init();
@@ -14,6 +30,7 @@ int main(int argc, char *argv[]){
 
 	if(oupp){
 		printf("true");
+		upp(oupp);
 	}
 
 	return 0;

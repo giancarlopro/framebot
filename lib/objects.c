@@ -296,7 +296,7 @@ size_t photo_size_len(PhotoSize * ophoto_size){
     if(!tmp)
         return 0;
 
-    for (i = 1; tmp; i++)
+    for (i = 0; tmp; i++)
         tmp = tmp->next;
 
     return i;
@@ -1151,7 +1151,7 @@ void file_free(File * ofile){
 
 
 
-UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize * photos){
+UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize ** photos){
     UserProfilePhotos * oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
     if(!oupp)
         return NULL;
