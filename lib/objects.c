@@ -267,10 +267,10 @@ void photo_size_free(PhotoSize * photoSize){
 }
 
 
-void photo_size_add(PhotoSize * root,PhotoSize * newps){
-    PhotoSize * aux = root->next;
+void photo_size_add(PhotoSize * root, PhotoSize * newps){
+    PhotoSize * aux = root;
 
-    while(aux != NULL)
+    while(aux->next)
         aux = aux->next;
 
     aux->next = newps;
@@ -754,7 +754,7 @@ void chat_member_free(ChatMember *chatMember) {
 
 void chat_member_add (ChatMember *dest, ChatMember *src) {
     ChatMember *tmp = dest;
-    while(tmp)
+    while(tmp->next)
         tmp = tmp->next;
     
     tmp->next = src;
