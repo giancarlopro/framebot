@@ -83,20 +83,25 @@ Chat * chat(
     const char * first_name, const char * last_name,
     bool all_members_are_administrators, ChatPhoto * ochat_photo,
     const char * description, const char * invite_link, Message * opinned_message,
-    const char * sticker_set_name, const char * can_set_sticker_set){
+    const char * sticker_set_name, bool * can_set_sticker_set){
 
     Chat * chat = (Chat *) malloc(sizeof(Chat));
     if(!chat)
         return NULL;
 
     chat->id = id;
-    chat->all_members_are_administrators = all_members_are_administrators;
-
     chat->type = alloc_string(type);
     chat->title = alloc_string(title);
     chat->username = alloc_string(username);
     chat->first_name = alloc_string(first_name);
     chat->last_name = alloc_string(last_name);
+    chat->all_members_are_administrators = all_members_are_administrators;
+    chat->photo = ochat_photo;
+    chat->description = alloc_string(description);
+    chat->invite_link = alloc_string(invite_link);
+    chat->pinned_message = opinned_message;
+    chat->sticker_set_name = alloc_string(sticker_set_name);
+    chat->can_set_sticker_set = can_set_sticker_set;
 
     return chat;
 }
@@ -118,6 +123,21 @@ void chat_free(Chat * cht){
 
     if(cht->last_name)
         free(cht->last_name);
+
+    if(cht->photo)
+        chat_photo_free(cht->photo);
+
+    if(cht->description)
+        free(cht->description);
+
+    if(cht->invite_link)
+        free(cht->invite_link);
+
+    if(cht->pinned_message)
+        message_free(cht->pinned_message);
+
+    if(cht->sticker_set_name)
+        free(sticker_set_name);
 
     free(cht);
 }
@@ -1158,4 +1178,14 @@ ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id){
     o_cp->big_file_id   = alloc_string(big_file_id); 
 
     return o_cp;
+}
+
+void chat_photo_free(ChatPhoto * ochat_photo){
+    if(ochat_photo->small_file_id)
+        free(ochat_photo->small_file_id);
+
+    if(ochat_photo->big_file_id)
+        free(ochat_photo->big_file_id);
+
+    free(ochat_photo);
 }

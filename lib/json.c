@@ -109,7 +109,7 @@ Chat * chat_parse(json_t *json){
             json_string_value(invite_link),
             opinned_message,
             json_string_value(sticker_set_name),
-            json_string_value(can_set_sticker_set)
+            json_boolean_value(can_set_sticker_set)
         );
 
         return o_c;

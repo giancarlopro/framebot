@@ -331,7 +331,7 @@ Chat * chat(
     const char * first_name, const char * last_name,
     bool all_members_are_administrators, ChatPhoto * ochat_photo,
     const char * description, const char * invite_link, Message * opinned_message,
-    const char * sticker_set_name, const char * can_set_sticker_set);
+    const char * sticker_set_name, bool can_set_sticker_set);
 void chat_free(Chat * cht);
 
 //Message entity functions
