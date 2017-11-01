@@ -68,6 +68,7 @@ typedef int bool;
 #include <network.h>
 #include <json.h>
 #include <format.h>
+#include <util.h>
 
 
 void telebot_init();
