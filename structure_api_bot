@@ -108,7 +108,7 @@ all type
 -> title        (char *)
 -> mime_type    (char *)
 
-*type Document
+*type Document| *type Animation
 -> file_id             (char *)
 -> thumb (PhotoSize)   (photosize)
 -> file_name           (char *)
@@ -168,13 +168,6 @@ all type
 -> title          (char *)
 -> address        (char *)
 ->foursquare_id   (char *)
-
-*type Animation
--> file_id     (char *)
--> thumb       (Photosize)
--> file_name   (char *)
--> mime_type   (char *)
--> file_size   (char *)
 
 *type InlineQuery
 -> id           (char *)
