@@ -758,8 +758,12 @@ ChatMember *chat_member(User *user, const char *status, long int until_date, boo
 }
 
 void chat_member_free(ChatMember *chatMember) {
-    user_free(chatMember->user);
-    free(chatMember->status);
+    if(chatMember->user)
+        user_free(chatMember->user);
+
+    if(chatMember->status)
+        free(chatMember->status);
+
     free(chatMember);
     chatMember = NULL;
 }

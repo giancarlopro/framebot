@@ -335,7 +335,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /* 
  * https://core.telegram.org/bots/api#getfile
  */
-bool get_file(Bot * bot, char * dir, const char * file_id){
+char * get_file(Bot * bot, char * dir, const char * file_id){
     json_t *get_file;
     char *path_file;
 
@@ -350,7 +350,7 @@ bool get_file(Bot * bot, char * dir, const char * file_id){
         return path_file;
     }
 
-    return false;
+    return NULL;
 }
 
 /*

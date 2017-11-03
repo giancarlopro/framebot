@@ -306,18 +306,65 @@ typedef struct _user_profile_photos{
     PhotoSize ** photos;
 } UserProfilePhotos;
 
+typedef struct _callback_game{
+    long int user_id;
+    long int score;
+    bool force:1;
+    bool disable_edit_message:1;
+    long int chat_id;
+    long int message_id;
+    char * inline_message_id;
+} CallbackGame;
+
 typedef struct _keyboard_button {
     char * text;
     bool request_contact;
     bool request_location;
+    struct _keyboard_button * next;
 } KeyboardButton;
 
+typedef struct _inline_keyboard_button{
+    char * text;
+    char * url;
+    char * callback_data;
+    char * switch_nline_query;
+    char * switch_inline_query_current_chat;
+    CallbackGame * callback_game;
+    bool pay:1;
+} InlineKeyboardButton;
+
+typedef struct _inline_keyboard_markup{
+    int type;
+    InlineKeyboardButton ** inline_keyboard;
+} InlineKeyboardMarkup;
+
 typedef struct _reply_keyboard_markup {
+    int type;
     KeyboardButton ** keyboard_button;
     bool resize_keyboard;
     bool one_time_keyboard;
-    bool selective;
+    bool selective:1;
 } ReplyKeyboardMarkup;
+
+typedef struct _reply_keyboard_remove{
+    int type;
+    bool remove_keyboard:1;
+    bool selective:1;
+} ReplyKeyboardRemove;
+
+typedef struct _force_reply{
+    int type;
+    bool force_reply:1;
+    bool selective:1;
+} ForceReply;
+
+typedef union _keyboard{
+    int type;
+    InlineKeyboardButton * inline_keyboard_markup;
+    ReplyKeyboardMarkup * reply_keyboard_markup;
+    ReplyKeyboardRemove * reply_keyboard_remove;
+    ForceReply * _force_reply;
+} Keyboard;
 
 //User functions
 User *user(
