@@ -1,28 +1,11 @@
-/*
-MIT License
-
-Copyright (c) 2016 2017 Giancarlo da Silva Rocha
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
 #include <telebot.h>
+
+#define IMG_ALL 0
+#define MG_SMALL 1
+#define IMG_MEDIUM 2
+#define IMG_LARGE 3
+
+static const char * Token = NULL;
 
 void telebot_init () {
 
@@ -40,6 +23,7 @@ Bot * telebot(const char *token) {
     
     if (bot_user) {
         Bot *obot = bot(token, bot_user);
+        Token = alloc_string(obot->token);
 
         return obot;
     }
@@ -350,31 +334,32 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /* 
  * https://core.telegram.org/bots/api#getfile
  */
-bool get_file(Bot * bot, char * dir, const char * file_id){
+const char * get_file(char * dir, const char * file_id){
     json_t *get_file;
     char *path_file;
 
-    get_file = generic_method_call(bot->token, "getfile?file_id=%s", file_id);
+    get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
 
     File * ofile = file_parse(get_file);
 
-    path_file = call_method_download(bot->token, dir, ofile);
+    path_file = call_method_download(Token, dir, ofile);
 
     if(ofile){
         file_free(ofile);
         return path_file;
     }
 
-    return false;
+    return NULL;
 }
 
 /*
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit){
+const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size){
     json_t * user_profile;
-    char *method;
-    size_t method_len = 71;
+    char *method, *path_file;
+    size_t photosze_len, method_len = 71;
+    int i;
 
     method = malloc(method_len);
 
@@ -391,11 +376,19 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset
         snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
                  user_id, offset, limit);
 
-    user_profile = generic_method_call(bot->token, method);
+    user_profile = generic_method_call(Token, method);
 
     UserProfilePhotos * ouser_profile_photos = user_profile_photos_parse(user_profile);
     if(!ouser_profile_photos)
         return NULL;
 
-    return ouser_profile_photos;
+
+//    path_file = call_method_download(Token, dir, ofile);
+
+    if(ouser_profile_photos){
+        user_profile_photos_free(ouser_profile_photos);
+        return path_file;
+    }
+
+    return NULL;
 }
