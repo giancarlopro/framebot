@@ -1,9 +1,7 @@
 #Config of Telebot
 
 /info="api_bot"
-/geral   =   "au\\\\tor\'\"=Ródgger\' Bruno e \'Gian \
-1231231\"23"
-/name="Ródgger"
+/geral   =   "Telegram"
 /command1="comando encontrado no config\
 com quebra linha"
 

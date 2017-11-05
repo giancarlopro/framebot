@@ -3,7 +3,7 @@
 
 typedef struct _user{
     long int id;
-    bool is_bot;
+    bool is_bot:1;
     char *first_name;
     char *last_name;
     char *username;
@@ -15,6 +15,11 @@ typedef struct _bot{
     User * user;
 } Bot;
 
+typedef struct _chat_photo{
+    char * small_file_id;
+    char * big_file_id;
+} ChatPhoto;
+
 typedef struct _chat{
     long int id;
     char * type;
@@ -22,7 +27,13 @@ typedef struct _chat{
     char * username;
     char * first_name;
     char * last_name;
-    int all_members_are_administrators;
+    bool all_members_are_administrators:1;
+    ChatPhoto * photo;
+    char * description;
+    char * invite_link;
+    struct _message * pinned_message;
+    char * sticker_set_name;
+    bool can_set_sticker_set:1;
 } Chat;
 
 typedef struct _message_entity{
@@ -50,11 +61,6 @@ typedef struct _photo_size{
     long int file_size;
     struct _photo_size * next;
 } PhotoSize;
-
-typedef struct _photos{
-    PhotoSize * photo_size;
-    struct _photos * next;
-} Photos;
 
 typedef struct _document{
     char * file_id;
@@ -217,10 +223,10 @@ typedef struct _message{
     User * left_chat_member;
     char * new_chat_title;
     PhotoSize * new_chat_photo;//Array
-    int delete_chat_photo;
-    int group_chat_created;
-    int supergroup_chat_created;
-    int channel_chat_created;
+    bool delete_chat_photo:1;
+    bool group_chat_created:1;
+    bool supergroup_chat_created:1;
+    bool channel_chat_created:1;
     long int migrate_to_chat_id;
     long int migrate_from_chat_id;
     struct _message * pinned_message;
@@ -272,19 +278,19 @@ typedef struct _chat_member {
     User *user;
     char *status;
     long int until_date;
-    bool can_be_edited;
-    bool can_change_info;
-    bool can_post_messages;
-    bool can_edit_messages;
-    bool can_delete_messages;
-    bool can_invite_users;
-    bool can_restrict_members;
-    bool can_pin_messages;
-    bool can_promote_members;
-    bool can_send_messages;
-    bool can_send_media_messages;
-    bool can_send_other_messages;
-    bool can_add_web_page_previews;
+    bool can_be_edited:1;
+    bool can_change_info:1;
+    bool can_post_messages:1;
+    bool can_edit_messages:1;
+    bool can_delete_messages:1;
+    bool can_invite_users:1;
+    bool can_restrict_members:1;
+    bool can_pin_messages:1;
+    bool can_promote_members:1;
+    bool can_send_messages:1;
+    bool can_send_media_messages:1;
+    bool can_send_other_messages:1;
+    bool can_add_web_page_previews:1;
 
     struct _chat_member *next;
 } ChatMember;
@@ -297,7 +303,7 @@ typedef struct _file{
 
 typedef struct _user_profile_photos{
     long total_count;
-    Photos * photos;
+    PhotoSize ** photos;
 } UserProfilePhotos;
 
 typedef struct _keyboard_button {
@@ -307,122 +313,180 @@ typedef struct _keyboard_button {
 } KeyboardButton;
 
 typedef struct _reply_keyboard_markup {
-    KeyboardButton * keyboard_button;
+    KeyboardButton ** keyboard_button;
     bool resize_keyboard;
     bool one_time_keyboard;
     bool selective;
 } ReplyKeyboardMarkup;
 
 //User functions
-User *user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code);
+User *user(
+    long int id, bool is_bot, const char *first_name, const char *last_name,
+    const char *username, const char *language_code);
 void user_free(User *usr);
 
 //Chat functions
-Chat * chat(long int id, const char * type, const char * title, const char * username, const char * first_name, const char * last_name, int all_members_are_administrators);
+Chat * chat(
+    long int id, const char * type, const char * title, const char * username,
+    const char * first_name, const char * last_name,
+    bool all_members_are_administrators, ChatPhoto * ochat_photo,
+    const char * description, const char * invite_link, Message * opinned_message,
+    const char * sticker_set_name, bool can_set_sticker_set);
 void chat_free(Chat * cht);
 
 //Message entity functions
-MessageEntity * message_entity(const char * type, long int offset, long int length, const char * url, User * user);
+MessageEntity * message_entity(
+    const char * type, long int offset, long int length,
+    const char * url, User * user);
 void message_entity_free(MessageEntity * msgett);
 void message_entity_add(MessageEntity * dest, MessageEntity * src);
 size_t message_entity_len(MessageEntity * message_entity);
 MessageEntity * message_entity_get(MessageEntity * message_entity, int index);
 
 //Audio functions
-Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size);
+Audio * audio(
+    const char * file_id, long int duration, const char * performer,
+    const char * title, const char * mime_type, long int file_size);
 void audio_free(Audio * audio);
 
 PhotoSize * photo_size(const char * file_id, int width, int height, long int file_size);
 void photo_size_free(PhotoSize * photoSize);
 void photo_size_add(PhotoSize * root,PhotoSize * newps);
 PhotoSize * photo_size_get(PhotoSize * root, int i);
+size_t photo_size_len(PhotoSize * ophoto_sise);
 
-Document * document(const char * file_id, PhotoSize * thumb, const char * file_name, const char * mime_type, long int file_size);
+Document * document(
+    const char * file_id, PhotoSize * thumb, const char * file_name,
+    const char * mime_type, long int file_size);
 void document_free(Document * document);
 
-Animation * animation(const char * file_id,PhotoSize * thumb, const char * file_name, const char * mime_type,long int file_size);
+Animation * animation(
+    const char * file_id, PhotoSize * thumb, const char * file_name,
+    const char * mime_type,long int file_size);
 void animation_free(Animation * animation);
 
-Game * game( const char * title, const char * description, PhotoSize * photo, const char * text, MessageEntity * text_entities, Animation * animation);
+Game * game(
+    const char * title, const char * description, PhotoSize * photo,
+    const char * text, MessageEntity * text_entities, Animation * animation);
 void game_free(Game * game);
 
-Sticker * sticker(const char * file_id, int width, int height,PhotoSize * thumb, const char * emoji, long int file_size);
+Sticker * sticker(
+    const char * file_id, int width, int height,PhotoSize * thumb,
+    const char * emoji, long int file_size);
 void sticker_free(Sticker * _sticker);
 
-Video * video(const char * file_id, int width, int height, long int duration,PhotoSize * thumb, const char * mime_type,long int file_size);
+Video * video(
+    const char * file_id, int width, int height, long int duration,
+    PhotoSize * thumb, const char * mime_type,long int file_size);
 void video_free(Video * _video);
 
-Voice * voice(const char * file_id,long int duration,const char * mime_type,long int file_size);
+Voice * voice(const char * file_id, long int duration,const char * mime_type,
+    long int file_size);
 void voice_free(Voice * _voice);
 
-Contact * contact(const char * phone_number,const char * first_name,const char * last_name,long int user_id);
+Contact * contact(const char * phone_number,const char * first_name,
+    const char * last_name,long int user_id);
 void contact_free(Contact * _contact);
 
 Location * location(float latitude,float longitude);
 void location_free(Location * _location);
 
-Venue * venue(Location * location,const char * title,const char * address,const char * foursquare_id);
+Venue * venue(Location * location, const char * title, const char * address,
+    const char * foursquare_id);
 void venue_free(Venue * _venue);
 
-Message * message(long int message_id,User * from,long int date,Chat * chat,User * forward_from,Chat * forward_from_chat,long int forward_from_message_id,const char * forward_signature, long int forward_date,Message * reply_to_message,long int edit_date, const char * author_signature, const char * text,MessageEntity * entities, MessageEntity * ocaption_entiities, Audio * audio,Document * document,Game * game,PhotoSize * photo,Sticker * sticker,Video * video,Voice * voice, VideoNote * video_note, const char * caption,Contact * contact,Location * location,Venue * venue,User * new_chat_member,User * left_chat_member,const char * new_chat_title,PhotoSize * new_chat_photo,int delete_chat_photo,int group_chat_created,int supergroup_chat_created,int channel_chat_created,long int migrate_to_chat_id,long int migrate_from_chat_id,Message * pinned_message, Invoice * oinvoice, SuccessfulPayment * successful_payment);
+Message * message(
+    long int message_id, User * from, long int date, Chat * chat,
+    User * forward_from, Chat * forward_from_chat, long int forward_from_message_id,
+    const char * forward_signature, long int forward_date, Message * reply_to_message,
+    long int edit_date, const char * author_signature, const char * text,
+    MessageEntity * entities, MessageEntity * ocaption_entiities, Audio * audio,
+    Document * document, Game * game, PhotoSize * photo, Sticker * sticker,
+    Video * video, Voice * voice, VideoNote * video_note, const char * caption,
+    Contact * contact, Location * location, Venue * venue, User * new_chat_member,
+    User * left_chat_member, const char * new_chat_title, PhotoSize * new_chat_photo,
+    int delete_chat_photo, int group_chat_created, int supergroup_chat_created,
+    int channel_chat_created, long int migrate_to_chat_id, long int migrate_from_chat_id,
+    Message * pinned_message, Invoice * oinvoice,SuccessfulPayment * successful_payment
+);
 void message_free(Message * message);
 
 Bot * bot(const char * token, User * user);
 void bot_free(Bot * bot);
 
-ChosenInlineResult * chosen_inline_result (const char *result_id, User *from, Location *location, const char *inline_message_id, const char * query);
+ChosenInlineResult * chosen_inline_result (const char *result_id, User *from,
+    Location *location, const char *inline_message_id, const char * query);
 void chosen_inline_result_free(ChosenInlineResult * cir);
 
-Update * update(long int update_id, Message * message, Message * edited_message, Message * channel_post, Message * edited_channel_post, InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result, CallbackQuery * callback_query, ShippingQuery * shipping_query, PreCheckoutQuery * pre_checkout_query);
+Update * update(long int update_id, Message * message, Message * edited_message,
+    Message * channel_post, Message * edited_channel_post,
+    InlineQuery * inline_query, ChosenInlineResult * chosen_inline_result,
+    CallbackQuery * callback_query, ShippingQuery * shipping_query,
+    PreCheckoutQuery * pre_checkout_query);
 void update_free(Update * oupdate);
 void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
 size_t update_len(Update *u);
 
-ChatMember *chat_member(User *user, const char *status, long int until_date, bool can_be_edited, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members, bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages, bool can_add_web_page_previews);
+ChatMember *chat_member(User *user, const char *status, long int until_date,
+    bool can_be_edited, bool can_change_info, bool can_post_messages,
+    bool can_edit_messages, bool can_delete_messages, bool can_invite_users,
+    bool can_restrict_members, bool can_pin_messages, bool can_promote_members,
+    bool can_send_messages, bool can_send_media_messages,
+    bool can_send_other_messages, bool can_add_web_page_previews);
 void chat_member_free(ChatMember *chatMember);
 void chat_member_add (ChatMember *dest, ChatMember *src);
 ChatMember *chat_member_get (ChatMember *chatMember, int index);
 size_t chat_member_len (ChatMember *chatMember);
 
-InlineQuery * inline_query(const char * id, User * user, Location * location, const char *query, const char * offset);
+InlineQuery * inline_query(const char * id, User * user, Location * location,
+    const char *query, const char * offset);
 void inline_query_free(InlineQuery * inline_query);
 
-CallbackQuery * callback_query(const char * id, User * user, Message * message, const char * inline_message_id, const char * chat_instance, const char * data, const char * game_short_name);
+CallbackQuery * callback_query(const char * id, User * user, Message * message,
+    const char * inline_message_id, const char * chat_instance,
+    const char * data, const char * game_short_name);
 void callback_query_free(CallbackQuery * callback_query);
 
-VideoNote * video_note(const char * file_id, long length, long duration, PhotoSize * photo_size, long file_size);
+VideoNote * video_note(const char * file_id, long length, long duration,
+    PhotoSize * photo_size, long file_size);
 void video_note_free(VideoNote * video_note);
 
-Invoice * invoice(const char * title, const char * description, const char * start_parameter, const char * currency, long total_amount);
+Invoice * invoice(const char * title, const char * description,
+    const char * start_parameter, const char * currency, long total_amount);
 void invoice_free(Invoice * invoice);
 
-ShippingQuery * shipping_query(const char *id, User * from, const char * invoice_payload, ShippingAddress * shipping_address);
+ShippingQuery * shipping_query(const char *id, User * from,
+    const char * invoice_payload, ShippingAddress * shipping_address);
 void shipping_query_free(ShippingQuery * shipping_query);
 
-ShippingAddress * shipping_address(const char * country_code, const char * state, const char * city, const char * street_line1, const char * street_line2, const char * post_code);
+ShippingAddress * shipping_address(const char * country_code,
+    const char * state, const char * city, const char * street_line1,
+    const char * street_line2, const char * post_code);
 void shipping_address_free(ShippingAddress * shipping_address);
 
-OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address);
+OrderInfo * order_info(const char * name, const char * phone_number,
+    const char * email, ShippingAddress * shipping_address);
 void order_info_free(OrderInfo * order_info);
 
-PreCheckoutQuery * pre_checkout_query(const char * id, User * from, const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * order_info);
+PreCheckoutQuery * pre_checkout_query(const char * id, User * from,
+    const char * currency, long total_amount, const char * invoice_payload,
+    const char * shipping_option_id, OrderInfo * order_info);
 void pre_checkout_query_free(PreCheckoutQuery * pcq);
 
-SuccessfulPayment * successful_payment(const char * currency, long total_amount, const char * invoice_payload, const char * shipping_option_id, OrderInfo * oorder_info, const char * telegram_payment_charge_id, const char * provider_payment_charge_id);
+SuccessfulPayment * successful_payment(const char * currency, long total_amount,
+    const char * invoice_payload, const char * shipping_option_id,
+    OrderInfo * oorder_info, const char * telegram_payment_charge_id,
+    const char * provider_payment_charge_id);
 void successful_payment_free(SuccessfulPayment * spayment);
 
 File * file(const char * file_id, long int file_size, const char * file_path);
 void file_free(File * ofile);
 
-UserProfilePhotos * user_profile_photos(long int total_count, Photos * photo_size);
+UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize ** photo_size);
 void user_profile_photos_free(UserProfilePhotos * oupp);
 
-UserProfilePhotos * user_profile_photos(long int total_count, Photos * photos);
-void user_profile_photos_free(UserProfilePhotos * oupp);
-
-Photos * photos(PhotoSize * photo_size);
-void photos_free(Photos * ophotos);
-void photos_add(Photos * dest, Photos * src);
+ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id);
+void chat_photo_free(ChatPhoto * ochat_photo);
 
 #endif // OBJECTS_H_

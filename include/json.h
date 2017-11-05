@@ -23,6 +23,7 @@ Update * update_parse(json_t *json);
 User * get_me_parse(char * json);
 bool valid_update(long int update_id);
 ChatMember *chat_member_parse (json_t *json);
+ChatMember *chat_member_array_parse (json_t *cm_array);
 ChosenInlineResult * choosen_inline_result_parse(json_t * json);
 InlineQuery * inline_query_parse(json_t * json);
 CallbackQuery * callback_query_parse(json_t * json);
@@ -35,6 +36,6 @@ OrderInfo * order_info_parse(json_t * json);
 SuccessfulPayment * successful_payment_parse(json_t * json);
 File * file_parse(json_t * json);
 UserProfilePhotos * user_profile_photos_parse(json_t * json);
-Photos * photos_parse(json_t * photos_parse);
+ChatPhoto * chat_photo_parse(json_t * json);
 
 #endif

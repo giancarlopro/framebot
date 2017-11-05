@@ -55,7 +55,7 @@
 
 
 /* type bool */
-typedef short bool;
+typedef int bool;
 #define true  1
 #define false 0
 
@@ -68,6 +68,7 @@ typedef short bool;
 #include <network.h>
 #include <json.h>
 #include <format.h>
+#include <util.h>
 
 
 void telebot_init();
@@ -84,7 +85,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title);
 Chat *get_chat(Bot *bot, char *chat_id);
 ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id);
 json_t *generic_method_call (const char *token, char *formats, ...);
-const char * get_file(char * dir, const char * file_id);
+bool get_file(Bot * bot, char * dir, const char * file_id);
 bool set_chat_description (Bot *bot, char *chat_id, char *description);
 int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
@@ -93,6 +94,6 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members);
 char *export_chat_invite_link (Bot *bot, char *chat_id);
-const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size);
+UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit);
 
 #endif

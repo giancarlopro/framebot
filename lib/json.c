@@ -1,3 +1,27 @@
+/*
+MIT License
+
+Copyright (c) 2016 2017 Giancarlo da Silva Rocha
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 #include <telebot.h>
 
 static long int valid_update_id;
@@ -28,11 +52,16 @@ User * user_parse(json_t *json){
         username = json_object_get(puser, "username");
         language_code = json_object_get(puser, "language_code");
 
-        User * ouser = user(json_integer_value(id), json_is_true(is_bot),
-                            json_string_value(first_name), json_string_value(last_name),
-                            json_string_value(username), json_string_value(language_code));
+        User * o_u = user(
+            json_integer_value(id),
+            json_is_true(is_bot),
+            json_string_value(first_name),
+            json_string_value(last_name),
+            json_string_value(username),
+            json_string_value(language_code)
+        );
 
-        return ouser;
+        return o_u;
     }
 
     return NULL;
@@ -43,7 +72,9 @@ Chat * chat_parse(json_t *json){
 
     if(json_is_object(pchat)){
         json_t *id, *type, *title, *username, *first_name,
-        *last_name, *all_members_are_administrators;
+        *last_name, *all_members_are_administrators, *photo,
+        *description, *invite_link, *pinned_message,
+        *sticker_set_name, *can_set_sticker_set;
 
         id = json_object_get(pchat,"id");
         type = json_object_get(pchat,"type");
@@ -52,13 +83,36 @@ Chat * chat_parse(json_t *json){
         first_name = json_object_get(pchat,"first_name");
         last_name = json_object_get(pchat,"last_name");
         all_members_are_administrators = json_object_get(pchat,"all_members_are_administrators");
+    
+        photo = json_object_get(json, "photo");
+        ChatPhoto * ochat_photo = chat_photo_parse(photo);
 
-        Chat * ochat = chat(json_integer_value(id), json_string_value(type),
-                            json_string_value(title), json_string_value(username),
-                            json_string_value(first_name), json_string_value(last_name),
-                            json_boolean_value(all_members_are_administrators));
+        description = json_object_get(json, "description");
+        invite_link = json_object_get(json, "invite_link");
+        
+        pinned_message = json_object_get(json, "pinned_message");
+        Message * opinned_message = message_parse(pinned_message);
 
-        return ochat;
+        sticker_set_name = json_object_get(json, "sticker_set_name");
+        can_set_sticker_set = json_object_get(json, "can_set_sticker_set");
+
+        Chat * o_c = chat(
+            json_integer_value(id),
+            json_string_value(type),
+            json_string_value(title),
+            json_string_value(username),
+            json_string_value(first_name),
+            json_string_value(last_name),
+            json_boolean_value(all_members_are_administrators),
+            ochat_photo,
+            json_string_value(description),
+            json_string_value(invite_link),
+            opinned_message,
+            json_string_value(sticker_set_name),
+            json_boolean_value(can_set_sticker_set)
+        );
+
+        return o_c;
     }
     return NULL;
 }
@@ -77,10 +131,16 @@ MessageEntity * message_entity_parse(json_t *json){
         user = json_object_get(pmessage_entity,"user");
 
         User * puser = user_parse(user);
-        MessageEntity * omessage_entity = message_entity(json_string_value(type), json_integer_value(offset),
-                                                         json_integer_value(length), json_string_value(url), puser);
 
-        return omessage_entity;
+        MessageEntity * o_me = message_entity(
+            json_string_value(type),
+            json_integer_value(offset),
+            json_integer_value(length),
+            json_string_value(url),
+            puser
+        );
+
+        return o_me;
     }
 
     return NULL;
@@ -99,11 +159,16 @@ Audio * audio_parse(json_t *json){
         mime_type = json_object_get(paudio,"mime_type");
         file_size = json_object_get(paudio,"file_size");
 
-        Audio * oaudio = audio(json_string_value(file_id), json_integer_value(duration),
-                               json_string_value(performer), json_string_value(title),
-                               json_string_value(mime_type), json_integer_value(file_size));
+        Audio * o_a = audio(
+            json_string_value(file_id),
+            json_integer_value(duration),
+            json_string_value(performer),
+            json_string_value(title),
+            json_string_value(mime_type),
+            json_integer_value(file_size)
+        );
 
-        return oaudio;
+        return o_a;
     }
     return NULL;
 }
@@ -123,10 +188,14 @@ PhotoSize * photo_size_parse(json_t *json) {
         /*if(!image_size(json_integer_value(file_size)))
             return NULL;*/
 
-        PhotoSize * ophoto_size = photo_size(json_string_value(file_id), json_integer_value(width),
-                                             json_integer_value(height), json_integer_value(file_size));
+        PhotoSize * o_ps = photo_size(
+            json_string_value(file_id),
+            json_integer_value(width),
+            json_integer_value(height),
+            json_integer_value(file_size)
+        );
 
-        return ophoto_size;
+        return o_ps;
     }
 
     return NULL;
@@ -149,10 +218,16 @@ Document * document_parse(json_t *json){
         file_size = json_object_get(pdocument,"file_size");
 
         PhotoSize * othumb = photo_size_parse(thumb);
-        Document * odocument = document(json_string_value(file_id), othumb, json_string_value(file_name),
-                                            json_string_value(mime_type), json_integer_value(file_size));
+        
+        Document * o_d = document(
+            json_string_value(file_id),
+            othumb,
+            json_string_value(file_name),
+            json_string_value(mime_type),
+            json_integer_value(file_size)
+        );
 
-            return odocument;
+            return o_d;
     }
 
     return NULL;
@@ -171,10 +246,16 @@ Animation * animation_parse(json_t *json){
         file_size = json_object_get(panimation,"file_size");
 
         PhotoSize *othumb = photo_size_parse(thumb);
-        Animation *oanimation = (Animation *)document(json_string_value(file_id), othumb, json_string_value(file_name),
-                                                      json_string_value(mime_type), json_integer_value(file_size));
+        
+        Animation *o_a = (Animation *)document(
+            json_string_value(file_id),
+            othumb,
+            json_string_value(file_name),
+            json_string_value(mime_type),
+            json_integer_value(file_size)
+        );
 
-        return oanimation;
+        return o_a;
     }
 
     return NULL;
@@ -197,10 +278,14 @@ Game * game_parse(json_t *json){
         MessageEntity * otext_entities = message_entity_parse(text_entities);
         Animation * oanimation = animation_parse(animation);
 
-        Game * ogame = game(json_string_value(title), json_string_value(description), 
-                            ophoto, json_string_value(text), otext_entities, oanimation);
+        Game * o_g = game(
+            json_string_value(title),
+            json_string_value(description),
+            ophoto, json_string_value(text),
+            otext_entities, oanimation
+        );
 
-        return ogame;
+        return o_g;
     }
     return NULL;
 }
@@ -220,11 +305,16 @@ Sticker * sticker_parse(json_t *json){
 
         PhotoSize * othumb = photo_size_parse(thumb);
 
-        Sticker * osticker = sticker(json_string_value(file_id), json_integer_value(width),
-                                     json_integer_value(height), othumb, json_string_value(emoji), 
-                                     json_integer_value(file_size));
+        Sticker * o_s = sticker(
+            json_string_value(file_id),
+            json_integer_value(width),
+            json_integer_value(height),
+            othumb,
+            json_string_value(emoji),
+            json_integer_value(file_size)
+        );
 
-        return osticker;
+        return o_s;
     }
 
     return NULL;
@@ -249,11 +339,17 @@ Video * video_parse(json_t *json){
 
         PhotoSize * othumb = photo_size_parse(thumb);
 
-        Video * ovideo = video(json_string_value(file_id), json_integer_value(width),
-                               json_integer_value(height), json_integer_value(duration),
-                               othumb, json_string_value(mime_type), json_integer_value(file_size));
+        Video * o_v = video(
+            json_string_value(file_id),
+            json_integer_value(width),
+            json_integer_value(height),
+            json_integer_value(duration),
+            othumb,
+            json_string_value(mime_type),
+            json_integer_value(file_size)
+        );
 
-        return ovideo;
+        return o_v;
     }
 
     return NULL;
@@ -272,10 +368,14 @@ Voice * voice_parse(json_t *json){
         /*if(!voice_size(json_integer_value(file_size)))
             return NULL;*/
 
-        Voice * ovoice = voice(json_string_value(file_id), json_integer_value(duration),
-                               json_string_value(mime_type),json_integer_value(file_size));
+        Voice * o_v = voice(
+            json_string_value(file_id),
+            json_integer_value(duration),
+            json_string_value(mime_type),
+            json_integer_value(file_size)
+        );
 
-        return ovoice;
+        return o_v;
     }
 
     return NULL;
@@ -292,10 +392,14 @@ Contact * contact_parse(json_t *json){
         last_name = json_object_get(pcontact,"last_name");
         user_id = json_object_get(pcontact,"user_id");
 
-        Contact * ocontact = contact(json_string_value(phone_number),json_string_value(first_name),
-                                     json_string_value(last_name),json_integer_value(user_id));
+        Contact * o_c = contact(
+            json_string_value(phone_number),
+            json_string_value(first_name),
+            json_string_value(last_name),
+            json_integer_value(user_id)
+        );
 
-        return ocontact;
+        return o_c;
     }
     return NULL;
 }
@@ -309,9 +413,12 @@ Location * location_parse(json_t *json){
         latitude = json_object_get(plocation,"latitude");
         longitude = json_object_get(plocation,"longitude");
 
-        Location * olocation = location(json_real_value(latitude), json_real_value(longitude));
+        Location * o_l = location(
+            json_real_value(latitude),
+            json_real_value(longitude)
+        );
 
-        return olocation;
+        return o_l;
     }
 
     return NULL;
@@ -330,10 +437,14 @@ Venue * venue_parse(json_t *json){
 
         Location * olocation = location_parse(location);
 
-        Venue * ovenue = venue(olocation, json_string_value(title), 
-                               json_string_value(address), json_string_value(foursquare_id));
+        Venue * o_v = venue(
+            olocation,
+            json_string_value(title),
+            json_string_value(address),
+            json_string_value(foursquare_id)
+        );
 
-        return ovenue;
+        return o_v;
     }
 
     return NULL;
@@ -354,13 +465,15 @@ ChosenInlineResult * chosen_inline_result_parse(json_t * json){
         User * ouser = user_parse(from);
         Location * olocation = location_parse(location);
 
-        ChosenInlineResult *
-        ochosen_inline_result = chosen_inline_result(json_string_value(result_id),
-                                                   ouser, olocation,
-                                                   json_string_value(inline_message_id),
-                                                   json_string_value(query));
+        ChosenInlineResult * o_cir = chosen_inline_result(
+            json_string_value(result_id),
+            ouser,
+            olocation,
+            json_string_value(inline_message_id),
+            json_string_value(query)
+        );
 
-        return ochosen_inline_result;
+        return o_cir;
     }
 
     return NULL;
@@ -449,8 +562,10 @@ Message * message_parse(json_t *json){
         }
 
         //Objects
-        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, *location, *venue,
-        *new_chat_member, *left_chat_member, *pinned_message, *invoice, *successful_payment;
+        json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, 
+        *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, 
+        *location, *venue, *new_chat_member, *left_chat_member, *pinned_message, 
+        *invoice, *successful_payment;
 
         from = json_object_get(pmessage,"from");
         User * ofrom = user_parse(from);
@@ -512,17 +627,50 @@ Message * message_parse(json_t *json){
         successful_payment = json_object_get(pmessage, "successful_payment");
         SuccessfulPayment * osuccessful_payment = successful_payment_parse(successful_payment);
 
-        Message * omessage = message(json_integer_value(message_id), ofrom, json_integer_value(date), 
-                                     ochat, oforward_from, oforward_from_chat, json_integer_value(forward_from_message_id),
-                                     json_string_value(forward_signature), json_integer_value(forward_date), oreply_to_message, json_integer_value(edit_date), 
-                                     json_string_value(author_signature), json_string_value(text), oentities, ocaption_entities,  oaudio, odocument, ogame, ophoto, osticker, ovideo, ovoice, ovideo_note,
-                                     json_string_value(caption), ocontact, olocation, ovenue, onew_chat_member, oleft_chat_member, 
-                                     json_string_value(new_chat_title), onew_chat_photo, json_integer_value(delete_chat_photo), 
-                                     json_integer_value(group_chat_created), json_integer_value(supergroup_chat_created), 
-                                     json_integer_value(channel_chat_created), json_integer_value(migrate_to_chat_id), 
-                                     json_integer_value(migrate_from_chat_id), opinned_message, oinvoice, osuccessful_payment);
+        Message * o_m = message(
+            json_integer_value(message_id),
+            ofrom,
+            json_integer_value(date),
+            ochat,
+            oforward_from,
+            oforward_from_chat,
+            json_integer_value(forward_from_message_id),
+            json_string_value(forward_signature),
+            json_integer_value(forward_date),
+            oreply_to_message,
+            json_integer_value(edit_date),
+            json_string_value(author_signature),
+            json_string_value(text),
+            oentities,
+            ocaption_entities,
+            oaudio,
+            odocument,
+            ogame,
+            ophoto,
+            osticker,
+            ovideo,
+            ovoice,
+            ovideo_note,
+            json_string_value(caption),
+            ocontact,
+            olocation,
+            ovenue,
+            onew_chat_member, 
+            oleft_chat_member,
+            json_string_value(new_chat_title),
+            onew_chat_photo, 
+            json_integer_value(delete_chat_photo),
+            json_integer_value(group_chat_created), 
+            json_integer_value(supergroup_chat_created),
+            json_integer_value(channel_chat_created), 
+            json_integer_value(migrate_to_chat_id),
+            json_integer_value(migrate_from_chat_id),
+            opinned_message,
+            oinvoice,
+            osuccessful_payment
+        );
 
-        return omessage;
+        return o_m;
     }
     return NULL;
 }
@@ -563,13 +711,15 @@ Update * update_parse(json_t *json){
         PreCheckoutQuery * opre_checkout_query = pre_checkout_query_parse(pre_checkout_query);
 
 
-        Update * oupdate = update(  json_integer_value(update_id),
-                                  omessage, oedited_message, ochannel_post,
-                                  oedited_channel_post, oinline_query,
-                                  ochosen_inline_result, ocallback_query,
-                                  oshipping_query, opre_checkout_query);
+        Update * o_u = update(
+            json_integer_value(update_id), omessage,
+            oedited_message, ochannel_post,
+            oedited_channel_post, oinline_query,
+            ochosen_inline_result, ocallback_query,
+            oshipping_query, opre_checkout_query
+        );
 
-        return oupdate;
+        return o_u;
     }
 
     return NULL;
@@ -600,14 +750,26 @@ ChatMember *chat_member_parse (json_t *json) {
         can_send_other_messages     = json_object_get(json, "can_send_other_messages");
         can_add_web_page_previews   = json_object_get(json, "can_add_web_page_previews");
 
-        ChatMember *ochatmember = chat_member(user_parse(user), json_string_value(status), json_integer_value(until_date),
-            json_boolean_value(can_be_edited), json_boolean_value(can_change_info), json_boolean_value(can_post_messages),
-            json_boolean_value(can_edit_messages), json_boolean_value(can_delete_messages), json_boolean_value(can_invite_users),
-            json_boolean_value(can_restrict_members), json_boolean_value(can_pin_messages), json_boolean_value(can_promote_members),
-            json_boolean_value(can_send_messages), json_boolean_value(can_send_media_messages), json_boolean_value(can_send_other_messages),
-            json_boolean_value(can_add_web_page_previews));
+        ChatMember *o_c = chat_member(
+            user_parse(user),
+            json_string_value(status),
+            json_integer_value(until_date),
+            json_boolean_value(can_be_edited),
+            json_boolean_value(can_change_info),
+            json_boolean_value(can_post_messages),
+            json_boolean_value(can_edit_messages),
+            json_boolean_value(can_delete_messages),
+            json_boolean_value(can_invite_users),
+            json_boolean_value(can_restrict_members),
+            json_boolean_value(can_pin_messages),
+            json_boolean_value(can_promote_members),
+            json_boolean_value(can_send_messages),
+            json_boolean_value(can_send_media_messages), 
+            json_boolean_value(can_send_other_messages),
+            json_boolean_value(can_add_web_page_previews)
+        );
         
-        return ochatmember;
+        return o_c;
     }
 }
 
@@ -639,9 +801,14 @@ InlineQuery * inline_query_parse(json_t * json){
         User * ouser = user_parse(from);
         Location * olocation = location_parse(location);
 
-        InlineQuery * oinline_query = inline_query(json_string_value(id), ouser, olocation, json_string_value(query), json_string_value(offset));
+        InlineQuery * o_iq = inline_query(
+            json_string_value(id),
+            ouser, olocation,
+            json_string_value(query),
+            json_string_value(offset)
+        );
 
-        return oinline_query;
+        return o_iq;
     }
 
     return NULL;
@@ -662,12 +829,15 @@ CallbackQuery * callback_query_parse(json_t * json){
         User * ouser = user_parse(from);
         Message * omessage = message_parse(message);
 
-        CallbackQuery * ocallback_query = callback_query(json_string_value(id), ouser, omessage,
-                                        json_string_value(inline_message_id),
-                                        json_string_value(chat_instance),
-                                        json_string_value(date), json_string_value(game_short_name));
+        CallbackQuery * o_cq = callback_query(
+            json_string_value(id), ouser, omessage,
+            json_string_value(inline_message_id),
+            json_string_value(chat_instance),
+            json_string_value(date),
+            json_string_value(game_short_name)
+        );
 
-        return ocallback_query;
+        return o_cq;
     }
 
     return NULL;
@@ -684,9 +854,15 @@ VideoNote * video_note_parse(json_t * json){
         file_size = json_object_get(json, "file_size");
 
         PhotoSize * othumb = photo_size_parse(thumb);
-        VideoNote * ovideo_note = video_note(json_string_value(file_id), json_integer_value(length), json_integer_value(duration), othumb, json_integer_value(file_size));
+        VideoNote * o_vn = video_note(
+            json_string_value(file_id),
+            json_integer_value(length),
+            json_integer_value(duration),
+            othumb,
+            json_integer_value(file_size)
+        );
 
-        return ovideo_note;
+        return o_vn;
     }
 
     return NULL;
@@ -716,11 +892,13 @@ ShippingQuery * shipping_query_parse(json_t * json){
         User * ofrom = user_parse(from);
         ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
 
-        ShippingQuery * oshipping_query = shipping_query(json_string_value(id), ofrom,
-                                                         json_string_value(invoice_payload),
-                                                         oshipping_address);
+        ShippingQuery * o_sq = shipping_query(
+            json_string_value(id), ofrom,
+            json_string_value(invoice_payload),
+            oshipping_address
+        );
 
-        return oshipping_query;
+        return o_sq;
     }
 
     return NULL;
@@ -736,11 +914,15 @@ Invoice * invoice_parse(json_t * json){
         currency = json_object_get(json, "currency");
         total_amount = json_object_get(json, "total_amount");
 
-        Invoice * oinvoice = invoice(json_string_value(title), json_string_value(description),
-                                     json_string_value(start_parameter), json_string_value(currency),
-                                     json_integer_value(total_amount));
+        Invoice * o_i = invoice(
+            json_string_value(title),
+            json_string_value(description),
+            json_string_value(start_parameter),
+            json_string_value(currency),
+            json_integer_value(total_amount)
+        );
 
-        return oinvoice;
+        return o_i;
     }
 
     return NULL;
@@ -757,11 +939,16 @@ ShippingAddress * shipping_address_parse(json_t * json){
         street_line2 = json_object_get(json, "street_line2");
         post_code = json_object_get(json, "post_code");
 
-        ShippingAddress * oshipping_address = shipping_address(json_string_value(country_code), json_string_value(state),
-                                                                json_string_value(city), json_string_value(street_line1),
-                                                                json_string_value(street_line2), json_string_value(post_code));
+        ShippingAddress * o_sa = shipping_address(
+            json_string_value(country_code),
+            json_string_value(state),
+            json_string_value(city),
+            json_string_value(street_line1),
+            json_string_value(street_line2),
+            json_string_value(post_code)
+        );
 
-        return oshipping_address;
+        return o_sa;
     }
 
     return NULL;
@@ -782,9 +969,17 @@ PreCheckoutQuery * pre_checkout_query_parse(json_t * json){
         User * ofrom = user_parse(from);
         OrderInfo * oorder_info = order_info_parse(order_info);
 
-        PreCheckoutQuery * opre_checkout_query = pre_checkout_query(json_string_value(id), ofrom, json_string_value(currency), json_integer_value(total_amount), json_string_value(invoice_payload), json_string_value(shipping_option_id), oorder_info);
+        PreCheckoutQuery * o_pcq = pre_checkout_query(
+            json_string_value(id),
+            ofrom,
+            json_string_value(currency),
+            json_integer_value(total_amount),
+            json_string_value(invoice_payload),
+            json_string_value(shipping_option_id),
+            oorder_info
+        );
 
-        return opre_checkout_query;
+        return o_pcq;
     }
 
     return NULL;
@@ -800,9 +995,15 @@ OrderInfo * order_info_parse(json_t * json){
         shipping_address = json_object_get(json, "shipping_address");
 
         ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
-        OrderInfo * oorder_info = order_info(json_string_value(name), json_string_value(phone_number), json_string_value(email), oshipping_address);
 
-        return oorder_info;
+        OrderInfo * o_oi = order_info(
+            json_string_value(name),
+            json_string_value(phone_number),
+            json_string_value(email),
+             oshipping_address
+        );
+
+        return o_oi;
     }
 
     return NULL;
@@ -823,12 +1024,17 @@ SuccessfulPayment * successful_payment_parse(json_t * json){
 
         OrderInfo * oorder_info = order_info_parse(order_info);
 
-        SuccessfulPayment * osuccessful_payment = successful_payment(json_string_value(currency), json_integer_value(total_amount),
-                                                                     json_string_value(invoice_payload), json_string_value(shipping_option_id),
-                                                                     oorder_info, json_string_value(telegram_payment_charge_id),
-                                                                     json_string_value(provider_payment_charge_id));
+        SuccessfulPayment * o_sp = successful_payment(
+            json_string_value(currency),
+            json_integer_value(total_amount),
+            json_string_value(invoice_payload), 
+            json_string_value(shipping_option_id),
+            oorder_info,
+            json_string_value(telegram_payment_charge_id),
+            json_string_value(provider_payment_charge_id)
+        );
 
-        return osuccessful_payment;
+        return o_sp;
     }
 
     return NULL;
@@ -842,10 +1048,13 @@ File * file_parse(json_t * json){
         file_size = json_object_get(json, "file_size");
         file_path = json_object_get(json, "file_path");
 
-        File * ofile = file(json_string_value(file_id), json_integer_value(file_size),
-                            json_string_value(file_path));
+        File * o_f = file(
+            json_string_value(file_id),
+            json_integer_value(file_size),
+            json_string_value(file_path)
+        );
 
-        return ofile;
+        return o_f;
     }
 
     return NULL;
@@ -853,48 +1062,60 @@ File * file_parse(json_t * json){
 
 UserProfilePhotos * user_profile_photos_parse(json_t * json){
     if(json_is_object(json)){
-        json_t *total_count, *photos;
-        size_t length, i;
+        json_t *total_count, *photos, *array_photos;
+        size_t _length, i, length_, x;
 
         total_count = json_object_get(json, "total_count");
 
+        PhotoSize ** ophotos = NULL, *_temp = NULL;
         photos = json_object_get(json, "photos");
-        length = json_array_size(photos);
-        Photos * ophotos = NULL, *_temp = NULL;
-        ophotos = photos_parse(json_array_get(photos, 0));
-        if (length > 0) {
-            for (i = 1; i < length; i++) {
-                _temp = photos_parse(json_array_get(photos, i));
-                if (_temp)
-                    photos_add(ophotos, _temp);
+        _length = json_array_size(photos);
+
+        /* Array of Array PhotoSize */
+        ophotos = (PhotoSize **) malloc(_length * sizeof(PhotoSize));
+        if (_length > 0) {
+            for (i = 0; i < _length; i++) {
+                array_photos = json_array_get(photos, i);
+                length_ = json_array_size(array_photos);
+
+                if(length_ > 0){
+                    ophotos[i] = photo_size_parse(json_array_get(array_photos, 0));
+
+                    for(x = 1; x < length_; x++){
+                        _temp = photo_size_parse(json_array_get(array_photos, x));
+                        if(_temp)
+                            photo_size_add(ophotos[i], _temp);
+                    }
+
+                }
+
             }
         }
-        UserProfilePhotos * ouser_profile_photos = user_profile_photos(json_integer_value(total_count), ophotos);
 
-        return ouser_profile_photos;
+        UserProfilePhotos * oupp = user_profile_photos(
+            json_integer_value(total_count),
+            ophotos
+        );
+
+        return oupp;
     }
 
     return NULL;
 }
 
-Photos * photos_parse(json_t * photos_parse){
-    if(json_is_object(photos_parse)){
-        size_t length, i;
 
-        PhotoSize * ophoto_size = NULL, *_temp = NULL;
-        length = json_array_size(photos_parse);
-        ophoto_size = photo_size_parse(json_array_get(photos_parse, 0));
-        if (length > 0) {
-            for (i = 1; i < length; i++) {
-                _temp = photo_size_parse(json_array_get(photos_parse, i));
-                if (_temp)
-                    photo_size_add(ophoto_size, _temp);
-            }
-        }
-        Photos * ophotos = photos(ophoto_size);
+ChatPhoto * chat_photo_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t *small_file_id, *big_file_id;
 
-        return ophotos;
+        small_file_id = json_object_get(json, "small_file_id");
+        big_file_id   = json_object_get(json, "big_file_id");
+
+        ChatPhoto * o_cp = chat_photo(
+            json_string_value(small_file_id),
+            json_string_value(big_file_id)
+        );
+
+        return o_cp;
     }
-
-    return NULL;
 }
