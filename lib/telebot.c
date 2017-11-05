@@ -288,6 +288,21 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
     return chat_member_array_parse(cm_array);
 }
 /**
+ * https://core.telegram.org/bots/api#pinchatmessage
+ */
+bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification) {
+    if (!chat_id || !message_id)
+        return NULL;
+
+    json_t *is_pin 
+    if (disable_notification)
+        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s", chat_id, message_id, "True");
+    else
+        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld", chat_id, message_id);
+    
+    return json_is_true(is_pin);
+}
+/**
  * Generic method to handle Telegram API Methods responses
  * TODO:
  *  - Error filtering
