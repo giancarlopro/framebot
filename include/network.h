@@ -13,7 +13,86 @@ typedef struct _mem_store {
     char *content;
     size_t size;
 } MemStore;
+
 typedef MemStore* MemStorePtr;
+
+typedef struct _sphoto{
+	int type;
+	char * chat_id;
+	char * photo;
+	char * caption;
+	bool disable_notification;
+	long int reply_to_message_id;
+	/* reply_markup */
+} sphoto;
+
+typedef struct _saudio{
+	int type;
+	char * chat_id;
+	char * audio;
+	char * caption;
+	long int duration;
+	char * performer;
+	char * title;
+	bool disable_notification;
+	long int reply_to_message_id;
+	/* reply_markup */
+} saudio;
+
+typedef struct _sdocument{
+	int type;
+	char * chat_id;
+	char * document;
+	char * caption;
+	bool disable_notification;
+	long int reply_to_message_id;
+	/* reply_markup */
+} sdocument;
+
+typedef struct _svideo{
+	int type;
+	char * chat_id;
+	char * video;
+	long int duration;
+	long int width;
+	long int height;
+	char * caption;
+	bool disable_notification;
+	/* reply_markup */
+} svideo;
+
+typedef struct _svoice{
+	int type;
+	char * chat_id;
+	char * voice;
+	char * caption;
+	long int duration;
+	bool disable_notification;
+	long int reply_to_message_id;
+	/* reply_markup */
+} svoice;
+
+typedef struct _svnote{
+	int type;
+	char chat_id;
+	char video_note;
+	long int duration;
+	long int length;
+	bool disable_notification;
+	long int reply_to_message_id;
+	/* reply_markup */
+} svNote;
+
+typedef union _ifile{
+	int type;
+	sphoto photo;
+	saudio audio;
+	sdocument document;
+	svideo video;
+	svoice voice;
+	svNote videonote;
+} IFile;
+
 
 void network_init();
 MemStore * mem_store();
@@ -21,6 +100,6 @@ void mem_store_free(MemStore * memStore);
 size_t mem_write_callback(void *content, size_t size, size_t nmemb, void *userp);
 MemStore *call_method(const char *token, char *method);
 char * call_method_download(const char * token, char * dir, File * ofile);
-
+MemStore * call_method_input_file(IFile ifile);
 
 #endif
