@@ -331,7 +331,11 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /**
  * https://core.telegram.org/bots/api#getfile
  */
+<<<<<<< HEAD
 char * get_file(Bot * bot, char * dir, const char * file_id){
+=======
+const char * get_file(char * dir, const char * file_id){
+>>>>>>> 5ee25114a2f4b8b835e3fb16e7a76a18552de586
     json_t *get_file;
     char *path_file;
 
@@ -453,4 +457,3 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 
      return message;
 }
-

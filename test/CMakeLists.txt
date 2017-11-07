@@ -31,7 +31,6 @@ endif (CMAKE_SYSTEM_NAME STREQUAL Linux)
 
 if (WIN32)
 	target_link_libraries(test_lib jansson libcurl_a telebotlibrary)
-<<<<<<< HEAD
 	target_link_libraries(libtest jansson libcurl_a telebotlibrary)
 	target_link_libraries(update jansson libcurl_a telebotlibrary)
 	target_link_libraries(file jansson libcurl_a telebotlibrary)
