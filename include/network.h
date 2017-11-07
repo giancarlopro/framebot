@@ -9,6 +9,13 @@
 #define API_URL_FILE "https://api.telegram.org/file/bot"
 #define API_URL_FILE_LEN 33
 
+#define SENDPHOTO 100
+#define SENDAUDIO 200
+#define SENDDOCUMENT 300
+#define SENDVIDEO 400
+#define SENDVOICE 500
+#define SENDVDEONOTE 600
+
 typedef struct _mem_store {
     char *content;
     size_t size;
@@ -21,8 +28,8 @@ typedef struct _sphoto{
 	char * chat_id;
 	char * photo;
 	char * caption;
-	bool disable_notification;
-	long int reply_to_message_id;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } sphoto;
 
@@ -31,11 +38,11 @@ typedef struct _saudio{
 	char * chat_id;
 	char * audio;
 	char * caption;
-	long int duration;
+	char * duration;
 	char * performer;
 	char * title;
-	bool disable_notification;
-	long int reply_to_message_id;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } saudio;
 
@@ -44,8 +51,8 @@ typedef struct _sdocument{
 	char * chat_id;
 	char * document;
 	char * caption;
-	bool disable_notification;
-	long int reply_to_message_id;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } sdocument;
 
@@ -53,9 +60,9 @@ typedef struct _svideo{
 	int type;
 	char * chat_id;
 	char * video;
-	long int duration;
-	long int width;
-	long int height;
+	char * duration;
+	char * width;
+	char * height;
 	char * caption;
 	bool disable_notification;
 	/* reply_markup */
@@ -66,9 +73,9 @@ typedef struct _svoice{
 	char * chat_id;
 	char * voice;
 	char * caption;
-	long int duration;
-	bool disable_notification;
-	long int reply_to_message_id;
+	char * duration;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } svoice;
 
@@ -76,10 +83,10 @@ typedef struct _svnote{
 	int type;
 	char chat_id;
 	char video_note;
-	long int duration;
-	long int length;
-	bool disable_notification;
-	long int reply_to_message_id;
+	char * duration;
+	char * length;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } svNote;
 
@@ -100,6 +107,6 @@ void mem_store_free(MemStore * memStore);
 size_t mem_write_callback(void *content, size_t size, size_t nmemb, void *userp);
 MemStore *call_method(const char *token, char *method);
 char * call_method_download(const char * token, char * dir, File * ofile);
-MemStore * call_method_input_file(IFile ifile);
+MemStore * call_method_input_file(const char * token, IFile ifile);
 
 #endif

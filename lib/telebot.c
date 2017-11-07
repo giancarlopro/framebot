@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include <telebot.h>
 
+
+
 void telebot_init () {
 
 //#ifndef CONFIG_DEFAULT /* read or not read config file */
@@ -33,7 +35,9 @@ void telebot_init () {
 /*    log_init();*/
 }
 
-/* Authentic bot token */
+/**
+ * Authentic bot token
+ */
 Bot * telebot(const char *token) {
 
     User *bot_user = get_me(token);
@@ -319,9 +323,9 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     json_t *root = load(response->content),
            *ok,
            *result;
-    
+
     mem_store_free(response);
-    
+
     if (json_is_object(root)) {
         ok = json_object_get(root, "ok");
         if (json_is_true(ok)) {
@@ -332,7 +336,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     return NULL;
 }
 
-/* 
+/**
  * https://core.telegram.org/bots/api#getfile
  */
 char * get_file(Bot * bot, char * dir, const char * file_id){
@@ -353,7 +357,7 @@ char * get_file(Bot * bot, char * dir, const char * file_id){
     return NULL;
 }
 
-/*
+/**
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
 UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit){
@@ -383,4 +387,76 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset
         return NULL;
 
     return ouser_profile_photos;
+}
+
+Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
+			     char * caption, bool disable_notification,
+			     long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDPHOTO;
+    if(chat_id == NULL)
+        return NULL;
+    ifile.photo.chat_id = chat_id;
+
+    if(filename == NULL)
+        return NULL;
+    ifile.photo.photo = filename;
+
+    ifile.photo.caption = caption;
+
+    if(disable_notification > 0)
+      ifile.photo.disable_notification = btrue;
+    else
+      ifile.photo.disable_notification = NULL;
+
+    if(reply_to_message_id < 1){
+      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+      char creply_to_message_id[n + 1];
+      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+      creply_to_message_id[n] = '\0';
+      ifile.photo.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+      ifile.photo.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    json_t *root = load(input->content),
+           *ok,
+           *result;
+
+    if (json_is_object(root)) {
+        ok = json_object_get(root, "ok");
+        if (json_is_true(ok)) {
+            return message_parse(json_object_get(root, "result"));
+        }
+    }
+
+    return NULL;
+}
+
+Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
+			  char * caption, bool disable_notification,
+			  long int reply_to_message_id){
+
+     Message * message;
+     int n;
+
+     if(chat_id < 1)
+       return NULL;
+
+     n = snprintf(NULL, 0, "%ld", chat_id);
+     char cchat_id[n + 1];
+     snprintf(cchat_id, n + 1, "%ld", chat_id);
+     cchat_id[n] = '\0';
+
+     message = send_photo_channel(bot, cchat_id, filename, caption, disable_notification, reply_to_message_id);
+
+     return message;
 }

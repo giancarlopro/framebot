@@ -89,11 +89,19 @@ char * get_file(Bot * bot, char * dir, const char * file_id);
 bool set_chat_description (Bot *bot, char *chat_id, char *description);
 int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
-bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date, bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages, bool can_add_web_page_previews);
+bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
+			   bool can_send_messages, bool can_send_media_messages,
+			   bool can_send_other_messages, bool can_add_web_page_previews);
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
-bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info, bool can_post_messages, bool can_edit_messages, bool can_delete_messages, bool can_invite_users, bool can_restrict_members, bool can_pin_messages, bool can_promote_members);
+bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
+			  bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+			  bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+			  bool can_promote_members);
 char *export_chat_invite_link (Bot *bot, char *chat_id);
 UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit);
+Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
+			  char * caption, bool disable_notification,
+			  long int reply_to_message_id);
 
 #endif
