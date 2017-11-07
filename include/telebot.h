@@ -99,7 +99,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
 			  bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
 			  bool can_promote_members);
 char *export_chat_invite_link (Bot *bot, char *chat_id);
-UserProfilePhotos * get_user_profile_photos(Bot * bot, long user_id, long offset, long limit);
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id);

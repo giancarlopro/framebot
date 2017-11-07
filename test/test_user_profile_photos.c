@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
     _bot = telebot(argv[1]);
 
-	UserProfilePhotos * oupp = get_user_profile_photos(_bot, 100856717, 0, 0);
+	UserProfilePhotos * oupp = get_user_profile_photos(_bot, "100856717", 0, 0, 0);
 
 	if(oupp){
 		printf("true");

@@ -291,7 +291,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
     if (!chat_id || !message_id)
         return NULL;
 
-    json_t *is_pin 
+    json_t *is_pin;
     if (disable_notification)
         is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s", chat_id, message_id, "True");
     else
@@ -331,11 +331,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /**
  * https://core.telegram.org/bots/api#getfile
  */
-<<<<<<< HEAD
 char * get_file(Bot * bot, char * dir, const char * file_id){
-=======
-const char * get_file(char * dir, const char * file_id){
->>>>>>> 5ee25114a2f4b8b835e3fb16e7a76a18552de586
     json_t *get_file;
     char *path_file;
 
@@ -356,7 +352,7 @@ const char * get_file(char * dir, const char * file_id){
 /**
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-const char * get_user_profile_photos(char * dir, long user_id, long offset, long limit, int _img_size){
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit){
     json_t * user_profile;
     char *method, *path_file;
     size_t photosze_len, method_len = 71;
@@ -379,11 +375,11 @@ const char * get_user_profile_photos(char * dir, long user_id, long offset, long
 
     user_profile = generic_method_call(Token, method);
 
-    UserProfilePhotos * ouser_profile_photos = user_profile_photos_parse(user_profile);
-    if(!ouser_profile_photos)
+    UserProfilePhotos * oupp = user_profile_photos_parse(user_profile);
+    if(!oupp)
         return NULL;
 
-    return ouser_profile_photos;
+    return oupp;
 }
 
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
