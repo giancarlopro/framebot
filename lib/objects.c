@@ -24,6 +24,35 @@ SOFTWARE.
 
 #include <telebot.h>
 
+static Error * _error = NULL;
+
+void error(long int error_code, const char * description){
+    Error * oerror = (Error *) malloc(sizeof(Error));
+    if(!oerror)
+        _error = NULL;
+
+    oerror->error_code = error_code;
+    oerror->description = alloc_string(description);
+
+    oerror = _error;
+}
+
+void error_free(){
+    if(_error){
+        if(_error->description)
+            free(_error->description);
+        free(_error);
+        _error = NULL;
+    }
+}
+
+Error * get_error(){
+    if(_error)
+        return _error;
+    else
+        return NULL;
+}
+
 User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code){
     User * user = (User *) malloc(sizeof(User));
     if(!user)

@@ -1,6 +1,11 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
+typedef struct _error{
+    long int error_code;
+    char * description;
+} Error;
+
 typedef struct _user{
     long int id;
     bool is_bot:1;
@@ -535,5 +540,9 @@ void user_profile_photos_free(UserProfilePhotos * oupp);
 
 ChatPhoto * chat_photo(const char * small_file_id, const char * big_file_id);
 void chat_photo_free(ChatPhoto * ochat_photo);
+
+void error(long int error_code, const char * description);
+void error_free();
+Error * get_error();
 
 #endif // OBJECTS_H_

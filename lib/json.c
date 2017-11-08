@@ -26,6 +26,25 @@ SOFTWARE.
 
 static long int valid_update_id;
 
+json_t * start_json(char * json){
+    json_t *root, *ok;
+
+    root = load (json);
+
+    if(json_is_object(root)){
+        ok = json_object_get(root, "ok");
+        if(json_is_true(ok)){
+            error_free();
+            return json_object_get(root, "result");
+        }
+        else{
+            error_parse(root);
+        }
+    }
+
+    return NULL;
+}
+
 json_t * load(char *json){
     json_t *pload;
     json_error_t error;
@@ -36,6 +55,17 @@ json_t * load(char *json){
         return pload;
 
     return NULL;
+}
+
+void error_parse(json_t * json){
+    if(json_is_object(json)){
+        json_t * error_code, *description;
+
+        error_code = json_object_get(json, "error_code");
+        description = json_object_get(json, "description");
+
+        error(json_integer_value(error_code), json_string_value(description));
+    }
 }
 
 User * user_parse(json_t *json){

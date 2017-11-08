@@ -103,5 +103,6 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id);
+Error * show_error();
 
 #endif

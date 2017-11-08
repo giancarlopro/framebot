@@ -2,7 +2,8 @@
 #define JSON_H
 
 #include <telebot.h>
-
+json_t * start_json(char * json);
+void error_parse(json_t * error);
 json_t * load(char * json);
 User * user_parse(json_t * json);
 Chat * chat_parse(json_t *json);

@@ -289,7 +289,7 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
  */
 bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification) {
     if (!chat_id || !message_id)
-        return NULL;
+        return false;
 
     json_t *is_pin;
     if (disable_notification)
@@ -312,20 +312,11 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     MemStore *response = call_method(token, method_base);
     free(method_base);
 
-    json_t *root = load(response->content),
-           *ok,
-           *result;
+    json_t *result = start_json(response->content);
 
     mem_store_free(response);
 
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-        if (json_is_true(ok)) {
-            return json_object_get(root, "result");
-        }
-    }
-
-    return NULL;
+    return result;
 }
 
 /**
@@ -452,4 +443,10 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
      message = send_photo_channel(bot, cchat_id, filename, caption, disable_notification, reply_to_message_id);
 
      return message;
+}
+
+Error * show_error(){
+    Error * error = get_error();
+
+    return error;
 }
