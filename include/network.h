@@ -26,7 +26,7 @@ typedef MemStore* MemStorePtr;
 typedef struct _sphoto{
 	int type;
 	char * chat_id;
-	char * photo;
+	char * filename;
 	char * caption;
 	char * disable_notification;
 	char * reply_to_message_id;
@@ -36,7 +36,7 @@ typedef struct _sphoto{
 typedef struct _saudio{
 	int type;
 	char * chat_id;
-	char * audio;
+	char * filename;
 	char * caption;
 	char * duration;
 	char * performer;
@@ -49,7 +49,7 @@ typedef struct _saudio{
 typedef struct _sdocument{
 	int type;
 	char * chat_id;
-	char * document;
+	char * filename;
 	char * caption;
 	char * disable_notification;
 	char * reply_to_message_id;
@@ -59,7 +59,7 @@ typedef struct _sdocument{
 typedef struct _svideo{
 	int type;
 	char * chat_id;
-	char * video;
+	char * filename;
 	char * duration;
 	char * width;
 	char * height;
@@ -71,7 +71,7 @@ typedef struct _svideo{
 typedef struct _svoice{
 	int type;
 	char * chat_id;
-	char * voice;
+	char * filename;
 	char * caption;
 	char * duration;
 	char * disable_notification;
@@ -81,8 +81,8 @@ typedef struct _svoice{
 
 typedef struct _svnote{
 	int type;
-	char chat_id;
-	char video_note;
+	char * chat_id;
+	char * filename;
 	char * duration;
 	char * length;
 	char * disable_notification;
