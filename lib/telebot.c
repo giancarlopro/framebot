@@ -1,7 +1,5 @@
 #include <telebot.h>
 
-static const char * Token = NULL;
-
 void telebot_init () {
 
 //#ifndef CONFIG_DEFAULT /* read or not read config file */
@@ -20,7 +18,6 @@ Bot * telebot(const char *token) {
     
     if (bot_user) {
         Bot *obot = bot(token, bot_user);
-        Token = alloc_string(obot->token);
 
         return obot;
     }
@@ -326,11 +323,11 @@ char * get_file(Bot * bot, char * dir, const char * file_id){
     json_t *get_file;
     char *path_file;
 
-    get_file = generic_method_call(Token, "getfile?file_id=%s", file_id);
+    get_file = generic_method_call(bot->token, "getfile?file_id=%s", file_id);
 
     File * ofile = file_parse(get_file);
 
-    path_file = call_method_download(Token, dir, ofile);
+    path_file = call_method_download(bot->token, dir, ofile);
 
     if(ofile){
         file_free(ofile);
@@ -346,7 +343,7 @@ char * get_file(Bot * bot, char * dir, const char * file_id){
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit){
     json_t * user_profile;
     char *method, *path_file;
-    size_t photosze_len, method_len = 71;
+    size_t photosze_len, method_len = 80;
     int i;
 
     method = malloc(method_len);
@@ -364,7 +361,7 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
         snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
                  user_id, offset, limit);
 
-    user_profile = generic_method_call(Token, method);
+    user_profile = generic_method_call(bot->token, method);
 
     UserProfilePhotos * oupp = user_profile_photos_parse(user_profile);
     if(!oupp)
@@ -408,21 +405,13 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
     }
 
     MemStore * input;
+    json_t * message;
 
     input = call_method_input_file(bot->token, ifile);
 
-    json_t *root = load(input->content),
-           *ok,
-           *result;
+    message = start_json(input->content);
 
-    if (json_is_object(root)) {
-        ok = json_object_get(root, "ok");
-        if (json_is_true(ok)) {
-            return message_parse(json_object_get(root, "result"));
-        }
-    }
-
-    return NULL;
+    return message_parse(message);
 }
 
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
