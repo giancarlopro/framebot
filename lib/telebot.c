@@ -371,28 +371,31 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 }
 
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
-			     char * caption, bool disable_notification,
-			     long int reply_to_message_id){
+			                 char * caption, bool disable_notification,
+			                 long int reply_to_message_id){
     IFile ifile;
     int n;
     char btrue[] = "true";
 
     ifile.type = SENDPHOTO;
-    if(chat_id == NULL)
-        return NULL;
+    
+    /* Unique identifier for the target */
     ifile.photo.chat_id = chat_id;
 
-    if(filename == NULL)
-        return NULL;
-    ifile.photo.photo = filename;
+    /* Photo to send */
+    ifile.photo.filename = filename;
 
+    /* Photo caption (may also be used when resending 
+     * photos by file_id), 0-200 characters */
     ifile.photo.caption = caption;
 
+    /* Sends the message silently */
     if(disable_notification > 0)
       ifile.photo.disable_notification = btrue;
     else
       ifile.photo.disable_notification = NULL;
 
+    /* If the message is a reply, ID of the original message */
     if(reply_to_message_id < 1){
       n = snprintf(NULL, 0, "%ld", reply_to_message_id);
       char creply_to_message_id[n + 1];
@@ -415,23 +418,114 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
 }
 
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
-			  char * caption, bool disable_notification,
-			  long int reply_to_message_id){
+			              char * caption, bool disable_notification,
+			              long int reply_to_message_id){
 
-     Message * message;
-     int n;
+    Message * message;
+    int n;
 
-     if(chat_id < 1)
+    /* Unique identifier for the target chat */
+    if(chat_id < 1)
+      return NULL;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_photo_channel(bot, cchat_id, filename, caption,
+                                 disable_notification, reply_to_message_id);
+
+    return message;
+}
+
+Message * send_audio_channel(Bot *bot, char * chat_id, char * filename,
+                             char * caption, long int duration, char * performer,
+                             char * title, bool disable_notification,
+                             long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDAUDIO;
+
+    /* Unique identifier for the target */
+    ifile.audio.chat_id = chat_id;
+
+    /* Audio file to send */
+    ifile.audio.filename = filename;
+
+    /* Audio caption, 0-200 characters */
+    ifile.audio.caption = caption;
+
+    /* Duration of the audio in seconds */
+    if(duration > 0){
+        n = snprintf(NULL, 0, "%ld", duration);
+        char cduration[ n + 1];
+        snprintf(cduration, n + 1, "%ld", duration);
+        cduration[n] = '\0';
+        ifile.audio.duration = cduration;
+    }
+    else{
+        ifile.audio.duration = NULL;
+    }
+
+    /* Performer */
+    ifile.audio.performer = performer;
+
+    /* Track name */
+    ifile.audio.title = title;
+
+    /* Sends the message silently */
+    if(disable_notification > 0)
+        ifile.audio.disable_notification = btrue;
+    else
+        ifile.audio.disable_notification = NULL;
+
+    /* If the message is a reply, ID of the original message */
+    if(reply_to_message_id < 1){
+        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+        char creply_to_message_id[n + 1];
+        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+        creply_to_message_id[n] = '\0';
+        ifile.audio.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+        ifile.audio.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+    json_t * message;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    message = start_json(input->content);
+
+    return message_parse(message);
+}
+
+Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
+                             char * caption, long int duration, char * performer,
+                             char * title, bool disable_notification,
+                             long int reply_to_message_id){
+
+    Message * message;
+    int n;
+
+    /* Unique identifier for the target chat */
+    if(chat_id < 1)
        return NULL;
 
-     n = snprintf(NULL, 0, "%ld", chat_id);
-     char cchat_id[n + 1];
-     snprintf(cchat_id, n + 1, "%ld", chat_id);
-     cchat_id[n] = '\0';
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
 
-     message = send_photo_channel(bot, cchat_id, filename, caption, disable_notification, reply_to_message_id);
+    message = send_audio_channel(bot, cchat_id, filename, caption, duration,
+                                 performer, title, disable_notification,
+                                 reply_to_message_id);
 
-     return message;
+    return message;
 }
 
 Error * show_error(){
@@ -439,3 +533,4 @@ Error * show_error(){
 
     return error;
 }
+
