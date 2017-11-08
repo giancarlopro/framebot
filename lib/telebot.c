@@ -371,8 +371,8 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 }
 
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
-			                 char * caption, bool disable_notification,
-			                 long int reply_to_message_id){
+                             char * caption, bool disable_notification,
+                             long int reply_to_message_id){
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -418,8 +418,8 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
 }
 
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
-			              char * caption, bool disable_notification,
-			              long int reply_to_message_id){
+                          char * caption, bool disable_notification,
+                          long int reply_to_message_id){
 
     Message * message;
     int n;
