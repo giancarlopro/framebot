@@ -67,26 +67,39 @@ Update *get_updates (Bot *bot, char *extra) {
 
     return up;
 }
+
+
+Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extra) {
+
+    json_t *send_message;
+    if (extra) {
+        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
+        free(extra);
+    } else {
+        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
+    }
+
+    return message_parse(send_message);
+}
+
 /**
  * Sends the given message to the given chat.
  * TODO:
  *  - Change the type of 'chat_id'
  * https://core.telegram.org/bots/api#sendmessage
  */
-int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
-    if (!text || chat_id == 0) {
-        return 0;
-    }
+Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra) {
+    Message * message;
+    int n;
 
-    json_t *is_send_message;
-    if (extra) {
-        is_send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
-        free(extra);
-    } else {
-        is_send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
-    }
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
 
-    return json_is_object(is_send_message);
+    Message * omessage =  send_message_channel (bot, cchat_id, text, extra);
+
+    return omessage;
 }
 
 /**
@@ -94,9 +107,6 @@ int send_message (Bot *bot, long int chat_id, char *text, char *extra) {
  * https://core.telegram.org/bots/api#getchat
  */ 
 Chat *get_chat (Bot *bot, char *chat_id) {
-
-    if (!chat_id) 
-        return 0;
     
     json_t *chat_res = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
     return chat_parse(chat_res);
@@ -107,9 +117,6 @@ Chat *get_chat (Bot *bot, char *chat_id) {
  * https://core.telegram.org/bots/api#setchattitle
  */
 int set_chat_title (Bot *bot, char *chat_id, char *title) {
-
-    if(!chat_id || !title)
-        return 0;
     
     json_t *is_chat_title = generic_method_call(bot->token, "setChatTitle?chat_id=%s&title=%s", chat_id, title);
     return json_is_true(is_chat_title);
@@ -119,9 +126,6 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
  * https://core.telegram.org/bots/api#getchatmember
  */
 ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
-
-    if (!chat_id || !user_id)
-        return NULL;
     
     json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
     return chat_member_parse(chat_member);
@@ -131,8 +135,6 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
  * https://core.telegram.org/bots/api#setchatdescription
  */
 bool set_chat_description (Bot *bot, char *chat_id, char *description) {
-    if (!chat_id) 
-        return false;
     
     json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s", chat_id, description);
     return json_is_true(is_description);
@@ -142,8 +144,6 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
  *https://core.telegram.org/bots/api#getchatmemberscount
  */ 
 int get_chat_member_count (Bot *bot, char *chat_id) {
-    if (!chat_id)
-        return false;
     
     json_t *count = generic_method_call(bot->token, "getChatMemberCount?chat_id=%s", chat_id);
     return json_integer_value(count);
@@ -153,8 +153,6 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
  * https://core.telegram.org/bots/api#kickchatmember
  */
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date) {
-    if(!chat_id || !user_id)
-        return false;
 
     json_t *is_kicked = generic_method_call(bot->token, "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
     return json_is_true(is_kicked);
@@ -171,9 +169,6 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
                            bool can_send_messages, bool can_send_media_messages,
                            bool can_send_other_messages, bool can_add_web_page_previews) {
-    
-    if (!chat_id || !user_id) 
-        return false;
     
     char base[300];
     strcpy(base, "restrictChatMember?chat_id=%s&user_id=%s&until_date=%ld");
@@ -204,8 +199,6 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
  * https://core.telegram.org/bots/api#unbanchatmember
  */
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
-    if (!chat_id || !user_id)
-        return false;
     
     json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
     return json_is_true(is_unbanned);
@@ -216,8 +209,6 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
  * https://core.telegram.org/bots/api#leavechat
  */
 bool leave_chat (Bot *bot, char *chat_id) {
-    if (!chat_id) 
-        return false;
     
     json_t *is_leave = generic_method_call(bot->token, "leaveChat?chat_id=%s", chat_id);
     return json_is_true(is_leave);
@@ -235,8 +226,6 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
                           bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
                           bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
                           bool can_promote_members) {
-    if (!chat_id || !user_id) 
-        return false;
     
     char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
     base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages", can_post_messages,
@@ -260,9 +249,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
  * https://core.telegram.org/bots/api#exportchatinvitelink
  */
 char *export_chat_invite_link (Bot *bot, char *chat_id) {
-    if (!chat_id) 
-        return NULL;
-    
+
     json_t *invite_link = generic_method_call(bot->token, "exportChatInviteLink");
     return alloc_string(json_string_value(invite_link));
 }
@@ -275,8 +262,6 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
  * only the creator will be returned.
  */
 ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
-    if (!chat_id)
-        return NULL;
 
     json_t *cm_array = generic_method_call(bot->token, "getChatAdministrators?chat_id=%s", chat_id);
     return chat_member_array_parse(cm_array);
@@ -285,8 +270,6 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
  * https://core.telegram.org/bots/api#pinchatmessage
  */
 bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification) {
-    if (!chat_id || !message_id)
-        return false;
 
     json_t *is_pin;
     if (disable_notification)
@@ -364,8 +347,6 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
     user_profile = generic_method_call(bot->token, method);
 
     UserProfilePhotos * oupp = user_profile_photos_parse(user_profile);
-    if(!oupp)
-        return NULL;
 
     return oupp;
 }
@@ -423,10 +404,6 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 
     Message * message;
     int n;
-
-    /* Unique identifier for the target chat */
-    if(chat_id < 1)
-      return NULL;
 
     n = snprintf(NULL, 0, "%ld", chat_id);
     char cchat_id[n + 1];
@@ -512,10 +489,6 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
     Message * message;
     int n;
 
-    /* Unique identifier for the target chat */
-    if(chat_id < 1)
-       return NULL;
-
     n = snprintf(NULL, 0, "%ld", chat_id);
     char cchat_id[n + 1];
     snprintf(cchat_id, n + 1, "%ld", chat_id);
@@ -581,10 +554,6 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename,
 
     Message * message;
     int n;
-
-    /* Unique identifier for the target chat */
-    if(chat_id < 1)
-      return NULL;
 
     n = snprintf(NULL, 0, "%ld", chat_id);
     char cchat_id[n + 1];
@@ -688,10 +657,6 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename,
     Message * message;
     int n;
 
-    /* Unique identifier for the target chat */
-    if(chat_id < 1)
-       return NULL;
-
     n = snprintf(NULL, 0, "%ld", chat_id);
     char cchat_id[n + 1];
     snprintf(cchat_id, n + 1, "%ld", chat_id);
@@ -768,10 +733,6 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
 
     Message * message;
     int n;
-
-    /* Unique identifier for the target chat */
-    if(chat_id < 1)
-       return NULL;
 
     n = snprintf(NULL, 0, "%ld", chat_id);
     char cchat_id[n + 1];
