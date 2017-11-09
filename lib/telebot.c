@@ -97,9 +97,9 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    Message * omessage =  send_message_channel (bot, cchat_id, text, extra);
+    message =  send_message_channel (bot, cchat_id, text, extra);
 
-    return omessage;
+    return message;
 }
 
 /**
