@@ -748,3 +748,71 @@ Error * show_error(){
 
     return error;
 }
+
+Message * forward_message_from_channel (
+                        Bot * bot, long int chat_id, char * from_chat_id, 
+                        bool disable_notification, long int message_id){
+
+    json_t *forward_message;
+    if (disable_notification)
+        forward_message = generic_method_call(bot->token, 
+            "forwardMessage?chat_id=%ld&from_chat_id=%s&disable_notification=%s&message_id=%ld",
+            chat_id, from_chat_id, "True", message_id);
+    else
+        forward_message = generic_method_call(bot->token,
+            "forwardMessage?chat_id=%s&from_chat_id=%s&message_id=%ld",
+            chat_id, message_id, message_id);
+
+    return message_parse(forward_message);
+}
+
+Message * forward_message_from_chat (
+                        Bot * bot, char * chat_id, long int from_chat_id, 
+                        bool disable_notification, long int message_id){
+
+    json_t *forward_message;
+    if (disable_notification)
+        forward_message = generic_method_call(bot->token, 
+            "forwardMessage?chat_id=%s&from_chat_id=%ld&disable_notification=%s&message_id=%ld",
+            chat_id, from_chat_id, "True", message_id);
+    else
+        forward_message = generic_method_call(bot->token,
+            "forwardMessage?chat_id=%s&from_chat_id=%ld&message_id=%ld",
+            chat_id, message_id, message_id);
+
+    return message_parse(forward_message);
+}
+
+Message * forward_message_channel (
+                        Bot * bot, char * chat_id, char * from_chat_id, 
+                        bool disable_notification, long int message_id){
+
+    json_t *forward_message;
+    if (disable_notification)
+        forward_message = generic_method_call(bot->token, 
+            "forwardMessage?chat_id=%s&from_chat_id=%s&disable_notification=%s&message_id=%ld",
+            chat_id, from_chat_id, "True", message_id);
+    else
+        forward_message = generic_method_call(bot->token,
+            "forwardMessage?chat_id=%s&from_chat_id=%s&message_id=%ld",
+            chat_id, message_id, message_id);
+
+    return message_parse(forward_message);
+}
+
+Message * forward_message_chat (
+                        Bot * bot, long int chat_id, long int from_chat_id, 
+                        bool disable_notification, long int message_id){
+
+    json_t *forward_message;
+    if (disable_notification)
+        forward_message = generic_method_call(bot->token, 
+            "forwardMessage?chat_id=%ld&from_chat_id=%ld&disable_notification=%s&message_id=%ld",
+            chat_id, from_chat_id, "True", message_id);
+    else
+        forward_message = generic_method_call(bot->token,
+            "forwardMessage?chat_id=%ld&from_chat_id=%ld&message_id=%ld",
+            chat_id, message_id, message_id);
+
+    return message_parse(forward_message);
+}
