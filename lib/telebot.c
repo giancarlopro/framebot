@@ -12,7 +12,7 @@ void telebot_init () {
 /**
  * Authentic bot token
  */
-Bot * telebot(const char *token) {
+Bot * telebot (const char *token) {
 
     User *bot_user = get_me(token);
     
@@ -302,7 +302,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 /**
  * https://core.telegram.org/bots/api#getfile
  */
-char * get_file(Bot * bot, char * dir, const char * file_id){
+char * get_file (Bot * bot, char * dir, const char * file_id){
     json_t *get_file;
     char *path_file;
 
@@ -310,14 +310,12 @@ char * get_file(Bot * bot, char * dir, const char * file_id){
 
     File * ofile = file_parse(get_file);
 
-    path_file = call_method_download(bot->token, dir, ofile);
-
     if(ofile){
+        path_file = call_method_download(bot->token, dir, ofile);
         file_free(ofile);
-        return path_file;
     }
 
-    return NULL;
+    return path_file;
 }
 
 /**
