@@ -147,6 +147,27 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
                           char * caption, long int duration, bool disable_notification,
                           long int reply_to_message_id);
 
+Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename,
+                                  long int duration, long int length,
+                                  bool disable_notification, long int reply_to_message_id);
+
+Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
+                               long int duration, long int length,
+                               bool disable_notification, long int reply_to_message_id);
+
 Error * show_error();
+
+Message * forward_message_from_channel (
+                        Bot * bot, long int chat_id, char * from_chat_id,
+                        bool disable_notification, long int message_id);
+Message * forward_message_from_chat (
+                        Bot * bot, char * chat_id, long int from_chat_id,
+                        bool disable_notification, long int message_id);
+Message * forward_message_channel (
+                        Bot * bot, char * chat_id, char * from_chat_id,
+                        bool disable_notification, long int message_id);
+Message * forward_message_chat (
+                        Bot * bot, long int chat_id, long int from_chat_id,
+                        bool disable_notification, long int message_id);
 
 #endif

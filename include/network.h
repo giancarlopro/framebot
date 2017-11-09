@@ -14,7 +14,7 @@
 #define SENDDOCUMENT 300
 #define SENDVIDEO 400
 #define SENDVOICE 500
-#define SENDVDEONOTE 600
+#define SENDVIDEONOTE 600
 
 typedef struct _mem_store {
     char *content;

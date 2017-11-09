@@ -743,6 +743,91 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
     return message;
 }
 
+Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename,
+                                  long int duration, long int length,
+                                  bool disable_notification, long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDVIDEONOTE;
+
+    /* Unique identifier for the target */
+    ifile.videonote.chat_id = chat_id;
+
+    /* Document to send */
+    ifile.videonote.filename = filename;
+
+    /* Duration of the audio in seconds */
+    if(duration > 0){
+        n = snprintf(NULL, 0, "%ld", duration);
+        char cduration[ n + 1];
+        snprintf(cduration, n + 1, "%ld", duration);
+        cduration[n] = '\0';
+        ifile.videonote.duration = cduration;
+    }
+    else{
+        ifile.videonote.duration = NULL;
+    }
+
+    /* Video width and height */
+    if(length > 0){
+        n = snprintf(NULL, 0, "%ld", length);
+        char clength[ n + 1];
+        snprintf(clength, n + 1, "%ld", length);
+        clength[n] = '\0';
+        ifile.videonote.length = clength;
+    }
+    else{
+        ifile.videonote.length = NULL;
+    }
+
+    /* Sends the message silently */
+    if(disable_notification > 0)
+      ifile.videonote.disable_notification = btrue;
+    else
+      ifile.videonote.disable_notification = NULL;
+
+    /* If the message is a reply, ID of the original message */
+    if(reply_to_message_id < 1){
+      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+      char creply_to_message_id[n + 1];
+      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+      creply_to_message_id[n] = '\0';
+      ifile.videonote.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+      ifile.videonote.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+    json_t * message;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    message = start_json(input->content);
+
+    return message_parse(message);
+}
+
+Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
+                               long int duration, long int length,
+                               bool disable_notification, long int reply_to_message_id){
+    Message * message;
+    int n;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_video_note_channel(bot, cchat_id, filename, duration,
+                                 length, disable_notification,
+                                 reply_to_message_id);
+
+    return message;
+}
+
 Error * show_error(){
     Error * error = get_error();
 
@@ -753,34 +838,34 @@ Message * forward_message_from_channel (
                         Bot * bot, long int chat_id, char * from_chat_id, 
                         bool disable_notification, long int message_id){
 
-    json_t *forward_message;
-    if (disable_notification)
-        forward_message = generic_method_call(bot->token, 
-            "forwardMessage?chat_id=%ld&from_chat_id=%s&disable_notification=%s&message_id=%ld",
-            chat_id, from_chat_id, "True", message_id);
-    else
-        forward_message = generic_method_call(bot->token,
-            "forwardMessage?chat_id=%s&from_chat_id=%s&message_id=%ld",
-            chat_id, message_id, message_id);
+    Message * message;
+    int n;
 
-    return message_parse(forward_message);
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message =  forward_message_channel (bot, cchat_id, from_chat_id, disable_notification, message_id);
+
+    return message;
 }
 
 Message * forward_message_from_chat (
                         Bot * bot, char * chat_id, long int from_chat_id, 
                         bool disable_notification, long int message_id){
 
-    json_t *forward_message;
-    if (disable_notification)
-        forward_message = generic_method_call(bot->token, 
-            "forwardMessage?chat_id=%s&from_chat_id=%ld&disable_notification=%s&message_id=%ld",
-            chat_id, from_chat_id, "True", message_id);
-    else
-        forward_message = generic_method_call(bot->token,
-            "forwardMessage?chat_id=%s&from_chat_id=%ld&message_id=%ld",
-            chat_id, message_id, message_id);
+    Message * message;
+    int n;
 
-    return message_parse(forward_message);
+    n = snprintf(NULL, 0, "%ld", from_chat_id);
+    char cfrom_chat_id[n + 1];
+    snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
+    cfrom_chat_id[n] = '\0';
+
+    message =  forward_message_channel (bot, chat_id, cfrom_chat_id, disable_notification, message_id);
+
+    return message;
 }
 
 Message * forward_message_channel (
@@ -804,15 +889,20 @@ Message * forward_message_chat (
                         Bot * bot, long int chat_id, long int from_chat_id, 
                         bool disable_notification, long int message_id){
 
-    json_t *forward_message;
-    if (disable_notification)
-        forward_message = generic_method_call(bot->token, 
-            "forwardMessage?chat_id=%ld&from_chat_id=%ld&disable_notification=%s&message_id=%ld",
-            chat_id, from_chat_id, "True", message_id);
-    else
-        forward_message = generic_method_call(bot->token,
-            "forwardMessage?chat_id=%ld&from_chat_id=%ld&message_id=%ld",
-            chat_id, message_id, message_id);
+    Message * message;
+    int n;
 
-    return message_parse(forward_message);
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    n = snprintf(NULL, 0, "%ld", from_chat_id);
+    char cfrom_chat_id[n + 1];
+    snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
+    cfrom_chat_id[n] = '\0';
+
+    message =  forward_message_channel (bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
+
+    return message;
 }

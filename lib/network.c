@@ -389,6 +389,51 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_data(field, ifile.voice.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
             break;
+            case SENDVIDEONOTE:
+                strcpy(method, "sendVideoNote");
+
+                /* Fill in the file upload field */
+                if(ifile.videonote.chat_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "chat_id");
+                    curl_mime_data(field, ifile.videonote.chat_id, CURL_ZERO_TERMINATED);
+                }
+
+                /* Fill in the filename field */
+                if(ifile.videonote.filename != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "video_note");
+                    curl_mime_filedata(field, ifile.videonote.filename);
+                }
+
+                /* Duration of the voice in seconds */
+                if(ifile.videonote.duration != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "duration");
+                    curl_mime_data(field, ifile.videonote.duration, CURL_ZERO_TERMINATED);
+                }
+
+                /* Duration of the voice in seconds */
+                if(ifile.videonote.length != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "duration");
+                    curl_mime_data(field, ifile.videonote.length, CURL_ZERO_TERMINATED);
+                }
+
+                /* Sends the message silently */
+                if(ifile.videonote.disable_notification != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "disable_notification");
+                    curl_mime_data(field, ifile.videonote.disable_notification, CURL_ZERO_TERMINATED);
+                }
+
+                /* If the message is a reply */
+                if(ifile.videonote.reply_to_message_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.videonote.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+            break;
         }
 
         buff = mem_store();
