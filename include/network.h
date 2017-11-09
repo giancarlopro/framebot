@@ -64,7 +64,8 @@ typedef struct _svideo{
 	char * width;
 	char * height;
 	char * caption;
-	bool disable_notification;
+	char * disable_notification;
+	char * reply_to_message_id;
 	/* reply_markup */
 } svideo;
 

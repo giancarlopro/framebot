@@ -90,25 +90,29 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description);
 int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id,
-	                       long int until_date, bool can_send_messages,
-	                       bool can_send_media_messages, bool can_send_other_messages,
-	                       bool can_add_web_page_previews);
+                           long int until_date, bool can_send_messages,
+                           bool can_send_media_messages, bool can_send_other_messages,
+                           bool can_add_web_page_previews);
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
 bool leave_chat (Bot *bot, char *chat_id);
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
-			              bool can_post_messages, bool can_edit_messages,
-			              bool can_delete_messages, bool can_invite_users,
-			              bool can_restrict_members, bool can_pin_messages,
-			              bool can_promote_members);
+                          bool can_post_messages, bool can_edit_messages,
+                          bool can_delete_messages, bool can_invite_users,
+                          bool can_restrict_members, bool can_pin_messages,
+                          bool can_promote_members);
 char *export_chat_invite_link (Bot *bot, char *chat_id);
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
-	                                        long offset, long limit);
+                                            long offset, long limit);
+
+/* send photo */
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
                              char * caption, bool disable_notification,
                              long int reply_to_message_id);
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
                           char * caption, bool disable_notification,
-			              long int reply_to_message_id);
+                          long int reply_to_message_id);
+
+/* send audio */
 Message * send_audio_channel(Bot *bot, char * chat_id, char * filename,
                              char * caption, long int duration, char * performer,
                              char * title, bool disable_notification,
@@ -117,6 +121,33 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
                           char * caption, long int duration, char * performer,
                           char * title, bool disable_notification,
                           long int reply_to_message_id);
+
+/* send document */
+Message * send_document_channel(Bot * bot, char * chat_id, char * filename,
+                                char * caption, bool disable_notification,
+                                long int reply_to_message_id);
+Message * send_document_chat(Bot * bot, long int chat_id, char * filename,
+                             char * caption, bool disable_notification,
+                             long int reply_to_message_id);
+
+/* send video */
+Message * send_video_channel(Bot * bot, char * chat_id, char * video,
+                             long int duration, long int width, long int height,
+                             char * caption, bool disable_notification,
+                             long int reply_to_message_id);
+Message * send_video_chat(Bot * bot, long int chat_id, char * video,
+                          long int duration, long int width, long int height,
+                          char * caption, bool disable_notification,
+                          long int reply_to_message_id);
+
+/* send voice */
+Message * send_voice_channel(Bot *bot, char * chat_id, char * filename,
+                             char * caption, long int duration, bool disable_notification,
+                             long int reply_to_message_id);
+Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
+                          char * caption, long int duration, bool disable_notification,
+                          long int reply_to_message_id);
+
 Error * show_error();
 
 #endif

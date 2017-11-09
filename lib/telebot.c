@@ -528,9 +528,264 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
     return message;
 }
 
+Message * send_document_channel(Bot * bot, char * chat_id, char * filename,
+                             char * caption, bool disable_notification,
+                             long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDDOCUMENT;
+
+    /* Unique identifier for the target */
+    ifile.document.chat_id = chat_id;
+
+    /* Document to send */
+    ifile.document.filename = filename;
+
+    /* Document caption (may also be used when resending 
+     * Documents by file_id), 0-200 characters */
+    ifile.document.caption = caption;
+
+    /* Sends the message silently */
+    if(disable_notification > 0)
+      ifile.document.disable_notification = btrue;
+    else
+      ifile.document.disable_notification = NULL;
+
+    /* If the message is a reply, ID of the original message */
+    if(reply_to_message_id < 1){
+      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+      char creply_to_message_id[n + 1];
+      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+      creply_to_message_id[n] = '\0';
+      ifile.document.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+      ifile.document.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+    json_t * message;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    message = start_json(input->content);
+
+    return message_parse(message);
+}
+
+Message * send_document_chat(Bot * bot, long int chat_id, char * filename,
+                          char * caption, bool disable_notification,
+                          long int reply_to_message_id){
+
+    Message * message;
+    int n;
+
+    /* Unique identifier for the target chat */
+    if(chat_id < 1)
+      return NULL;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_document_channel(bot, cchat_id, filename, caption,
+                                 disable_notification, reply_to_message_id);
+
+    return message;
+}
+
+Message * send_video_channel(Bot * bot, char * chat_id, char * filename,
+                             long int duration, long int width, long int height,
+                             char * caption, bool disable_notification,
+                             long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDVIDEO;
+
+    /* Unique identifier for the target */
+    ifile.video.chat_id = chat_id;
+
+    /* Audio file to send */
+    ifile.video.filename = filename;
+
+    /* Duration of the audio in seconds */
+    if(duration > 0){
+        n = snprintf(NULL, 0, "%ld", duration);
+        char cduration[ n + 1];
+        snprintf(cduration, n + 1, "%ld", duration);
+        cduration[n] = '\0';
+        ifile.video.duration = cduration;
+    }
+    else{
+        ifile.video.duration = NULL;
+    }
+
+    /* Video width */
+    if(width > 0){
+        n = snprintf(NULL, 0, "%ld", width);
+        char cwidth[ n + 1];
+        snprintf(cwidth, n + 1, "%ld", width);
+        cwidth[n] = '\0';
+        ifile.video.width = cwidth;
+    }
+    else{
+        ifile.video.width = NULL;
+    }
+
+    /* Video height */
+    if(height > 0){
+        n = snprintf(NULL, 0, "%ld", height);
+        char cheight[ n + 1];
+        snprintf(cheight, n + 1, "%ld", height);
+        cheight[n] = '\0';
+        ifile.video.height = cheight;
+    }
+    else{
+        ifile.video.height = NULL;
+    }
+
+    /* Audio caption, 0-200 characters */
+    ifile.video.caption = caption;
+
+    /* Sends the message silently */
+    if(disable_notification > 0)
+        ifile.video.disable_notification = btrue;
+    else
+        ifile.video.disable_notification = NULL;
+
+    /* If the message is a reply, ID of the original message */
+    if(reply_to_message_id < 1){
+        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+        char creply_to_message_id[n + 1];
+        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+        creply_to_message_id[n] = '\0';
+        ifile.video.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+        ifile.video.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+    json_t * message;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    message = start_json(input->content);
+
+    return message_parse(message);
+}
+
+Message * send_video_chat(Bot * bot, long int chat_id, char * filename,
+                          long int duration, long int width, long int height,
+                          char * caption, bool disable_notification,
+                          long int reply_to_message_id){
+
+    Message * message;
+    int n;
+
+    /* Unique identifier for the target chat */
+    if(chat_id < 1)
+       return NULL;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_video_channel(bot, cchat_id, filename, duration, width,
+                                 height, caption, disable_notification,
+                                 reply_to_message_id);
+
+    return message;
+}
+
+Message * send_voice_channel(Bot *bot, char * chat_id, char * filename,
+                             char * caption, long int duration, bool disable_notification,
+                             long int reply_to_message_id){
+    IFile ifile;
+    int n;
+    char btrue[] = "true";
+
+    ifile.type = SENDVOICE;
+
+    /* Unique identifier for the target */
+    ifile.voice.chat_id = chat_id;
+
+    /* Audio file to send */
+    ifile.voice.filename = filename;
+
+    /* Audio caption, 0-200 characters */
+    ifile.voice.caption = caption;
+
+    /* Duration of the audio in seconds */
+    if(duration > 0){
+        n = snprintf(NULL, 0, "%ld", duration);
+        char cduration[ n + 1];
+        snprintf(cduration, n + 1, "%ld", duration);
+        cduration[n] = '\0';
+        ifile.voice.duration = cduration;
+    }
+    else{
+        ifile.voice.duration = NULL;
+    }
+
+    /* Sends the message silently */
+    if(disable_notification > 0)
+        ifile.voice.disable_notification = btrue;
+    else
+        ifile.voice.disable_notification = NULL;
+
+    /* If the message is a reply, ID of the original message */
+    if(reply_to_message_id < 1){
+        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
+        char creply_to_message_id[n + 1];
+        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
+        creply_to_message_id[n] = '\0';
+        ifile.voice.reply_to_message_id = creply_to_message_id;
+    }
+    else{
+        ifile.voice.reply_to_message_id = NULL;
+    }
+
+    MemStore * input;
+    json_t * message;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    message = start_json(input->content);
+
+    return message_parse(message);
+}
+
+Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
+                          char * caption, long int duration, bool disable_notification,
+                          long int reply_to_message_id){
+
+    Message * message;
+    int n;
+
+    /* Unique identifier for the target chat */
+    if(chat_id < 1)
+       return NULL;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_voice_channel(bot, cchat_id, filename, caption, duration,
+                                 disable_notification,reply_to_message_id);
+
+    return message;
+}
+
 Error * show_error(){
     Error * error = get_error();
 
     return error;
 }
-

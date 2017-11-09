@@ -29,12 +29,14 @@ static Error * _error = NULL;
 void error(long int error_code, const char * description){
     Error * oerror = (Error *) malloc(sizeof(Error));
     if(!oerror)
-        _error = NULL;
+        oerror = NULL;
 
     oerror->error_code = error_code;
     oerror->description = alloc_string(description);
 
-    oerror = _error;
+    _error = oerror;
+
+    printf("(%ld))))", _error->error_code);
 }
 
 void error_free(){
@@ -47,10 +49,9 @@ void error_free(){
 }
 
 Error * get_error(){
-    if(_error)
-        return _error;
-    else
-        return NULL;
+    printf("code =%ld", _error->error_code);
+
+    return _error;
 }
 
 User * user(long int id, bool is_bot, const char *first_name, const char *last_name, const char *username, const char *language_code){

@@ -61,6 +61,8 @@ void error_parse(json_t * json){
     if(json_is_object(json)){
         json_t * error_code, *description;
 
+        printf("123456789");
+
         error_code = json_object_get(json, "error_code");
         description = json_object_get(json, "description");
 

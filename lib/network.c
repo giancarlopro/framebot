@@ -186,7 +186,7 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.photo.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
-
+            break;
             case SENDAUDIO:
                 strcpy(method, "sendAudio");
 
@@ -245,6 +245,150 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.audio.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
+
+            break;
+            case SENDDOCUMENT:
+                strcpy(method, "sendDocument");
+
+                /* Unique identifier for the target */
+                if(ifile.document.chat_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "chat_id");
+                    curl_mime_data(field, ifile.document.chat_id, CURL_ZERO_TERMINATED);
+                }
+
+                /* upload file */
+                if(ifile.document.filename != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "document");
+                    curl_mime_filedata(field, ifile.document.filename);
+                }
+
+                /* Document caption */
+                if(ifile.document.caption != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "caption");
+                    curl_mime_data(field, ifile.document.caption, CURL_ZERO_TERMINATED);
+                }
+
+                /* Sends the message silently */
+                if(ifile.document.disable_notification != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "disable_notification");
+                    curl_mime_data(field, ifile.document.disable_notification, CURL_ZERO_TERMINATED);
+                }
+
+                /* If the message is a reply, ID of the original message */
+                if(ifile.document.reply_to_message_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.document.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+            break;
+            case SENDVIDEO:
+                strcpy(method, "sendVideo");
+
+                /* Unique identifier for the target */
+                if(ifile.video.chat_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "chat_id");
+                    curl_mime_data(field, ifile.video.chat_id, CURL_ZERO_TERMINATED);
+                }
+
+                /* upload file */
+                if(ifile.video.filename != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "video");
+                    curl_mime_filedata(field, ifile.video.filename);
+                }
+
+                /* Document caption */
+                if(ifile.video.duration != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "duration");
+                    curl_mime_data(field, ifile.video.duration, CURL_ZERO_TERMINATED);
+                }
+
+                /* Document caption */
+                if(ifile.video.width != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "width");
+                    curl_mime_data(field, ifile.video.width, CURL_ZERO_TERMINATED);
+                }
+
+                /* Document caption */
+                if(ifile.video.height != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "height");
+                    curl_mime_data(field, ifile.video.height, CURL_ZERO_TERMINATED);
+                }
+
+                /* Document caption */
+                if(ifile.video.caption != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "caption");
+                    curl_mime_data(field, ifile.video.caption, CURL_ZERO_TERMINATED);
+                }
+
+                /* Sends the message silently */
+                if(ifile.video.disable_notification != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "disable_notification");
+                    curl_mime_data(field, ifile.video.disable_notification, CURL_ZERO_TERMINATED);
+                }
+
+                /* If the message is a reply, ID of the original message */
+                if(ifile.video.reply_to_message_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.video.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+            break;
+            case SENDVOICE:
+                strcpy(method, "sendVoice");
+
+                /* Fill in the file upload field */
+                if(ifile.voice.chat_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "chat_id");
+                    curl_mime_data(field, ifile.voice.chat_id, CURL_ZERO_TERMINATED);
+                }
+
+                /* Fill in the filename field */
+                if(ifile.voice.filename != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "voice");
+                    curl_mime_filedata(field, ifile.voice.filename);
+                }
+
+                /* voice caption */
+                if(ifile.voice.caption != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "caption");
+                    curl_mime_data(field, ifile.voice.caption, CURL_ZERO_TERMINATED);
+                }
+
+                /* Duration of the voice in seconds */
+                if(ifile.voice.duration != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "duration");
+                    curl_mime_data(field, ifile.voice.duration, CURL_ZERO_TERMINATED);
+                }
+
+                /* Sends the message silently */
+                if(ifile.voice.disable_notification != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "disable_notification");
+                    curl_mime_data(field, ifile.voice.disable_notification, CURL_ZERO_TERMINATED);
+                }
+
+                /* If the message is a reply */
+                if(ifile.voice.reply_to_message_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.voice.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+            break;
         }
 
         buff = mem_store();
