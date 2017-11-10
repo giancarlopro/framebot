@@ -9,6 +9,8 @@ void telebot_init () {
 /*    log_init();*/
 }
 
+
+
 /**
  * Authentic bot token
  */
@@ -24,6 +26,9 @@ Bot * telebot (const char *token) {
 
     return NULL;
 }
+
+
+
 /**
  * Returns a User object of the owner bot.
  * https://core.telegram.org/bots/api#getme
@@ -36,6 +41,9 @@ User *get_me (const char *token) {
     json_t *get_me_res = generic_method_call(token, "getMe");
     return user_parse(get_me_res);
 }
+
+
+
 /**
  * Returns the updates list
  * https://core.telegram.org/bots/api#getupdates
@@ -69,20 +77,19 @@ Update *get_updates (Bot *bot, char *extra) {
 }
 
 
+
+
 Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extra) {
 
     json_t *send_message;
-    if (extra) {
-        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s",
+    
+    send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s",
             chat_id, text, extra);
-        free(extra);
-    } else {
-        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s",
-            chat_id, text);
-    }
 
     return message_parse(send_message);
 }
+
+
 
 /**
  * Sends the given message to the given chat.
@@ -93,17 +100,18 @@ Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extr
 Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra) {
 
     Message * message;
-    int n;
+    char * cchat_id;
 
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    cchat_id = api_ltoa(chat_id);
 
     message =  send_message_channel(bot, cchat_id, text, extra);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 /**
  * Returns the Chat object of the given chat_id
@@ -112,8 +120,12 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra
 Chat *get_chat (Bot *bot, char *chat_id) {
     
     json_t *chat_res = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
+ 
     return chat_parse(chat_res);
 }
+
+
+
 /**
  * Changes the title of the given chat_id
  * Returns 1 in success, 0 otherwise
@@ -125,6 +137,9 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
         chat_id, title);
     return json_is_true(is_chat_title);
 }
+
+
+
 /**
  * Returns the requested ChatMember object.
  * https://core.telegram.org/bots/api#getchatmember
@@ -133,8 +148,12 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
     
     json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s",
         chat_id, user_id);
+
     return chat_member_parse(chat_member);
 }
+
+
+
 /**
  * Changes the given chat or channel description
  * https://core.telegram.org/bots/api#setchatdescription
@@ -143,8 +162,12 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     
     json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s",
         chat_id, description);
+
     return json_is_true(is_description);
 }
+
+
+
 /**
  * Returns the number of members in the given chat
  *https://core.telegram.org/bots/api#getchatmemberscount
@@ -154,6 +177,9 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
     json_t *count = generic_method_call(bot->token, "getChatMemberCount?chat_id=%s", chat_id);
     return json_integer_value(count);
 }
+
+
+
 /**
  * Ban a chat user
  * https://core.telegram.org/bots/api#kickchatmember
@@ -162,8 +188,12 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
 
     json_t *is_kicked = generic_method_call(bot->token,
         "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
+
     return json_is_true(is_kicked);
 }
+
+
+
 /**
  * restrictChatMember
  * Use this method to restrict a user in a supergroup. 
@@ -176,26 +206,26 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
             bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
             bool can_add_web_page_previews) {
-    
-    char base[300];
-    strcpy(base, "restrictChatMember?chat_id=%s&user_id=%s&until_date=%ld");
 
-    if (can_send_messages) {
-        strcat(base, "&can_send_messages=True");
-    }
-    if (can_send_media_messages) {
-        strcat(base, "&can_send_media_messages=True");
-    }
-    if (can_send_other_messages) {
-        strcat(base, "&can_send_other_messages=True");
-    }
-    if (can_add_web_page_previews) {
-        strcat(base, "&can_add_web_page_previews=True");
-    }
+    json_t *is_restricted = generic_method_call(bot->token, "\
+restrictChatMember?chat_id=%s\
+&user_id=%s\
+&until_date=%ld\
+&can_send_messages=%s\
+&can_send_media_messages=%s\
+&can_send_other_messages=%s\
+&can_add_web_page_previews=%s",
+        chat_id, user_id, until_date,
+        (can_send_messages > 0 ? "true" : "0"),
+        (can_send_media_messages > 0 ? "true" : "0"),
+        (can_send_other_messages > 0 ? "true" : "0"),
+        (can_add_web_page_previews > 0 ? "true" : "0") );
 
-    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id, until_date);
     return json_is_true(is_restricted);
 }
+
+
+
 /**
  * unbanChatMember
  * Use this method to unban a previously kicked user in a supergroup or channel. 
@@ -209,8 +239,12 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
     
     json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s",
         chat_id, user_id);
+
     return json_is_true(is_unbanned);
 }
+
+
+
 /**
  * leaveChat
  * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
@@ -221,6 +255,9 @@ bool leave_chat (Bot *bot, char *chat_id) {
     json_t *is_leave = generic_method_call(bot->token, "leaveChat?chat_id=%s", chat_id);
     return json_is_true(is_leave);
 }
+
+
+
 /**
  * promoteChatMember
  * Use this method to promote or demote a user in a supergroup or a channel.
@@ -235,18 +272,44 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
             bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
             bool can_promote_members) {
     
-    char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
+
+
+
+/*    char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
     base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages",
                 can_post_messages, "can_edit_messages", can_edit_messages, "can_delete_messages",
                 can_delete_messages, "can_invite_users", can_invite_users, "can_restrict_members",
                 can_restrict_members, "can_pin_messages", can_pin_messages, "can_promote_members",
-                can_promote_members );
+                can_promote_members );*/
 
-    json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id);
-    free(base);
+
+    json_t *is_restricted = generic_method_call(bot->token, "\
+promoteChatMember?chat_id=%s&user_id=%s\
+&can_change_info=%s\
+&can_post_messages=%s\
+&can_edit_messages=%s\
+&can_delete_messages=%s\
+&can_invite_users=%s\
+&can_restrict_members=%s\
+&can_pin_messages=%s\
+&can_promote_members=%s",
+        chat_id, user_id,
+        (can_change_info > 0 ? "true" : "0"),
+        (can_post_messages > 0 ? "true": "0"),
+        (can_edit_messages > 0 ? "true" : "0"),
+        (can_delete_messages > 0 ? "true" : "0"),
+        (can_invite_users > 0 ? "true": "0"),
+        (can_restrict_members > 0 ? "true" : "0"),
+        (can_pin_messages > 0 ? "true" : "0"),
+        (can_promote_members > 0 ? "true" : "0"));
+   
+/*    free(base); */
 
     return json_is_true(is_restricted);
 }
+
+
+
 /**
  * exportChatInviteLink
  * Use this method to export an invite link to a supergroup or a channel.
@@ -262,6 +325,9 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
     json_t *invite_link = generic_method_call(bot->token, "exportChatInviteLink");
     return alloc_string(json_string_value(invite_link));
 }
+
+
+
 /**
  * getChatAdministrators
  * Use this method to get a list of administrators in a chat.
@@ -272,25 +338,29 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
  */
 ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
 
-    json_t *cm_array = generic_method_call(bot->token, "getChatAdministrators?chat_id=%s", chat_id);
+    json_t *cm_array = generic_method_call(bot->token, 
+        "getChatAdministrators?chat_id=%s", chat_id);
+    
     return chat_member_array_parse(cm_array);
 }
+
+
+
 /**
  * https://core.telegram.org/bots/api#pinchatmessage
  */
 bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification) {
 
     json_t *is_pin;
-    if (disable_notification)
-        is_pin = generic_method_call(bot->token,
-            "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s",
-            chat_id, message_id, "True");
-    else
-        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld",
-            chat_id, message_id);
+    is_pin = generic_method_call(bot->token,
+        "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s",
+            chat_id, message_id, (disable_notification > 0 ? "true" : "0"));
     
     return json_is_true(is_pin);
 }
+
+
+
 /**
  * Generic method to handle Telegram API Methods responses
  * TODO:
@@ -312,6 +382,8 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     return result;
 }
 
+
+
 /**
  * https://core.telegram.org/bots/api#getfile
  */
@@ -332,6 +404,8 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
     return path_file;
 }
 
+
+
 /**
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
@@ -339,31 +413,16 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
             long offset, long limit){
 
     json_t * user_profile;
-    char *method, *path_file;
-    size_t photosze_len, method_len = 80;
-    int i;
 
-    method = malloc(method_len);
-
-    if(offset == 0 && limit == 0)
-        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld",
-                 user_id);
-    else if(offset == 0)
-        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?limit=%ld",
-                 user_id, limit);
-    else if(limit == 0)
-        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld",
-                 user_id, offset);
-    else
-        snprintf(method, method_len, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
-                 user_id, offset, limit);
-
-    user_profile = generic_method_call(bot->token, method);
+    user_profile = generic_method_call(bot->token, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
+        user_id, offset, limit);
 
     UserProfilePhotos * oupp = user_profile_photos_parse(user_profile);
 
     return oupp;
 }
+
+
 
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
                              char * caption, bool disable_notification,
@@ -371,7 +430,6 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
 
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDPHOTO;
     
@@ -386,22 +444,10 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
     ifile.photo.caption = caption;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-      ifile.photo.disable_notification = btrue;
-    else
-      ifile.photo.disable_notification = NULL;
+    ifile.photo.disable_notification = (disable_notification > 0 ? "true" : NULL);
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-      char creply_to_message_id[n + 1];
-      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-      creply_to_message_id[n] = '\0';
-      ifile.photo.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-      ifile.photo.reply_to_message_id = NULL;
-    }
+    ifile.photo.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
 
     MemStore * input;
     json_t * message;
@@ -410,25 +456,31 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
 
     message = start_json(input->content);
 
+    free(ifile.photo.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
 
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption,
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_photo_channel(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * caption,
             long int duration, char * performer, char * title, bool disable_notification,
@@ -436,7 +488,6 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
     
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDAUDIO;
 
@@ -450,16 +501,8 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
     ifile.audio.caption = caption;
 
     /* Duration of the audio in seconds */
-    if(duration > 0){
-        n = snprintf(NULL, 0, "%ld", duration);
-        char cduration[ n + 1];
-        snprintf(cduration, n + 1, "%ld", duration);
-        cduration[n] = '\0';
-        ifile.audio.duration = cduration;
-    }
-    else{
-        ifile.audio.duration = NULL;
-    }
+    ifile.audio.duration = duration > 0 ? api_ltoa(duration) : NULL;
+
 
     /* Performer */
     ifile.audio.performer = performer;
@@ -468,22 +511,10 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
     ifile.audio.title = title;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-        ifile.audio.disable_notification = btrue;
-    else
-        ifile.audio.disable_notification = NULL;
+    ifile.audio.disable_notification = (disable_notification > 0 ? "true" : NULL);
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-        char creply_to_message_id[n + 1];
-        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-        creply_to_message_id[n] = '\0';
-        ifile.audio.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-        ifile.audio.reply_to_message_id = NULL;
-    }
+    ifile.audio.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
 
     MemStore * input;
     json_t * message;
@@ -492,8 +523,13 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
 
     message = start_json(input->content);
 
+    free(ifile.audio.duration);
+    free(ifile.audio.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
 
 Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption,
             long int duration, char * performer, char * title, bool disable_notification,
@@ -501,25 +537,26 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_audio_channel(bot, cchat_id, filename, caption, duration,
                                  performer, title, disable_notification,
                                  reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char * caption,
             bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDDOCUMENT;
 
@@ -534,22 +571,10 @@ Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char
     ifile.document.caption = caption;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-      ifile.document.disable_notification = btrue;
-    else
-      ifile.document.disable_notification = NULL;
+    ifile.document.disable_notification = (disable_notification > 0 ? "true" : NULL);
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-      char creply_to_message_id[n + 1];
-      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-      creply_to_message_id[n] = '\0';
-      ifile.document.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-      ifile.document.reply_to_message_id = NULL;
-    }
+    ifile.document.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
 
     MemStore * input;
     json_t * message;
@@ -558,25 +583,32 @@ Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char
 
     message = start_json(input->content);
 
+    free(ifile.document.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
+
 
 Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_document_channel(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long int duration,
             long int width, long int height, char * caption, bool disable_notification,
@@ -584,7 +616,6 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
     
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDVIDEO;
 
@@ -595,61 +626,22 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
     ifile.video.filename = filename;
 
     /* Duration of the audio in seconds */
-    if(duration > 0){
-        n = snprintf(NULL, 0, "%ld", duration);
-        char cduration[ n + 1];
-        snprintf(cduration, n + 1, "%ld", duration);
-        cduration[n] = '\0';
-        ifile.video.duration = cduration;
-    }
-    else{
-        ifile.video.duration = NULL;
-    }
+    ifile.video.duration = duration > 0 ? api_ltoa(duration) : NULL;
 
     /* Video width */
-    if(width > 0){
-        n = snprintf(NULL, 0, "%ld", width);
-        char cwidth[ n + 1];
-        snprintf(cwidth, n + 1, "%ld", width);
-        cwidth[n] = '\0';
-        ifile.video.width = cwidth;
-    }
-    else{
-        ifile.video.width = NULL;
-    }
+    ifile.video.width = width > 0 ? api_ltoa(width) : NULL;
 
     /* Video height */
-    if(height > 0){
-        n = snprintf(NULL, 0, "%ld", height);
-        char cheight[ n + 1];
-        snprintf(cheight, n + 1, "%ld", height);
-        cheight[n] = '\0';
-        ifile.video.height = cheight;
-    }
-    else{
-        ifile.video.height = NULL;
-    }
+    ifile.video.height = height > 0 ? api_ltoa(height) : NULL;
 
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-        ifile.video.disable_notification = btrue;
-    else
-        ifile.video.disable_notification = NULL;
+    ifile.video.disable_notification = (disable_notification > 0 ? "true" : NULL);
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-        char creply_to_message_id[n + 1];
-        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-        creply_to_message_id[n] = '\0';
-        ifile.video.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-        ifile.video.reply_to_message_id = NULL;
-    }
+    ifile.video.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
 
     MemStore * input;
     json_t * message;
@@ -658,8 +650,15 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
 
     message = start_json(input->content);
 
+    free(ifile.video.duration);
+    free(ifile.video.width);
+    free(ifile.video.height);
+    free(ifile.video.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
 
 Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int duration,
             long int width, long int height, char * caption, bool disable_notification,
@@ -667,24 +666,25 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_video_channel(bot, cchat_id, filename, duration, width, height, caption,
                 disable_notification, reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * caption,
             long int duration, bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDVOICE;
 
@@ -698,34 +698,13 @@ Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * c
     ifile.voice.caption = caption;
 
     /* Duration of the audio in seconds */
-    if(duration > 0){
-        n = snprintf(NULL, 0, "%ld", duration);
-        char cduration[ n + 1];
-        snprintf(cduration, n + 1, "%ld", duration);
-        cduration[n] = '\0';
-        ifile.voice.duration = cduration;
-    }
-    else{
-        ifile.voice.duration = NULL;
-    }
+    ifile.voice.duration = duration > 0 ? api_ltoa(duration) : NULL;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-        ifile.voice.disable_notification = btrue;
-    else
-        ifile.voice.disable_notification = NULL;
+    ifile.voice.disable_notification = (disable_notification > 0 ? "true" : NULL);
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-        n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-        char creply_to_message_id[n + 1];
-        snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-        creply_to_message_id[n] = '\0';
-        ifile.voice.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-        ifile.voice.reply_to_message_id = NULL;
-    }
+    ifile.voice.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
 
     MemStore * input;
     json_t * message;
@@ -734,32 +713,38 @@ Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * c
 
     message = start_json(input->content);
 
+    free(ifile.voice.duration);
+    free(ifile.voice.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
 
 Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_voice_channel(bot, cchat_id, filename, caption, duration,
                                  disable_notification,reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, long int duration,
             long int length, bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
     int n;
-    char btrue[] = "true";
 
     ifile.type = SENDVIDEONOTE;
 
@@ -770,46 +755,16 @@ Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, lo
     ifile.videonote.filename = filename;
 
     /* Duration of the audio in seconds */
-    if(duration > 0){
-        n = snprintf(NULL, 0, "%ld", duration);
-        char cduration[ n + 1];
-        snprintf(cduration, n + 1, "%ld", duration);
-        cduration[n] = '\0';
-        ifile.videonote.duration = cduration;
-    }
-    else{
-        ifile.videonote.duration = NULL;
-    }
+    ifile.videonote.duration = duration > 0 ? api_ltoa(duration) : NULL;
 
     /* Video width and height */
-    if(length > 0){
-        n = snprintf(NULL, 0, "%ld", length);
-        char clength[ n + 1];
-        snprintf(clength, n + 1, "%ld", length);
-        clength[n] = '\0';
-        ifile.videonote.length = clength;
-    }
-    else{
-        ifile.videonote.length = NULL;
-    }
+    ifile.videonote.length = length > 0 ? api_ltoa(length) : NULL;
 
     /* Sends the message silently */
-    if(disable_notification > 0)
-      ifile.videonote.disable_notification = btrue;
-    else
-      ifile.videonote.disable_notification = NULL;
+    ifile.videonote.disable_notification = disable_notification > 0 ? "true" : NULL;
 
     /* If the message is a reply, ID of the original message */
-    if(reply_to_message_id < 1){
-      n = snprintf(NULL, 0, "%ld", reply_to_message_id);
-      char creply_to_message_id[n + 1];
-      snprintf(creply_to_message_id, n + 1, "%ld", reply_to_message_id);
-      creply_to_message_id[n] = '\0';
-      ifile.videonote.reply_to_message_id = creply_to_message_id;
-    }
-    else{
-      ifile.videonote.reply_to_message_id = NULL;
-    }
+    ifile.videonote.reply_to_message_id = (reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL);
 
     MemStore * input;
     json_t * message;
@@ -818,25 +773,33 @@ Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, lo
 
     message = start_json(input->content);
 
+    free(ifile.videonote.duration);
+    free(ifile.videonote.length);
+    free(ifile.videonote.reply_to_message_id);
+
     return message_parse(message);
 }
+
+
 
 Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, long int duration,
             long int length, bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
-
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    char * cchat_id;
+    
+    cchat_id = api_ltoa(chat_id);
 
     message = send_video_note_channel(bot, cchat_id, filename, duration, length, disable_notification,
                 reply_to_message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Error * show_error(){
     Error * error = get_error();
@@ -844,74 +807,77 @@ Error * show_error(){
     return error;
 }
 
+
+
 Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from_chat_id,
             bool disable_notification, long int message_id){
 
     Message * message;
     int n;
+    char * cchat_id;
 
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    cchat_id = api_ltoa(chat_id);
 
     message =  forward_message_channel(bot, cchat_id, from_chat_id, disable_notification, message_id);
 
+    free(cchat_id);
+
     return message;
 }
+
+
 
 Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id, 
             bool disable_notification, long int message_id){
 
     Message * message;
     int n;
+    char * cfrom_chat_id;
 
-    n = snprintf(NULL, 0, "%ld", from_chat_id);
-    char cfrom_chat_id[n + 1];
-    snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
-    cfrom_chat_id[n] = '\0';
+    cfrom_chat_id = api_ltoa(from_chat_id);
 
     message =  forward_message_channel(bot, chat_id, cfrom_chat_id, disable_notification, message_id);
 
+    free(cfrom_chat_id);
+
     return message;
 }
+
+
 
 Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_id, 
             bool disable_notification, long int message_id){
 
     json_t *forward_message;
-    if (disable_notification)
-        forward_message = generic_method_call(bot->token, 
-            "forwardMessage?chat_id=%s&from_chat_id=%s&disable_notification=%s&message_id=%ld",
-            chat_id, from_chat_id, "True", message_id);
-    else
-        forward_message = generic_method_call(bot->token,
-            "forwardMessage?chat_id=%s&from_chat_id=%s&message_id=%ld",
-            chat_id, message_id, message_id);
+    forward_message = generic_method_call(bot->token, 
+        "forwardMessage?chat_id=%s&from_chat_id=%s&disable_notification=%s&message_id=%ld",
+        chat_id, from_chat_id, (disable_notification > 0 ? "true" : "0"), message_id);
 
     return message_parse(forward_message);
 }
+
+
 
 Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id, 
             bool disable_notification, long int message_id){
 
     Message * message;
+    char * cchat_id, *cfrom_chat_id;
     int n;
 
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    cchat_id = api_ltoa(chat_id);
 
-    n = snprintf(NULL, 0, "%ld", from_chat_id);
-    char cfrom_chat_id[n + 1];
-    snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
-    cfrom_chat_id[n] = '\0';
+    cfrom_chat_id = api_ltoa(from_chat_id);
 
     message =  forward_message_channel(bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
 
+    free(cchat_id);
+    free(cfrom_chat_id);
+
     return message;
 }
+
+
 
 Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
     float longitude, long int live_period, bool disable_notification,
@@ -919,42 +885,34 @@ Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
 
     json_t * location;
 
-    if(disable_notification && reply_to_message_id)        
-        location = generic_method_call(bot->token,
-            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s&reply_to_message_id=%ld",
-            chat_id, latitude, longitude, live_period, "true", reply_to_message_id);
-
-    else if(disable_notification)
-        location = generic_method_call(bot->token,
-            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s",
-            chat_id, latitude, longitude, live_period, "true");
-
-    else if(reply_to_message_id)
-        location = generic_method_call(bot->token,
-            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&reply_to_message_id=%ld",
-            chat_id, latitude, longitude, live_period, reply_to_message_id);
-
-    else    
-        location = generic_method_call(bot->token,
-            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld",
-            chat_id, latitude, longitude, live_period);
+    location = generic_method_call(bot->token,
+        "sendLocation?chat_id=%s\
+&latitude=%f\
+&longitude=%f\
+&live_period=%ld\
+&disable_notification=%s\
+&reply_to_message_id=%ld",
+        chat_id, latitude, longitude, live_period,
+        (disable_notification > 0 ? "true" : 0), reply_to_message_id );
 
     return message_parse(location);
 }
+
+
 
 Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
             long int live_period, bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
+    char * cchat_id;
 
-    n = snprintf(NULL, 0, "%ld", chat_id);
-    char cchat_id[n + 1];
-    snprintf(cchat_id, n + 1, "%ld", chat_id);
-    cchat_id[n] = '\0';
+    cchat_id = api_ltoa(chat_id);
 
     message = send_location_channel(bot, cchat_id, latitude, logitude, live_period,
                 disable_notification, reply_to_message_id);
+
+    free(cchat_id);
 
     return message;
 }

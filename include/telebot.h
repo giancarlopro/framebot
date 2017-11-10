@@ -53,7 +53,6 @@
 #define CWHITE    "\033[01;37m" /* white */
 #define CRESET    "\e[0;37m"    /* default */
 
-
 /* type bool */
 typedef int bool;
 #define true  1

@@ -26,3 +26,35 @@ char *vsboolean_param_parser (char *base, int psize, ...) {
 
     return base_tmp;
 }
+
+char * api_ltoa(long int n){
+    int len;
+    char * str;
+
+    len = sprintf(NULL, "%ld", n);
+    str = malloc((size_t)len + 1);
+
+    snprintf(str, (size_t)len + 1, "%lu", n);
+
+    return str;
+}
+
+char * api_itoa(int n){
+    int len;
+    char * str;
+
+    len = sprintf(NULL, "%d", n);
+    str = malloc((size_t)len + 1);
+
+    snprintf(str, (size_t)len + 1, "%d", n);
+
+    return str;
+}
+
+int api_atoi(char * str_int){
+    return atoi(str_int);
+}
+
+long int api_atol(char * str_long){
+    return atol(str_long);
+}
