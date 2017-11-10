@@ -73,10 +73,12 @@ Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extr
 
     json_t *send_message;
     if (extra) {
-        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s", chat_id, text, extra);
+        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s",
+            chat_id, text, extra);
         free(extra);
     } else {
-        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s", chat_id, text);
+        send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s",
+            chat_id, text);
     }
 
     return message_parse(send_message);
@@ -89,6 +91,7 @@ Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extr
  * https://core.telegram.org/bots/api#sendmessage
  */
 Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra) {
+
     Message * message;
     int n;
 
@@ -97,7 +100,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    message =  send_message_channel (bot, cchat_id, text, extra);
+    message =  send_message_channel(bot, cchat_id, text, extra);
 
     return message;
 }
@@ -118,7 +121,8 @@ Chat *get_chat (Bot *bot, char *chat_id) {
  */
 int set_chat_title (Bot *bot, char *chat_id, char *title) {
     
-    json_t *is_chat_title = generic_method_call(bot->token, "setChatTitle?chat_id=%s&title=%s", chat_id, title);
+    json_t *is_chat_title = generic_method_call(bot->token, "setChatTitle?chat_id=%s&title=%s",
+        chat_id, title);
     return json_is_true(is_chat_title);
 }
 /**
@@ -127,7 +131,8 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
  */
 ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
     
-    json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    json_t *chat_member = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s",
+        chat_id, user_id);
     return chat_member_parse(chat_member);
 }
 /**
@@ -136,7 +141,8 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
  */
 bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     
-    json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s", chat_id, description);
+    json_t *is_description = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s",
+        chat_id, description);
     return json_is_true(is_description);
 }
 /**
@@ -154,7 +160,8 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
  */
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date) {
 
-    json_t *is_kicked = generic_method_call(bot->token, "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
+    json_t *is_kicked = generic_method_call(bot->token,
+        "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
     return json_is_true(is_kicked);
 }
 /**
@@ -167,8 +174,8 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
  * https://core.telegram.org/bots/api#restrictchatmember
  */
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
-                           bool can_send_messages, bool can_send_media_messages,
-                           bool can_send_other_messages, bool can_add_web_page_previews) {
+            bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
+            bool can_add_web_page_previews) {
     
     char base[300];
     strcpy(base, "restrictChatMember?chat_id=%s&user_id=%s&until_date=%ld");
@@ -200,7 +207,8 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
  */
 bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
     
-    json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s", chat_id, user_id);
+    json_t *is_unbanned = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s",
+        chat_id, user_id);
     return json_is_true(is_unbanned);
 }
 /**
@@ -223,19 +231,20 @@ bool leave_chat (Bot *bot, char *chat_id) {
  * https://core.telegram.org/bots/api#promotechatmember
  */
 bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
-                          bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
-                          bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
-                          bool can_promote_members) {
+            bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+            bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+            bool can_promote_members) {
     
     char *base = alloc_string("promoteChatMember?chat_id=%s&user_id=%s");
-    base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages", can_post_messages,
-                                  "can_edit_messages", can_edit_messages, "can_delete_messages", can_delete_messages,
-                                  "can_invite_users", can_invite_users, "can_restrict_members", can_restrict_members,
-                                  "can_pin_messages", can_pin_messages, "can_promote_members", can_promote_members
-                                );
+    base = vsboolean_param_parser(base, 8, "can_change_info", can_change_info, "can_post_messages",
+                can_post_messages, "can_edit_messages", can_edit_messages, "can_delete_messages",
+                can_delete_messages, "can_invite_users", can_invite_users, "can_restrict_members",
+                can_restrict_members, "can_pin_messages", can_pin_messages, "can_promote_members",
+                can_promote_members );
 
     json_t *is_restricted = generic_method_call(bot->token, base, chat_id, user_id);
     free(base);
+
     return json_is_true(is_restricted);
 }
 /**
@@ -273,9 +282,12 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
 
     json_t *is_pin;
     if (disable_notification)
-        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s", chat_id, message_id, "True");
+        is_pin = generic_method_call(bot->token,
+            "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s",
+            chat_id, message_id, "True");
     else
-        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld", chat_id, message_id);
+        is_pin = generic_method_call(bot->token, "pinChatMessage?chat_id=%s&message_id=%ld",
+            chat_id, message_id);
     
     return json_is_true(is_pin);
 }
@@ -285,6 +297,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
  *  - Error filtering
  */
 json_t *generic_method_call (const char *token, char *formats, ...) {
+
     va_list params;
     va_start(params, formats);
 
@@ -303,6 +316,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
  * https://core.telegram.org/bots/api#getfile
  */
 char * get_file (Bot * bot, char * dir, const char * file_id){
+
     json_t *get_file;
     char *path_file;
 
@@ -321,7 +335,9 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
 /**
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit){
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
+            long offset, long limit){
+
     json_t * user_profile;
     char *method, *path_file;
     size_t photosze_len, method_len = 80;
@@ -352,6 +368,7 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
                              char * caption, bool disable_notification,
                              long int reply_to_message_id){
+
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -396,9 +413,8 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
-                          char * caption, bool disable_notification,
-                          long int reply_to_message_id){
+Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+            bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -414,10 +430,10 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
     return message;
 }
 
-Message * send_audio_channel(Bot *bot, char * chat_id, char * filename,
-                             char * caption, long int duration, char * performer,
-                             char * title, bool disable_notification,
-                             long int reply_to_message_id){
+Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * caption,
+            long int duration, char * performer, char * title, bool disable_notification,
+            long int reply_to_message_id){
+    
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -479,10 +495,9 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
-                             char * caption, long int duration, char * performer,
-                             char * title, bool disable_notification,
-                             long int reply_to_message_id){
+Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+            long int duration, char * performer, char * title, bool disable_notification,
+            long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -499,9 +514,9 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename,
     return message;
 }
 
-Message * send_document_channel(Bot * bot, char * chat_id, char * filename,
-                             char * caption, bool disable_notification,
-                             long int reply_to_message_id){
+Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char * caption,
+            bool disable_notification, long int reply_to_message_id){
+
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -546,9 +561,8 @@ Message * send_document_channel(Bot * bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_document_chat(Bot * bot, long int chat_id, char * filename,
-                          char * caption, bool disable_notification,
-                          long int reply_to_message_id){
+Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+            bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -564,10 +578,10 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename,
     return message;
 }
 
-Message * send_video_channel(Bot * bot, char * chat_id, char * filename,
-                             long int duration, long int width, long int height,
-                             char * caption, bool disable_notification,
-                             long int reply_to_message_id){
+Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long int duration,
+            long int width, long int height, char * caption, bool disable_notification,
+            long int reply_to_message_id){
+    
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -647,10 +661,9 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_video_chat(Bot * bot, long int chat_id, char * filename,
-                          long int duration, long int width, long int height,
-                          char * caption, bool disable_notification,
-                          long int reply_to_message_id){
+Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int duration,
+            long int width, long int height, char * caption, bool disable_notification,
+            long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -660,16 +673,15 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename,
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    message = send_video_channel(bot, cchat_id, filename, duration, width,
-                                 height, caption, disable_notification,
-                                 reply_to_message_id);
+    message = send_video_channel(bot, cchat_id, filename, duration, width, height, caption,
+                disable_notification, reply_to_message_id);
 
     return message;
 }
 
-Message * send_voice_channel(Bot *bot, char * chat_id, char * filename,
-                             char * caption, long int duration, bool disable_notification,
-                             long int reply_to_message_id){
+Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * caption,
+            long int duration, bool disable_notification, long int reply_to_message_id){
+
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -725,9 +737,8 @@ Message * send_voice_channel(Bot *bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
-                          char * caption, long int duration, bool disable_notification,
-                          long int reply_to_message_id){
+Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,
+            bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -743,9 +754,9 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename,
     return message;
 }
 
-Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename,
-                                  long int duration, long int length,
-                                  bool disable_notification, long int reply_to_message_id){
+Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, long int duration,
+            long int length, bool disable_notification, long int reply_to_message_id){
+
     IFile ifile;
     int n;
     char btrue[] = "true";
@@ -810,9 +821,9 @@ Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename,
     return message_parse(message);
 }
 
-Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
-                               long int duration, long int length,
-                               bool disable_notification, long int reply_to_message_id){
+Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, long int duration,
+            long int length, bool disable_notification, long int reply_to_message_id){
+
     Message * message;
     int n;
 
@@ -821,9 +832,8 @@ Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    message = send_video_note_channel(bot, cchat_id, filename, duration,
-                                 length, disable_notification,
-                                 reply_to_message_id);
+    message = send_video_note_channel(bot, cchat_id, filename, duration, length, disable_notification,
+                reply_to_message_id);
 
     return message;
 }
@@ -834,9 +844,8 @@ Error * show_error(){
     return error;
 }
 
-Message * forward_message_from_channel (
-                        Bot * bot, long int chat_id, char * from_chat_id, 
-                        bool disable_notification, long int message_id){
+Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from_chat_id,
+            bool disable_notification, long int message_id){
 
     Message * message;
     int n;
@@ -846,14 +855,13 @@ Message * forward_message_from_channel (
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    message =  forward_message_channel (bot, cchat_id, from_chat_id, disable_notification, message_id);
+    message =  forward_message_channel(bot, cchat_id, from_chat_id, disable_notification, message_id);
 
     return message;
 }
 
-Message * forward_message_from_chat (
-                        Bot * bot, char * chat_id, long int from_chat_id, 
-                        bool disable_notification, long int message_id){
+Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id, 
+            bool disable_notification, long int message_id){
 
     Message * message;
     int n;
@@ -863,14 +871,13 @@ Message * forward_message_from_chat (
     snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
     cfrom_chat_id[n] = '\0';
 
-    message =  forward_message_channel (bot, chat_id, cfrom_chat_id, disable_notification, message_id);
+    message =  forward_message_channel(bot, chat_id, cfrom_chat_id, disable_notification, message_id);
 
     return message;
 }
 
-Message * forward_message_channel (
-                        Bot * bot, char * chat_id, char * from_chat_id, 
-                        bool disable_notification, long int message_id){
+Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_id, 
+            bool disable_notification, long int message_id){
 
     json_t *forward_message;
     if (disable_notification)
@@ -885,9 +892,8 @@ Message * forward_message_channel (
     return message_parse(forward_message);
 }
 
-Message * forward_message_chat (
-                        Bot * bot, long int chat_id, long int from_chat_id, 
-                        bool disable_notification, long int message_id){
+Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id, 
+            bool disable_notification, long int message_id){
 
     Message * message;
     int n;
@@ -902,7 +908,7 @@ Message * forward_message_chat (
     snprintf(cfrom_chat_id, n + 1, "%ld", from_chat_id);
     cfrom_chat_id[n] = '\0';
 
-    message =  forward_message_channel (bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
+    message =  forward_message_channel(bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
 
     return message;
 }
@@ -913,20 +919,22 @@ Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
 
     json_t * location;
 
-    if(disable_notification && reply_to_message_id){
+    if(disable_notification && reply_to_message_id)        
         location = generic_method_call(bot->token,
             "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s&reply_to_message_id=%ld",
             chat_id, latitude, longitude, live_period, "true", reply_to_message_id);
-    }
+
     else if(disable_notification)
         location = generic_method_call(bot->token,
             "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s",
             chat_id, latitude, longitude, live_period, "true");
+
     else if(reply_to_message_id)
         location = generic_method_call(bot->token,
             "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&reply_to_message_id=%ld",
             chat_id, latitude, longitude, live_period, reply_to_message_id);
-    else
+
+    else    
         location = generic_method_call(bot->token,
             "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld",
             chat_id, latitude, longitude, live_period);
@@ -934,9 +942,8 @@ Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
     return message_parse(location);
 }
 
-Message * send_location_chat (Bot * bot, long int chat_id, float latitude,
-    float logitude, long int live_period, bool disable_notification,
-    long int reply_to_message_id){
+Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
+            long int live_period, bool disable_notification, long int reply_to_message_id){
 
     Message * message;
     int n;
@@ -946,8 +953,8 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude,
     snprintf(cchat_id, n + 1, "%ld", chat_id);
     cchat_id[n] = '\0';
 
-    message = send_location_channel(bot, cchat_id, latitude, logitude,
-                    live_period, disable_notification, reply_to_message_id);
+    message = send_location_channel(bot, cchat_id, latitude, logitude, live_period,
+                disable_notification, reply_to_message_id);
 
     return message;
 }
