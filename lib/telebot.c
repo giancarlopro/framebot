@@ -429,7 +429,6 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
                              long int reply_to_message_id){
 
     IFile ifile;
-    int n;
 
     ifile.type = SENDPHOTO;
     
@@ -467,7 +466,6 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -487,7 +485,6 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
             long int reply_to_message_id){
     
     IFile ifile;
-    int n;
 
     ifile.type = SENDAUDIO;
 
@@ -536,7 +533,6 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
             long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -556,7 +552,6 @@ Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char
             bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
-    int n;
 
     ifile.type = SENDDOCUMENT;
 
@@ -595,7 +590,6 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -615,7 +609,6 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
             long int reply_to_message_id){
     
     IFile ifile;
-    int n;
 
     ifile.type = SENDVIDEO;
 
@@ -665,7 +658,6 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
             long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -684,7 +676,6 @@ Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * c
             long int duration, bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
-    int n;
 
     ifile.type = SENDVOICE;
 
@@ -725,7 +716,6 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
             bool disable_notification, long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -744,7 +734,6 @@ Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, lo
             long int length, bool disable_notification, long int reply_to_message_id){
 
     IFile ifile;
-    int n;
 
     ifile.type = SENDVIDEONOTE;
 
@@ -786,7 +775,6 @@ Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, lon
             long int length, bool disable_notification, long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
@@ -813,7 +801,6 @@ Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from
             bool disable_notification, long int message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
@@ -831,7 +818,6 @@ Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_ch
             bool disable_notification, long int message_id){
 
     Message * message;
-    int n;
     char * cfrom_chat_id;
 
     cfrom_chat_id = api_ltoa(from_chat_id);
@@ -863,7 +849,6 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 
     Message * message;
     char * cchat_id, *cfrom_chat_id;
-    int n;
 
     cchat_id = api_ltoa(chat_id);
 
@@ -880,8 +865,8 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 
 
 Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
-    float longitude, long int live_period, bool disable_notification,
-    long int reply_to_message_id){
+            float longitude, long int live_period, bool disable_notification,
+            long int reply_to_message_id){
 
     json_t * location;
 
@@ -904,13 +889,47 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float
             long int live_period, bool disable_notification, long int reply_to_message_id){
 
     Message * message;
-    int n;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
     message = send_location_channel(bot, cchat_id, latitude, logitude, live_period,
                 disable_notification, reply_to_message_id);
+
+    free(cchat_id);
+
+    return message;
+}
+
+
+
+Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, long int reply_to_message_id){
+    json_t * message;
+
+    message = generic_method_call(bot->token,
+        "sendContact?chat_id=%s\
+&phone_number=%s\
+&first_name=%s\
+&last_name=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld",
+        chat_id, phone_number, first_name, last_name,
+        (disable_notification > 0 ? "true":"0"), reply_to_message_id);
+
+    return message_parse(message);
+}
+
+
+
+Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, long int reply_to_message_id){
+    Message * message;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    message = send_contact_channel(bot, cchat_id, phone_number, first_name, last_name, disable_notification, reply_to_message_id);
 
     free(cchat_id);
 

@@ -148,4 +148,15 @@ Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_i
 Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,
         bool disable_notification, long int message_id);
 
+Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
+            float longitude, long int live_period, bool disable_notification,
+            long int reply_to_message_id);
+Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
+            long int live_period, bool disable_notification, long int reply_to_message_id);
+
+Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, long int reply_to_message_id);
+Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, long int reply_to_message_id);
+
 #endif
