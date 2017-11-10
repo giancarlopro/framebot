@@ -906,3 +906,48 @@ Message * forward_message_chat (
 
     return message;
 }
+
+Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
+    float longitude, long int live_period, bool disable_notification,
+    long int reply_to_message_id){
+
+    json_t * location;
+
+    if(disable_notification && reply_to_message_id){
+        location = generic_method_call(bot->token,
+            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s&reply_to_message_id=%ld",
+            chat_id, latitude, longitude, live_period, "true", reply_to_message_id);
+    }
+    else if(disable_notification)
+        location = generic_method_call(bot->token,
+            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&disable_notification=%s",
+            chat_id, latitude, longitude, live_period, "true");
+    else if(reply_to_message_id)
+        location = generic_method_call(bot->token,
+            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld&reply_to_message_id=%ld",
+            chat_id, latitude, longitude, live_period, reply_to_message_id);
+    else
+        location = generic_method_call(bot->token,
+            "sendLocation?chat_id=%s&latitude=%f&longitude=%f&live_period=%ld",
+            chat_id, latitude, longitude, live_period);
+
+    return message_parse(location);
+}
+
+Message * send_location_chat (Bot * bot, long int chat_id, float latitude,
+    float logitude, long int live_period, bool disable_notification,
+    long int reply_to_message_id){
+
+    Message * message;
+    int n;
+
+    n = snprintf(NULL, 0, "%ld", chat_id);
+    char cchat_id[n + 1];
+    snprintf(cchat_id, n + 1, "%ld", chat_id);
+    cchat_id[n] = '\0';
+
+    message = send_location_channel(bot, cchat_id, latitude, logitude,
+                    live_period, disable_notification, reply_to_message_id);
+
+    return message;
+}
