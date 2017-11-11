@@ -1032,3 +1032,33 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
 
     return message;
 }
+
+
+
+Message * stop_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+            char * inline_message_id){
+    json_t * json;
+
+    json = generic_method_call(bot->token, "stopMessageLiveLocation?chat_id=%s\
+message_id=%ld\
+inline_message_id=%s",
+                chat_id, message_id, inline_message_id);
+
+    return message_parse(json);
+}
+
+
+
+Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+            char * inline_message_id){
+    Message * message;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    message = stop_message_live_location_channel(bot, cchat_id, message_id, inline_message_id);
+
+    free(cchat_id);
+
+    return message;
+}
