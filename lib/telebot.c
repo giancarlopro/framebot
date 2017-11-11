@@ -958,3 +958,37 @@ int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
 
     return send_chat_action_channel(bot, cchat_id, action);
 }
+
+
+
+Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id){
+    json_t * json;
+
+    json = generic_method_call(bot->token, "sendVenue?chat_id=%s\
+&latitude=%f\
+&longitude=%f\
+&title=%s\
+&address=%s\
+&foursquare_id=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld",
+        chat_id, latitude, longitude, title, address, foursquare_id,
+        (disable_notification > 0 ? "true" : "0"), reply_to_message_id);
+
+    return message_parse(json);
+}
+
+
+
+Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id){
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    return send_venue_channel(bot, cchat_id, latitude, longitude, title,
+        address, foursquare_id, disable_notification, reply_to_message_id);
+}
