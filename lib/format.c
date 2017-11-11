@@ -2,6 +2,9 @@
 
 #define MAX_URL_SZ 2000
 
+#define STRLONG 21
+#define STRINT 13 
+
 char *escape_string(char *str) {
 	CURL *curl = curl_easy_init();
 	if (curl) {
@@ -42,4 +45,35 @@ char *vsformat (char *formats, va_list params) {
 	vsprintf(buffer, formats, params);
 
 	return buffer;
+}
+
+
+char * api_ltoa(long int n){
+    int len;
+    char * str;
+
+    str = malloc(STRLONG);
+
+    snprintf(str, STRLONG, "%lu", n);
+
+    return str;
+}
+
+char * api_itoa(int n){
+    int len;
+    char * str;
+
+    str = malloc(STRINT);
+
+    snprintf(str, STRINT, "%d", n);
+
+    return str;
+}
+
+int api_atoi(char * str_int){
+    return atoi(str_int);
+}
+
+long int api_atol(char * str_long){
+    return atol(str_long);
 }
