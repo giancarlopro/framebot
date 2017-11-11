@@ -242,7 +242,9 @@ int main(int argc, char *argv[]){
 		read_message(message);
 	}
 	else{
-		printf("ESQUI");
+		Error * error = show_error();
+		if(error)
+			printf("ec=%ld d=%s", error->error_code, error->description);
 	}
 
 	return 0;

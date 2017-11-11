@@ -58,6 +58,10 @@ typedef int bool;
 #define true  1
 #define false 0
 
+/* parameter parse_mode */
+#define MODEHTML "HTML"
+#define MODEMARKDOWN "MARKDOWN"
+
 #include <curl/curl.h>
 #include <jansson.h>
 #include <pthread.h>
