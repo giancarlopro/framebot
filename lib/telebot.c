@@ -935,3 +935,26 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 
     return message;
 }
+
+
+
+int send_chat_action_channel(Bot * bot, char * chat_id, char * action){
+    json_t * json;
+    int n;
+
+    json = generic_method_call(bot->token, "sendChatAction?chat_id=%s&action=%s",
+            chat_id, action);
+
+    return json_is_true(json) ? 0 : -1;
+
+}
+
+
+
+int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    return send_chat_action_channel(bot, cchat_id, action);
+}

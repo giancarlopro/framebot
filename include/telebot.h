@@ -159,4 +159,7 @@ Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, c
 Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
             char * last_name, bool disable_notification, long int reply_to_message_id);
 
+int send_chat_action_channel(Bot * bot, char * chat_id, char * action);
+int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
+
 #endif
