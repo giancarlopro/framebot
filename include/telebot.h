@@ -162,4 +162,16 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 int send_chat_action_channel(Bot * bot, char * chat_id, char * action);
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
 
+Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id);
+Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id);
+
+Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+            char * inline_message_id, float latitude, float longitude);
+Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+            char * inline_message_id, float latitude, float longitude);
+
 #endif

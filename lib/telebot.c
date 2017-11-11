@@ -952,11 +952,16 @@ int send_chat_action_channel(Bot * bot, char * chat_id, char * action){
 
 
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
+    int result;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
-    return send_chat_action_channel(bot, cchat_id, action);
+    result = send_chat_action_channel(bot, cchat_id, action);
+
+    free(cchat_id);
+
+    return result;
 }
 
 
@@ -985,10 +990,45 @@ Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float lo
 Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
             long int reply_to_message_id){
+    Message * message;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
-    return send_venue_channel(bot, cchat_id, latitude, longitude, title,
+    message = send_venue_channel(bot, cchat_id, latitude, longitude, title,
         address, foursquare_id, disable_notification, reply_to_message_id);
+
+    free(cchat_id);
+
+    return message;
+}
+
+
+
+Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+            char * inline_message_id, float latitude, float longitude){
+    json_t * json;
+
+    json = generic_method_call(bot->token,
+        "editMessageLiveLocation?chat_id=%s&message_id=%ld&inline_message_id=%s&latitude=%f&longitude=%f",
+        chat_id, message_id, inline_message_id, latitude, longitude);
+
+    return message_parse(json);
+}
+
+
+
+Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+            char * inline_message_id, float latitude, float longitude){
+    Message * message;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    message = edit_message_live_location_channel(bot, cchat_id, message_id, inline_message_id,
+        latitude, longitude);
+
+    free(cchat_id);
+
+    return message;
 }
