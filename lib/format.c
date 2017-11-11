@@ -42,7 +42,7 @@ char *format (char *formats, ...) {
 char *vsformat (char *formats, va_list params) {
 	char *buffer = (char *) malloc(MAX_URL_SZ);
 
-	vsprintf(buffer, formats, params);
+	vsnprintf(buffer, MAX_URL_SZ, formats, params);
 
 	return buffer;
 }
