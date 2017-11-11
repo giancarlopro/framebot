@@ -53,7 +53,7 @@ int main(void) {
     test_get_chat_member(test_bot);
     
 
-    send_message_chat(test_bot, -220937252, "Testandoooo", NULL);
+    send_message_chat(test_bot, -220937252, "Testandoooo", NULL, 0, 0, 0);
     
     return 0;
 }

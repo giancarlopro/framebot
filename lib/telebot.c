@@ -1,5 +1,9 @@
 #include <telebot.h>
 
+/* parameter parse_mode */
+#define MODEHTML "HTML"
+#define MODEMARKDOWN "MARKDOWN"
+
 void telebot_init () {
 
 //#ifndef CONFIG_DEFAULT /* read or not read config file */
@@ -79,14 +83,23 @@ Update *get_updates (Bot *bot, char *extra) {
 
 
 
-Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extra) {
+Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * parse_mode,
+            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id) {
 
-    json_t *send_message;
+    json_t * json;
     
-    send_message = generic_method_call(bot->token, "sendMessage?chat_id=%ld&text=%s&%s",
-            chat_id, text, extra);
+    json = generic_method_call(bot->token, "\
+sendMessage?chat_id=%ld\
+&text=%s\
+&parse_mode=%s\
+&disable_web_page_preview=%s\
+&disable_notification=%s\
+&reply_to_message_id=%s",
+            chat_id, text, parse_mode,
+            (disable_web_page_preview > 0 ? "true" : "0"),
+            (disable_notification > 0 ? "true" : "0"), reply_to_message_id);
 
-    return message_parse(send_message);
+    return message_parse(json);
 }
 
 
@@ -97,14 +110,15 @@ Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extr
  *  - Change the type of 'chat_id'
  * https://core.telegram.org/bots/api#sendmessage
  */
-Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *extra) {
-
+Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,
+            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id) {
     Message * message;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
-    message =  send_message_channel(bot, cchat_id, text, extra);
+    message =  send_message_channel(bot, cchat_id, text, parse_mode, disable_web_page_preview,
+        disable_notification, reply_to_message_id);
 
     free(cchat_id);
 
@@ -946,7 +960,6 @@ int send_chat_action_channel(Bot * bot, char * chat_id, char * action){
             chat_id, action);
 
     return json_is_true(json) ? 0 : -1;
-
 }
 
 

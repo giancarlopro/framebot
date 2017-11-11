@@ -76,8 +76,12 @@ User * get_me(const char *token);
 Update *get_updates(Bot *bot, char *extra);
 int to_process_message(Bot *bot, Message *message);
 char *comands_bot(const char *text);
-Message * send_message_channel (Bot *bot, char * chat_id, char *text, char *extra);
-Message * send_message_chat(Bot *bot, long int chat_id, char *text, char *extra);
+
+Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * parse_mode,
+            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id);
+Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,
+            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id);
+
 void to_message(Bot *bot, Update *update);
 int set_chat_title (Bot *bot, char *chat_id, char *title);
 Chat *get_chat(Bot *bot, char *chat_id);
