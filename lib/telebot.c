@@ -89,12 +89,12 @@ Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * par
     json_t * json;
     
     json = generic_method_call(bot->token, "\
-sendMessage?chat_id=%ld\
+sendMessage?chat_id=%s\
 &text=%s\
 &parse_mode=%s\
 &disable_web_page_preview=%s\
 &disable_notification=%s\
-&reply_to_message_id=%s",
+&reply_to_message_id=%ld",
             chat_id, text, parse_mode,
             (disable_web_page_preview > 0 ? "true" : "0"),
             (disable_notification > 0 ? "true" : "0"), reply_to_message_id);
@@ -381,7 +381,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
  *  - Error filtering
  */
 json_t *generic_method_call (const char *token, char *formats, ...) {
-
+    json_t *result;
     va_list params;
     va_start(params, formats);
 
@@ -389,11 +389,14 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     MemStore *response = call_method(token, method_base);
     free(method_base);
 
-    json_t *result = start_json(response->content);
+    if(response){
+        json_t *result = start_json(response->content);
+        mem_store_free(response);
 
-    mem_store_free(response);
+        return result;
+    }
 
-    return result;
+    return NULL;
 }
 
 
