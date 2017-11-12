@@ -36,7 +36,6 @@ void error(long int error_code, const char * description){
 
     _error = oerror;
 
-    printf("(%ld))))", _error->error_code);
 }
 
 void error_free(){
@@ -49,8 +48,6 @@ void error_free(){
 }
 
 Error * get_error(){
-    printf("code =%ld", _error->error_code);
-
     return _error;
 }
 
