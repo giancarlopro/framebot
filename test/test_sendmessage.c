@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_message_chat(_bot, 100856717, "Testan\ndoooo", MODEMARKDOWN, 0, 0, 0);
+	Message * message = send_message_chat(_bot, 100856717, "Testan%0Ad o o %0Ao o09929132", MODEMARKDOWN, 0, 0, 0);
 
 
 	if(message){
@@ -28,4 +28,3 @@ int main(int argc, char *argv[]){
 
 	return 0;
 }
-
