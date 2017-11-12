@@ -11,6 +11,8 @@ endif()
 
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
+add_definitions("-g")
+
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
 	add_library(telebotlibrary telebot.c memory.c objects.c json.c network.c format.c util.c)
 	target_link_libraries(telebotlibrary jansson libcurl.so)
