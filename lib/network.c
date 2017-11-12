@@ -50,7 +50,7 @@ MemStore * call_method(const char *token, char *method){
     strcat(url, "/");
     strcat(url, method);
 
-    url[url_size] = '\0';
+    url[url_size - 1] = '\0';
 
     CURL * curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -87,7 +87,7 @@ char * call_method_download(const char * token, char * dir, File *ofile){
     strcat(url, "/");
     strcat(url, ofile->file_path);
 
-    url[url_size] = '\0';
+    url[url_size - 1] = '\0';
 
     CURL * curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url);
