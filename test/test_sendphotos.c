@@ -236,7 +236,7 @@ int main(int argc, char *argv[]){
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_photo_chat(_bot, 100856717, "photos.png", "descrição", 1, 0);
+	Message * message = send_photo_chat(_bot, 100856717, "photos.png", "descrição", 1, 0, NULL);
 
 	if(message){
 		read_message(message);

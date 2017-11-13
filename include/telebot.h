@@ -82,9 +82,11 @@ int to_process_message(Bot *bot, Message *message);
 char *comands_bot(const char *text);
 
 Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * parse_mode,
-            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id);
+            bool disable_web_page_preview, bool disable_notification,
+            long int reply_to_message_id, char * reply_markup);
 Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,
-            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id);
+            bool disable_web_page_preview, bool disable_notification,
+            long int reply_to_message_id, char * reply_markup);
 
 void to_message(Bot *bot, Update *update);
 int set_chat_title (Bot *bot, char *chat_id, char *title);
@@ -111,39 +113,44 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 
 /* send photo */
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename, char * caption, 
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id, char * reply_markup);
 Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, 
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id, char * reply_markup);
 
 /* send audio */
 Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,
-        char * performer, char * title, bool disable_notification, long int reply_to_message_id);
+        char * performer, char * title, bool disable_notification, long int reply_to_message_id,
+        char * reply_markup);
 Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, long int duration,
-        char * performer, char * title, bool disable_notification, long int reply_to_message_id);
+        char * performer, char * title, bool disable_notification, long int reply_to_message_id,
+        char * reply_markup);
 
 /* send document */
 Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char * caption,
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 
 /* send video */
 Message * send_video_channel(Bot * bot, char * chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, bool disable_notification, long int reply_to_message_id);
+        long int height, char * caption, bool disable_notification, long int reply_to_message_id,
+         char * reply_markup);
 Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, bool disable_notification, long int reply_to_message_id);
+        long int height, char * caption, bool disable_notification, long int reply_to_message_id,
+         char * reply_markup);
 
 /* send voice */
 Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,
-        bool disable_notification, long int reply_to_message_id);
+        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, long int duration,
-        long int length, bool disable_notification, long int reply_to_message_id);
+        long int length, bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
-        long int duration, long int length, bool disable_notification, long int reply_to_message_id);
+        long int duration, long int length, bool disable_notification, long int reply_to_message_id,
+        char * reply_markup);
 
 Error * show_error();
 
@@ -158,28 +165,31 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 
 Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
             float longitude, long int live_period, bool disable_notification,
-            long int reply_to_message_id);
+            long int reply_to_message_id, char * reply_markup);
 Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
-            long int live_period, bool disable_notification, long int reply_to_message_id);
+            long int live_period, bool disable_notification, long int reply_to_message_id,
+            char * reply_markup);
 
 Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id);
+            char * last_name, bool disable_notification, long int reply_to_message_id,
+            char * reply_markup);
 Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id);
+            char * last_name, bool disable_notification, long int reply_to_message_id,
+            char * reply_markup);
 
 int send_chat_action_channel(Bot * bot, char * chat_id, char * action);
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
 
 Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id);
+            long int reply_to_message_id, char * reply_markup);
 Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id);
+            long int reply_to_message_id, char * reply_markup);
 
 Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
-            char * inline_message_id, float latitude, float longitude);
+            char * inline_message_id, float latitude, float longitude, char * reply_markup);
 Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
-            char * inline_message_id, float latitude, float longitude);
+            char * inline_message_id, float latitude, float longitude, char * reply_markup);
 
 #endif

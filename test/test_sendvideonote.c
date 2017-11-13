@@ -237,7 +237,7 @@ int main(int argc, char *argv[]){
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_video_note_chat(_bot, 100856717, "mp4.mp4", 0, 0, 0, 0);
+	Message * message = send_video_note_chat(_bot, 100856717, "mp4.mp4", 0, 0, 0, 0, NULL);
 
 	if(message){
 		read_message(message);

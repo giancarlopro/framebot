@@ -30,7 +30,7 @@ typedef struct _sphoto{
 	char * caption;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } sphoto;
 
 typedef struct _saudio{
@@ -43,7 +43,7 @@ typedef struct _saudio{
 	char * title;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } saudio;
 
 typedef struct _sdocument{
@@ -53,7 +53,7 @@ typedef struct _sdocument{
 	char * caption;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } sdocument;
 
 typedef struct _svideo{
@@ -66,7 +66,7 @@ typedef struct _svideo{
 	char * caption;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } svideo;
 
 typedef struct _svoice{
@@ -77,7 +77,7 @@ typedef struct _svoice{
 	char * duration;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } svoice;
 
 typedef struct _svnote{
@@ -88,7 +88,7 @@ typedef struct _svnote{
 	char * length;
 	char * disable_notification;
 	char * reply_to_message_id;
-	/* reply_markup */
+	char * reply_markup;
 } svNote;
 
 typedef union _ifile{

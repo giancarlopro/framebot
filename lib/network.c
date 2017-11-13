@@ -186,6 +186,12 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.photo.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
+
+                if(ifile.photo.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.photo.reply_markup, CURL_ZERO_TERMINATED);
+                }
             break;
             case SENDAUDIO:
                 strcpy(method, "sendAudio");
@@ -246,6 +252,11 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_data(field, ifile.audio.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
 
+                if(ifile.audio.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.audio.reply_markup, CURL_ZERO_TERMINATED);
+                }
             break;
             case SENDDOCUMENT:
                 strcpy(method, "sendDocument");
@@ -283,6 +294,12 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.document.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+
+                if(ifile.document.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.document.reply_markup, CURL_ZERO_TERMINATED);
                 }
             break;
             case SENDVIDEO:
@@ -343,6 +360,12 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.video.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
+
+                if(ifile.video.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.video.reply_markup, CURL_ZERO_TERMINATED);
+                }
             break;
             case SENDVOICE:
                 strcpy(method, "sendVoice");
@@ -388,6 +411,12 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.voice.reply_to_message_id, CURL_ZERO_TERMINATED);
                 }
+
+                if(ifile.voice.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.voice.reply_markup, CURL_ZERO_TERMINATED);
+                }
             break;
             case SENDVIDEONOTE:
                 strcpy(method, "sendVideoNote");
@@ -432,6 +461,12 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "reply_to_message_id");
                     curl_mime_data(field, ifile.videonote.reply_to_message_id, CURL_ZERO_TERMINATED);
+                }
+
+                if(ifile.videonote.reply_markup != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "reply_to_message_id");
+                    curl_mime_data(field, ifile.videonote.reply_markup, CURL_ZERO_TERMINATED);
                 }
             break;
         }
