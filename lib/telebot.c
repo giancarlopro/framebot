@@ -319,7 +319,7 @@ bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *
     json_t *json;
 
     json = generic_method_call(bot->token,
-        "kickChatMember?chat_id=%s&user_id=%s&until_date=%s", chat_id, user_id, until_date);
+        "kickChatMember?chat_id=%s&user_id=%ld&until_date=%s", chat_id, user_id, until_date);
 
     result = json_is_true(json);
 
@@ -353,7 +353,7 @@ bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *
  * Returns True on success.
  * https://core.telegram.org/bots/api#restrictchatmember
  */
-bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int until_date,
+bool restrict_chat_member_channel (Bot *bot, char *chat_id, long int user_id, long int until_date,
             bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
             bool can_add_web_page_previews) {
 
@@ -362,7 +362,7 @@ bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id, long int unti
 
     json = generic_method_call(bot->token, "\
 restrictChatMember?chat_id=%s\
-&user_id=%s\
+&user_id=%ld\
 &until_date=%ld\
 &can_send_messages=%s\
 &can_send_media_messages=%s\
@@ -382,6 +382,24 @@ restrictChatMember?chat_id=%s\
 }
 
 
+bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date,
+            bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
+            bool can_add_web_page_previews) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = restrict_chat_member_channel (bot, cchat_id, user_id, until_date,
+            can_send_messages, can_send_media_messages, can_send_other_messages,
+            can_add_web_page_previews);
+
+    free(cchat_id);
+
+    return result;
+}
+
+
 
 /**
  * unbanChatMember
@@ -392,11 +410,11 @@ restrictChatMember?chat_id=%s\
  * Returns True on success.
  * https://core.telegram.org/bots/api#unbanchatmember
  */
-bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
+bool unban_chat_member_channel (Bot *bot, char *chat_id, long int user_id) {
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%s",
+    json = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%ld",
         chat_id, user_id);
 
     result = json_is_true(json);
@@ -408,12 +426,26 @@ bool unban_chat_member (Bot *bot, char *chat_id, char *user_id) {
 
 
 
+bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = unban_chat_member_channel (bot, cchat_id, user_id);
+
+    free(cchat_id);
+
+    return result;
+}
+
+
 /**
  * leaveChat
  * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
  * https://core.telegram.org/bots/api#leavechat
  */
-bool leave_chat (Bot *bot, char *chat_id) {
+bool leave_chat_channel (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
@@ -428,6 +460,22 @@ bool leave_chat (Bot *bot, char *chat_id) {
 
 
 
+bool leave_chat_chat (Bot *bot, long int chat_id) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = leave_chat_channel (bot, cchat_id);
+
+    free(cchat_id);
+
+    return result;
+}
+
+
+
+
 /**
  * promoteChatMember
  * Use this method to promote or demote a user in a supergroup or a channel.
@@ -437,7 +485,7 @@ bool leave_chat (Bot *bot, char *chat_id) {
  * Returns True on success.
  * https://core.telegram.org/bots/api#promotechatmember
  */
-bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
+bool promote_chat_member_channel (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
             bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
             bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
             bool can_promote_members) {
@@ -445,7 +493,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_chang
     json_t *json;
 
     json = generic_method_call(bot->token, "\
-promoteChatMember?chat_id=%s&user_id=%s\
+promoteChatMember?chat_id=%s&user_id=%ld\
 &can_change_info=%s\
 &can_post_messages=%s\
 &can_edit_messages=%s\
@@ -463,8 +511,6 @@ promoteChatMember?chat_id=%s&user_id=%s\
         (can_restrict_members > 0 ? "true" : "0"),
         (can_pin_messages > 0 ? "true" : "0"),
         (can_promote_members > 0 ? "true" : "0"));
-   
-/*    free(base); */
 
     result = json_is_true(json);
 
@@ -473,6 +519,25 @@ promoteChatMember?chat_id=%s&user_id=%s\
     return result;
 }
 
+
+bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
+            bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+            bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+            bool can_promote_members) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = promote_chat_member_channel(bot, cchat_id, user_id, can_change_info,
+            can_post_messages, can_edit_messages, can_delete_messages,
+            can_invite_users, can_restrict_members, can_pin_messages,
+            can_promote_members);
+
+    free(cchat_id);
+
+    return result;
+}
 
 
 /**
@@ -485,7 +550,7 @@ promoteChatMember?chat_id=%s&user_id=%s\
  * You must release the returned string
  * https://core.telegram.org/bots/api#exportchatinvitelink
  */
-char *export_chat_invite_link (Bot *bot, char *chat_id) {
+char *export_chat_invite_link_channel (Bot *bot, char *chat_id) {
 
     json_t *json;
     char * invite_link;
@@ -495,6 +560,19 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
     invite_link = alloc_string(json_string_value(json));
 
     json_decref(json);
+
+    return invite_link;
+}
+
+
+char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
+    char * invite_link, *cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    invite_link = export_chat_invite_link_channel(bot, cchat_id);
+
+    free(cchat_id);
 
     return invite_link;
 }

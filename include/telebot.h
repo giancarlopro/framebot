@@ -111,18 +111,34 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id);
 bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date);
 bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date);
 
-bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id,
+bool restrict_chat_member_channel (Bot *bot, char *chat_id, long int user_id,
         long int until_date, bool can_send_messages,
         bool can_send_media_messages, bool can_send_other_messages,
         bool can_add_web_page_previews);
-bool unban_chat_member (Bot *bot, char *chat_id, char *user_id);
-bool leave_chat (Bot *bot, char *chat_id);
-bool promote_chat_member (Bot *bot, char *chat_id, char *user_id, bool can_change_info,
-        bool can_post_messages, bool can_edit_messages,
-        bool can_delete_messages, bool can_invite_users,
-        bool can_restrict_members, bool can_pin_messages,
+bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id,
+        long int until_date, bool can_send_messages,
+        bool can_send_media_messages, bool can_send_other_messages,
+        bool can_add_web_page_previews);
+
+
+bool unban_chat_member_channel (Bot *bot, char *chat_id, long int user_id);
+bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id);
+
+bool leave_chat_channel (Bot *bot, char *chat_id);
+bool leave_chat_chat (Bot *bot, long int chat_id);
+
+bool promote_chat_member_channel (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
+        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
         bool can_promote_members);
-char *export_chat_invite_link (Bot *bot, char *chat_id);
+bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
+        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+        bool can_promote_members);
+
+char *export_chat_invite_link_channel (Bot *bot, char *chat_id);
+char *export_chat_invite_link_chat (Bot *bot, long int chat_id);
+
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
 
 /* send photo */
