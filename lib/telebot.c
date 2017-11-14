@@ -210,12 +210,12 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
  * Returns the requested ChatMember object.
  * https://core.telegram.org/bots/api#getchatmember
  */
-ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, char *user_id) {
+ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, long int user_id) {
     json_t *json;
     ChatMember * chat_member;
     int result;
 
-    json = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%s",
+    json = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%ld",
         chat_id, user_id);
 
     chat_member = chat_member_parse(json);
@@ -226,7 +226,7 @@ ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, char *user_id) {
 }
 
 
-ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, char *user_id) {
+ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
     ChatMember * chat_member;
     char * cchat_id;
 

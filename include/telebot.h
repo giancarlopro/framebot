@@ -96,8 +96,8 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title);
 Chat *get_chat_channel(Bot *bot, char *chat_id);
 Chat *get_chat_chat(Bot *bot, long int chat_id);
 
-ChatMember *get_chat_member_channel(Bot *bot, char *chat_id, char *user_id);
-ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, char *user_id);
+ChatMember *get_chat_member_channel(Bot *bot, char *chat_id, long int user_id);
+ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, long int user_id);
 
 json_t *generic_method_call (const char *token, char *formats, ...);
 char * get_file(Bot * bot, char * dir, const char * file_id);
