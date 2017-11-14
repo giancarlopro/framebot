@@ -105,8 +105,12 @@ char * get_file(Bot * bot, char * dir, const char * file_id);
 bool set_chat_description_channel (Bot *bot, char *chat_id, char *description);
 bool set_chat_description_chat (Bot *bot, long int chat_id, char *description);
 
-int get_chat_member_count (Bot *bot, char *chat_id);
-bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
+int get_chat_members_count_channel (Bot *bot, char *chat_id);
+int get_chat_members_count_chat (Bot *bot, long int chat_id);
+
+bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date);
+bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date);
+
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id,
         long int until_date, bool can_send_messages,
         bool can_send_media_messages, bool can_send_other_messages,

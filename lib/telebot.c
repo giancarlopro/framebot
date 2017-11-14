@@ -281,7 +281,7 @@ bool set_chat_description_chat (Bot *bot, long int chat_id, char *description) {
  * Returns the number of members in the given chat
  *https://core.telegram.org/bots/api#getchatmemberscount
  */ 
-int get_chat_member_count (Bot *bot, char *chat_id) {
+int get_chat_members_count_channel (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
@@ -296,11 +296,25 @@ int get_chat_member_count (Bot *bot, char *chat_id) {
 
 
 
+int get_chat_members_count_chat (Bot *bot, long int chat_id) {
+    int result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = get_chat_members_count_channel (bot, cchat_id);
+
+    free(cchat_id);
+
+    return result;
+}
+
+
 /**
  * Ban a chat user
  * https://core.telegram.org/bots/api#kickchatmember
  */
-bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date) {
+bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date) {
     bool result;
     json_t *json;
 
@@ -314,6 +328,20 @@ bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date)
     return result;
 }
 
+
+
+bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = kick_chat_member_channel (bot, cchat_id, user_id, until_date);
+
+    free(cchat_id);
+
+    return result;
+}
 
 
 /**
