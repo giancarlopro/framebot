@@ -146,7 +146,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * pars
  * Returns the Chat object of the given chat_id
  * https://core.telegram.org/bots/api#getchat
  */ 
-Chat *get_chat (Bot *bot, char *chat_id) {
+Chat *get_chat_channel (Bot *bot, char *chat_id) {
     Chat * chat;
     json_t *json = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
  
@@ -158,13 +158,26 @@ Chat *get_chat (Bot *bot, char *chat_id) {
 }
 
 
+Chat * get_chat_chat(Bot *bot, long int chat_id){
+    Chat * chat;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    chat = get_chat_channel(bot, cchat_id);
+
+    free(cchat_id);
+
+    return chat;
+}
+
 
 /**
  * Changes the title of the given chat_id
  * Returns 1 in success, 0 otherwise
  * https://core.telegram.org/bots/api#setchattitle
  */
-int set_chat_title (Bot *bot, char *chat_id, char *title) {
+int set_chat_title_channel (Bot *bot, char *chat_id, char *title) {
     int result;
     json_t *json;
 
@@ -179,12 +192,25 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
 }
 
 
+int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
+    int result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = set_chat_title_channel (bot, cchat_id, title);
+
+    free(cchat_id);
+
+    return result;
+}
+
 
 /**
  * Returns the requested ChatMember object.
  * https://core.telegram.org/bots/api#getchatmember
  */
-ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
+ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, char *user_id) {
     json_t *json;
     ChatMember * chat_member;
     int result;
@@ -200,12 +226,27 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, char *user_id) {
 }
 
 
+ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, char *user_id) {
+    ChatMember * chat_member;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    chat_member = get_chat_member_channel (bot, cchat_id, user_id);
+
+    free(cchat_id);
+
+    return chat_member;
+}
+
+
+
 
 /**
  * Changes the given chat or channel description
  * https://core.telegram.org/bots/api#setchatdescription
  */
-bool set_chat_description (Bot *bot, char *chat_id, char *description) {
+bool set_chat_description_channel (Bot *bot, char *chat_id, char *description) {
     json_t *json;
     bool result;
 
@@ -215,6 +256,21 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     result = json_is_true(json);
 
     json_decref(json);
+
+    return result;
+}
+
+
+
+bool set_chat_description_chat (Bot *bot, long int chat_id, char *description) {
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = set_chat_description_channel (bot, cchat_id, description);
+
+    free(cchat_id);
 
     return result;
 }

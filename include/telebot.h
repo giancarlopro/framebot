@@ -89,12 +89,22 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * pars
             long int reply_to_message_id, char * reply_markup);
 
 void to_message(Bot *bot, Update *update);
-int set_chat_title (Bot *bot, char *chat_id, char *title);
-Chat *get_chat(Bot *bot, char *chat_id);
-ChatMember *get_chat_member(Bot *bot, char *chat_id, char *user_id);
+
+int set_chat_title_channel (Bot *bot, char *chat_id, char *title);
+int set_chat_title_chat (Bot *bot, long int chat_id, char *title);
+
+Chat *get_chat_channel(Bot *bot, char *chat_id);
+Chat *get_chat_chat(Bot *bot, long int chat_id);
+
+ChatMember *get_chat_member_channel(Bot *bot, char *chat_id, char *user_id);
+ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, char *user_id);
+
 json_t *generic_method_call (const char *token, char *formats, ...);
 char * get_file(Bot * bot, char * dir, const char * file_id);
-bool set_chat_description (Bot *bot, char *chat_id, char *description);
+
+bool set_chat_description_channel (Bot *bot, char *chat_id, char *description);
+bool set_chat_description_chat (Bot *bot, long int chat_id, char *description);
+
 int get_chat_member_count (Bot *bot, char *chat_id);
 bool kick_chat_member (Bot *bot, char *chat_id, char *user_id, char *until_date);
 bool restrict_chat_member (Bot *bot, char *chat_id, char *user_id,
