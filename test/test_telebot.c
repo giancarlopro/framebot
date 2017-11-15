@@ -23,7 +23,7 @@ void test_set_chat_title(Bot *test_bot) {
 
 void test_get_chat_member(Bot *bot) {
     char test_chat_id[] = "-220937252";
-    char test_user_id[] = "124296363";
+    long int test_user_id = 124296363L;
     char test_chat_member_string[] = "{\"user\":{\"id\":124296363,\"is_bot\":false,\"first_name\":\"Gian\",\"username\":\"niiag\",\"language_code\":\"pt-BR\"},\"status\":\"creator\"}";
     ChatMember *test_chat_member = chat_member_parse(load(test_chat_member_string));
 

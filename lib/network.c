@@ -135,9 +135,7 @@ char * call_method_download(const char * token, char * dir, File *ofile){
 }
 
 MemStore * call_method_input_file(const char * token, IFile ifile){
-    MemStore * buff = NULL;;
-    char method[20];
-    char * url;
+    char method[25];
     CURL * curl;
     CURLcode res;
     curl_mime * form = NULL;
@@ -471,15 +469,20 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
             break;
         }
 
-        buff = mem_store();
+        MemStore * buff = NULL;;
+        size_t url_size;
+        char * url = NULL;
 
-        size_t url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
-        char * url = (char *)malloc(url_size);
+        buff = mem_store();
+        url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
+        url = malloc(url_size);
 
         strcpy(url, API_URL);
         strcat(url, token);
         strcat(url, "/");
         strcat(url, method);
+
+        url[url_size - 1] = '\0';
 
         /* what URL that receives this POST */
         curl_easy_setopt(curl, CURLOPT_URL, url);

@@ -213,7 +213,6 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
 ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, long int user_id) {
     json_t *json;
     ChatMember * chat_member;
-    int result;
 
     json = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%ld",
         chat_id, user_id);
@@ -638,7 +637,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
     free(method_base);
 
     if(response){
-        json_t *result = start_json(response->content);
+        result = start_json(response->content);
         mem_store_free(response);
 
         return result;
@@ -946,6 +945,8 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
     message = message_parse(json);
 
     json_decref(json);
+
+    return message;
 }
 
 

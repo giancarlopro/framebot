@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include <telebot.h>
 
-static long int valid_update_id;
-
 json_t * start_json(char * json){
     json_t *root, *ok;
 
@@ -709,7 +707,6 @@ Message * message_parse(json_t *json){
 }
 
 Update * update_parse(json_t *json){
-    long int current_update_id;
     json_t * pupdate = json;
 
     if(json_is_object(pupdate)){
@@ -804,6 +801,8 @@ ChatMember *chat_member_parse (json_t *json) {
         
         return o_c;
     }
+
+    return NULL;
 }
 
 ChatMember *chat_member_array_parse (json_t *cm_array) {
@@ -1151,4 +1150,6 @@ ChatPhoto * chat_photo_parse(json_t * json){
 
         return o_cp;
     }
+
+    return NULL;
 }

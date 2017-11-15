@@ -23,13 +23,14 @@
 #include <limits.h>
 #include <ctype.h>
 
-
+#ifdef _MSC_VER
 //cURL Fix
 #pragma comment(lib, "wldap32.lib" )
 #pragma comment(lib, "crypt32.lib" )
 #pragma comment(lib, "Ws2_32.lib")
 #define CURL_STATICLIB
 // --//--
+#endif
 
 /* clear windows */
 #define CSCREEN "\e[1;1H\e[2J"

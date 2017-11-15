@@ -233,7 +233,9 @@ size_t message_entity_len(MessageEntity * message_entity){
 }
 
 MessageEntity * message_entity_get(MessageEntity * message_entity, int index){
+    MessageEntity *me = NULL;
 
+    return me;
 }
 
 Audio * audio(const char * file_id, long int duration, const char * performer, const char * title, const char * mime_type, long int file_size){
@@ -1113,7 +1115,7 @@ void pre_checkout_query_free(PreCheckoutQuery * pcq){
 
 OrderInfo * order_info(const char * name, const char * phone_number, const char * email, ShippingAddress * shipping_address){
     OrderInfo * oorder_info = (OrderInfo *) malloc(sizeof(OrderInfo));
-    if(!order_info)
+    if(!oorder_info)
         return NULL;
 
     oorder_info->name = alloc_string(name);
@@ -1217,7 +1219,7 @@ UserProfilePhotos * user_profile_photos(long int total_count, PhotoSize ** photo
 }
 
 void user_profile_photos_free(UserProfilePhotos * oupp){
-    size_t i, x;
+    size_t i;    
 
     if(oupp->photos){
         for(i = 0; i < oupp->total_count; i++){

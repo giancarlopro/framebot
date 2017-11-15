@@ -49,7 +49,6 @@ char *vsformat (char *formats, va_list params) {
 
 
 char * api_ltoa(long int n){
-    int len;
     char * str;
 
     str = malloc(STRLONG);
@@ -60,7 +59,6 @@ char * api_ltoa(long int n){
 }
 
 char * api_itoa(int n){
-    int len;
     char * str;
 
     str = malloc(STRINT);
