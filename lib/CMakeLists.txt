@@ -12,11 +12,11 @@ endif()
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
-	add_library(libtelebot_ SHARED telebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(libtelebot_ jansson libcurl.so)
+	add_library(telebot_ SHARED telebot.c memory.c objects.c json.c network.c format.c util.c)
+	target_link_libraries(telebot_ jansson libcurl.so)
 
-	add_library(libtelebot STATIC telebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(libtelebot jansson libcurl.so)
+	add_library(telebot STATIC telebot.c memory.c objects.c json.c network.c format.c util.c)
+	target_link_libraries(telebot jansson libcurl.so)
 
 	if(DEBUG EQUAL 1)
 		add_definitions("-g")
