@@ -214,25 +214,18 @@ MessageEntity *message_entity(const char *type, long int offset, long int length
 
 
 void message_entity_free(MessageEntity *msgett){
-    MessageEntity *cm = msgett, *tofree;
-    
-    if(!cm)
-        return;
+    MessageEntity *cm = msgett;
 
-    while(cm){
-        if(msgett->type)
-            free(msgett->type);
+    if(msgett->type)
+        free(msgett->type);
 
-        if(msgett->url)
-            free(msgett->url);
+    if(msgett->url)
+        free(msgett->url);
 
+    if(msgett->user)
         user_free(msgett->user);
 
-        tofree = cm;
-        cm = cm->next;
-        free(tofree);
-        tofree = NULL;
-    }
+    free(msgett);
 }
 
 void message_entity_add(MessageEntity *dest, MessageEntity *src){
@@ -258,9 +251,18 @@ size_t message_entity_len(MessageEntity *message_entity){
 }
 
 MessageEntity *message_entity_get(MessageEntity *message_entity, int index){
-    MessageEntity *me = NULL;
+    MessageEntity *m_e = message_entity;
+    size_t i = 0, len = message_entity_len(m_e);
 
-    return me;
+    for(i = 0; m_e && i < len; i++){
+        if(i == len){
+            return m_e;
+        }
+
+        m_e = m_e->next;
+    }
+
+    return NULL;;
 }
 
 /**
@@ -343,6 +345,7 @@ void photo_size_add(PhotoSize *root, PhotoSize *newps){
 PhotoSize *photo_size_get(PhotoSize *root, int i){
     int j = 0;
     PhotoSize *aux = root;
+
     while(aux){
         if(j == i)
             return aux;
