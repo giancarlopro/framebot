@@ -1,6 +1,9 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
+typedef struct _document Animation;
+
+
 typedef struct _error{
     long int error_code;
     char * description;
@@ -67,6 +70,9 @@ typedef struct _photo_size{
     struct _photo_size * next;
 } PhotoSize;
 
+/*
+ * Document is equals Animation
+ */
 typedef struct _document{
     char * file_id;
     PhotoSize * thumb;
@@ -74,14 +80,6 @@ typedef struct _document{
     char * mime_type;
     long int file_size;
 } Document;
-
-typedef struct _animation{
-    char * file_id;
-    PhotoSize * thumb;
-    char * file_name;
-    char * mime_type;
-    long int file_size;
-} Animation;
 
 typedef struct _game{
     char * title;
@@ -370,6 +368,8 @@ typedef union _keyboard{
     ReplyKeyboardRemove * reply_keyboard_remove;
     ForceReply * _force_reply;
 } Keyboard;
+
+typedef struct _document Animation;
 
 //User functions
 User *user(
