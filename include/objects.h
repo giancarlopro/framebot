@@ -321,8 +321,8 @@ typedef struct _callback_game{
 
 typedef struct _keyboard_button {
     char *text;
-    bool request_contact;
-    bool request_location;
+    bool request_contact:1;
+    bool request_location:1;
     struct _keyboard_button *next;
 } KeyboardButton;
 
