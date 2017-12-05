@@ -34,6 +34,9 @@ void error(long int error_code, const char * description){
     oerror->error_code = error_code;
     oerror->description = alloc_string(description);
 
+    if(_error)
+        error_free();
+
     _error = oerror;
 
 }
