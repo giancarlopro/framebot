@@ -214,7 +214,6 @@ MessageEntity *message_entity(const char *type, long int offset, long int length
 
 
 void message_entity_free(MessageEntity *msgett){
-    MessageEntity *cm = msgett;
 
     if(msgett->type)
         free(msgett->type);
@@ -740,7 +739,7 @@ void message_free(Message *message){
     if(message->game)
         game_free(message->game);
     if(message->photo)
-        photo_free(message->photo);
+        photo_size_free(message->photo);
     if(message->sticker)
         sticker_free(message->sticker);
     if(message->video)

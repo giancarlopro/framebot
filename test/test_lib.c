@@ -20,7 +20,7 @@ int main(){
 
    // telebot_polling(bot);
 
-/*  Update *update_msg = get_updates(bot, NULL);
+/*  Update *update_msg = get_updates(bot, 0, 0, 0, NULL);
     Update *tmp = NULL;
 
     int i = 0, j;

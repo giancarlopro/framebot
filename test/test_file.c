@@ -50,7 +50,7 @@ int main(int argc, char **argv){
 
     _bot = telebot(argv[1]);
 
-	Update * update = get_updates(_bot, NULL);
+	Update * update = get_updates(_bot, 0, 0, 0, NULL);
 
 	update_length = update_len(update);
 

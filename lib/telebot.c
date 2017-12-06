@@ -57,15 +57,17 @@ User *get_me (const char *token) {
  * Returns the updates list
  * https://core.telegram.org/bots/api#getupdates
  */ 
-Update *get_updates (Bot *bot, char *extra) {
+Update *get_updates (Bot *bot, long int offset, long int limit,
+                     long int timeout, char *allowed_updates) {
 
     json_t *json;
-    if (extra) {
-        json = generic_method_call(bot->token, "getUpdates?%s", extra);
-    } else {
-        json = generic_method_call(bot->token, "getUpdates");
-    }
-    
+    json = generic_method_call(bot->token, "getUpdates?\
+offset=%ld\
+&limit=%ld\
+&timeout=%ld\
+&allowed_updates=%s",
+            offset, limit, timeout, allowed_updates );
+
     size_t length, i;
     length = json_array_size(json);
 
@@ -124,7 +126,7 @@ sendMessage?chat_id=%s\
  *  - Change the type of 'chat_id'
  * https://core.telegram.org/bots/api#sendmessage
  */
-Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,
+Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse_mode,
             bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id,
             char * reply_markup) {
     Message * message;

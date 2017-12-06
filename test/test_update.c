@@ -344,7 +344,7 @@ int main(int argc, char **argv){
 
     Bot *bot = telebot(argv[1]);
 
-	Update * update = get_updates(bot, NULL);
+	Update * update = get_updates(bot, 0, 0, 0, NULL);
 
 	update_length = update_len(update);
 	printf(BLUE"length = %lu"COLOR_RESET, update_length);

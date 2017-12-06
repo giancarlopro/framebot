@@ -78,7 +78,8 @@ typedef int bool;
 void telebot_init();
 Bot * telebot(const char *token);
 User * get_me(const char *token);
-Update *get_updates(Bot *bot, char *extra);
+Update *get_updates (Bot *bot, long int offset, long int limit,
+            long int timeout, char *allowed_updates);
 int to_process_message(Bot *bot, Message *message);
 char *comands_bot(const char *text);
 
