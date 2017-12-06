@@ -682,6 +682,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
     message->channel_chat_created = channel_chat_created;
     message->migrate_to_chat_id = migrate_to_chat_id;
     message->migrate_from_chat_id = migrate_from_chat_id;
+
     //TELEBOT TYPES
     message->from = from;
     message->chat = chat;
@@ -707,6 +708,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
     message->video_note = video_note;
     message->invoice = oinvoice;
     message->successful_payment = successful_payment;
+
     //STRINGS
     message->text = alloc_string(text);
     message->caption = alloc_string(caption);
@@ -738,7 +740,7 @@ void message_free(Message *message){
     if(message->game)
         game_free(message->game);
     if(message->photo)
-        //photo_free(message->photo);
+        photo_free(message->photo);
     if(message->sticker)
         sticker_free(message->sticker);
     if(message->video)
