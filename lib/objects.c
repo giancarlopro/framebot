@@ -654,15 +654,16 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
                   User *forward_from, Chat *forward_from_chat,
                   long int forward_from_message_id, const char *forward_signature,
                   long int forward_date, Message *reply_to_message, long int edit_date,
-                  const char *author_signature, const char *text, MessageEntity *entities,
-                  MessageEntity *ocaption_entities, Audio *audio, Document *document,
-                  Game *game,PhotoSize *photo,Sticker *sticker, Video *video,
-                  Voice *voice, VideoNote *video_note, const char *caption,
-                  Contact *contact, Location *location, Venue *venue, User *new_chat_member,
-                  User *left_chat_member, const char *new_chat_title, PhotoSize *new_chat_photo,
-                  int delete_chat_photo, int group_chat_created, int supergroup_chat_created,
-                  int channel_chat_created, long int migrate_to_chat_id,
-                  long int migrate_from_chat_id, Message *pinned_message, Invoice *oinvoice,
+                  const char *media_group_id, const char *author_signature,
+                  const char *text, MessageEntity *entities, MessageEntity *ocaption_entities,
+                  Audio *audio, Document *document, Game *game,PhotoSize *photo,
+                  Sticker *sticker, Video *video, Voice *voice, VideoNote *video_note,
+                  const char *caption, Contact *contact, Location *location, Venue *venue,
+                  User *new_chat_member, User *left_chat_member, const char *new_chat_title,
+                  PhotoSize *new_chat_photo, int delete_chat_photo, int group_chat_created,
+                  int supergroup_chat_created, int channel_chat_created,
+                  long int migrate_to_chat_id, long int migrate_from_chat_id,
+                  Message *pinned_message, Invoice *oinvoice,
                   SuccessfulPayment *successful_payment){
 
     Message *message = (Message *)malloc(sizeof(Message));
@@ -714,6 +715,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
     message->new_chat_title = alloc_string(new_chat_title);
     message->forward_signature = alloc_string(forward_signature);
     message->author_signature = alloc_string(author_signature);
+    message->media_group_id = alloc_string(media_group_id);
 
     return message;
 }
@@ -722,44 +724,105 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
 void message_free(Message *message){
     if(message->from)
         user_free(message->from);
+
     if(message->chat)
         chat_free(message->chat);
+
     if(message->forward_from)
         user_free(message->forward_from);
+
     if(message->forward_from_chat)
         chat_free(message->forward_from_chat);
+
     if(message->reply_to_message)
         message_free(message->reply_to_message);
-    if(message->entities)
-        message_entity_free(message->entities); //FREE THE ENTITIES
+
+    if(message->entities){
+        MessageEntity *m_next = message->entities, *m = m_next;
+        while(m_next){
+            m_next = m->next;
+            message_entity_free(m); //FREE THE ENTITIES
+            m = m_next;
+        }
+    }
+
+    if(message->caption_entities){
+        MessageEntity *m_next = message->caption_entities, *m = m_next;
+        while(m_next){
+            m_next = m->next;
+            message_entity_free(m); //FREE THE ENTITIES
+            m = m_next;
+        }
+    }
+
     if(message->audio)
         audio_free(message->audio);
+
     if(message->document)
         document_free(message->document);
+
     if(message->game)
         game_free(message->game);
+
     if(message->photo)
         photo_size_free(message->photo);
+
     if(message->sticker)
         sticker_free(message->sticker);
+
     if(message->video)
         video_free(message->video);
+
     if(message->voice)
         voice_free(message->voice);
+
     if(message->contact)
         contact_free(message->contact);
+
     if(message->location)
         location_free(message->location);
+
     if(message->venue)
         venue_free(message->venue);
+
     if(message->new_chat_member)
         user_free(message->new_chat_member);
+
     if(message->left_chat_member)
         user_free(message->left_chat_member);
+
+    if(message->new_chat_photo)
+        photo_size_free(message->new_chat_photo);
+
     if(message->pinned_message)
         message_free(message->pinned_message);
+
     if(message->invoice)
         invoice_free(message->invoice);
+
+    if(message->video_note)
+        video_note_free(message->video_note);
+
+    if(message->successful_payment)
+        successful_payment_free(message->successful_payment);
+
+    if(message->text)
+        free(message->text);
+
+    if(message->caption)
+        free(message->caption);
+
+    if(message->new_chat_title)
+        free(message->new_chat_title);
+
+    if(message->forward_signature)
+        free(message->forward_signature);
+
+    if(message->author_signature)
+        free(message->author_signature);
+    
+    if(message->media_group_id)
+        free(message->media_group_id);
 
     free(message);
     message = NULL;

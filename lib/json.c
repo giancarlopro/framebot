@@ -522,12 +522,13 @@ Message * message_parse(json_t *json){
         migrate_from_chat_id = json_object_get(pmessage,"migrate_from_chat_id");
 
         //Strings
-        json_t *text, *caption, *new_chat_title, *forward_signature, *author_signature;
+        json_t *text, *caption, *new_chat_title, *forward_signature, *media_group_id, *author_signature;
 
         text = json_object_get(pmessage,"text");
         caption = json_object_get(pmessage,"caption");
         new_chat_title = json_object_get(pmessage,"new_chat_title");
         forward_signature = json_object_get(pmessage, "forward_signature");
+        media_group_id = json_object_get(pmessage, "media_group_id");
         author_signature = json_object_get(pmessage, "author_signature");
 
         //Arrays
@@ -659,6 +660,7 @@ Message * message_parse(json_t *json){
             json_integer_value(forward_date),
             oreply_to_message,
             json_integer_value(edit_date),
+            json_string_value(media_group_id),
             json_string_value(author_signature),
             json_string_value(text),
             oentities,
