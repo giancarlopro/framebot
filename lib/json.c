@@ -715,9 +715,6 @@ Update * update_parse(json_t *json){
         *callback_query, *shipping_query, *pre_checkout_query;
 
         update_id = json_object_get(pupdate,"update_id");
-        if(valid_update(json_integer_value(update_id)) == -1)
-            return NULL;
-
         message = json_object_get(pupdate,"message");
         edited_message = json_object_get(pupdate,"edited_message");
         channel_post = json_object_get(pupdate,"channel_post");
@@ -898,18 +895,6 @@ VideoNote * video_note_parse(json_t * json){
     }
 
     return NULL;
-}
-
-bool valid_update(long int update_id){
-    static long int update_last_valid = 0;
-
-    if(update_last_valid < update_id){
-        update_last_valid = update_id;
-
-        return true;
-    }
-
-    return false;
 }
 
 ShippingQuery * shipping_query_parse(json_t * json){
