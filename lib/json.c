@@ -60,8 +60,6 @@ void error_parse(json_t * json){
     if(json_is_object(json)){
         json_t * error_code, *description;
 
-        printf("123456789");
-
         error_code = json_object_get(json, "error_code");
         description = json_object_get(json, "description");
 
@@ -207,7 +205,7 @@ Audio * audio_parse(json_t *json){
 PhotoSize * photo_size_parse(json_t *json) {
     json_t * pphoto_size = json;
 
-    if(json_is_object(pphoto_size) /*&& image_is_activated()*/) {
+    if(json_is_object(pphoto_size)){
         json_t *file_id, *width, *height, *file_size;
 
         file_id = json_object_get(pphoto_size,"file_id");
@@ -215,9 +213,6 @@ PhotoSize * photo_size_parse(json_t *json) {
         height = json_object_get(pphoto_size,"height");
         
         file_size = json_object_get(pphoto_size,"file_size");
-
-        /*if(!image_size(json_integer_value(file_size)))
-            return NULL;*/
 
         PhotoSize * o_ps = photo_size(
             json_string_value(file_id),
@@ -243,8 +238,6 @@ Document * document_parse(json_t *json){
         file_name = json_object_get(pdocument,"file_name");
 
         mime_type = json_object_get(pdocument,"mime_type");
-        /*if(!format_type(json_string_value(mime_type)))
-            return NULL;*/
 
         file_size = json_object_get(pdocument,"file_size");
 
@@ -354,7 +347,7 @@ Sticker * sticker_parse(json_t *json){
 Video * video_parse(json_t *json){
     json_t * pvideo = json;
 
-    if(json_is_object(pvideo) /*&& video_is_activated() && video_count()*/){
+    if(json_is_object(pvideo)){
         json_t *file_id, *width, *height, *duration, *thumb, *mime_type, *file_size;
 
         file_id = json_object_get(pvideo,"file_id");
@@ -365,8 +358,6 @@ Video * video_parse(json_t *json){
         mime_type = json_object_get(pvideo,"mime_type");
         
         file_size = json_object_get(pvideo,"file_size");
-        /*if(video_size(json_integer_value(file_size)))
-            return NULL;*/
 
         PhotoSize * othumb = photo_size_parse(thumb);
 
@@ -389,15 +380,13 @@ Video * video_parse(json_t *json){
 Voice * voice_parse(json_t *json){
     json_t * pvoice = json;
 
-    if(json_is_object(pvoice) /*&& voice_is_activated() && voice_count()*/){
+    if(json_is_object(pvoice)){
         json_t *file_id, *duration, *mime_type, *file_size;
 
         file_id = json_object_get(pvoice,"file_id");
         duration = json_object_get(pvoice,"duration");
         mime_type = json_object_get(pvoice,"mime_type");
         file_size = json_object_get(pvoice,"file_size");
-        /*if(!voice_size(json_integer_value(file_size)))
-            return NULL;*/
 
         Voice * o_v = voice(
             json_string_value(file_id),
@@ -415,7 +404,7 @@ Voice * voice_parse(json_t *json){
 Contact * contact_parse(json_t *json){
     json_t * pcontact = json;
 
-    if(json_is_object(pcontact) /*&& contact_is_activated() && contact_count()*/){
+    if(json_is_object(pcontact)){
         json_t *phone_number, *first_name, *last_name, *user_id;
 
         phone_number = json_object_get(pcontact,"phone_number");
