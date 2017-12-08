@@ -75,10 +75,20 @@ User *user(long int id, bool is_bot, const char *first_name, const char *last_na
     user->last_name     = alloc_string(last_name);
     user->username      = alloc_string(username);
     user->language_code = alloc_string(language_code);
+    user->next = NULL;
 
     return user;
 }
 
+void user_add(User *origin, User *next){
+    User *o = origin;
+
+    while(o){
+        o = o->next;
+    }
+
+    o = next;
+}
 
 void user_free(User *usr){
     if(usr->first_name)
@@ -701,7 +711,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
     message->contact = contact;
     message->location = location;
     message->venue = venue;
-    message->new_chat_member = new_chat_member;
+    message->new_chat_members = new_chat_member;
     message->left_chat_member = left_chat_member;
     message->new_chat_photo = new_chat_photo;
     message->pinned_message = pinned_message;
@@ -739,7 +749,7 @@ void message_free(Message *message){
 
     if(message->entities){
         MessageEntity *m_next = message->entities, *m = m_next;
-        while(m_next){
+        while(m){
             m_next = m->next;
             message_entity_free(m); //FREE THE ENTITIES
             m = m_next;
@@ -748,7 +758,7 @@ void message_free(Message *message){
 
     if(message->caption_entities){
         MessageEntity *m_next = message->caption_entities, *m = m_next;
-        while(m_next){
+        while(m){
             m_next = m->next;
             message_entity_free(m); //FREE THE ENTITIES
             m = m_next;
@@ -764,8 +774,14 @@ void message_free(Message *message){
     if(message->game)
         game_free(message->game);
 
-    if(message->photo)
-        photo_size_free(message->photo);
+    if(message->photo){
+        PhotoSize *p_next = message->photo, *p = p_next;
+        while(p){
+            p_next = p->next;
+            photo_size_free(p); //FREE THE PHOTO
+            p = p_next;
+        }
+    }
 
     if(message->sticker)
         sticker_free(message->sticker);
@@ -785,14 +801,26 @@ void message_free(Message *message){
     if(message->venue)
         venue_free(message->venue);
 
-    if(message->new_chat_member)
-        user_free(message->new_chat_member);
+    if(message->new_chat_members){
+        User *u_next = message->new_chat_members, *u = u_next;
+        while(u){
+            u_next = u->next;
+            user_free(u); //FREE THE USER
+            u = u_next;
+        }
+    }
 
     if(message->left_chat_member)
         user_free(message->left_chat_member);
 
-    if(message->new_chat_photo)
-        photo_size_free(message->new_chat_photo);
+    if(message->new_chat_photo){
+        PhotoSize *ncp_next = message->new_chat_photo, *ncp = ncp_next;
+        while(ncp){
+            ncp_next = ncp->next;
+            photo_size_free(ncp); //FREE THE PHOTO
+            ncp = ncp_next;
+        }
+    }
 
     if(message->pinned_message)
         message_free(message->pinned_message);
@@ -1454,11 +1482,22 @@ UserProfilePhotos *user_profile_photos(long int total_count, PhotoSize ** photos
 }
 
 void user_profile_photos_free(UserProfilePhotos *oupp){
-    size_t i;    
+    size_t i;
+
+    PhotoSize *photo, *upp_n;
 
     if(oupp->photos){
         for(i = 0; i < oupp->total_count; i++){
-                photo_size_free(oupp->photos[i]);
+            photo = oupp->photos[i];
+            upp_n = photo;
+  
+            while(photo){
+                upp_n = photo->next;
+                photo_size_free(photo);
+                photo = upp_n;
+            }
+
+            photo_size_free(oupp->photos[i]);
         }
     }
 

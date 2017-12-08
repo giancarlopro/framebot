@@ -181,8 +181,8 @@ void read_message(Update * update){
 			else
 				printf("\tvenue = NULL\n"COLOR_RESET);
 
-			if(message[i]->new_chat_member)
-				printf(BLUE"\tnew_chat_member = (type User)\n"COLOR_RESET);
+			if(message[i]->new_chat_members)
+				printf(BLUE"\tnew_chat_members = (type User)\n"COLOR_RESET);
 			else
 				printf("\tnew_chat_member = NULL\n"COLOR_RESET);
 

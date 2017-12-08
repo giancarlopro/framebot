@@ -522,7 +522,8 @@ Message * message_parse(json_t *json){
         migrate_from_chat_id = json_object_get(pmessage,"migrate_from_chat_id");
 
         //Strings
-        json_t *text, *caption, *new_chat_title, *forward_signature, *media_group_id, *author_signature;
+        json_t *text, *caption, *new_chat_title, *forward_signature,
+        *media_group_id, *author_signature;
 
         text = json_object_get(pmessage,"text");
         caption = json_object_get(pmessage,"caption");
@@ -532,7 +533,8 @@ Message * message_parse(json_t *json){
         author_signature = json_object_get(pmessage, "author_signature");
 
         //Arrays
-        json_t *entities, *photo, *new_chat_photo, *caption_entities;
+        json_t *entities, *photo, *new_chat_photo, *caption_entities,
+        *new_chat_members;
 
         entities = json_object_get(pmessage, "entities");
         length = json_array_size(entities);
@@ -582,10 +584,22 @@ Message * message_parse(json_t *json){
             }
         }
 
+        new_chat_members = json_object_get(pmessage, "new_chat_members");
+        length = json_array_size(new_chat_members);
+        User * onew_chat_members = NULL, *_temp_u = NULL;
+        onew_chat_members = user_parse(json_array_get(new_chat_members, 0));
+        if (length > 0) {
+            for (i = 1; i < length; i++) {
+                _temp_u = user_parse(json_array_get(new_chat_members, i));
+                if (_temp_u)
+                    user_add(onew_chat_members, _temp_u);
+            }
+        }
+
         //Objects
         json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, 
         *audio, *document, *game, *sticker, *video, *voice, *video_note, *contact, 
-        *location, *venue, *new_chat_member, *left_chat_member, *pinned_message, 
+        *location, *venue, *left_chat_member, *pinned_message, 
         *invoice, *successful_payment;
 
         from = json_object_get(pmessage,"from");
@@ -633,9 +647,6 @@ Message * message_parse(json_t *json){
         venue = json_object_get(pmessage,"venue");
         Venue * ovenue = venue_parse(venue);
 
-        new_chat_member = json_object_get(pmessage,"new_chat_member");
-        User * onew_chat_member = user_parse(new_chat_member);
-
         left_chat_member = json_object_get(pmessage,"left_chat_member");
         User * oleft_chat_member = user_parse(left_chat_member);
 
@@ -677,7 +688,7 @@ Message * message_parse(json_t *json){
             ocontact,
             olocation,
             ovenue,
-            onew_chat_member, 
+            onew_chat_members, 
             oleft_chat_member,
             json_string_value(new_chat_title),
             onew_chat_photo, 
@@ -964,7 +975,8 @@ ShippingAddress * shipping_address_parse(json_t * json){
 
 PreCheckoutQuery * pre_checkout_query_parse(json_t * json){
     if(json_is_object(json)){
-        json_t *id, *from, *currency, *total_amount, *invoice_payload, *shipping_option_id, *order_info;
+        json_t *id, *from, *currency, *total_amount, *invoice_payload,
+        *shipping_option_id, *order_info;
 
         id = json_object_get(json, "id");
         from = json_object_get(json, "from");

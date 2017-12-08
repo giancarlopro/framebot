@@ -16,6 +16,7 @@ typedef struct _user{
     char *last_name;
     char *username;
     char *language_code;
+    struct _user *next;
 } User;
 
 typedef struct _bot{
@@ -223,7 +224,7 @@ typedef struct _message{
     Contact *contact;
     Location *location;
     Venue *venue;
-    User *new_chat_member;
+    User *new_chat_members;
     User *left_chat_member;
     char *new_chat_title;
     PhotoSize *new_chat_photo;//Array
@@ -376,6 +377,7 @@ typedef struct _document Animation;
 User *user(
     long int id, bool is_bot, const char *first_name, const char *last_name,
     const char *username, const char *language_code);
+void user_add(User *origin, User *next);
 void user_free(User *usr);
 
 //Chat functions
