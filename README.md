@@ -4,3 +4,50 @@
 * [jansson](https://github.com/akheron/jansson)
 * [OpenSSL](https://github.com/openssl/openssl)
 * [libcurl](https://curl.haxx.se/libcurl/)
+
+### Methods
+- [ ] webhooks
+- [x] getupdates
+- [x] getMe
+- [x] forwardMessage
+- [x] sendPhoto
+- [x] sendAudio
+- [x] sendDocument
+- [x] sendVideo
+- [x] sendVoice
+- [x] sendVideoNote
+- [ ] sendMediaGroup
+- [x] sendLocation
+- [x] editMessageLiveLocation
+- [x] stopMessageLiveLocation
+- [x] sendVenue
+- [x] sendContact
+- [x] sendChatAction
+- [x] getUserProfilePhotos
+- [x] getFile
+- [x] kickChatMember
+- [x] unbanChatMember
+- [x] restrictChatMember
+- [x] promoteChatMember
+- [x] exportChatInviteLink
+- [ ] setChatPhoto
+- [ ] setChatDescription
+- [x] setChatTitle
+- [x] setChatDescription
+- [x] pinChatMessage
+- [x] unpinChatMessage
+- [x] leaveChat
+- [x] getChat
+- [x] getChatAdministrators
+- [x] getChatMembersCount
+- [x] getChatMember
+- [ ] setChatStickerSet
+- [ ] deleteChatStickerSet
+- [ ] answerCallbackQuery
+- [ ] editMessageText
+
+### Updating messages
+- [ ] editMessageText
+- [ ] editMessageCaption
+- [ ] editMessageReplyMarkup
+- [ ] deleteMessage
