@@ -3,7 +3,6 @@
 
 typedef struct _document Animation;
 
-
 typedef struct _error{
     long int error_code;
     char *description;

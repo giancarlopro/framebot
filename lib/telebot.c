@@ -578,7 +578,49 @@ char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
     return invite_link;
 }
 
+/**
+ * setChatPhoto
+ *
+ */
+int set_chat_photo_channel(Bot *bot, char * chat_id, char *filename){
+    bool result;
 
+    IFile ifile;
+
+    ifile.type = SETCHATPHOTO;
+    
+    /* Unique identifier for the target */
+    ifile.chatphoto.chat_id = chat_id;
+
+    ifile.chatphoto.filename = filename;
+
+    MemStore * input;
+    json_t * json;
+
+    input = call_method_input_file(bot->token, ifile);
+
+    json = start_json(input->content);
+    mem_store_free(input);
+
+    result = json_is_true(json);
+
+    json_decref(json);
+
+    return result;
+}
+
+int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = set_chat_photo_channel(bot, cchat_id, filename);
+
+    free(cchat_id);
+
+    return result;
+}
 
 /**
  * getChatAdministrators

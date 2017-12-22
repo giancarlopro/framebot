@@ -467,6 +467,24 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
                     curl_mime_data(field, ifile.videonote.reply_markup, CURL_ZERO_TERMINATED);
                 }
             break;
+            case SETCHATPHOTO:
+                strcpy(method, "setChatPhoto");
+
+                /* Fill in the file upload field */
+                if(ifile.videonote.chat_id != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "chat_id");
+                    curl_mime_data(field, ifile.chatphoto.chat_id, CURL_ZERO_TERMINATED);
+                }
+
+                /* Fill in the filename field */
+                if(ifile.videonote.filename != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "video_note");
+                    curl_mime_filedata(field, ifile.chatphoto.filename);
+                }
+            break;
+
         }
 
         MemStore * buff = NULL;;
