@@ -42,6 +42,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 
 /* send data to telegram */
 MemStore * call_method(const char *token, char *method){
+    CURLcode res;
     size_t url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
     char * url = (char *)malloc(url_size);
 
@@ -67,7 +68,11 @@ MemStore * call_method(const char *token, char *method){
 
     free(url);
 
-    if (curl_easy_perform(curl) == CURLE_OK) {
+    res = curl_easy_perform(curl);
+
+    curl_easy_cleanup(curl);
+
+    if (res == CURLE_OK) {
         return buff;
     }
 
@@ -76,6 +81,7 @@ MemStore * call_method(const char *token, char *method){
 
 char * call_method_download(const char * token, char * dir, File *ofile){
     FILE * binary;
+    CURLcode res;
     size_t path_len, url_size; 
     char * namefile, *path, *url;
 
@@ -128,7 +134,13 @@ char * call_method_download(const char * token, char * dir, File *ofile){
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         fclose(binary);
     }
-    if (curl_easy_perform(curl) == CURLE_OK)
+
+    /* Perform the request, res will get the return code */
+    res = curl_easy_perform(curl);
+
+    curl_easy_cleanup(curl);
+
+    if (res == CURLE_OK)
         return path;
 
     return NULL;
@@ -520,6 +532,8 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
 
         /* then cleanup the form */
         curl_mime_free(form);
+
+        curl_easy_cleanup(curl);
 
         if(res == CURLE_OK)
             return buff;
