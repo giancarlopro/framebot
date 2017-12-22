@@ -771,6 +771,8 @@ Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
     json = start_json(input->content);
 
     free(ifile.photo.reply_to_message_id);
+    mem_store_free(input);
+
 
     message = message_parse(json);
 
@@ -846,6 +848,8 @@ Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * c
 
     free(ifile.audio.duration);
     free(ifile.audio.reply_to_message_id);
+    mem_store_free(input);
+
 
     message = message_parse(json);
 
@@ -911,6 +915,7 @@ Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char
     json = start_json(input->content);
 
     free(ifile.document.reply_to_message_id);
+    mem_store_free(input);
 
     message = message_parse(json);
 
@@ -985,6 +990,8 @@ Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long in
     free(ifile.video.width);
     free(ifile.video.height);
     free(ifile.video.reply_to_message_id);
+    mem_store_free(input);
+
 
     message = message_parse(json);
 
@@ -1052,6 +1059,8 @@ Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * c
 
     free(ifile.voice.duration);
     free(ifile.voice.reply_to_message_id);
+    mem_store_free(input);
+
 
     message = message_parse(json);
 
@@ -1119,6 +1128,7 @@ Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, lo
     free(ifile.videonote.duration);
     free(ifile.videonote.length);
     free(ifile.videonote.reply_to_message_id);
+    mem_store_free(input);
 
     message = message_parse(json);
 
