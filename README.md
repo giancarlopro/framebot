@@ -30,7 +30,7 @@
 - [x] restrictChatMember
 - [x] promoteChatMember
 - [x] exportChatInviteLink
-- [ ] setChatPhoto
+- [x] setChatPhoto
 - [ ] setChatDescription
 - [x] setChatTitle
 - [x] setChatDescription
