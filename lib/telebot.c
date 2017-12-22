@@ -241,8 +241,6 @@ ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, long int user_id) 
 }
 
 
-
-
 /**
  * Changes the given chat or channel description
  * https://core.telegram.org/bots/api#setchatdescription
@@ -616,6 +614,38 @@ int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
     cchat_id = api_ltoa(chat_id);
 
     result = set_chat_photo_channel(bot, cchat_id, filename);
+
+    free(cchat_id);
+
+    return result;
+}
+
+
+/**
+ * deleteChatPhoto
+ *
+ */
+int delete_chat_photo_channel(Bot *bot, char *chat_id){
+    json_t *json;
+    bool btrue;
+
+    json = generic_method_call(bot->token, "deleteChatPhoto?chat_id=%s",
+        chat_id);
+
+    btrue = json_is_true(json);
+
+    json_decref(json);
+
+    return btrue;
+}
+
+int delete_chat_photo_chat(Bot *bot, long int chat_id){
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = delete_chat_photo_channel(bot, cchat_id);
 
     free(cchat_id);
 

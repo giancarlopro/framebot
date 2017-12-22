@@ -31,9 +31,9 @@
 - [x] promoteChatMember
 - [x] exportChatInviteLink
 - [x] setChatPhoto
-- [ ] setChatDescription
-- [x] setChatTitle
+- [x] deleteChatPhoto
 - [x] setChatDescription
+- [x] setChatTitle
 - [x] pinChatMessage
 - [x] unpinChatMessage
 - [x] leaveChat

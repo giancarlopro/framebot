@@ -144,6 +144,9 @@ char *export_chat_invite_link_chat (Bot *bot, long int chat_id);
 int set_chat_photo_channel(Bot *bot, char * chat_id, char *filename);
 int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename);
 
+int delete_chat_photo_channel(Bot *bot, char *chat_id);
+int delete_chat_photo_chat(Bot *bot, long int chat_id);
+
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
 
 /* send photo */
