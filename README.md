@@ -44,7 +44,6 @@
 - [ ] setChatStickerSet
 - [ ] deleteChatStickerSet
 - [ ] answerCallbackQuery
-- [ ] editMessageText
 
 ### Updating messages
 - [ ] editMessageText
