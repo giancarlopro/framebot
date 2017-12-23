@@ -46,7 +46,7 @@
 - [ ] answerCallbackQuery
 
 ### Updating messages
-- [ ] editMessageText
+- [x] editMessageText
 - [ ] editMessageCaption
 - [ ] editMessageReplyMarkup
 - [ ] deleteMessage
