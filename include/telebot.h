@@ -77,11 +77,13 @@ typedef int bool;
 
 void telebot_init();
 Bot * telebot(const char *token);
+json_t *generic_method_call (const char *token, char *formats, ...);
+Error * show_error();
+
+/** Available methods **/
 User * get_me(const char *token);
 Update *get_updates (Bot *bot, long int offset, long int limit,
             long int timeout, char *allowed_updates);
-int to_process_message(Bot *bot, Message *message);
-char *comands_bot(const char *text);
 
 Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * parse_mode,
             bool disable_web_page_preview, bool disable_notification,
@@ -90,64 +92,14 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * pars
             bool disable_web_page_preview, bool disable_notification,
             long int reply_to_message_id, char * reply_markup);
 
-void to_message(Bot *bot, Update *update);
-
-int set_chat_title_channel (Bot *bot, char *chat_id, char *title);
-int set_chat_title_chat (Bot *bot, long int chat_id, char *title);
-
-Chat *get_chat_channel(Bot *bot, char *chat_id);
-Chat *get_chat_chat(Bot *bot, long int chat_id);
-
-ChatMember *get_chat_member_channel(Bot *bot, char *chat_id, long int user_id);
-ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, long int user_id);
-
-json_t *generic_method_call (const char *token, char *formats, ...);
-char * get_file(Bot * bot, char * dir, const char * file_id);
-
-bool set_chat_description_channel (Bot *bot, char *chat_id, char *description);
-bool set_chat_description_chat (Bot *bot, long int chat_id, char *description);
-
-int get_chat_members_count_channel (Bot *bot, char *chat_id);
-int get_chat_members_count_chat (Bot *bot, long int chat_id);
-
-bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date);
-bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date);
-
-bool restrict_chat_member_channel (Bot *bot, char *chat_id, long int user_id,
-        long int until_date, bool can_send_messages,
-        bool can_send_media_messages, bool can_send_other_messages,
-        bool can_add_web_page_previews);
-bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id,
-        long int until_date, bool can_send_messages,
-        bool can_send_media_messages, bool can_send_other_messages,
-        bool can_add_web_page_previews);
-
-
-bool unban_chat_member_channel (Bot *bot, char *chat_id, long int user_id);
-bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id);
-
-bool leave_chat_channel (Bot *bot, char *chat_id);
-bool leave_chat_chat (Bot *bot, long int chat_id);
-
-bool promote_chat_member_channel (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
-        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
-        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
-        bool can_promote_members);
-bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
-        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
-        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
-        bool can_promote_members);
-
-char *export_chat_invite_link_channel (Bot *bot, char *chat_id);
-char *export_chat_invite_link_chat (Bot *bot, long int chat_id);
-
-int set_chat_photo_channel(Bot *bot, char * chat_id, char *filename);
-int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename);
-
-int delete_chat_photo_channel(Bot *bot, char *chat_id);
-int delete_chat_photo_chat(Bot *bot, long int chat_id);
-
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
+Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from_chat_id,
+        bool disable_notification, long int message_id);
+Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id,
+        bool disable_notification, long int message_id);
+Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_id,
+        bool disable_notification, long int message_id);
+Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,
+        bool disable_notification, long int message_id);
 
 /* send photo */
 Message * send_photo_channel(Bot * bot, char * chat_id, char * filename, char * caption, 
@@ -190,16 +142,7 @@ Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
         long int duration, long int length, bool disable_notification, long int reply_to_message_id,
         char * reply_markup);
 
-Error * show_error();
-
-Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from_chat_id,
-        bool disable_notification, long int message_id);
-Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id,
-        bool disable_notification, long int message_id);
-Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_id,
-        bool disable_notification, long int message_id);
-Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,
-        bool disable_notification, long int message_id);
+// sendMediaGroup
 
 Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
             float longitude, long int live_period, bool disable_notification,
@@ -207,6 +150,18 @@ Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
 Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
             long int live_period, bool disable_notification, long int reply_to_message_id,
             char * reply_markup);
+
+Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+        char * inline_message_id, float latitude, float longitude, char * reply_markup);
+Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+        char * inline_message_id, float latitude, float longitude, char * reply_markup);
+
+Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id, char * reply_markup);
+Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
+            char * title, char * address, char * foursquare_id, bool disable_notification,
+            long int reply_to_message_id, char * reply_markup);
 
 Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, char * first_name,
             char * last_name, bool disable_notification, long int reply_to_message_id,
@@ -218,16 +173,63 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 int send_chat_action_channel(Bot * bot, char * chat_id, char * action);
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
 
-Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
-            char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
-Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
-            char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
 
-Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
-            char * inline_message_id, float latitude, float longitude, char * reply_markup);
-Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
-            char * inline_message_id, float latitude, float longitude, char * reply_markup);
+char * get_file(Bot * bot, char * dir, const char * file_id);
+
+bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date);
+bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date);
+
+bool unban_chat_member_channel (Bot *bot, char *chat_id, long int user_id);
+bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id);
+
+bool restrict_chat_member_channel (Bot *bot, char *chat_id, long int user_id,
+        long int until_date, bool can_send_messages,
+        bool can_send_media_messages, bool can_send_other_messages,
+        bool can_add_web_page_previews);
+bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id,
+        long int until_date, bool can_send_messages,
+        bool can_send_media_messages, bool can_send_other_messages,
+        bool can_add_web_page_previews);
+
+bool promote_chat_member_channel (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
+        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+        bool can_promote_members);
+bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
+        bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
+        bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
+        bool can_promote_members);
+
+char *export_chat_invite_link_channel (Bot *bot, char *chat_id);
+char *export_chat_invite_link_chat (Bot *bot, long int chat_id);
+
+int set_chat_photo_channel(Bot *bot, char * chat_id, char *filename);
+int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename);
+
+int delete_chat_photo_channel(Bot *bot, char *chat_id);
+int delete_chat_photo_chat(Bot *bot, long int chat_id);
+
+int set_chat_title_channel (Bot *bot, char *chat_id, char *title);
+int set_chat_title_chat (Bot *bot, long int chat_id, char *title);
+
+bool set_chat_description_channel (Bot *bot, char *chat_id, char *description);
+bool set_chat_description_chat (Bot *bot, long int chat_id, char *description);
+
+bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification);
+
+bool leave_chat_channel (Bot *bot, char *chat_id);
+bool leave_chat_chat (Bot *bot, long int chat_id);
+
+Chat *get_chat_channel(Bot *bot, char *chat_id);
+Chat *get_chat_chat(Bot *bot, long int chat_id);
+
+ChatMember *get_chat_administrators (Bot *bot, char *chat_id);
+
+int get_chat_members_count_channel (Bot *bot, char *chat_id);
+int get_chat_members_count_chat (Bot *bot, long int chat_id);
+
+ChatMember *get_chat_member_channel(Bot *bot, char *chat_id, long int user_id);
+ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, long int user_id);
 
 #endif

@@ -47,6 +47,6 @@
 
 ### Updating messages
 - [x] editMessageText
-- [ ] editMessageCaption
+- [x] editMessageCaption
 - [ ] editMessageReplyMarkup
 - [ ] deleteMessage
