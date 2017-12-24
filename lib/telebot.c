@@ -96,7 +96,7 @@ offset=%ld\
  *  - Change the type of 'chat_id'
  * https://core.telegram.org/bots/api#sendmessage
  */
-Message * send_message_channel (Bot *bot, char * chat_id, char *text, char * parse_mode,
+Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
             bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id,
             char * reply_markup) {
     Message * message;
@@ -130,7 +130,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse
 
     cchat_id = api_ltoa(chat_id);
 
-    message =  send_message_channel(bot, cchat_id, text, parse_mode, disable_web_page_preview,
+    message =  send_message(bot, cchat_id, text, parse_mode, disable_web_page_preview,
         disable_notification, reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -144,7 +144,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse
  * Returns the Chat object of the given chat_id
  * https://core.telegram.org/bots/api#getchat
  */ 
-Chat *get_chat_channel (Bot *bot, char *chat_id) {
+Chat *get_chat (Bot *bot, char *chat_id) {
     Chat * chat;
     json_t *json = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
  
@@ -162,7 +162,7 @@ Chat * get_chat_chat(Bot *bot, long int chat_id){
 
     cchat_id = api_ltoa(chat_id);
 
-    chat = get_chat_channel(bot, cchat_id);
+    chat = get_chat(bot, cchat_id);
 
     free(cchat_id);
 
@@ -175,7 +175,7 @@ Chat * get_chat_chat(Bot *bot, long int chat_id){
  * Returns 1 in success, 0 otherwise
  * https://core.telegram.org/bots/api#setchattitle
  */
-int set_chat_title_channel (Bot *bot, char *chat_id, char *title) {
+int set_chat_title (Bot *bot, char *chat_id, char *title) {
     int result;
     json_t *json;
 
@@ -196,7 +196,7 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
 
     cchat_id = api_ltoa(chat_id);
 
-    result = set_chat_title_channel (bot, cchat_id, title);
+    result = set_chat_title (bot, cchat_id, title);
 
     free(cchat_id);
 
@@ -208,7 +208,7 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
  * Returns the requested ChatMember object.
  * https://core.telegram.org/bots/api#getchatmember
  */
-ChatMember *get_chat_member_channel (Bot *bot, char *chat_id, long int user_id) {
+ChatMember *get_chat_member (Bot *bot, char *chat_id, long int user_id) {
     json_t *json;
     ChatMember * chat_member;
 
@@ -229,7 +229,7 @@ ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, long int user_id) 
 
     cchat_id = api_ltoa(chat_id);
 
-    chat_member = get_chat_member_channel (bot, cchat_id, user_id);
+    chat_member = get_chat_member (bot, cchat_id, user_id);
 
     free(cchat_id);
 
@@ -241,7 +241,7 @@ ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, long int user_id) 
  * Changes the given chat or channel description
  * https://core.telegram.org/bots/api#setchatdescription
  */
-bool set_chat_description_channel (Bot *bot, char *chat_id, char *description) {
+bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     json_t *json;
     bool result;
 
@@ -263,7 +263,7 @@ bool set_chat_description_chat (Bot *bot, long int chat_id, char *description) {
 
     cchat_id = api_ltoa(chat_id);
 
-    result = set_chat_description_channel (bot, cchat_id, description);
+    result = set_chat_description (bot, cchat_id, description);
 
     free(cchat_id);
 
@@ -276,7 +276,7 @@ bool set_chat_description_chat (Bot *bot, long int chat_id, char *description) {
  * Returns the number of members in the given chat
  *https://core.telegram.org/bots/api#getchatmemberscount
  */ 
-int get_chat_members_count_channel (Bot *bot, char *chat_id) {
+int get_chat_members_count (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
@@ -297,7 +297,7 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id) {
 
     cchat_id = api_ltoa(chat_id);
 
-    result = get_chat_members_count_channel (bot, cchat_id);
+    result = get_chat_members_count (bot, cchat_id);
 
     free(cchat_id);
 
@@ -309,7 +309,7 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id) {
  * Ban a chat user
  * https://core.telegram.org/bots/api#kickchatmember
  */
-bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *until_date) {
+bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_date) {
     bool result;
     json_t *json;
 
@@ -323,21 +323,18 @@ bool kick_chat_member_channel (Bot *bot, char *chat_id, long int user_id, char *
     return result;
 }
 
-
-
 bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date) {
     bool result;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
-    result = kick_chat_member_channel (bot, cchat_id, user_id, until_date);
+    result = kick_chat_member (bot, cchat_id, user_id, until_date);
 
     free(cchat_id);
 
     return result;
 }
-
 
 /**
  * restrictChatMember
@@ -348,7 +345,7 @@ bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *
  * Returns True on success.
  * https://core.telegram.org/bots/api#restrictchatmember
  */
-bool restrict_chat_member_channel (Bot *bot, char *chat_id, long int user_id, long int until_date,
+bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date,
             bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
             bool can_add_web_page_previews) {
 
@@ -385,7 +382,7 @@ bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id, lo
 
     cchat_id = api_ltoa(chat_id);
 
-    result = restrict_chat_member_channel (bot, cchat_id, user_id, until_date,
+    result = restrict_chat_member (bot, cchat_id, user_id, until_date,
             can_send_messages, can_send_media_messages, can_send_other_messages,
             can_add_web_page_previews);
 
@@ -405,7 +402,7 @@ bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id, lo
  * Returns True on success.
  * https://core.telegram.org/bots/api#unbanchatmember
  */
-bool unban_chat_member_channel (Bot *bot, char *chat_id, long int user_id) {
+bool unban_chat_member (Bot *bot, char *chat_id, long int user_id) {
     int result;
     json_t *json;
 
@@ -427,7 +424,7 @@ bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
 
     cchat_id = api_ltoa(chat_id);
 
-    result = unban_chat_member_channel (bot, cchat_id, user_id);
+    result = unban_chat_member (bot, cchat_id, user_id);
 
     free(cchat_id);
 
@@ -440,7 +437,7 @@ bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
  * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
  * https://core.telegram.org/bots/api#leavechat
  */
-bool leave_chat_channel (Bot *bot, char *chat_id) {
+bool leave_chat (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
@@ -461,7 +458,7 @@ bool leave_chat_chat (Bot *bot, long int chat_id) {
 
     cchat_id = api_ltoa(chat_id);
 
-    result = leave_chat_channel (bot, cchat_id);
+    result = leave_chat (bot, cchat_id);
 
     free(cchat_id);
 
@@ -480,7 +477,7 @@ bool leave_chat_chat (Bot *bot, long int chat_id) {
  * Returns True on success.
  * https://core.telegram.org/bots/api#promotechatmember
  */
-bool promote_chat_member_channel (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
+bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
             bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
             bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
             bool can_promote_members) {
@@ -524,7 +521,7 @@ bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, boo
 
     cchat_id = api_ltoa(chat_id);
 
-    result = promote_chat_member_channel(bot, cchat_id, user_id, can_change_info,
+    result = promote_chat_member(bot, cchat_id, user_id, can_change_info,
             can_post_messages, can_edit_messages, can_delete_messages,
             can_invite_users, can_restrict_members, can_pin_messages,
             can_promote_members);
@@ -545,7 +542,7 @@ bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, boo
  * You must release the returned string
  * https://core.telegram.org/bots/api#exportchatinvitelink
  */
-char *export_chat_invite_link_channel (Bot *bot, char *chat_id) {
+char *export_chat_invite_link (Bot *bot, char *chat_id) {
 
     json_t *json;
     char * invite_link;
@@ -565,7 +562,7 @@ char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
 
     cchat_id = api_ltoa(chat_id);
 
-    invite_link = export_chat_invite_link_channel(bot, cchat_id);
+    invite_link = export_chat_invite_link(bot, cchat_id);
 
     free(cchat_id);
 
@@ -576,7 +573,7 @@ char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
  * setChatPhoto
  *
  */
-int set_chat_photo_channel(Bot *bot, char * chat_id, char *filename){
+int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     bool result;
 
     IFile ifile;
@@ -609,7 +606,7 @@ int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
 
     cchat_id = api_ltoa(chat_id);
 
-    result = set_chat_photo_channel(bot, cchat_id, filename);
+    result = set_chat_photo(bot, cchat_id, filename);
 
     free(cchat_id);
 
@@ -621,7 +618,7 @@ int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
  * deleteChatPhoto
  *
  */
-int delete_chat_photo_channel(Bot *bot, char *chat_id){
+int delete_chat_photo(Bot *bot, char *chat_id){
     json_t *json;
     bool btrue;
 
@@ -641,7 +638,7 @@ int delete_chat_photo_chat(Bot *bot, long int chat_id){
 
     cchat_id = api_ltoa(chat_id);
 
-    result = delete_chat_photo_channel(bot, cchat_id);
+    result = delete_chat_photo(bot, cchat_id);
 
     free(cchat_id);
 
@@ -657,20 +654,31 @@ int delete_chat_photo_chat(Bot *bot, long int chat_id){
  * only the creator will be returned.
  */
 ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
-    ChatMember * chat_member;
+    ChatMember * chat_member_adm;
     json_t *json;
 
     json = generic_method_call(bot->token,
         "getChatAdministrators?chat_id=%s", chat_id);
     
-    chat_member = chat_member_array_parse(json);
+    chat_member_adm = chat_member_array_parse(json);
 
     json_decref(json);
 
-    return chat_member;
+    return chat_member_adm;
 }
 
+ChatMember *get_chat_administrators_chat(Bot *bot, long int chat_id){
+    ChatMember *chat_member_adm;
+    char *cchat_id;
 
+    cchat_id = api_ltoa(chat_id);
+
+    chat_member_adm = get_chat_administrators(bot, cchat_id);
+
+    free(cchat_id);
+
+    return chat_member_adm;
+}
 
 /**
  * https://core.telegram.org/bots/api#pinchatmessage
@@ -690,7 +698,48 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
     return result;
 }
 
+bool pin_chat_message_chat(Bot *bot, long int chat_id, long int message_id, bool disable_notification) {
+    bool result;
+    char * cchat_id;
 
+    cchat_id = api_ltoa(chat_id);
+
+    result = pin_chat_message(bot, cchat_id, message_id, disable_notification);
+
+    free(cchat_id);
+
+    return result;
+}
+/**
+ * unpinChatMessage
+ *
+ */
+bool unpin_chat_message(Bot *bot, char *chat_id){
+    int result;
+    json_t *json;
+
+    json = generic_method_call(bot->token,"unpinChatMessage?chat_id=%s",
+            chat_id);
+    
+    result = json_is_true(json);
+
+    json_decref(json);
+
+    return result;
+}
+
+bool unpin_chat_message_chat(Bot *bot, long int chat_id){
+    bool result;
+    char * cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = unpin_chat_message(bot, cchat_id);
+
+    free(cchat_id);
+
+    return result;
+}
 
 /**
  * Generic method to handle Telegram API Methods responses
@@ -719,6 +768,7 @@ json_t *generic_method_call (const char *token, char *formats, ...) {
 
 
 /**
+ * getFile
  * https://core.telegram.org/bots/api#getfile
  */
 char * get_file (Bot * bot, char * dir, const char * file_id){
@@ -743,6 +793,7 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
 
 
 /**
+ * getUserProfilePhotos
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
@@ -761,8 +812,11 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
 }
 
 
-
-Message * send_photo_channel(Bot * bot, char * chat_id, char * filename,
+/**
+ * sendPhoto
+ *
+ */
+Message * send_photo(Bot * bot, char * chat_id, char * filename,
                              char * caption, bool disable_notification,
                              long int reply_to_message_id, char * reply_markup){
     Message * message;
@@ -817,7 +871,7 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_photo_channel(bot, cchat_id, filename, caption,
+    message = send_photo(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id,
                                  reply_markup);
 
@@ -827,8 +881,11 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
 }
 
 
-
-Message * send_audio_channel(Bot *bot, char * chat_id, char * filename, char * caption,
+/**
+ * sendAudio
+ *
+ */
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
             long int duration, char * performer, char * title, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
     
@@ -895,7 +952,7 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_audio_channel(bot, cchat_id, filename, caption, duration,
+    message = send_audio(bot, cchat_id, filename, caption, duration,
                                  performer, title, disable_notification,
                                  reply_to_message_id, reply_markup);
 
@@ -905,8 +962,11 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
 }
 
 
-
-Message * send_document_channel(Bot * bot, char * chat_id, char * filename, char * caption,
+/**
+ * sendDocument
+ *
+ */
+Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -959,7 +1019,7 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_document_channel(bot, cchat_id, filename, caption,
+    message = send_document(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id,
                                  reply_markup);
 
@@ -969,8 +1029,11 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
 }
 
 
-
-Message * send_video_channel(Bot * bot, char * chat_id, char * filename, long int duration,
+/**
+ * sendVideo
+ *
+ */
+Message * send_video(Bot * bot, char * chat_id, char * filename, long int duration,
             long int width, long int height, char * caption, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
     Message * message;
@@ -1037,7 +1100,7 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_video_channel(bot, cchat_id, filename, duration, width, height, caption,
+    message = send_video(bot, cchat_id, filename, duration, width, height, caption,
                 disable_notification, reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -1046,8 +1109,11 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
 }
 
 
-
-Message * send_voice_channel(Bot *bot, char * chat_id, char * filename, char * caption,
+/**
+ * sendVoice
+ *
+ */
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
             long int duration, bool disable_notification, long int reply_to_message_id,
             char * reply_markup){
     Message * message;
@@ -1105,7 +1171,7 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_voice_channel(bot, cchat_id, filename, caption, duration,
+    message = send_voice(bot, cchat_id, filename, caption, duration,
                                  disable_notification,reply_to_message_id,
                                  reply_markup);
 
@@ -1115,8 +1181,11 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
 }
 
 
-
-Message * send_video_note_channel(Bot * bot, char * chat_id, char * filename, long int duration,
+/**
+ * sendVideoNote
+ *
+ */
+Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,
             long int length, bool disable_notification, long int reply_to_message_id, char * reply_markup){
     Message * message;
 
@@ -1173,7 +1242,7 @@ Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, lon
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_video_note_channel(bot, cchat_id, filename, duration, length, disable_notification,
+    message = send_video_note(bot, cchat_id, filename, duration, length, disable_notification,
                 reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -1190,8 +1259,11 @@ Error * show_error(){
 }
 
 
-
-Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from_chat_id,
+/**
+ * forwardMessage
+ *
+ */
+Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,
             bool disable_notification, long int message_id){
 
     Message * message;
@@ -1199,7 +1271,7 @@ Message * forward_message_from_channel (Bot * bot, long int chat_id, char * from
 
     cchat_id = api_ltoa(chat_id);
 
-    message =  forward_message_channel(bot, cchat_id, from_chat_id, disable_notification, message_id);
+    message =  forward_message(bot, cchat_id, from_chat_id, disable_notification, message_id);
 
     free(cchat_id);
 
@@ -1216,7 +1288,7 @@ Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_ch
 
     cfrom_chat_id = api_ltoa(from_chat_id);
 
-    message =  forward_message_channel(bot, chat_id, cfrom_chat_id, disable_notification, message_id);
+    message =  forward_message(bot, chat_id, cfrom_chat_id, disable_notification, message_id);
 
     free(cfrom_chat_id);
 
@@ -1225,7 +1297,7 @@ Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_ch
 
 
 
-Message * forward_message_channel (Bot * bot, char * chat_id, char * from_chat_id, 
+Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id, 
             bool disable_notification, long int message_id){
     Message * message;
     json_t *json;
@@ -1253,7 +1325,7 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 
     cfrom_chat_id = api_ltoa(from_chat_id);
 
-    message =  forward_message_channel(bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
+    message =  forward_message(bot, cchat_id, cfrom_chat_id, disable_notification, message_id);
 
     free(cchat_id);
     free(cfrom_chat_id);
@@ -1262,8 +1334,11 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 }
 
 
-
-Message * send_location_channel (Bot * bot, char * chat_id, float latitude,
+/**
+ * sendLocation
+ *
+ */
+Message * send_location (Bot * bot, char * chat_id, float latitude,
             float longitude, long int live_period, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
     Message * message;
@@ -1299,7 +1374,7 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float
 
     cchat_id = api_ltoa(chat_id);
 
-    message = send_location_channel(bot, cchat_id, latitude, logitude, live_period,
+    message = send_location(bot, cchat_id, latitude, logitude, live_period,
                 disable_notification, reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -1308,8 +1383,11 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float
 }
 
 
-
-Message * send_contact_channel(Bot * bot, char * chat_id, char * phone_number, char * first_name,
+/**
+ * sendContact
+ *
+ */
+Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,
             char * last_name, bool disable_notification, long int reply_to_message_id,
             char * reply_markup){
     json_t * json;
@@ -1343,7 +1421,7 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 
     cchat_id = api_ltoa(chat_id);
 
-    message = send_contact_channel(bot, cchat_id, phone_number, first_name, last_name,
+    message = send_contact(bot, cchat_id, phone_number, first_name, last_name,
         disable_notification, reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -1352,8 +1430,11 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 }
 
 
-
-int send_chat_action_channel(Bot * bot, char * chat_id, char * action){
+/**
+ * sendChatAction
+ *
+ */
+int send_chat_action(Bot * bot, char * chat_id, char * action){
     json_t * json;
     int result;
 
@@ -1365,15 +1446,13 @@ int send_chat_action_channel(Bot * bot, char * chat_id, char * action){
     return result;
 }
 
-
-
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
     int result;
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
-    result = send_chat_action_channel(bot, cchat_id, action);
+    result = send_chat_action(bot, cchat_id, action);
 
     free(cchat_id);
 
@@ -1381,8 +1460,11 @@ int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
 }
 
 
-
-Message * send_venue_channel(Bot * bot, char * chat_id, float latitude, float longitude,
+/**
+ * sendVenue
+ *
+ */
+Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
     json_t * json;
@@ -1418,7 +1500,7 @@ Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float lon
 
     cchat_id = api_ltoa(chat_id);
 
-    message = send_venue_channel(bot, cchat_id, latitude, longitude, title,
+    message = send_venue(bot, cchat_id, latitude, longitude, title,
         address, foursquare_id, disable_notification, reply_to_message_id,
         reply_markup);
 
@@ -1428,8 +1510,11 @@ Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float lon
 }
 
 
-
-Message * edit_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+/**
+ * editMessageLiveLocation
+ *
+ */
+Message * edit_message_live_location(Bot * bot, char * chat_id, long int message_id,
             char * inline_message_id, float latitude, float longitude, char * reply_markup){
     Message * message;
     json_t * json;
@@ -1450,8 +1535,6 @@ editMessageLiveLocation?chat_id=%s\
     return message;
 }
 
-
-
 Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
             char * inline_message_id, float latitude, float longitude, char * reply_markup){
     Message * message;
@@ -1459,7 +1542,7 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
 
     cchat_id = api_ltoa(chat_id);
 
-    message = edit_message_live_location_channel(bot, cchat_id, message_id, inline_message_id,
+    message = edit_message_live_location(bot, cchat_id, message_id, inline_message_id,
         latitude, longitude, reply_markup);
 
     free(cchat_id);
@@ -1467,8 +1550,11 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
     return message;
 }
 
-
-Message * stop_message_live_location_channel(Bot * bot, char * chat_id, long int message_id,
+/**
+ * stopMessageLiveLocation
+ *
+ */
+Message * stop_message_live_location(Bot * bot, char * chat_id, long int message_id,
             char * inline_message_id, char * reply_markup){
     json_t * json;
     Message * message;
@@ -1487,8 +1573,6 @@ inline_message_id=%s\
     return message;
 }
 
-
-
 Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
             char * inline_message_id, char * reply_markup){
     Message * message;
@@ -1496,7 +1580,7 @@ Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int 
 
     cchat_id = api_ltoa(chat_id);
 
-    message = stop_message_live_location_channel(bot, cchat_id, message_id,
+    message = stop_message_live_location(bot, cchat_id, message_id,
         inline_message_id, reply_markup);
 
     free(cchat_id);
@@ -1508,7 +1592,7 @@ Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int 
  * editMessageText
  *
  */
-Message *edit_message_text_channel(Bot *bot, char *chat_id, long int message_id,
+Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     char *inline_message_id, char *text, char *parse_mode,
     bool disable_web_page_preview, char *reply_markup){
     Message *message;
@@ -1545,7 +1629,7 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
 
     cchat_id = api_ltoa(chat_id);
 
-    message = edit_message_text_channel(bot, cchat_id, message_id,
+    message = edit_message_text(bot, cchat_id, message_id,
         inline_message_id, text, parse_mode, disable_web_page_preview,
         reply_markup);
 
@@ -1558,7 +1642,7 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
  * editMessageCaption
  *
  */
-Message *edit_message_caption_channel(Bot *bot, char *chat_id,
+Message *edit_message_caption(Bot *bot, char *chat_id,
     long int message_id, char *inline_message_id, char *caption,
     char *reply_markup){
     Message *message;
@@ -1583,7 +1667,6 @@ reply_markup);
     return message;
 }
 
-
 Message *edit_message_caption_chat(Bot *bot, long int chat_id,
     long int message_id, char *inline_message_id, char *caption,
     char *reply_markup){
@@ -1592,7 +1675,7 @@ Message *edit_message_caption_chat(Bot *bot, long int chat_id,
 
     cchat_id = api_ltoa(chat_id);
 
-    message = edit_message_caption_channel(bot, cchat_id, message_id,
+    message = edit_message_caption(bot, cchat_id, message_id,
         inline_message_id, caption, reply_markup);
 
     free(cchat_id);

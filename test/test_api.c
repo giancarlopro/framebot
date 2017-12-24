@@ -25,7 +25,7 @@ void set_function(){
 
 		{"get_updates", "bot:obj extra:str", "update:obj", 2},
 
-		{"send_message_channel", "bot:obj chat_id:long text:str parse_mode:str\
+		{"send_message", "bot:obj chat_id:long text:str parse_mode:str\
 disable_web_page_preview:bool disable_notification:bool reply_to_message_id:long\
 reply_markup:str", "message:obj", 8},
 
