@@ -242,4 +242,23 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id);
 ChatMember *get_chat_member(Bot *bot, char *chat_id, long int user_id);
 ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, long int user_id);
 
+Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
+    char *inline_message_id, char *text, char *parse_mode,
+    bool disable_web_page_preview, char *reply_markup);
+Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
+    char *inline_message_id, char *text, char *parse_mode,
+    bool disable_web_page_preview, char *reply_markup);
+
+Message *edit_message_caption(Bot *bot, char *chat_id,
+    long int message_id, char *inline_message_id, char *caption,
+    char *reply_markup);
+Message *edit_message_caption_chat(Bot *bot, long int chat_id,
+    long int message_id, char *inline_message_id, char *caption,
+    char *reply_markup);
+
+Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
+        char *inline_message_id, char *reply_markup);
+Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
+        char *inline_message_id, char *reply_markup);
+
 #endif

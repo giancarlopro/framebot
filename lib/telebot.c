@@ -720,7 +720,7 @@ bool unpin_chat_message(Bot *bot, char *chat_id){
 
     json = generic_method_call(bot->token,"unpinChatMessage?chat_id=%s",
             chat_id);
-    
+
     result = json_is_true(json);
 
     json_decref(json);
@@ -1677,6 +1677,48 @@ Message *edit_message_caption_chat(Bot *bot, long int chat_id,
 
     message = edit_message_caption(bot, cchat_id, message_id,
         inline_message_id, caption, reply_markup);
+
+    free(cchat_id);
+
+    return message;
+}
+
+
+/**
+ * editMessageReplyMarkup
+ *
+ */
+Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
+        char *inline_message_id, char *reply_markup){
+    Message *message;
+    json_t *json;
+
+    json = generic_method_call(bot->token, "editMessageReplyMarkup\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&reply_markup=%s",
+chat_id,
+message_id,
+inline_message_id,
+reply_markup);
+
+    message = message_parse(json);
+
+    json_decref(json);
+
+    return message;
+}
+
+Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
+        char *inline_message_id, char *reply_markup){
+    Message *message;
+    char *cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    message = edit_message_reply_markup(bot, cchat_id, message_id,
+        inline_message_id, reply_markup);
 
     free(cchat_id);
 
