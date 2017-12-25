@@ -41,8 +41,8 @@
 - [x] getChatAdministrators
 - [x] getChatMembersCount
 - [x] getChatMember
-- [ ] setChatStickerSet
-- [ ] deleteChatStickerSet
+- [x] setChatStickerSet
+- [x] deleteChatStickerSet
 - [ ] answerCallbackQuery
 
 ### Updating messages

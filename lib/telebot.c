@@ -1758,3 +1758,68 @@ bool delete_message_chat(Bot *bot, long int chat_id, long int message_id){
 
     return result;
 }
+
+/**
+ * setChatStickerSet
+ *
+ */
+bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
+    bool result;
+    json_t *json;
+
+    json = generic_method_call(bot->token, "setChatStickerSet\
+?chat_id=%s\
+&sticker_set_name=%s",
+chat_id, sticker_set_name);
+
+    result = json_is_true(json);
+
+    json_decref(json);
+
+    return result;
+}
+
+bool set_chat_sticker_set_chat(Bot *bot, long int chat_id, long int sticker_set_name){
+    bool result;
+    char *cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = set_chat_sticker_set(bot, cchat_id, sticker_set_name);
+
+    free(cchat_id);
+
+    return result;
+}
+
+/**
+ * deleteChatStickerSet
+ *
+ */
+bool delete_chat_sticker_set(Bot *bot, char *chat_id){
+    bool result;
+    json_t *json;
+
+    json = generic_method_call(bot->token, "deleteChatStickerSet\
+?chat_id=%s",
+chat_id);
+
+    result = json_is_true(json);
+
+    json_decref(json);
+
+    return result;
+}
+
+bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
+    bool result;
+    char *cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = delete_chat_sticker_set(bot, cchat_id);
+
+    free(cchat_id);
+
+    return result;
+}
