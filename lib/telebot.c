@@ -1724,3 +1724,37 @@ Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int mes
 
     return message;
 }
+
+/**
+ * deleteMessage
+ *
+ */
+bool delete_message(Bot *bot, char *chat_id, long int message_id){
+    bool result;
+    json_t *json;
+
+    json = generic_method_call(bot->token, "deleteMessage\
+?chat_id=%s\
+&message_id=%ld",
+chat_id,
+message_id);
+
+    result = json_is_true(json);
+
+    json_decref(json);
+
+    return result;
+}
+
+bool delete_message_chat(Bot *bot, long int chat_id, long int message_id){
+    bool result;
+    char *cchat_id;
+
+    cchat_id = api_ltoa(chat_id);
+
+    result = delete_message(bot, cchat_id, message_id);
+
+    free(cchat_id);
+
+    return result;
+}
