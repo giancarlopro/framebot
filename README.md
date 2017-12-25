@@ -49,4 +49,4 @@
 - [x] editMessageText
 - [x] editMessageCaption
 - [x] editMessageReplyMarkup
-- [ ] deleteMessage
+- [x] deleteMessage
