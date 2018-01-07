@@ -43,7 +43,7 @@ User *get_me (const char *token) {
     if (!token)
         return NULL;
 
-    json = generic_method_call(token, "getMe");
+    json = generic_method_call(token, API_GETME);
     user = user_parse(json);
 
     json_decref(json);
@@ -61,12 +61,8 @@ Update *get_updates (Bot *bot, long int offset, long int limit,
                      long int timeout, char *allowed_updates) {
 
     json_t *json;
-    json = generic_method_call(bot->token, "getUpdates?\
-offset=%ld\
-&limit=%ld\
-&timeout=%ld\
-&allowed_updates=%s",
-            offset, limit, timeout, allowed_updates );
+    json = generic_method_call(bot->token, API_GETUPDATES,
+        offset, limit, timeout, allowed_updates );
 
     size_t length, i;
     length = json_array_size(json);
@@ -102,18 +98,10 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
     Message * message;
     json_t * json;
     
-    json = generic_method_call(bot->token, "\
-sendMessage?chat_id=%s\
-&text=%s\
-&parse_mode=%s\
-&disable_web_page_preview=%s\
-&disable_notification=%s\
-&reply_to_message_id=%ld\
-&reply_markup=%s",
-            chat_id, text, parse_mode,
-            (disable_web_page_preview > 0 ? "true" : "0"),
-            (disable_notification > 0 ? "true" : "0"),
-            reply_to_message_id, reply_markup);
+    json = generic_method_call(bot->token, API_SENDMESSAGE,
+        chat_id, text, parse_mode, (disable_web_page_preview > 0 ? "true" : "0"),
+        (disable_notification > 0 ? "true" : "0"),
+        reply_to_message_id, reply_markup);
 
     message = message_parse(json);
 
@@ -146,7 +134,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse
  */ 
 Chat *get_chat (Bot *bot, char *chat_id) {
     Chat * chat;
-    json_t *json = generic_method_call(bot->token, "getChat?chat_id=%s", chat_id);
+    json_t *json = generic_method_call(bot->token, API_getChat, chat_id);
  
     chat = chat_parse(json);
 
@@ -179,7 +167,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "setChatTitle?chat_id=%s&title=%s",
+    json = generic_method_call(bot->token, API_setChatTitle,
         chat_id, title);
 
     result = json_is_true(json);
@@ -212,7 +200,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, long int user_id) {
     json_t *json;
     ChatMember * chat_member;
 
-    json = generic_method_call(bot->token, "getChatMember?chat_id=%s&user_id=%ld",
+    json = generic_method_call(bot->token, API_getChatMember,
         chat_id, user_id);
 
     chat_member = chat_member_parse(json);
@@ -245,7 +233,7 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
     json_t *json;
     bool result;
 
-    json = generic_method_call(bot->token, "setChatDescription?chat_id=%s&description=%s",
+    json = generic_method_call(bot->token, API_setChatDescription,
         chat_id, description);
 
     result = json_is_true(json);
@@ -280,7 +268,7 @@ int get_chat_members_count (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "getChatMemberCount?chat_id=%s", chat_id);
+    json = generic_method_call(bot->token, API_getChatMemberCount, chat_id);
     
     result = json_integer_value(json);
 
@@ -313,8 +301,8 @@ bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_da
     bool result;
     json_t *json;
 
-    json = generic_method_call(bot->token,
-        "kickChatMember?chat_id=%s&user_id=%ld&until_date=%s", chat_id, user_id, until_date);
+    json = generic_method_call(bot->token, API_kickChatMember, chat_id,
+        user_id, until_date);
 
     result = json_is_true(json);
 
@@ -352,14 +340,7 @@ bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int u
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "\
-restrictChatMember?chat_id=%s\
-&user_id=%ld\
-&until_date=%ld\
-&can_send_messages=%s\
-&can_send_media_messages=%s\
-&can_send_other_messages=%s\
-&can_add_web_page_previews=%s",
+    json = generic_method_call(bot->token, API_restrictChatMember,
         chat_id, user_id, until_date,
         (can_send_messages > 0 ? "true" : "0"),
         (can_send_media_messages > 0 ? "true" : "0"),
@@ -406,7 +387,7 @@ bool unban_chat_member (Bot *bot, char *chat_id, long int user_id) {
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "unbanChatMember?chat_id=%s&user_id=%ld",
+    json = generic_method_call(bot->token, API_unbanChatMember,
         chat_id, user_id);
 
     result = json_is_true(json);
@@ -441,7 +422,7 @@ bool leave_chat (Bot *bot, char *chat_id) {
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "leaveChat?chat_id=%s", chat_id);
+    json = generic_method_call(bot->token, API_leaveChat, chat_id);
     
     result = json_is_true(json);
 
@@ -484,18 +465,8 @@ bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_ch
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "\
-promoteChatMember?chat_id=%s&user_id=%ld\
-&can_change_info=%s\
-&can_post_messages=%s\
-&can_edit_messages=%s\
-&can_delete_messages=%s\
-&can_invite_users=%s\
-&can_restrict_members=%s\
-&can_pin_messages=%s\
-&can_promote_members=%s",
-        chat_id, user_id,
-        (can_change_info > 0 ? "true" : "0"),
+    json = generic_method_call(bot->token, API_promoteChatMember,
+        chat_id, user_id, (can_change_info > 0 ? "true" : "0"),
         (can_post_messages > 0 ? "true": "0"),
         (can_edit_messages > 0 ? "true" : "0"),
         (can_delete_messages > 0 ? "true" : "0"),
@@ -547,7 +518,7 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
     json_t *json;
     char * invite_link;
 
-    json = generic_method_call(bot->token, "exportChatInviteLink");
+    json = generic_method_call(bot->token, API_exportChatInviteLink);
 
     invite_link = alloc_string(json_string_value(json));
 
@@ -622,7 +593,7 @@ int delete_chat_photo(Bot *bot, char *chat_id){
     json_t *json;
     bool btrue;
 
-    json = generic_method_call(bot->token, "deleteChatPhoto?chat_id=%s",
+    json = generic_method_call(bot->token, API_deleteChatPhoto,
         chat_id);
 
     btrue = json_is_true(json);
@@ -657,8 +628,7 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
     ChatMember * chat_member_adm;
     json_t *json;
 
-    json = generic_method_call(bot->token,
-        "getChatAdministrators?chat_id=%s", chat_id);
+    json = generic_method_call(bot->token, API_getChatAdministrators, chat_id);
     
     chat_member_adm = chat_member_array_parse(json);
 
@@ -687,9 +657,8 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token,
-        "pinChatMessage?chat_id=%s&message_id=%ld&disable_notification=%s",
-            chat_id, message_id, (disable_notification > 0 ? "true" : "0"));
+    json = generic_method_call(bot->token, API_pinChatMessage, chat_id, message_id,
+        (disable_notification > 0 ? "true" : "0"));
     
     result = json_is_true(json);
 
@@ -718,7 +687,7 @@ bool unpin_chat_message(Bot *bot, char *chat_id){
     int result;
     json_t *json;
 
-    json = generic_method_call(bot->token,"unpinChatMessage?chat_id=%s",
+    json = generic_method_call(bot->token, API_unpinChatMessage,
             chat_id);
 
     result = json_is_true(json);
@@ -776,7 +745,7 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
     json_t *json;
     char *path_file;
 
-    json = generic_method_call(bot->token, "getfile?file_id=%s", file_id);
+    json = generic_method_call(bot->token, API_getfile, file_id);
 
     File * ofile = file_parse(json);
 
@@ -801,7 +770,7 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
     UserProfilePhotos * oupp;
     json_t * json;
 
-    json = generic_method_call(bot->token, "getUserProfilePhotos?user_id=%ld?offset=%ld?limit=%ld",
+    json = generic_method_call(bot->token, API_getUserProfilePhotos,
         user_id, offset, limit);
 
     oupp = user_profile_photos_parse(json);
@@ -1302,9 +1271,8 @@ Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
     Message * message;
     json_t *json;
 
-    json = generic_method_call(bot->token, 
-        "forwardMessage?chat_id=%s&from_chat_id=%s&disable_notification=%s&message_id=%ld",
-        chat_id, from_chat_id, (disable_notification > 0 ? "true" : "0"), message_id);
+    json = generic_method_call(bot->token, API_forwardMessage, chat_id, from_chat_id,
+        (disable_notification > 0 ? "true" : "0"), message_id);
 
     message = message_parse(json);
 
@@ -1344,14 +1312,7 @@ Message * send_location (Bot * bot, char * chat_id, float latitude,
     Message * message;
     json_t * json;
 
-    json = generic_method_call(bot->token,
-        "sendLocation?chat_id=%s\
-&latitude=%f\
-&longitude=%f\
-&live_period=%ld\
-&disable_notification=%s\
-&reply_to_message_id=%ld\
-&reply_markup=%s",
+    json = generic_method_call(bot->token, API_sendLocation,
         chat_id, latitude, longitude, live_period,
         (disable_notification > 0 ? "true" : 0),
         reply_to_message_id, reply_markup);
@@ -1393,14 +1354,7 @@ Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * fi
     json_t * json;
     Message * message;
 
-    json = generic_method_call(bot->token,
-        "sendContact?chat_id=%s\
-&phone_number=%s\
-&first_name=%s\
-&last_name=%s\
-&disable_notification=%s\
-&reply_to_message_id=%ld\
-&reply_markup=%s",
+    json = generic_method_call(bot->token, API_sendContact,
         chat_id, phone_number, first_name, last_name,
         (disable_notification > 0 ? "true":"0"),
         reply_to_message_id, reply_markup);
@@ -1438,7 +1392,7 @@ int send_chat_action(Bot * bot, char * chat_id, char * action){
     json_t * json;
     int result;
 
-    json = generic_method_call(bot->token, "sendChatAction?chat_id=%s&action=%s",
+    json = generic_method_call(bot->token, API_sendChatAction,
             chat_id, action);
 
     result = json_is_true(json) ? 0 : -1;
@@ -1470,15 +1424,7 @@ Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
     json_t * json;
     Message * message;
 
-    json = generic_method_call(bot->token, "sendVenue?chat_id=%s\
-&latitude=%f\
-&longitude=%f\
-&title=%s\
-&address=%s\
-&foursquare_id=%s\
-&disable_notification=%s\
-&reply_to_message_id=%ld\
-&reply_markup=%s",
+    json = generic_method_call(bot->token, API_sendVenue,
         chat_id, latitude, longitude, title, address, foursquare_id,
         (disable_notification > 0 ? "true" : "0"),
         reply_to_message_id, reply_markup);
@@ -1519,13 +1465,7 @@ Message * edit_message_live_location(Bot * bot, char * chat_id, long int message
     Message * message;
     json_t * json;
 
-    json = generic_method_call(bot->token,"\
-editMessageLiveLocation?chat_id=%s\
-&message_id=%ld\
-&inline_message_id=%s\
-&latitude=%f\
-&longitude=%f\
-&reply_markup=%s",
+    json = generic_method_call(bot->token, API_editMessageLiveLocation,
         chat_id, message_id, inline_message_id, latitude, longitude, reply_markup);
 
     message = message_parse(json);
@@ -1559,10 +1499,7 @@ Message * stop_message_live_location(Bot * bot, char * chat_id, long int message
     json_t * json;
     Message * message;
 
-    json = generic_method_call(bot->token, "stopMessageLiveLocation?chat_id=%s\
-message_id=%ld\
-inline_message_id=%s\
-&reply_markup=%s",
+    json = generic_method_call(bot->token, API_stopMessageLiveLocation,
                 chat_id, message_id, inline_message_id,
                 reply_markup);
 
@@ -1598,21 +1535,8 @@ Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     Message *message;
     json_t *json;
 
-    json = generic_method_call(bot->token, "editMessageText\
-?chat_id=%s\
-&message_id=%ld\
-&inline_message_id=%s\
-&text=%s\
-&parse_mode=%s\
-&disable_web_page_preview=%d\
-&reply_markup=%s",
-chat_id,
-message_id,
-inline_message_id,
-text,
-parse_mode,
-disable_web_page_preview,
-reply_markup);
+    json = generic_method_call(bot->token, API_editMessageText, chat_id, message_id,
+        inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup);
 
     message = message_parse(json);
 
@@ -1648,17 +1572,8 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
     Message *message;
     json_t *json;
 
-    json = generic_method_call(bot->token, "editMessageCaption\
-?chat_id=%s\
-&message_id=%ld\
-&inline_message_id=%s\
-&caption=%s\
-&reply_markup=%s",
-chat_id,
-message_id,
-inline_message_id,
-caption,
-reply_markup);
+    json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
+        message_id, inline_message_id, caption, reply_markup);
 
     message = message_parse(json);
 
@@ -1693,15 +1608,8 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
     Message *message;
     json_t *json;
 
-    json = generic_method_call(bot->token, "editMessageReplyMarkup\
-?chat_id=%s\
-&message_id=%ld\
-&inline_message_id=%s\
-&reply_markup=%s",
-chat_id,
-message_id,
-inline_message_id,
-reply_markup);
+    json = generic_method_call(bot->token, API_editMessageReplyMarkup, chat_id,
+        message_id, inline_message_id, reply_markup);
 
     message = message_parse(json);
 
@@ -1733,11 +1641,8 @@ bool delete_message(Bot *bot, char *chat_id, long int message_id){
     bool result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "deleteMessage\
-?chat_id=%s\
-&message_id=%ld",
-chat_id,
-message_id);
+    json = generic_method_call(bot->token, API_deleteMessage,
+        chat_id, message_id);
 
     result = json_is_true(json);
 
@@ -1767,10 +1672,8 @@ bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
     bool result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "setChatStickerSet\
-?chat_id=%s\
-&sticker_set_name=%s",
-chat_id, sticker_set_name);
+    json = generic_method_call(bot->token, API_setChatStickerSet,
+        chat_id, sticker_set_name);
 
     result = json_is_true(json);
 
@@ -1800,9 +1703,7 @@ bool delete_chat_sticker_set(Bot *bot, char *chat_id){
     bool result;
     json_t *json;
 
-    json = generic_method_call(bot->token, "deleteChatStickerSet\
-?chat_id=%s",
-chat_id);
+    json = generic_method_call(bot->token, API_deleteChatStickerSet, chat_id);
 
     result = json_is_true(json);
 

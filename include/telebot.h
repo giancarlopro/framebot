@@ -1,6 +1,156 @@
 #ifndef TELEBOT_H
 #define TELEBOT_H
 
+/* Functions API */
+#define API_GETME "getMe"
+#define API_GETUPDATES "getUpdates\
+?offset=%ld\
+&limit=%ld\
+&timeout=%ld\
+&allowed_updates=%s"
+#define API_SENDMESSAGE "sendMessage\
+?chat_id=%s\
+&text=%s\
+&parse_mode=%s\
+&disable_web_page_preview=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld\
+&reply_markup=%s"
+#define API_getChat "getChat\
+?chat_id=%s"
+#define API_setChatTitle "setChatTitle\
+?chat_id=%s\
+&title=%s"
+#define API_getChatMember "getChatMember\
+?chat_id=%s\
+&user_id=%ld"
+#define API_setChatDescription "setChatDescription\
+?chat_id=%s\
+&description=%s"
+#define API_getChatMemberCount "getChatMemberCount\
+?chat_id=%s"
+#define API_kickChatMember "kickChatMember\
+?chat_id=%s\
+&user_id=%ld\
+&until_date=%s"
+#define API_restrictChatMember "restrictChatMember\
+?chat_id=%s\
+&user_id=%ld\
+&until_date=%ld\
+&can_send_messages=%s\
+&can_send_media_messages=%s\
+&can_send_other_messages=%s\
+&can_add_web_page_previews=%s"
+#define API_unbanChatMember "unbanChatMember\
+?chat_id=%s\
+&user_id=%ld"
+#define API_leaveChat "leaveChat\
+?chat_id=%s"
+#define API_promoteChatMember "promoteChatMember\
+?chat_id=%s\
+&user_id=%ld\
+&can_change_info=%s\
+&can_post_messages=%s\
+&can_edit_messages=%s\
+&can_delete_messages=%s\
+&can_invite_users=%s\
+&can_restrict_members=%s\
+&can_pin_messages=%s\
+&can_promote_members=%s"
+#define API_exportChatInviteLink "exportChatInviteLink"
+#define API_deleteChatPhoto "deleteChatPhoto\
+?chat_id=%s"
+#define API_getChatAdministrators "getChatAdministrators\
+?chat_id=%s"
+#define API_pinChatMessage "pinChatMessage\
+?chat_id=%s\
+&message_id=%ld\
+&disable_notification=%s"
+#define API_unpinChatMessage "unpinChatMessage\
+?chat_id=%s"
+#define API_getfile "getfile\
+?file_id=%s"
+#define API_getUserProfilePhotos "getUserProfilePhotos\
+?user_id=%ld\
+&offset=%ld\
+&limit=%ld"
+#define API_forwardMessage "forwardMessage\
+?chat_id=%s\
+&from_chat_id=%s\
+&disable_notification=%s\
+&message_id=%ld"
+#define API_sendLocation "sendLocation\
+?chat_id=%s\
+&latitude=%f\
+&longitude=%f\
+&live_period=%ld\
+&disable_notification=%s\
+&reply_to_message_id=%ld\
+&reply_markup=%s"
+#define API_sendContact "sendContact\
+?chat_id=%s\
+&phone_number=%s\
+&first_name=%s\
+&last_name=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld\
+&reply_markup=%s"
+#define API_sendChatAction "sendChatAction\
+?chat_id=%s\
+&action=%s"
+#define API_sendVenue "sendVenue\
+?chat_id=%s\
+&latitude=%f\
+&longitude=%f\
+&title=%s\
+&address=%s\
+&foursquare_id=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld\
+&reply_markup=%s"
+#define API_editMessageLiveLocation "editMessageLiveLocation\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&latitude=%f\
+&longitude=%f\
+&reply_markup=%s"
+#define API_stopMessageLiveLocation "stopMessageLiveLocation\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&reply_markup=%s"
+#define API_editMessageText "editMessageText\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&text=%s\
+&parse_mode=%s\
+&disable_web_page_preview=%d\
+&reply_markup=%s"
+#define API_editMessageCaption "editMessageCaption\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&caption=%s\
+&reply_markup=%s"
+#define API_editMessageReplyMarkup "editMessageReplyMarkup\
+?chat_id=%s\
+&message_id=%ld\
+&inline_message_id=%s\
+&reply_markup=%s"
+#define API_deleteMessage "deleteMessage\
+?chat_id=%s\
+&message_id=%ld"
+#define API_setChatStickerSet "setChatStickerSet\
+?chat_id=%s\
+&sticker_set_name=%s"
+#define API_deleteChatStickerSet "deleteChatStickerSet\
+?chat_id=%s"
+
+/* clear screen */
+#define CSCREEN "\e[1;1H\e[2J"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -31,10 +181,6 @@
 #define CURL_STATICLIB
 // --//--
 #endif
-
-/* clear windows */
-#define CSCREEN "\e[1;1H\e[2J"
-
 
 /* type bool */
 typedef int bool;
