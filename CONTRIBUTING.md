@@ -13,4 +13,8 @@ These are some steps to make your pull request more clean:
 - Implement and run tests for your feature
 > We currently don't have any tests framework implemented yet, we accept suggestions
 - Submit your pull request to `master` branch
-> See the commit example file to create your commit
+> See [PULL_REQUEST_TEMPLATE](PULL_REQUEST_TEMPLATE.md)
+
+## Creating issues
+
+See [ISSUE_TEMPLATE](ISSUE_TEMPLATE.md)
