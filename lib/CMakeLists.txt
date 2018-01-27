@@ -17,7 +17,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL Linux)
 
 	add_library(telebot STATIC telebot.c memory.c objects.c json.c network.c format.c util.c)
 	target_link_libraries(telebot jansson libcurl.so)
-
+	
+	install(TARGETS telebot_ LIBRARY DESTINATION lib)
+	install(TARGETS telebot ARCHIVE DESTINATION lib)
+	
 	if(DEBUG EQUAL 1)
 		add_definitions("-g")
 		add_definitions("-Wall")
@@ -27,4 +30,5 @@ endif()
 if(WIN32)
 	add_library(libtelebot telebot.c memory.c objects.c json.c network.c format.c util.c)
 	target_link_libraries(libtelebot jansson libcurl.so)
+	install(TARGETS libtelebot LIBRARY DESTINATION lib)
 endif()
