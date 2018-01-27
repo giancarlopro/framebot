@@ -1,6 +1,28 @@
-# Telebot-TelegramBotAPI [![Build Status](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI.svg?branch=master)](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI)
+# Framebot - Alpha [![Build Status](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI.svg?branch=master)](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI)
 
-### Dependencias
+This is the official repository for Framebot.
+
+## Building from source
+
+First you need to install the dependencies
+
+```
+apt install jansson openssl libcurl4-openssl-dev
+```
+
+then you use cmake to create the build files
+```
+mkdir build
+cd build
+cmake ..
+```
+
+and use make to build
+```
+make
+```
+
+### Dependencies
 * [jansson](https://github.com/akheron/jansson)
 * [OpenSSL](https://github.com/openssl/openssl)
 * [libcurl](https://curl.haxx.se/libcurl/)
