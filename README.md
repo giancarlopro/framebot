@@ -17,58 +17,27 @@ cd build
 cmake ..
 ```
 
-and use make to build
+and use make to build and install
 ```
 make
+make install
 ```
 
-### Dependencies
-* [jansson](https://github.com/akheron/jansson)
-* [OpenSSL](https://github.com/openssl/openssl)
-* [libcurl](https://curl.haxx.se/libcurl/)
+## Usage
+```C
+#include <telebot.h>
+#define TOKEN "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+...
+int main () {
+  telebot_init ();
+  Bot *frame_bot = telebot(TOKEN);
+  send_message_chat(frame_bot, chat_id, "Message", NULL, false, false, 0, NULL);
+  ...
+  bot_free(frame_bot);
+  return 0;
+}
+```
 
-### Methods
-- [ ] webhooks
-- [x] getupdates
-- [x] getMe
-- [x] forwardMessage
-- [x] sendPhoto
-- [x] sendAudio
-- [x] sendDocument
-- [x] sendVideo
-- [x] sendVoice
-- [x] sendVideoNote
-- [ ] sendMediaGroup
-- [x] sendLocation
-- [x] editMessageLiveLocation
-- [x] stopMessageLiveLocation
-- [x] sendVenue
-- [x] sendContact
-- [x] sendChatAction
-- [x] getUserProfilePhotos
-- [x] getFile
-- [x] kickChatMember
-- [x] unbanChatMember
-- [x] restrictChatMember
-- [x] promoteChatMember
-- [x] exportChatInviteLink
-- [x] setChatPhoto
-- [x] deleteChatPhoto
-- [x] setChatDescription
-- [x] setChatTitle
-- [x] pinChatMessage
-- [x] unpinChatMessage
-- [x] leaveChat
-- [x] getChat
-- [x] getChatAdministrators
-- [x] getChatMembersCount
-- [x] getChatMember
-- [x] setChatStickerSet
-- [x] deleteChatStickerSet
-- [ ] answerCallbackQuery
+## Contributing
 
-### Updating messages
-- [x] editMessageText
-- [x] editMessageCaption
-- [x] editMessageReplyMarkup
-- [x] deleteMessage
+If you want to contribute to the project, follow the instructions on [CONTRIBUTING](CONTRIBUTING.md)
