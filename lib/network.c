@@ -1,4 +1,4 @@
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 /* start curl in telebot_init */
 void network_init(){

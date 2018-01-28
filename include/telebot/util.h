@@ -1,7 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 char *vsboolean_param_parser (char *base, int psize, ...);
 char * api_ltoa(long int n);

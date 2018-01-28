@@ -1,4 +1,4 @@
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 #define MAX_URL_SZ 2000
 

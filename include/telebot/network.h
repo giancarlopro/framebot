@@ -1,7 +1,7 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 #define API_URL "https://api.telegram.org/bot"
 #define API_URL_LEN 28

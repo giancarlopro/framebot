@@ -1,4 +1,4 @@
-#include <memory.h>
+#include <telebot/memory.h>
 
 char * alloc_string(const char * str){
 

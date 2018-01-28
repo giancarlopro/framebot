@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 json_t * start_json(char * json){
     json_t *root, *ok;

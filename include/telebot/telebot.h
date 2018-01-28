@@ -195,12 +195,12 @@ typedef int bool;
 #include <jansson.h>
 #include <pthread.h>
 
-#include <memory.h>
-#include <objects.h>
-#include <network.h>
-#include <json.h>
-#include <format.h>
-#include <util.h>
+#include <telebot/memory.h>
+#include <telebot/objects.h>
+#include <telebot/network.h>
+#include <telebot/json.h>
+#include <telebot/format.h>
+#include <telebot/util.h>
 
 
 void telebot_init();
