@@ -1,4 +1,4 @@
-# Framebot - Alpha [![Build Status](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI.svg?branch=master)](https://travis-ci.org/giancarlopro/Telebot-TelegramBotAPI)
+# Framebot - Alpha [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=master)](https://travis-ci.org/giancarlopro/framebot)
 
 This is the official repository for Framebot.
 
