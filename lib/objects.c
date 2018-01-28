@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <telebot.h>
+#include <framebot/framebot.h>
 
 static Error *_error = NULL;
 
@@ -693,7 +693,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
     message->migrate_to_chat_id = migrate_to_chat_id;
     message->migrate_from_chat_id = migrate_from_chat_id;
 
-    //TELEBOT TYPES
+    //framebot TYPES
     message->from = from;
     message->chat = chat;
     message->forward_from = forward_from;

@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.7)
-project(TelebotLibrary)
+project(framebotLibrary)
 
 FIND_PACKAGE( OpenMP REQUIRED)
 if(OPENMP_FOUND)
@@ -12,14 +12,14 @@ endif()
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
-	add_library(telebot_ SHARED telebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(telebot_ jansson libcurl.so)
+	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c)
+	target_link_libraries(framebot_ jansson libcurl.so)
 
-	add_library(telebot STATIC telebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(telebot jansson libcurl.so)
+	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c)
+	target_link_libraries(framebot jansson libcurl.so)
 	
-	install(TARGETS telebot_ LIBRARY DESTINATION lib)
-	install(TARGETS telebot ARCHIVE DESTINATION lib)
+	install(TARGETS framebot_ LIBRARY DESTINATION lib)
+	install(TARGETS framebot ARCHIVE DESTINATION lib)
 	
 	if(DEBUG EQUAL 1)
 		add_definitions("-g")
@@ -28,7 +28,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif()
 
 if(WIN32)
-	add_library(libtelebot telebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(libtelebot jansson libcurl.so)
-	install(TARGETS libtelebot LIBRARY DESTINATION lib)
+	add_library(libframebot framebot.c memory.c objects.c json.c network.c format.c util.c)
+	target_link_libraries(libframebot jansson libcurl.so)
+	install(TARGETS libframebot LIBRARY DESTINATION lib)
 endif()

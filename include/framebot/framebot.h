@@ -1,5 +1,5 @@
-#ifndef TELEBOT_H
-#define TELEBOT_H
+#ifndef FRAMEBOT_H
+#define FRAMEBOT_H
 
 /* Functions API */
 #define API_GETME "getMe"
@@ -195,16 +195,16 @@ typedef int bool;
 #include <jansson.h>
 #include <pthread.h>
 
-#include <memory.h>
-#include <objects.h>
-#include <network.h>
-#include <json.h>
-#include <format.h>
-#include <util.h>
+#include <framebot/memory.h>
+#include <framebot/objects.h>
+#include <framebot/network.h>
+#include <framebot/json.h>
+#include <framebot/format.h>
+#include <framebot/util.h>
 
 
-void telebot_init();
-Bot * telebot(const char *token);
+void framebot_init();
+Bot * framebot(const char *token);
 json_t *generic_method_call (const char *token, char *formats, ...);
 Error * show_error();
 
