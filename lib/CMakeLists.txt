@@ -18,7 +18,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL Linux)
 	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c)
 	target_link_libraries(framebot jansson libcurl.so)
 	
-	install(TARGETS framebot_ LIBRARY DESTINATION lib)
+	install(TARGETS framebot_ LIBRARY DESTINATION lib NAMELINK_ONLY)
 	install(TARGETS framebot ARCHIVE DESTINATION lib)
 	
 	if(DEBUG EQUAL 1)

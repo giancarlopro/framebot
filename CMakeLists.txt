@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.7)
 project(FramebotFramework)
 
+find_package(OpenSSL REQUIRED)
+
 add_subdirectory(lib)
 add_subdirectory(test)
 
@@ -10,3 +12,5 @@ if(CONFIG_DEFAULT EQUAL 1)
 endif()
 
 install(DIRECTORY include/ DESTINATION include)
+
+#include(CPack) # Create installation package
