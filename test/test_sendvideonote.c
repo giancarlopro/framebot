@@ -1,5 +1,5 @@
  
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
 #define BOLD         "\033[1m"
 #define COLOR_RESET  "\033[0m"
@@ -226,12 +226,12 @@ void read_message(Message * message){
 
 
 int main(int argc, char *argv[]){
-	telebot_init();
+	framebot_init();
 
 	if(argc != 2)
 		fprintf(stderr, "sendphoto <token>");
 
-    _bot = telebot(argv[1]);
+    _bot = framebot(argv[1]);
 
 /* Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 			  char * caption, bool disable_notification,

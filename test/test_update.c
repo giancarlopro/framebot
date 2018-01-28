@@ -1,4 +1,4 @@
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
 #define BOLD         "\033[1m"
 #define COLOR_RESET  "\033[0m"
@@ -336,13 +336,13 @@ void update_init(Update * update){
 
 int main(int argc, char **argv){
 	size_t update_length, i;
-	telebot_init();
+	framebot_init();
 
 	if(argc != 2)
 		fprintf(stderr, "update <token>");
 
 
-    Bot *bot = telebot(argv[1]);
+    Bot *bot = framebot(argv[1]);
 
 	Update * update = get_updates(bot, 0, 0, 0, NULL);
 

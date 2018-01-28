@@ -1,4 +1,4 @@
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
 #pragma comment(lib, "wldap32.lib" )
 #pragma comment(lib, "crypt32.lib" )
@@ -10,15 +10,15 @@
 
 int main(){
 
-    telebot_init();
+    framebot_init();
 
     /* return token authentication or not */
-    Bot *bot = telebot(TOKEN);
+    Bot *bot = framebot(TOKEN);
     if(bot == NULL){
         exit(-1);
     }
 
-   // telebot_polling(bot);
+   // framebot_polling(bot);
 
 /*  Update *update_msg = get_updates(bot, 0, 0, 0, NULL);
     Update *tmp = NULL;

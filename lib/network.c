@@ -1,6 +1,6 @@
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
-/* start curl in telebot_init */
+/* start curl in framebot_init */
 void network_init(){
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }

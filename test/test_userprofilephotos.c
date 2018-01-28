@@ -1,4 +1,4 @@
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
 Bot * _bot;
 
@@ -24,12 +24,12 @@ void upp(UserProfilePhotos * oupp){
 
 
 int main(int argc, char *argv[]){
-	telebot_init();
+	framebot_init();
 
 	if(argc != 2)
 		fprintf(stderr, "update <token>");
 
-    _bot = telebot(argv[1]);
+    _bot = framebot(argv[1]);
 
 	UserProfilePhotos * oupp = get_user_profile_photos(_bot, "100856717", 0, 0, 0);
 

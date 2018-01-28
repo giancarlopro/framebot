@@ -1,4 +1,4 @@
-#include <telebot/telebot.h>
+#include <framebot/framebot.h>
 
 typedef struct _function {
 	char * function;
@@ -21,7 +21,7 @@ int main(int argc, char * argv[]){
 
 void set_function(){
 	Functions f[] = {
-		{"telebot", "token:str", "bot:obj", 1},
+		{"framebot", "token:str", "bot:obj", 1},
 
 		{"get_updates", "bot:obj extra:str", "update:obj", 2},
 
