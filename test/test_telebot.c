@@ -1,4 +1,4 @@
-#include <telebot.h>
+#include <telebot/telebot.h>
 #include <string.h>
 
 #define TOKEN "312367410:AAE0GKFSHt8CId9sQ8yKOODnRF8j-Kk_avQ"

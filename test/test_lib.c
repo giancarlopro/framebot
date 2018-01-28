@@ -1,4 +1,4 @@
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 #pragma comment(lib, "wldap32.lib" )
 #pragma comment(lib, "crypt32.lib" )

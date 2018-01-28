@@ -1,5 +1,5 @@
  
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 #define BOLD         "\033[1m"
 #define COLOR_RESET  "\033[0m"

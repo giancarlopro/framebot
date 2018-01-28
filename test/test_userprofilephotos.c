@@ -1,4 +1,4 @@
-#include <telebot.h>
+#include <telebot/telebot.h>
 
 Bot * _bot;
 
