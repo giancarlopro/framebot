@@ -25,17 +25,23 @@ make install
 
 ## Usage
 ```C
-#include <telebot.h>
+// 'test_framebot.c'
+#include <framebot/framebot.h>
 #define TOKEN "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
 ...
 int main () {
-  telebot_init ();
-  Bot *frame_bot = telebot(TOKEN);
+  framebot_init ();
+  Bot *frame_bot = framebot(TOKEN);
   send_message_chat(frame_bot, chat_id, "Message", NULL, false, false, 0, NULL);
   ...
   bot_free(frame_bot);
   return 0;
 }
+```
+
+In order to compile this code, you need to specify the libraries
+```
+gcc test_framebot.c -lframebot -ljansson -lcurl
 ```
 
 ## Contributing
