@@ -3,7 +3,7 @@ project(FramebotFramework)
 
 find_package(OpenSSL REQUIRED)
 
-add_subdirectory(lib)
+add_subdirectory(src)
 add_subdirectory(test)
 
 if(CONFIG_DEFAULT EQUAL 1)
