@@ -1,4 +1,4 @@
-# Framebot - Alpha [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=master)](https://travis-ci.org/giancarlopro/framebot)
+# Framebot - Alpha [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=master)](https://travis-ci.org/giancarlopro/framebot) [![Open Source Helpers](https://www.codetriage.com/giancarlopro/framebot/badges/users.svg)](https://www.codetriage.com/giancarlopro/framebot)
 
 This is the official repository for Framebot.
 
