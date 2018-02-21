@@ -5,6 +5,7 @@ find_package(OpenSSL REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(examples)
 
 if(CONFIG_DEFAULT EQUAL 1)
 	#does not read configuration file, uses default configuration
