@@ -3,10 +3,12 @@
 Bot * _bot;
 
 int main(int argc, char *argv[]){
+	Message * message;
+
 	framebot_init();
 
-	if(argc != 2)
-		fprintf(stderr, "sendphoto <token>");
+	if(argc < 3)
+		fprintf(stderr, "sendmessage <token> <id user>");
 
     _bot = framebot(argv[1]);
 
@@ -14,7 +16,9 @@ int main(int argc, char *argv[]){
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_message_chat(_bot, 100856717, "qwe%0Ad o o %0Ao o09929132", MODEMARKDOWN, 0, 0, 0, NULL);
+
+    if(_bot)
+		message = send_message(_bot, argv[2], "sendMessage = ok", NULL, 0, 0, 0, NULL);
 
 
 	if(message){
@@ -23,7 +27,7 @@ int main(int argc, char *argv[]){
 	else{
 		Error * error = show_error();
 		if(error)
-			printf("ec=%ld d=%s", error->error_code, error->description);
+			printf("ec=%ld d=%s\n", error->error_code, error->description);
 	}
 
 	return 0;

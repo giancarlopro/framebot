@@ -148,8 +148,32 @@
 #define API_deleteChatStickerSet "deleteChatStickerSet\
 ?chat_id=%s"
 
-/* clear screen */
-#define CSCREEN "\e[1;1H\e[2J"
+
+/* analyze parameter API methods */
+#define PARSE_MODE(p) (p == NULL ? "" : p) 
+#define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "0")
+#define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "0")
+#define REPLY_MARKUP(p) (p == NULL ? "" : p)
+
+#define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_SEND_OTHER_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_ADD_WEB_PAGE_PREVIEWS(p) (p > 0 ? "true" : "0")
+
+#define CAN_CHANGE_INFO(p) (p > 0 ? "true" : "0")
+#define CAN_POST_MESSAGES(p) (p > 0 ? "true": "0")
+#define CAN_EDIT_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_DELETE_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_INVITE_USERS(p) (p > 0 ? "true": "0")
+#define CAN_RESTRICT_MEMBERS(p) (p > 0 ? "true" : "0")
+#define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "0")
+
+#define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)
+#define REPLY_TO_MESSAGE_ID(p) (p > 0 ? api_ltoa(p) : NULL)
+#define WIDTH(p) (p > 0 ? api_ltoa(p) : NULL)
+#define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
+#define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -188,8 +212,8 @@ typedef int bool;
 #define false 0
 
 /* parameter parse_mode */
-#define MODEHTML "HTML"
-#define MODEMARKDOWN "MARKDOWN"
+#define MODE_HTML "HTML"
+#define MODE_MARKDOWN "MARKDOWN"
 
 #include <curl/curl.h>
 #include <jansson.h>

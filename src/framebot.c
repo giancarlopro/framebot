@@ -1,9 +1,5 @@
 #include <framebot/framebot.h>
 
-/* parameter parse_mode */
-#define MODE_HTML "HTML"
-#define MODE_MARKDOWN "MARKDOWN"
-
 void framebot_init () {
     network_init();
 }
@@ -91,11 +87,12 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
             char * reply_markup) {
     Message * message;
     json_t * json;
-    
+
     json = generic_method_call(bot->token, API_SENDMESSAGE,
-        chat_id, text, parse_mode, (disable_web_page_preview > 0 ? "true" : "0"),
-        (disable_notification > 0 ? "true" : "0"),
-        reply_to_message_id, reply_markup);
+        chat_id, text, PARSE_MODE(parse_mode),
+        DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview),
+        DISABLE_NOTIFICATION(disable_notification),
+        reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -112,8 +109,9 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse
 
     cchat_id = api_ltoa(chat_id);
 
-    message =  send_message(bot, cchat_id, text, parse_mode, disable_web_page_preview,
-        disable_notification, reply_to_message_id, reply_markup);
+    message =  send_message(bot, cchat_id, text, parse_mode,
+        disable_web_page_preview, disable_notification, reply_to_message_id,
+        reply_markup);
 
     free(cchat_id);
 
@@ -336,10 +334,10 @@ bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int u
 
     json = generic_method_call(bot->token, API_restrictChatMember,
         chat_id, user_id, until_date,
-        (can_send_messages > 0 ? "true" : "0"),
-        (can_send_media_messages > 0 ? "true" : "0"),
-        (can_send_other_messages > 0 ? "true" : "0"),
-        (can_add_web_page_previews > 0 ? "true" : "0") );
+        CAN_SEND_MESSAGES(can_send_messages),
+        CAN_SEND_MEDIA_MESSAGES(can_send_media_messages),
+        CAN_SEND_OTHER_MESSAGES(can_send_other_messages),
+        CAN_ADD_WEB_PAGE_PREVIEWS(can_add_web_page_previews) );
 
     result = json_is_true(json);
 
@@ -460,14 +458,14 @@ bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_ch
     json_t *json;
 
     json = generic_method_call(bot->token, API_promoteChatMember,
-        chat_id, user_id, (can_change_info > 0 ? "true" : "0"),
-        (can_post_messages > 0 ? "true": "0"),
-        (can_edit_messages > 0 ? "true" : "0"),
-        (can_delete_messages > 0 ? "true" : "0"),
-        (can_invite_users > 0 ? "true": "0"),
-        (can_restrict_members > 0 ? "true" : "0"),
-        (can_pin_messages > 0 ? "true" : "0"),
-        (can_promote_members > 0 ? "true" : "0"));
+        chat_id, user_id, CAN_CHANGE_INFO(can_change_info),
+        CAN_POST_MESSAGES(can_post_messages),
+        CAN_EDIT_MESSAGES(can_edit_messages),
+        CAN_DELETE_MESSAGES(can_delete_messages),
+        CAN_INVITE_USERS(can_invite_users),
+        CAN_RESTRICT_MEMBERS(can_restrict_members),
+        CAN_PIN_MESSAGES(can_pin_messages),
+        CAN_PROMOTE_MEMBERS(can_promote_members));
 
     result = json_is_true(json);
 
@@ -652,7 +650,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
     json_t *json;
 
     json = generic_method_call(bot->token, API_pinChatMessage, chat_id, message_id,
-        (disable_notification > 0 ? "true" : "0"));
+        DISABLE_NOTIFICATION(disable_notification));
     
     result = json_is_true(json);
 
@@ -799,12 +797,12 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     ifile.photo.caption = caption;
 
     /* Sends the message silently */
-    ifile.photo.disable_notification = (disable_notification > 0 ? "true" : NULL);
+    ifile.photo.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.photo.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
+    ifile.photo.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.photo.reply_markup = reply_markup;
+    ifile.photo.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -836,7 +834,7 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
 
     message = send_photo(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id,
-                                 reply_markup);
+                                 REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -868,7 +866,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     ifile.audio.caption = caption;
 
     /* Duration of the audio in seconds */
-    ifile.audio.duration = duration > 0 ? api_ltoa(duration) : NULL;
+    ifile.audio.duration = DURATION(duration);
 
 
     /* Performer */
@@ -878,12 +876,12 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     ifile.audio.title = title;
 
     /* Sends the message silently */
-    ifile.audio.disable_notification = (disable_notification > 0 ? "true" : NULL);
+    ifile.audio.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.audio.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
+    ifile.audio.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.audio.reply_markup = reply_markup;
+    ifile.audio.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -917,7 +915,7 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
 
     message = send_audio(bot, cchat_id, filename, caption, duration,
                                  performer, title, disable_notification,
-                                 reply_to_message_id, reply_markup);
+                                 reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -949,12 +947,12 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     ifile.document.caption = caption;
 
     /* Sends the message silently */
-    ifile.document.disable_notification = (disable_notification > 0 ? "true" : NULL);
+    ifile.document.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.document.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
+    ifile.document.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.document.reply_markup = reply_markup;
+    ifile.document.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -984,7 +982,7 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
 
     message = send_document(bot, cchat_id, filename, caption,
                                  disable_notification, reply_to_message_id,
-                                 reply_markup);
+                                 REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1012,24 +1010,24 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
     ifile.video.filename = filename;
 
     /* Duration of the audio in seconds */
-    ifile.video.duration = duration > 0 ? api_ltoa(duration) : NULL;
+    ifile.video.duration = DURATION(duration);
 
     /* Video width */
-    ifile.video.width = width > 0 ? api_ltoa(width) : NULL;
+    ifile.video.width = WIDTH(width);
 
     /* Video height */
-    ifile.video.height = height > 0 ? api_ltoa(height) : NULL;
+    ifile.video.height = HEIGHT(height);
 
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
 
     /* Sends the message silently */
-    ifile.video.disable_notification = (disable_notification > 0 ? "true" : NULL);
+    ifile.video.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.video.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
+    ifile.video.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.video.reply_markup = reply_markup;
+    ifile.video.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -1064,7 +1062,7 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
     cchat_id = api_ltoa(chat_id);
 
     message = send_video(bot, cchat_id, filename, duration, width, height, caption,
-                disable_notification, reply_to_message_id, reply_markup);
+                disable_notification, reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1095,15 +1093,15 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     ifile.voice.caption = caption;
 
     /* Duration of the audio in seconds */
-    ifile.voice.duration = duration > 0 ? api_ltoa(duration) : NULL;
+    ifile.voice.duration = DURATION(duration);
 
     /* Sends the message silently */
-    ifile.voice.disable_notification = (disable_notification > 0 ? "true" : NULL);
+    ifile.voice.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.voice.reply_to_message_id = reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL;
+    ifile.voice.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.voice.reply_markup = reply_markup;
+    ifile.voice.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -1136,7 +1134,7 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
 
     message = send_voice(bot, cchat_id, filename, caption, duration,
                                  disable_notification,reply_to_message_id,
-                                 reply_markup);
+                                 REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1163,18 +1161,18 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     ifile.videonote.filename = filename;
 
     /* Duration of the audio in seconds */
-    ifile.videonote.duration = duration > 0 ? api_ltoa(duration) : NULL;
+    ifile.videonote.duration = DURATION(duration);
 
     /* Video width and height */
-    ifile.videonote.length = length > 0 ? api_ltoa(length) : NULL;
+    ifile.videonote.length = LENGTH(length);
 
     /* Sends the message silently */
-    ifile.videonote.disable_notification = disable_notification > 0 ? "true" : NULL;
+    ifile.videonote.disable_notification = DISABLE_NOTIFICATION(disable_notification);
 
     /* If the message is a reply, ID of the original message */
-    ifile.videonote.reply_to_message_id = (reply_to_message_id > 0 ? api_ltoa(reply_to_message_id) : NULL);
+    ifile.videonote.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
 
-    ifile.videonote.reply_markup = reply_markup;
+    ifile.videonote.reply_markup = REPLY_MARKUP(reply_markup);
 
     MemStore * input;
     json_t * json;
@@ -1206,7 +1204,7 @@ Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, lon
     cchat_id = api_ltoa(chat_id);
 
     message = send_video_note(bot, cchat_id, filename, duration, length, disable_notification,
-                reply_to_message_id, reply_markup);
+                reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1266,7 +1264,7 @@ Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
     json_t *json;
 
     json = generic_method_call(bot->token, API_forwardMessage, chat_id, from_chat_id,
-        (disable_notification > 0 ? "true" : "0"), message_id);
+        DISABLE_NOTIFICATION(disable_notification), message_id);
 
     message = message_parse(json);
 
@@ -1308,8 +1306,8 @@ Message * send_location (Bot * bot, char * chat_id, float latitude,
 
     json = generic_method_call(bot->token, API_sendLocation,
         chat_id, latitude, longitude, live_period,
-        (disable_notification > 0 ? "true" : 0),
-        reply_to_message_id, reply_markup);
+        DISABLE_NOTIFICATION(disable_notification),
+        reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1350,8 +1348,8 @@ Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * fi
 
     json = generic_method_call(bot->token, API_sendContact,
         chat_id, phone_number, first_name, last_name,
-        (disable_notification > 0 ? "true":"0"),
-        reply_to_message_id, reply_markup);
+        DISABLE_NOTIFICATION(disable_notification),
+        reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1420,8 +1418,8 @@ Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
 
     json = generic_method_call(bot->token, API_sendVenue,
         chat_id, latitude, longitude, title, address, foursquare_id,
-        (disable_notification > 0 ? "true" : "0"),
-        reply_to_message_id, reply_markup);
+        DISABLE_NOTIFICATION(disable_notification),
+        reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1442,7 +1440,7 @@ Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float lon
 
     message = send_venue(bot, cchat_id, latitude, longitude, title,
         address, foursquare_id, disable_notification, reply_to_message_id,
-        reply_markup);
+        REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1460,7 +1458,7 @@ Message * edit_message_live_location(Bot * bot, char * chat_id, long int message
     json_t * json;
 
     json = generic_method_call(bot->token, API_editMessageLiveLocation,
-        chat_id, message_id, inline_message_id, latitude, longitude, reply_markup);
+        chat_id, message_id, inline_message_id, latitude, longitude, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1477,7 +1475,7 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_live_location(bot, cchat_id, message_id, inline_message_id,
-        latitude, longitude, reply_markup);
+        latitude, longitude, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1495,7 +1493,7 @@ Message * stop_message_live_location(Bot * bot, char * chat_id, long int message
 
     json = generic_method_call(bot->token, API_stopMessageLiveLocation,
                 chat_id, message_id, inline_message_id,
-                reply_markup);
+                REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1512,7 +1510,7 @@ Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int 
     cchat_id = api_ltoa(chat_id);
 
     message = stop_message_live_location(bot, cchat_id, message_id,
-        inline_message_id, reply_markup);
+        inline_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 
@@ -1530,7 +1528,8 @@ Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     json_t *json;
 
     json = generic_method_call(bot->token, API_editMessageText, chat_id, message_id,
-        inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup);
+        inline_message_id, text, PARSE_MODE(parse_mode),
+        DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview), REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1548,8 +1547,8 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_text(bot, cchat_id, message_id,
-        inline_message_id, text, parse_mode, disable_web_page_preview,
-        reply_markup);
+        inline_message_id, text, parse_mode,
+        disable_web_page_preview, reply_markup);
 
     free(cchat_id);
 
@@ -1567,7 +1566,7 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
     json_t *json;
 
     json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
-        message_id, inline_message_id, caption, reply_markup);
+        message_id, inline_message_id, caption, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
@@ -1603,7 +1602,7 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
     json_t *json;
 
     json = generic_method_call(bot->token, API_editMessageReplyMarkup, chat_id,
-        message_id, inline_message_id, reply_markup);
+        message_id, inline_message_id, REPLY_MARKUP(reply_markup));
 
     message = message_parse(json);
 
