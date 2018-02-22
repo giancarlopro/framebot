@@ -7,7 +7,7 @@ This is the official repository for Framebot.
 First you need to install the dependencies
 
 ```
-apt install jansson openssl libcurl4-openssl-dev
+# apt install jansson openssl libcurl4-openssl-dev
 ```
 
 then you use cmake to create the build files

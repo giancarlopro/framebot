@@ -1,18 +1,12 @@
 #include <framebot/framebot.h>
 
 /* parameter parse_mode */
-#define MODEHTML "HTML"
-#define MODEMARKDOWN "MARKDOWN"
+#define MODE_HTML "HTML"
+#define MODE_MARKDOWN "MARKDOWN"
 
 void framebot_init () {
-
-//#ifndef CONFIG_DEFAULT /* read or not read config file */
-//    read_config();
-//#endif
     network_init();
-/*    log_init();*/
 }
-
 
 
 /**
