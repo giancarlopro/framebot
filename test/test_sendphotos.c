@@ -227,8 +227,8 @@ void read_message(Message * message){
 int main(int argc, char *argv[]){
 	framebot_init();
 
-	if(argc != 2)
-		fprintf(stderr, "sendphoto <token>");
+	if(argc < 4)
+		fprintf(stderr, "sendphoto <token> <id_user> <path picture>");
 
     _bot = framebot(argv[1]);
 
@@ -236,13 +236,15 @@ int main(int argc, char *argv[]){
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_photo_chat(_bot, 100856717, "photos.png", "descrição", 1, 0, NULL);
+	Message * message = send_photo(_bot, argv[2], argv[3], "descrição", 1, 0, NULL);
 
 	if(message){
 		read_message(message);
 	}
 	else{
-		printf("ESQUI");
+		Error * error = show_error();
+		if(error)
+			printf("error_code=%ld error_descriptio=n%s\n", error->error_code, error->description);
 	}
 
 	return 0;

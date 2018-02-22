@@ -26,16 +26,25 @@ void upp(UserProfilePhotos * oupp){
 int main(int argc, char *argv[]){
 	framebot_init();
 
-	if(argc != 2)
-		fprintf(stderr, "update <token>");
+	if(argc < 3)
+		fprintf(stderr, "update <token> <id_user>");
 
     _bot = framebot(argv[1]);
+    if(!_bot){
+    	fprintf(stderr, "Error Authentic");
+    	exit(-1);
+    }
 
-	UserProfilePhotos * oupp = get_user_profile_photos(_bot, "100856717", 0, 0, 0);
+	UserProfilePhotos * oupp = get_user_profile_photos(_bot, argv[2], argv[3], 0, 0);
 
 	if(oupp){
 		printf("true");
 		upp(oupp);
+	}
+	else{
+		Error * error = show_error();
+		if(error)
+			printf("error_code=%ld error_descriptio=n%s\n", error->error_code, error->description);
 	}
 
 	return 0;

@@ -36,8 +36,8 @@ json_t * start_json(char * json){
             return json_object_get(root, "result");
         }
         else{
-            json_decref(root);
             error_parse(root);
+            json_decref(root);
         }
     }
 

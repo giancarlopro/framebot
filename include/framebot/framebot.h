@@ -2,12 +2,15 @@
 #define FRAMEBOT_H
 
 /* Functions API */
+
 #define API_GETME "getMe"
+
 #define API_GETUPDATES "getUpdates\
 ?offset=%ld\
 &limit=%ld\
 &timeout=%ld\
 &allowed_updates=%s"
+
 #define API_SENDMESSAGE "sendMessage\
 ?chat_id=%s\
 &text=%s\
@@ -16,23 +19,30 @@
 &disable_notification=%s\
 &reply_to_message_id=%ld\
 &reply_markup=%s"
+
 #define API_getChat "getChat\
 ?chat_id=%s"
+
 #define API_setChatTitle "setChatTitle\
 ?chat_id=%s\
 &title=%s"
+
 #define API_getChatMember "getChatMember\
 ?chat_id=%s\
 &user_id=%ld"
+
 #define API_setChatDescription "setChatDescription\
 ?chat_id=%s\
 &description=%s"
+
 #define API_getChatMemberCount "getChatMemberCount\
 ?chat_id=%s"
+
 #define API_kickChatMember "kickChatMember\
 ?chat_id=%s\
 &user_id=%ld\
 &until_date=%s"
+
 #define API_restrictChatMember "restrictChatMember\
 ?chat_id=%s\
 &user_id=%ld\
@@ -41,11 +51,14 @@
 &can_send_media_messages=%s\
 &can_send_other_messages=%s\
 &can_add_web_page_previews=%s"
+
 #define API_unbanChatMember "unbanChatMember\
 ?chat_id=%s\
 &user_id=%ld"
+
 #define API_leaveChat "leaveChat\
 ?chat_id=%s"
+
 #define API_promoteChatMember "promoteChatMember\
 ?chat_id=%s\
 &user_id=%ld\
@@ -57,28 +70,37 @@
 &can_restrict_members=%s\
 &can_pin_messages=%s\
 &can_promote_members=%s"
+
 #define API_exportChatInviteLink "exportChatInviteLink"
+
 #define API_deleteChatPhoto "deleteChatPhoto\
 ?chat_id=%s"
+
 #define API_getChatAdministrators "getChatAdministrators\
 ?chat_id=%s"
+
 #define API_pinChatMessage "pinChatMessage\
 ?chat_id=%s\
 &message_id=%ld\
 &disable_notification=%s"
+
 #define API_unpinChatMessage "unpinChatMessage\
 ?chat_id=%s"
+
 #define API_getfile "getfile\
 ?file_id=%s"
+
 #define API_getUserProfilePhotos "getUserProfilePhotos\
-?user_id=%ld\
+?user_id=%s\
 &offset=%ld\
 &limit=%ld"
+
 #define API_forwardMessage "forwardMessage\
 ?chat_id=%s\
 &from_chat_id=%s\
 &disable_notification=%s\
 &message_id=%ld"
+
 #define API_sendLocation "sendLocation\
 ?chat_id=%s\
 &latitude=%f\
@@ -87,6 +109,7 @@
 &disable_notification=%s\
 &reply_to_message_id=%ld\
 &reply_markup=%s"
+
 #define API_sendContact "sendContact\
 ?chat_id=%s\
 &phone_number=%s\
@@ -95,9 +118,11 @@
 &disable_notification=%s\
 &reply_to_message_id=%ld\
 &reply_markup=%s"
+
 #define API_sendChatAction "sendChatAction\
 ?chat_id=%s\
 &action=%s"
+
 #define API_sendVenue "sendVenue\
 ?chat_id=%s\
 &latitude=%f\
@@ -108,6 +133,7 @@
 &disable_notification=%s\
 &reply_to_message_id=%ld\
 &reply_markup=%s"
+
 #define API_editMessageLiveLocation "editMessageLiveLocation\
 ?chat_id=%s\
 &message_id=%ld\
@@ -115,11 +141,13 @@
 &latitude=%f\
 &longitude=%f\
 &reply_markup=%s"
+
 #define API_stopMessageLiveLocation "stopMessageLiveLocation\
 ?chat_id=%s\
 &message_id=%ld\
 &inline_message_id=%s\
 &reply_markup=%s"
+
 #define API_editMessageText "editMessageText\
 ?chat_id=%s\
 &message_id=%ld\
@@ -128,28 +156,57 @@
 &parse_mode=%s\
 &disable_web_page_preview=%d\
 &reply_markup=%s"
+
 #define API_editMessageCaption "editMessageCaption\
 ?chat_id=%s\
 &message_id=%ld\
 &inline_message_id=%s\
 &caption=%s\
 &reply_markup=%s"
+
 #define API_editMessageReplyMarkup "editMessageReplyMarkup\
 ?chat_id=%s\
 &message_id=%ld\
 &inline_message_id=%s\
 &reply_markup=%s"
+
 #define API_deleteMessage "deleteMessage\
 ?chat_id=%s\
 &message_id=%ld"
+
 #define API_setChatStickerSet "setChatStickerSet\
 ?chat_id=%s\
 &sticker_set_name=%s"
+
 #define API_deleteChatStickerSet "deleteChatStickerSet\
 ?chat_id=%s"
 
-/* clear screen */
-#define CSCREEN "\e[1;1H\e[2J"
+
+/* analyze parameter API methods */
+#define PARSE_MODE(p) (p == NULL ? "" : p) 
+#define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "0")
+#define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "0")
+#define REPLY_MARKUP(p) (p == NULL ? "" : p)
+
+#define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_SEND_OTHER_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_ADD_WEB_PAGE_PREVIEWS(p) (p > 0 ? "true" : "0")
+
+#define CAN_CHANGE_INFO(p) (p > 0 ? "true" : "0")
+#define CAN_POST_MESSAGES(p) (p > 0 ? "true": "0")
+#define CAN_EDIT_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_DELETE_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_INVITE_USERS(p) (p > 0 ? "true": "0")
+#define CAN_RESTRICT_MEMBERS(p) (p > 0 ? "true" : "0")
+#define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "0")
+#define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "0")
+
+#define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)
+#define REPLY_TO_MESSAGE_ID(p) (p > 0 ? api_ltoa(p) : NULL)
+#define WIDTH(p) (p > 0 ? api_ltoa(p) : NULL)
+#define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
+#define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -188,8 +245,8 @@ typedef int bool;
 #define false 0
 
 /* parameter parse_mode */
-#define MODEHTML "HTML"
-#define MODEMARKDOWN "MARKDOWN"
+#define MODE_HTML "HTML"
+#define MODE_MARKDOWN "MARKDOWN"
 
 #include <curl/curl.h>
 #include <jansson.h>
@@ -315,7 +372,10 @@ int send_chat_action(Bot * bot, char * chat_id, char * action);
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
 
 /* getUserProfilePhotos */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id, long offset, long limit);
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id,
+    long offset, long limit);
+UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, char * dir, long user_id,
+    long offset, long limit);
 
 /* getFile */
 char * get_file(Bot * bot, char * dir, const char * file_id);

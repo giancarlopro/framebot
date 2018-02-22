@@ -46,7 +46,7 @@ int main(int argc, char **argv){
 	framebot_init();
 
 	if(argc != 2)
-		fprintf(stderr, "update <token>");
+		fprintf(stderr, "file <token>");
 
     _bot = framebot(argv[1]);
 
