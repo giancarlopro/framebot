@@ -338,11 +338,15 @@ int main(int argc, char **argv){
 	size_t update_length, i;
 	framebot_init();
 
-	if(argc != 2)
+	if(argc < 2)
 		fprintf(stderr, "update <token>");
 
 
     Bot *bot = framebot(argv[1]);
+    if(!bot){
+    	fprintf(stderr, "Error Authentic");
+    	exit(-1);
+    }
 
 	Update * update = get_updates(bot, 0, 0, 0, NULL);
 

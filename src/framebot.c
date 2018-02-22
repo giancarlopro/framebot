@@ -671,6 +671,8 @@ bool pin_chat_message_chat(Bot *bot, long int chat_id, long int message_id, bool
 
     return result;
 }
+
+
 /**
  * unpinChatMessage
  *
@@ -752,13 +754,12 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
 }
 
 
-
 /**
  * getUserProfilePhotos
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
-            long offset, long limit){
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id,
+            long offset, long limit) {
     UserProfilePhotos * oupp;
     json_t * json;
 
@@ -772,6 +773,19 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, long user_id,
     return oupp;
 }
 
+UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, char * dir, long user_id,
+            long offset, long limit) {
+    UserProfilePhotos * oupp;
+    char *cuser_id;
+
+    cuser_id = api_ltoa(user_id);
+
+    oupp = get_user_profile_photos(bot, dir, cuser_id, offset, limit);
+
+    free(cuser_id);
+
+    return oupp;
+}
 
 /**
  * sendPhoto

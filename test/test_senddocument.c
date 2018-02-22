@@ -227,22 +227,28 @@ void read_message(Message * message){
 int main(int argc, char *argv[]){
 	framebot_init();
 
-	if(argc != 2)
-		fprintf(stderr, "sendphoto <token>");
+	if(argc < 4)
+		fprintf(stderr, "sendphoto <token> <id_user> <path document>");
 
     _bot = framebot(argv[1]);
+	if(!_bot) {
+		fprintf(stderr, "ERROR authentic");
+	} 
+
 
 /* Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
 			  char * caption, bool disable_notification,
 			  long int reply_to_message_id){
 */
-	Message * message = send_document_chat(_bot, 100856717, "pdf.pdf", "descrição", 1, 0, NULL);
+	Message * message = send_document(_bot, argv[2], argv[3], "descrição", 1, 0, NULL);
 
 	if(message){
 		read_message(message);
 	}
 	else{
-		printf("ESQUI");
+		Error * error = show_error();
+		if(error)
+			printf("error_code=%ld error_description=%s", error->error_code, error->description);
 	}
 
 	return 0;
