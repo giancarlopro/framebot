@@ -1,5 +1,7 @@
 #include <framebot/framebot.h>
 
+static CURL *curl = NULL;
+
 /* start curl in framebot_init */
 void network_init(){
     curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -43,36 +45,32 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 /* send data to telegram */
 MemStore * call_method(const char *token, char *method){
     CURLcode res;
-    size_t url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
-    char * url = (char *)malloc(url_size);
+    size_t url_size = API_URL_LEN + strlen( token ) + strlen( method ) + 2;
+    char * url = ( char * ) malloc( url_size );
 
-    strcpy(url, API_URL);
-    strcat(url, token);
-    strcat(url, "/");
-    strcat(url, method);
+    strcpy( url, API_URL );
+    strcat( url, token );
+    strcat( url, "/" );
+    strcat( url, method );
 
     url[url_size - 1] = '\0';
 
-    CURL * curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, url);
-
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-
-
     MemStore *buff = mem_store();
 
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)buff);
+    if( !curl ){
+        curl = curl_easy_init();
+    }
+    curl_easy_setopt( curl, CURLOPT_SSL_VERIFYHOST, 0L );
+    curl_easy_setopt( curl, CURLOPT_SSL_VERIFYPEER, 0L );
+    curl_easy_setopt( curl, CURLOPT_WRITEDATA, (void *)buff );
+    curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, mem_write_callback );
+    curl_easy_setopt( curl, CURLOPT_URL, url );
 
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, mem_write_callback);
+    free( url );
 
-    free(url);
+    res = curl_easy_perform( curl );
 
-    res = curl_easy_perform(curl);
-
-    curl_easy_cleanup(curl);
-
-    if (res == CURLE_OK) {
+    if( res == CURLE_OK ) {
         return buff;
     }
 

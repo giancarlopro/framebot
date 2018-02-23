@@ -19,9 +19,14 @@ void test_set_chat_title(Bot *test_bot, char *id_user) {
 }
 
 void test_get_chat_member(Bot *bot, char *id_user) {
+    refjson *json = (refjson *)malloc(sizeof(refjson));
+
     long int test_user_id = 124296363L;
     char test_chat_member_string[] = "{\"user\":{\"id\":124296363,\"is_bot\":false,\"first_name\":\"Gian\",\"username\":\"niiag\",\"language_code\":\"pt-BR\"},\"status\":\"creator\"}";
-    ChatMember *test_chat_member = chat_member_parse(load(test_chat_member_string));
+
+    json = load(test_chat_member_string);
+
+    ChatMember *test_chat_member = chat_member_parse(json->root);
 
     ChatMember *ochat_member = get_chat_member(bot, id_user, test_user_id);
 
@@ -59,7 +64,7 @@ int main(int argc, char *argv[]) {
     test_get_chat_member(test_bot, argv[2]);
     
 
-    send_message_chat(test_bot, argv[2], "Testandoooo", NULL, 0, 0, 0, NULL);
+    send_message(test_bot, argv[2], "Testandoooo", NULL, 0, 0, 0, NULL);
     
     return 0;
 }

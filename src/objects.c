@@ -117,7 +117,8 @@ Bot *bot(const char *token, User *user){
         return NULL;
 
     bot->token = alloc_string(token);
-    bot->user = user;
+    if(user)
+        bot->user = user;
 
     return bot;
 }
@@ -676,7 +677,7 @@ Message *message(long int message_id, User *from, long int date, Chat *chat,
                   Message *pinned_message, Invoice *oinvoice,
                   SuccessfulPayment *successful_payment){
 
-    Message *message = (Message *)malloc(sizeof(Message));
+    Message *message = (Message *) malloc( sizeof( Message ));
     if(!message)
         return NULL;
 
