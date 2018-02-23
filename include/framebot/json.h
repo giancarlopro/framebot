@@ -3,9 +3,15 @@
 
 #include <framebot/framebot.h>
 
-json_t * start_json(char * json);
+typedef struct _struct_json {
+	json_t *root;
+	json_t *content;
+} refjson;
+
+refjson * start_json(char * json);
+void close_json( refjson *s_json );
 void error_parse(json_t * error);
-json_t * load(char * json);
+refjson * load(char * json);
 User * user_parse(json_t * json);
 Chat * chat_parse(json_t *json);
 MessageEntity * message_entity_parse(json_t *json);

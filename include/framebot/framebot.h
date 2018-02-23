@@ -262,7 +262,7 @@ typedef int bool;
 
 void framebot_init();
 Bot * framebot(const char *token);
-json_t *generic_method_call (const char *token, char *formats, ...);
+refjson *generic_method_call (const char *token, char *formats, ...);
 Error * show_error();
 
 /** Available methods **/

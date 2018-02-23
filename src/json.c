@@ -24,36 +24,54 @@ SOFTWARE.
 
 #include <framebot/framebot.h>
 
-json_t * start_json(char * json){
+refjson * start_json(char * json){
+    refjson *s_json = NULL;
     json_t *root, *ok;
 
-    root = load (json);
+    s_json = load (json);
+    root = s_json->root;
 
-    if(json_is_object(root)){
+    if(json_is_object( root )){
+        
         ok = json_object_get(root, "ok");
+        
         if(json_is_true(ok)){
             error_free();
-            return json_object_get(root, "result");
+            s_json->content = json_object_get(root, "result");
+            return s_json;
         }
         else{
             error_parse(root);
-            json_decref(root);
         }
     }
 
     return NULL;
 }
 
-json_t * load(char *json){
-    json_t *pload;
+refjson * load(char *json){
     json_error_t error;
+    refjson * s_json;
 
-    pload = json_loads(json, 0, &error);
+    s_json = (refjson *)malloc(sizeof(refjson));
+    s_json->root = NULL;
+    s_json->content = NULL;
 
-    if(pload)
-        return pload;
+    s_json->root = json_loads(json, 0, &error);
+
+    if(s_json->root)
+        return s_json;
 
     return NULL;
+}
+
+void close_json( refjson *s_json ) {
+    
+    if(s_json){
+        if(s_json->root)
+            json_decref(s_json->root);
+
+        free(s_json);
+    }
 }
 
 void error_parse(json_t * json){
