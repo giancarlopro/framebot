@@ -1531,3 +1531,114 @@ void chat_photo_free(ChatPhoto *ochat_photo){
     free(ochat_photo);
     ochat_photo = NULL;
 }
+
+void framebot_add( Framebot *framebot, Update *update ){
+    
+    if( update->message ) {
+        if(!framebot->message)
+            framebot->message = update;
+        else
+            update_add(framebot->message, update);
+    }
+
+
+    else if( update->edited_message ) {
+        if(!framebot->edited_message)
+            framebot->edited_message = update;
+        else
+            update_add(framebot->edited_message, update);
+    }
+
+
+    else if( update->channel_post ) {
+        if(!framebot->channel_post)
+            framebot->channel_post = update;
+        else
+            update_add(framebot->channel_post, update);
+    }
+
+
+    else if( update->edited_channel_post ) {
+        if(!framebot->edited_channel_post)
+            framebot->edited_channel_post = update;
+        else
+            update_add(framebot->edited_channel_post, update);
+    }
+
+
+    else if( update->inline_query ) {
+        if(!framebot->inline_query)
+            framebot->inline_query = update;
+        else
+            update_add(framebot->inline_query, update);
+    }
+
+
+    else if( update->chosen_inline_result ) {
+        if(!framebot->chosen_inline_result)
+            framebot->chosen_inline_result = update;
+        else
+            update_add(framebot->chosen_inline_result, update);
+    }
+
+
+    else if( update->callback_query ) {
+        if(!framebot->callback_query)
+            framebot->callback_query = update;
+        else
+            update_add(framebot->callback_query, update);
+    }
+
+
+    else if( update->shipping_query ) {
+        if(!framebot->shipping_query)
+            framebot->shipping_query = update;
+        else
+            update_add(framebot->shipping_query, update);
+    }
+
+
+    else if( update->pre_checkout_query ) {
+        if(!framebot->pre_checkout_query)
+            framebot->pre_checkout_query = update;
+        else
+            update_add(framebot->pre_checkout_query, update);
+    }
+
+    framebot->update_id = UPDATE_ID_LAST(framebot, update);
+
+}
+
+
+void framebot_free(Framebot *framebot) {
+
+    if(framebot->message) {
+        update_free(framebot->message);
+    }
+    else if(framebot->edited_message) {
+        update_free(framebot->edited_message);
+    }
+    else if(framebot->channel_post) {
+        update_free(framebot->channel_post);
+    }
+    else if(framebot->edited_channel_post) {
+        update_free(framebot->edited_channel_post);
+    }
+    else if(framebot->inline_query) {
+        update_free(framebot->inline_query);
+    }
+    else if(framebot->chosen_inline_result) {
+        update_free(framebot->chosen_inline_result);
+    }
+    else if(framebot->callback_query) {
+        update_free(framebot->callback_query);
+    }
+    else if(framebot->shipping_query) {
+        update_free(framebot->shipping_query);
+    }
+    else if(framebot->pre_checkout_query) {
+        update_free(framebot->pre_checkout_query);
+    }
+
+    free(framebot);
+}

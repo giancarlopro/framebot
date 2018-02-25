@@ -208,6 +208,8 @@
 #define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
 #define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
 
+#define UPDATE_ID_LAST(x, y) (x->update_id > y->update_id ? x->update_id : y->update_id)
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -267,7 +269,7 @@ Error * show_error();
 
 /** Available methods **/
 User * get_me(const char *token);
-Update *get_updates (Bot *bot, long int offset, long int limit,
+Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
             long int timeout, char *allowed_updates);
 
 /* sendMessage */

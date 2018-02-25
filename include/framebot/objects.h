@@ -1,8 +1,6 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
-typedef struct _document Animation;
-
 typedef struct _error{
     long int error_code;
     char *description;
@@ -70,16 +68,13 @@ typedef struct _photo_size{
     struct _photo_size *next;
 } PhotoSize;
 
-/*
- *Document is equals Animation
- */
 typedef struct _document{
     char *file_id;
     PhotoSize *thumb;
     char *file_name;
     char *mime_type;
     long int file_size;
-} Document;
+} Document, Animation;
 
 typedef struct _game{
     char *title;
@@ -276,7 +271,21 @@ typedef struct _update{
     ShippingQuery *shipping_query;
     PreCheckoutQuery *pre_checkout_query;
 	struct _update *next;
-} Update;
+} Update, UPMessage, UPIQuery, UPIResult, UPCQuery,
+UPSQuery, UPPCQuery;
+
+typedef struct {
+    long int update_id;
+    UPMessage *message;
+    UPMessage *edited_message;
+    UPMessage *channel_post;
+    UPMessage *edited_channel_post;
+    UPIQuery  *inline_query;
+    UPIResult *chosen_inline_result;
+    UPCQuery  *callback_query;
+    UPSQuery  *shipping_query;
+    UPPCQuery *pre_checkout_query;
+} Framebot;
 
 typedef struct _chat_member {
     User *user;
@@ -369,9 +378,7 @@ typedef union _keyboard{
     ReplyKeyboardRemove *reply_keyboard_remove;
     ForceReply *_force_reply;
 } Keyboard;
-
-typedef struct _document Animation;
-
+ 
 //User functions
 User *user(
     long int id, bool is_bot, const char *first_name, const char *last_name,
@@ -544,5 +551,8 @@ void chat_photo_free(ChatPhoto *ochat_photo);
 void error(long int error_code, const char *description);
 void error_free();
 Error *get_error();
+
+void framebot_add( Framebot *framebot, Update *update );
+void framebot_free(Framebot *framebot);
 
 #endif // OBJECTS_H_
