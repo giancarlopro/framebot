@@ -10,7 +10,8 @@ Welcome to Framebot's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   readme
+   starting
+   objects/objects.rst
 
 
 Indices and tables
