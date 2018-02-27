@@ -1742,3 +1742,18 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
 
     return result;
 }
+
+bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+    char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
+    bool result;
+    refjson *s_json;
+
+    s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
+        cache_time, is_personal, next_offset, switch_pm_text, switch_pm_parameter);
+
+    result = json_is_true(s_json->content);
+
+    close_json( s_json );
+
+    return result;
+}

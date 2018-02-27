@@ -181,6 +181,14 @@
 #define API_deleteChatStickerSet "deleteChatStickerSet\
 ?chat_id=%s"
 
+#define API_answerInlineQuery "answerInlineQuery\
+?inline_query_id=%s\
+&results=%s\
+&cache_time=%ld\
+&is_personal=%d\
+&next_offset=%s\
+&switch_pm_text=%s\
+&switch_pm_parameter=%s"
 
 /* analyze parameter API methods */
 #define PARSE_MODE(p) (p == NULL ? "" : p) 
@@ -479,5 +487,8 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
         char *inline_message_id, char *reply_markup);
 Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
         char *inline_message_id, char *reply_markup);
+
+bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+    char *next_offset, char *switch_pm_text, char *switch_pm_parameter);
 
 #endif
