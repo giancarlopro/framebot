@@ -181,7 +181,7 @@ typedef struct _shipping_query{
 
 typedef struct _pre_checkout_query{
     char *id;
-    User *user;
+    User *from;
     char *currency;
     long total_amount;
     char *invoice_payload;
@@ -388,18 +388,9 @@ void user_add(User *origin, User *next);
 void user_free(User *usr);
 
 //Chat functions
-Chat *chat(
-    long int id, const char *type, const char *title, const char *username,
-    const char *first_name, const char *last_name,
-    bool all_members_are_administrators, ChatPhoto *ochat_photo,
-    const char *description, const char *invite_link, Message *opinned_message,
-    const char *sticker_set_name, bool can_set_sticker_set);
 void chat_free(Chat *cht);
 
 //Message entity functions
-MessageEntity *message_entity(
-    const char *type, long int offset, long int length,
-    const char *url, User *user);
 void message_entity_free(MessageEntity *msgett);
 void message_entity_add(MessageEntity *dest, MessageEntity *src);
 size_t message_entity_len(MessageEntity *message_entity);
@@ -411,7 +402,6 @@ Audio *audio(
     const char *title, const char *mime_type, long int file_size);
 void audio_free(Audio *audio);
 
-PhotoSize *photo_size(const char *file_id, int width, int height, long int file_size);
 void photo_size_free(PhotoSize *photoSize);
 void photo_size_add(PhotoSize *root,PhotoSize *newps);
 PhotoSize *photo_size_get(PhotoSize *root, int i);
@@ -517,9 +507,6 @@ OrderInfo *order_info(const char *name, const char *phone_number,
     const char *email, ShippingAddress *shipping_address);
 void order_info_free(OrderInfo *order_info);
 
-PreCheckoutQuery *pre_checkout_query(const char *id, User *from,
-    const char *currency, long total_amount, const char *invoice_payload,
-    const char *shipping_option_id, OrderInfo *order_info);
 void pre_checkout_query_free(PreCheckoutQuery *pcq);
 
 SuccessfulPayment *successful_payment(const char *currency, long total_amount,

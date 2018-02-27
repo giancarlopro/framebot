@@ -63,23 +63,6 @@ Error *get_error(){
  ** functions user
  ** https://core.telegram.org/bots/api#user
  **/
-User *user(long int id, bool is_bot, const char *first_name, const char *last_name,
-            const char *username, const char *language_code){
-    User *user = (User *) malloc(sizeof(User));
-    if(!user)
-        return NULL;
-
-    user->id = id;
-    user->is_bot = is_bot;
-    user->first_name    = alloc_string(first_name);
-    user->last_name     = alloc_string(last_name);
-    user->username      = alloc_string(username);
-    user->language_code = alloc_string(language_code);
-    user->next = NULL;
-
-    return user;
-}
-
 void user_add(User *origin, User *next){
     User *o = origin;
 
@@ -135,38 +118,9 @@ void bot_free(Bot *bot){
 }
 
 /**
- ** functions chat
+ ** functions Chat *
  ** https://core.telegram.org/bots/api#chat
  **/
-Chat *chat(
-    long int id, const char *type, const char *title, const char *username,
-    const char *first_name, const char *last_name,
-    bool all_members_are_administrators, ChatPhoto *ochat_photo,
-    const char *description, const char *invite_link, Message *opinned_message,
-    const char *sticker_set_name, bool can_set_sticker_set){
-
-    Chat *chat = (Chat *) malloc(sizeof(Chat));
-    if(!chat)
-        return NULL;
-
-    chat->id = id;
-    chat->type = alloc_string(type);
-    chat->title = alloc_string(title);
-    chat->username = alloc_string(username);
-    chat->first_name = alloc_string(first_name);
-    chat->last_name = alloc_string(last_name);
-    chat->all_members_are_administrators = all_members_are_administrators;
-    chat->photo = ochat_photo;
-    chat->description = alloc_string(description);
-    chat->invite_link = alloc_string(invite_link);
-    chat->pinned_message = opinned_message;
-    chat->sticker_set_name = alloc_string(sticker_set_name);
-    chat->can_set_sticker_set = can_set_sticker_set;
-
-    return chat;
-}
-
-
 void chat_free(Chat *cht){
 
     if(cht->type)
@@ -207,23 +161,6 @@ void chat_free(Chat *cht){
  ** entities
  ** https://core.telegram.org/bots/api#messageentity
  **/
-MessageEntity *message_entity(const char *type, long int offset, long int length,
-                              const char *url, User *user){
-    MessageEntity *msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
-    if(!msgett)
-        return NULL;
-
-    msgett->offset = offset;
-    msgett->length = length;
-    msgett->user = user;
-
-    msgett->type = alloc_string(type);
-    msgett->url = alloc_string(url);
-
-    return msgett;
-}
-
-
 void message_entity_free(MessageEntity *msgett){
 
     if(msgett->type)
@@ -318,21 +255,6 @@ void audio_free(Audio *audio){
  ** functions photo_size
  ** https://core.telegram.org/bots/api#photosize
  **/
-PhotoSize *photo_size(const char *file_id, int width, int height, long int file_size){
-    PhotoSize *photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
-    if(!photoSize)
-        return NULL;
-
-    photoSize->file_id = alloc_string(file_id);
-    photoSize->width = width;
-    photoSize->height = height;
-    photoSize->file_size = file_size;
-    photoSize->next = NULL;
-
-    return photoSize;
-}
-
-
 void photo_size_free(PhotoSize *photoSize){
     if(photoSize->file_id)
         free(photoSize->file_id);
@@ -1243,31 +1165,13 @@ void shipping_address_free(ShippingAddress *shipping_address){
  ** functions pre_checkout_query
  ** https://core.telegram.org/bots/api#precheckoutquery
  **/
-PreCheckoutQuery *pre_checkout_query(const char *id, User *from, const char *currency,
-                                      long total_amount, const char *invoice_payload,
-                                      const char *shipping_option_id, OrderInfo *order_info){
-    PreCheckoutQuery *opre_checkout_query = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
-    if(!opre_checkout_query)
-        return NULL;
-
-    opre_checkout_query->id = alloc_string(id);
-    opre_checkout_query->user = from;
-    opre_checkout_query->currency = alloc_string(currency);
-    opre_checkout_query->total_amount = total_amount;
-    opre_checkout_query->invoice_payload = alloc_string(invoice_payload);
-    opre_checkout_query->shipping_option_id = opre_checkout_query->shipping_option_id;
-    opre_checkout_query->order_info = order_info;
-
-    return opre_checkout_query;
-}
-
 void pre_checkout_query_free(PreCheckoutQuery *pcq){
 
     if(pcq->id)
         free(pcq->id);
 
-    if(pcq->user)
-        user_free(pcq->user);
+    if(pcq->from)
+        user_free(pcq->from);
 
     if(pcq->currency)
         free(pcq->currency);
