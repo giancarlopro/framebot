@@ -920,17 +920,26 @@ ChatMember *chat_member_parse (json_t *json) {
 }
 
 ChatMember *chat_member_array_parse (json_t *cm_array) {
-    if (json_is_array(cm_array)) {
+    ChatMember *object = NULL;
+
+    if (json_is_object(cm_array)) {
+        object = (ChatMember *) malloc(sizeof(ChatMember));
+        if(!object)
+            return NULL;
+
         size_t i, sz = json_array_size(cm_array);
 
-        ChatMember *cm_temp = chat_member_parse(json_array_get(cm_array, 0));
+        if(sz > 0){
+            ChatMember *object = chat_member_parse(json_array_get(cm_array, 0));
 
-        for (i = 1; i < sz; i++) {
-            chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+            for (i = 1; i < sz; i++) {
+                chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+            }
         }
 
-        return cm_temp;
+        return object;
     }
+    
     return NULL;
 }
 
