@@ -27,8 +27,8 @@ Agora utilize o makefile para compilar e instalar a biblioteca:
 
     ``$ make install``
 
-Utilização
-----------
+Configuração
+------------
 
 Para utilizar a biblioteca em seus projetos, você deve informar ao compilador explicitamente
 as bibliotecas que serão compiladas juntas.
@@ -38,3 +38,16 @@ as bibliotecas que serão compiladas juntas.
 
 * Se estiver utilizando o cmake basta informar no seu CMakeLists.txt, em target_link_libraries:
     ``target_link_libraries(seuexecutavel framebot)``
+
+Utilização
+----------
+
+Para utilizar a biblioteca em seus projetos, você deve incluir o arquivo `framebot.h`.
+    ``#include <framebot/framebot.h>``
+
+Exemplos
+--------
+
+Você encontra exemplos de uso da biblioteca na pasta `examples` em nosso repositório no `GitHub`_.
+
+.. _`GitHub`: https://github.com/giancarlopro/framebot/blob/master/examples
