@@ -10,7 +10,7 @@ Welcome to Framebot's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   readme
+   starting
 
 
 Indices and tables
