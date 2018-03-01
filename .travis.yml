@@ -22,7 +22,7 @@ deploy:
   file_glob: true
   file: $TRAVIS_BUILD_DIR/README.md
   skip_cleanup: true
-  before_release:
+  before_deploy:
     - ls -LR
   on:
     repo: giancarlopro/framebot
