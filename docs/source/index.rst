@@ -11,7 +11,6 @@ Welcome to Framebot's documentation!
    :caption: Contents:
 
    starting
-   objects/objects.rst
 
 
 Indices and tables
