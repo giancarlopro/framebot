@@ -63,23 +63,6 @@ Error *get_error(){
  ** functions user
  ** https://core.telegram.org/bots/api#user
  **/
-User *user(long int id, bool is_bot, const char *first_name, const char *last_name,
-            const char *username, const char *language_code){
-    User *user = (User *) malloc(sizeof(User));
-    if(!user)
-        return NULL;
-
-    user->id = id;
-    user->is_bot = is_bot;
-    user->first_name    = alloc_string(first_name);
-    user->last_name     = alloc_string(last_name);
-    user->username      = alloc_string(username);
-    user->language_code = alloc_string(language_code);
-    user->next = NULL;
-
-    return user;
-}
-
 void user_add(User *origin, User *next){
     User *o = origin;
 
@@ -117,7 +100,8 @@ Bot *bot(const char *token, User *user){
         return NULL;
 
     bot->token = alloc_string(token);
-    bot->user = user;
+    if(user)
+        bot->user = user;
 
     return bot;
 }
@@ -134,38 +118,9 @@ void bot_free(Bot *bot){
 }
 
 /**
- ** functions chat
+ ** functions Chat *
  ** https://core.telegram.org/bots/api#chat
  **/
-Chat *chat(
-    long int id, const char *type, const char *title, const char *username,
-    const char *first_name, const char *last_name,
-    bool all_members_are_administrators, ChatPhoto *ochat_photo,
-    const char *description, const char *invite_link, Message *opinned_message,
-    const char *sticker_set_name, bool can_set_sticker_set){
-
-    Chat *chat = (Chat *) malloc(sizeof(Chat));
-    if(!chat)
-        return NULL;
-
-    chat->id = id;
-    chat->type = alloc_string(type);
-    chat->title = alloc_string(title);
-    chat->username = alloc_string(username);
-    chat->first_name = alloc_string(first_name);
-    chat->last_name = alloc_string(last_name);
-    chat->all_members_are_administrators = all_members_are_administrators;
-    chat->photo = ochat_photo;
-    chat->description = alloc_string(description);
-    chat->invite_link = alloc_string(invite_link);
-    chat->pinned_message = opinned_message;
-    chat->sticker_set_name = alloc_string(sticker_set_name);
-    chat->can_set_sticker_set = can_set_sticker_set;
-
-    return chat;
-}
-
-
 void chat_free(Chat *cht){
 
     if(cht->type)
@@ -206,23 +161,6 @@ void chat_free(Chat *cht){
  ** entities
  ** https://core.telegram.org/bots/api#messageentity
  **/
-MessageEntity *message_entity(const char *type, long int offset, long int length,
-                              const char *url, User *user){
-    MessageEntity *msgett = (MessageEntity *)malloc(sizeof(MessageEntity));
-    if(!msgett)
-        return NULL;
-
-    msgett->offset = offset;
-    msgett->length = length;
-    msgett->user = user;
-
-    msgett->type = alloc_string(type);
-    msgett->url = alloc_string(url);
-
-    return msgett;
-}
-
-
 void message_entity_free(MessageEntity *msgett){
 
     if(msgett->type)
@@ -317,21 +255,6 @@ void audio_free(Audio *audio){
  ** functions photo_size
  ** https://core.telegram.org/bots/api#photosize
  **/
-PhotoSize *photo_size(const char *file_id, int width, int height, long int file_size){
-    PhotoSize *photoSize = (PhotoSize *)malloc(sizeof(PhotoSize));
-    if(!photoSize)
-        return NULL;
-
-    photoSize->file_id = alloc_string(file_id);
-    photoSize->width = width;
-    photoSize->height = height;
-    photoSize->file_size = file_size;
-    photoSize->next = NULL;
-
-    return photoSize;
-}
-
-
 void photo_size_free(PhotoSize *photoSize){
     if(photoSize->file_id)
         free(photoSize->file_id);
@@ -660,77 +583,6 @@ void venue_free(Venue *_venue){
  ** functions
  ** https://core.telegram.org/bots/api#message
  **/
-Message *message(long int message_id, User *from, long int date, Chat *chat,
-                  User *forward_from, Chat *forward_from_chat,
-                  long int forward_from_message_id, const char *forward_signature,
-                  long int forward_date, Message *reply_to_message, long int edit_date,
-                  const char *media_group_id, const char *author_signature,
-                  const char *text, MessageEntity *entities, MessageEntity *ocaption_entities,
-                  Audio *audio, Document *document, Game *game,PhotoSize *photo,
-                  Sticker *sticker, Video *video, Voice *voice, VideoNote *video_note,
-                  const char *caption, Contact *contact, Location *location, Venue *venue,
-                  User *new_chat_member, User *left_chat_member, const char *new_chat_title,
-                  PhotoSize *new_chat_photo, int delete_chat_photo, int group_chat_created,
-                  int supergroup_chat_created, int channel_chat_created,
-                  long int migrate_to_chat_id, long int migrate_from_chat_id,
-                  Message *pinned_message, Invoice *oinvoice,
-                  SuccessfulPayment *successful_payment){
-
-    Message *message = (Message *)malloc(sizeof(Message));
-    if(!message)
-        return NULL;
-
-    //PRIMITIVE TYPES
-    message->message_id = message_id;
-    message->date = date;
-    message->forward_from_message_id = forward_from_message_id;
-    message->forward_date = forward_date;
-    message->edit_date = edit_date;
-    message->delete_chat_photo = delete_chat_photo;
-    message->group_chat_created = group_chat_created;
-    message->supergroup_chat_created = supergroup_chat_created;
-    message->channel_chat_created = channel_chat_created;
-    message->migrate_to_chat_id = migrate_to_chat_id;
-    message->migrate_from_chat_id = migrate_from_chat_id;
-
-    //framebot TYPES
-    message->from = from;
-    message->chat = chat;
-    message->forward_from = forward_from;
-    message->forward_from_chat = forward_from_chat;
-    message->reply_to_message = reply_to_message;
-    message->entities = entities;
-    message->caption_entities = ocaption_entities;
-    message->audio = audio;
-    message->document = document;
-    message->game = game;
-    message->photo = photo;
-    message->sticker = sticker;
-    message->video = video;
-    message->voice = voice;
-    message->contact = contact;
-    message->location = location;
-    message->venue = venue;
-    message->new_chat_members = new_chat_member;
-    message->left_chat_member = left_chat_member;
-    message->new_chat_photo = new_chat_photo;
-    message->pinned_message = pinned_message;
-    message->video_note = video_note;
-    message->invoice = oinvoice;
-    message->successful_payment = successful_payment;
-
-    //STRINGS
-    message->text = alloc_string(text);
-    message->caption = alloc_string(caption);
-    message->new_chat_title = alloc_string(new_chat_title);
-    message->forward_signature = alloc_string(forward_signature);
-    message->author_signature = alloc_string(author_signature);
-    message->media_group_id = alloc_string(media_group_id);
-
-    return message;
-}
-
-
 void message_free(Message *message){
     if(message->from)
         user_free(message->from);
@@ -1313,31 +1165,13 @@ void shipping_address_free(ShippingAddress *shipping_address){
  ** functions pre_checkout_query
  ** https://core.telegram.org/bots/api#precheckoutquery
  **/
-PreCheckoutQuery *pre_checkout_query(const char *id, User *from, const char *currency,
-                                      long total_amount, const char *invoice_payload,
-                                      const char *shipping_option_id, OrderInfo *order_info){
-    PreCheckoutQuery *opre_checkout_query = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
-    if(!opre_checkout_query)
-        return NULL;
-
-    opre_checkout_query->id = alloc_string(id);
-    opre_checkout_query->user = from;
-    opre_checkout_query->currency = alloc_string(currency);
-    opre_checkout_query->total_amount = total_amount;
-    opre_checkout_query->invoice_payload = alloc_string(invoice_payload);
-    opre_checkout_query->shipping_option_id = opre_checkout_query->shipping_option_id;
-    opre_checkout_query->order_info = order_info;
-
-    return opre_checkout_query;
-}
-
 void pre_checkout_query_free(PreCheckoutQuery *pcq){
 
     if(pcq->id)
         free(pcq->id);
 
-    if(pcq->user)
-        user_free(pcq->user);
+    if(pcq->from)
+        user_free(pcq->from);
 
     if(pcq->currency)
         free(pcq->currency);
@@ -1529,4 +1363,115 @@ void chat_photo_free(ChatPhoto *ochat_photo){
 
     free(ochat_photo);
     ochat_photo = NULL;
+}
+
+void framebot_add( Framebot *framebot, Update *update ){
+    
+    if( update->message ) {
+        if(!framebot->message)
+            framebot->message = update;
+        else
+            update_add(framebot->message, update);
+    }
+
+
+    else if( update->edited_message ) {
+        if(!framebot->edited_message)
+            framebot->edited_message = update;
+        else
+            update_add(framebot->edited_message, update);
+    }
+
+
+    else if( update->channel_post ) {
+        if(!framebot->channel_post)
+            framebot->channel_post = update;
+        else
+            update_add(framebot->channel_post, update);
+    }
+
+
+    else if( update->edited_channel_post ) {
+        if(!framebot->edited_channel_post)
+            framebot->edited_channel_post = update;
+        else
+            update_add(framebot->edited_channel_post, update);
+    }
+
+
+    else if( update->inline_query ) {
+        if(!framebot->inline_query)
+            framebot->inline_query = update;
+        else
+            update_add(framebot->inline_query, update);
+    }
+
+
+    else if( update->chosen_inline_result ) {
+        if(!framebot->chosen_inline_result)
+            framebot->chosen_inline_result = update;
+        else
+            update_add(framebot->chosen_inline_result, update);
+    }
+
+
+    else if( update->callback_query ) {
+        if(!framebot->callback_query)
+            framebot->callback_query = update;
+        else
+            update_add(framebot->callback_query, update);
+    }
+
+
+    else if( update->shipping_query ) {
+        if(!framebot->shipping_query)
+            framebot->shipping_query = update;
+        else
+            update_add(framebot->shipping_query, update);
+    }
+
+
+    else if( update->pre_checkout_query ) {
+        if(!framebot->pre_checkout_query)
+            framebot->pre_checkout_query = update;
+        else
+            update_add(framebot->pre_checkout_query, update);
+    }
+
+    framebot->update_id = UPDATE_ID_LAST(framebot, update);
+
+}
+
+
+void framebot_free(Framebot *framebot) {
+
+    if(framebot->message) {
+        update_free(framebot->message);
+    }
+    else if(framebot->edited_message) {
+        update_free(framebot->edited_message);
+    }
+    else if(framebot->channel_post) {
+        update_free(framebot->channel_post);
+    }
+    else if(framebot->edited_channel_post) {
+        update_free(framebot->edited_channel_post);
+    }
+    else if(framebot->inline_query) {
+        update_free(framebot->inline_query);
+    }
+    else if(framebot->chosen_inline_result) {
+        update_free(framebot->chosen_inline_result);
+    }
+    else if(framebot->callback_query) {
+        update_free(framebot->callback_query);
+    }
+    else if(framebot->shipping_query) {
+        update_free(framebot->shipping_query);
+    }
+    else if(framebot->pre_checkout_query) {
+        update_free(framebot->pre_checkout_query);
+    }
+
+    free(framebot);
 }

@@ -24,36 +24,54 @@ SOFTWARE.
 
 #include <framebot/framebot.h>
 
-json_t * start_json(char * json){
+refjson * start_json(char * json){
+    refjson *s_json = NULL;
     json_t *root, *ok;
 
-    root = load (json);
+    s_json = load (json);
+    root = s_json->root;
 
-    if(json_is_object(root)){
+    if(json_is_object( root )){
+        
         ok = json_object_get(root, "ok");
+        
         if(json_is_true(ok)){
             error_free();
-            return json_object_get(root, "result");
+            s_json->content = json_object_get(root, "result");
+            return s_json;
         }
         else{
             error_parse(root);
-            json_decref(root);
         }
     }
 
     return NULL;
 }
 
-json_t * load(char *json){
-    json_t *pload;
+refjson * load(char *json){
     json_error_t error;
+    refjson * s_json;
 
-    pload = json_loads(json, 0, &error);
+    s_json = (refjson *)malloc(sizeof(refjson));
+    s_json->root = NULL;
+    s_json->content = NULL;
 
-    if(pload)
-        return pload;
+    s_json->root = json_loads(json, 0, &error);
+
+    if(s_json->root)
+        return s_json;
 
     return NULL;
+}
+
+void close_json( refjson *s_json ) {
+    
+    if(s_json){
+        if(s_json->root)
+            json_decref(s_json->root);
+
+        free(s_json);
+    }
 }
 
 void error_parse(json_t * json){
@@ -68,478 +86,589 @@ void error_parse(json_t * json){
 }
 
 User * user_parse(json_t *json){
-
+    User *object = NULL;
     json_t *puser = json;
 
     if(json_is_object(puser)){
+        object = (User *) malloc(sizeof(User));
+        if(!object)
+            return NULL;
+
         json_t *id, *is_bot, *first_name, *last_name, *username, *language_code;
 
         id = json_object_get(puser, "id");
+        object->id = json_integer_value(id);
+
         is_bot = json_object_get(puser, "is_bot");
+        object->is_bot = json_is_true(is_bot);
+
         first_name = json_object_get(puser, "first_name");
+        object->first_name = alloc_string(json_string_value(first_name));
+
         last_name = json_object_get(puser, "last_name");
+        object->last_name = alloc_string(json_string_value(last_name));
+
         username = json_object_get(puser, "username");
+        object->username = alloc_string(json_string_value(username));
+
         language_code = json_object_get(puser, "language_code");
+        object->language_code =alloc_string(json_string_value(language_code));
 
-        User * o_u = user(
-            json_integer_value(id),
-            json_is_true(is_bot),
-            json_string_value(first_name),
-            json_string_value(last_name),
-            json_string_value(username),
-            json_string_value(language_code)
-        );
-
-        return o_u;
+        return object;
     }
 
     return NULL;
 }
 
 Chat * chat_parse(json_t *json){
+    Chat *object = NULL;
     json_t * pchat = json;
 
     if(json_is_object(pchat)){
+        object = (Chat *) malloc(sizeof(Chat));
+        if(!object)
+            return NULL;
+
         json_t *id, *type, *title, *username, *first_name,
         *last_name, *all_members_are_administrators, *photo,
         *description, *invite_link, *pinned_message,
         *sticker_set_name, *can_set_sticker_set;
 
         id = json_object_get(pchat,"id");
+        object->id = json_integer_value(id);
+
         type = json_object_get(pchat,"type");
+        object->type = alloc_string(json_string_value(type));
+
         title = json_object_get(pchat,"title");
+        object->title = alloc_string(json_string_value(title));
+
         username = json_object_get(pchat,"username");
+        object->username = alloc_string(json_string_value(username));
+
         first_name = json_object_get(pchat,"first_name");
+        object->first_name = alloc_string(json_string_value(first_name));
+
         last_name = json_object_get(pchat,"last_name");
+        object->last_name = alloc_string(json_string_value(last_name));
+
         all_members_are_administrators = json_object_get(pchat,"all_members_are_administrators");
-    
+        object->all_members_are_administrators =
+                json_boolean_value(all_members_are_administrators),
+
         photo = json_object_get(json, "photo");
-        ChatPhoto * ochat_photo = chat_photo_parse(photo);
+        object->photo = chat_photo_parse(photo);
 
         description = json_object_get(json, "description");
+        object->description = alloc_string(json_string_value(description));
+
         invite_link = json_object_get(json, "invite_link");
+        object->invite_link = alloc_string(json_string_value(invite_link));
         
         pinned_message = json_object_get(json, "pinned_message");
-        Message * opinned_message = message_parse(pinned_message);
+        object->pinned_message = message_parse(pinned_message);
 
         sticker_set_name = json_object_get(json, "sticker_set_name");
+        object->sticker_set_name = alloc_string(json_string_value(sticker_set_name));
+
         can_set_sticker_set = json_object_get(json, "can_set_sticker_set");
+        object->can_set_sticker_set = json_boolean_value(can_set_sticker_set);
 
-        Chat * o_c = chat(
-            json_integer_value(id),
-            json_string_value(type),
-            json_string_value(title),
-            json_string_value(username),
-            json_string_value(first_name),
-            json_string_value(last_name),
-            json_boolean_value(all_members_are_administrators),
-            ochat_photo,
-            json_string_value(description),
-            json_string_value(invite_link),
-            opinned_message,
-            json_string_value(sticker_set_name),
-            json_boolean_value(can_set_sticker_set)
-        );
-
-        return o_c;
+        return object;
     }
     return NULL;
 }
 
 MessageEntity * message_entity_parse(json_t *json){
+    MessageEntity *object = NULL;
     json_t * pmessage_entity = json;
 
     if(json_is_object(pmessage_entity)){
+        object = (MessageEntity *) malloc(sizeof(MessageEntity));
+        if(!object)
+            return NULL;
+
         json_t *type, *offset, *length, *url, *user;
 
         type = json_object_get(pmessage_entity,"type");
+        object->type = alloc_string(json_string_value(type));
+
         offset = json_object_get(pmessage_entity,"offset");
+        object->offset = json_integer_value(offset);
+
         length = json_object_get(pmessage_entity,"length");
+        object->length = json_integer_value(length);
+
         url = json_object_get(pmessage_entity,"url");
+        object->url = alloc_string(json_string_value(url));
 
         user = json_object_get(pmessage_entity,"user");
+        object->user = user_parse(user);
 
-        User * puser = user_parse(user);
-
-        MessageEntity * o_me = message_entity(
-            json_string_value(type),
-            json_integer_value(offset),
-            json_integer_value(length),
-            json_string_value(url),
-            puser
-        );
-
-        return o_me;
+        return object;
     }
 
     return NULL;
 }
 
 Audio * audio_parse(json_t *json){
+    Audio *object = NULL;
     json_t * paudio = json;
 
     if(json_is_object(paudio)){
+        object = (Audio *) malloc(sizeof(Audio));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *duration, *performer, *title, *mime_type, *file_size;
 
         file_id = json_object_get(paudio,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         duration = json_object_get(paudio,"duration");
+        object->duration = json_integer_value(duration);
+
         performer = json_object_get(paudio,"performer");
+        object->performer = alloc_string(json_string_value(performer));
+
         title = json_object_get(paudio,"title");
+        object->title = alloc_string(json_string_value(title));
+
         mime_type = json_object_get(paudio,"mime_type");
+        object->mime_type = alloc_string(json_string_value(mime_type));
+
         file_size = json_object_get(paudio,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        Audio * o_a = audio(
-            json_string_value(file_id),
-            json_integer_value(duration),
-            json_string_value(performer),
-            json_string_value(title),
-            json_string_value(mime_type),
-            json_integer_value(file_size)
-        );
-
-        return o_a;
+        return object;
     }
     return NULL;
 }
 
 PhotoSize * photo_size_parse(json_t *json) {
+    PhotoSize *object = NULL;
     json_t * pphoto_size = json;
 
     if(json_is_object(pphoto_size)){
+        object = (PhotoSize *) malloc(sizeof(PhotoSize));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *width, *height, *file_size;
 
         file_id = json_object_get(pphoto_size,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         width = json_object_get(pphoto_size,"width");
+        object->width = json_integer_value(width);
+
         height = json_object_get(pphoto_size,"height");
-        
+        object->height = json_integer_value(height);
+
         file_size = json_object_get(pphoto_size,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize * o_ps = photo_size(
-            json_string_value(file_id),
-            json_integer_value(width),
-            json_integer_value(height),
-            json_integer_value(file_size)
-        );
-
-        return o_ps;
+        return object;
     }
 
     return NULL;
 }
 
 Document * document_parse(json_t *json){
+    Document *object = NULL;
     json_t * pdocument = json;
 
     if(json_is_object(pdocument)){
+        object = (Document *) malloc(sizeof(Document));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *thumb, *file_name, *mime_type, *file_size;
 
         file_id = json_object_get(pdocument,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         thumb = json_object_get(pdocument,"thumb");
+        object->thumb = photo_size_parse(thumb);
+
         file_name = json_object_get(pdocument,"file_name");
+        object->file_name = alloc_string(json_string_value(file_name));
 
         mime_type = json_object_get(pdocument,"mime_type");
+        object->mime_type = alloc_string(json_string_value(mime_type));
 
         file_size = json_object_get(pdocument,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize * othumb = photo_size_parse(thumb);
-        
-        Document * o_d = document(
-            json_string_value(file_id),
-            othumb,
-            json_string_value(file_name),
-            json_string_value(mime_type),
-            json_integer_value(file_size)
-        );
-
-            return o_d;
+        return object;
     }
 
     return NULL;
 }
 
 Animation * animation_parse(json_t *json){
+    Animation *object = NULL;
     json_t * panimation = json;
 
     if(json_is_object(panimation)){
+        object = (Animation *) malloc(sizeof(Animation));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *thumb, *file_name, *mime_type, *file_size;
 
         file_id = json_object_get(panimation,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         thumb = json_object_get(panimation,"thumb");
+        object->thumb = photo_size_parse(thumb);
+
         file_name = json_object_get(panimation,"file_name");
+        object->file_name = alloc_string(json_string_value(file_name));
+
         mime_type = json_object_get(panimation,"mime_type");
+        object->mime_type = alloc_string(json_string_value(mime_type));
+
         file_size = json_object_get(panimation,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize *othumb = photo_size_parse(thumb);
-        
-        Animation *o_a = (Animation *)document(
-            json_string_value(file_id),
-            othumb,
-            json_string_value(file_name),
-            json_string_value(mime_type),
-            json_integer_value(file_size)
-        );
-
-        return o_a;
+        return object;
     }
 
     return NULL;
 }
 
 Game * game_parse(json_t *json){
+    Game *object = NULL;
     json_t * pgame = json;
 
     if(json_is_object(pgame)){
+        object = (Game *) malloc(sizeof(Game));
+        if(!object)
+            return NULL;
+
         json_t *title, *description, *photo, *text, *text_entities, *animation;
 
         title = json_object_get(pgame,"title");
+        object->title = alloc_string(json_string_value(title));
+
         description = json_object_get(pgame,"description");
+        object->description = alloc_string(json_string_value(description));
+
         photo = json_object_get(pgame,"photo");
+        object->photo = photo_size_parse(photo);
+
         text = json_object_get(pgame,"text");
+        object->text = alloc_string(json_string_value(text));
+
         text_entities = json_object_get(pgame,"text_entities");
+        object->text_entities = message_entity_parse(text_entities);
+
         animation = json_object_get(pgame,"animation");
+        object->animation = animation_parse(animation);
 
-        PhotoSize * ophoto = photo_size_parse(photo);
-        MessageEntity * otext_entities = message_entity_parse(text_entities);
-        Animation * oanimation = animation_parse(animation);
-
-        Game * o_g = game(
-            json_string_value(title),
-            json_string_value(description),
-            ophoto, json_string_value(text),
-            otext_entities, oanimation
-        );
-
-        return o_g;
+        return object;
     }
+
     return NULL;
 }
 
 Sticker * sticker_parse(json_t *json){
+    Sticker *object = NULL;
     json_t * psticker = json;
 
     if(json_is_object(psticker)){
+        object = (Sticker *) malloc(sizeof(Sticker));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *width, *height, *thumb, *emoji, *file_size;
 
         file_id = json_object_get(psticker,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         width = json_object_get(psticker,"width");
+        object->width = json_integer_value(width);
+
         height = json_object_get(psticker,"height");
+        object->height = json_integer_value(height);
+
         thumb = json_object_get(psticker,"thumb");
+        object->thumb = photo_size_parse(thumb);
+
         emoji = json_object_get(psticker,"emoji");
+        object->emoji = alloc_string(json_string_value(emoji));
+
         file_size = json_object_get(psticker,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize * othumb = photo_size_parse(thumb);
-
-        Sticker * o_s = sticker(
-            json_string_value(file_id),
-            json_integer_value(width),
-            json_integer_value(height),
-            othumb,
-            json_string_value(emoji),
-            json_integer_value(file_size)
-        );
-
-        return o_s;
+        return object;
     }
 
     return NULL;
 }
 
 Video * video_parse(json_t *json){
+    Video *object = NULL;
     json_t * pvideo = json;
 
     if(json_is_object(pvideo)){
+        object = (Video *) malloc(sizeof(Video));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *width, *height, *duration, *thumb, *mime_type, *file_size;
 
         file_id = json_object_get(pvideo,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         width = json_object_get(pvideo,"width");
+        object->width = json_integer_value(width);
+
         height = json_object_get(pvideo,"height");
+        object->height = json_integer_value(height);
+
         duration = json_object_get(pvideo,"duration");
+        object->duration = json_integer_value(duration);
+
         thumb = json_object_get(pvideo,"thumb");
+        object->thumb = photo_size_parse(thumb);
+
         mime_type = json_object_get(pvideo,"mime_type");
-        
+        object->mime_type = alloc_string(json_string_value(mime_type));
+
         file_size = json_object_get(pvideo,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize * othumb = photo_size_parse(thumb);
-
-        Video * o_v = video(
-            json_string_value(file_id),
-            json_integer_value(width),
-            json_integer_value(height),
-            json_integer_value(duration),
-            othumb,
-            json_string_value(mime_type),
-            json_integer_value(file_size)
-        );
-
-        return o_v;
+        return object;
     }
 
     return NULL;
 }
 
 Voice * voice_parse(json_t *json){
+    Voice *object = NULL;
     json_t * pvoice = json;
 
     if(json_is_object(pvoice)){
+        object = (Voice *) malloc(sizeof(Voice));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *duration, *mime_type, *file_size;
 
         file_id = json_object_get(pvoice,"file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         duration = json_object_get(pvoice,"duration");
+        object->duration = json_integer_value(duration);
+
         mime_type = json_object_get(pvoice,"mime_type");
+        object->mime_type = alloc_string(json_string_value(mime_type));
+
         file_size = json_object_get(pvoice,"file_size");
+        object->file_size = json_integer_value(file_size);
 
-        Voice * o_v = voice(
-            json_string_value(file_id),
-            json_integer_value(duration),
-            json_string_value(mime_type),
-            json_integer_value(file_size)
-        );
-
-        return o_v;
+        return object;
     }
 
     return NULL;
 }
 
 Contact * contact_parse(json_t *json){
+    Contact *object = NULL;
     json_t * pcontact = json;
 
     if(json_is_object(pcontact)){
+        object = (Contact *) malloc(sizeof(Contact));
+        if(!object)
+            return NULL;
+
         json_t *phone_number, *first_name, *last_name, *user_id;
 
         phone_number = json_object_get(pcontact,"phone_number");
+        object->phone_number = alloc_string(json_string_value(phone_number));
+
         first_name = json_object_get(pcontact,"first_name");
+        object->first_name = alloc_string(json_string_value(first_name));
+
         last_name = json_object_get(pcontact,"last_name");
+        object->last_name = alloc_string(json_string_value(last_name));
+
         user_id = json_object_get(pcontact,"user_id");
+        object->user_id = json_integer_value(user_id);
 
-        Contact * o_c = contact(
-            json_string_value(phone_number),
-            json_string_value(first_name),
-            json_string_value(last_name),
-            json_integer_value(user_id)
-        );
-
-        return o_c;
+        return object;
     }
+
     return NULL;
 }
 
 Location * location_parse(json_t *json){
+    Location *object = NULL;
     json_t * plocation = json;
 
     if(json_is_object(plocation)){
+        object = (Location *) malloc(sizeof(Location));
+        if(!object)
+            return NULL;
+
         json_t *latitude, *longitude;
 
         latitude = json_object_get(plocation,"latitude");
+        object->latitude = json_real_value(latitude);
+
         longitude = json_object_get(plocation,"longitude");
+        object->longitude = json_real_value(longitude);
 
-        Location * o_l = location(
-            json_real_value(latitude),
-            json_real_value(longitude)
-        );
-
-        return o_l;
+        return object;
     }
 
     return NULL;
 }
 
 Venue * venue_parse(json_t *json){
+    Venue *object = NULL;
     json_t * pvenue = json;
 
     if(json_is_object(pvenue)){
+        object = (Venue *) malloc(sizeof(Venue));
+        if(!object)
+            return NULL;
+
         json_t *location, *title, *address, *foursquare_id;
 
         location = json_object_get(pvenue,"location");
+        object->location = location_parse(location);
+
         title = json_object_get(pvenue,"title");
+        object->title = alloc_string(json_string_value(title));
+
         address = json_object_get(pvenue,"address");
+        object->address = alloc_string(json_string_value(address));
+
         foursquare_id = json_object_get(pvenue,"foursquare_id");
+        object->foursquare_id = alloc_string(json_string_value(foursquare_id));
 
-        Location * olocation = location_parse(location);
-
-        Venue * o_v = venue(
-            olocation,
-            json_string_value(title),
-            json_string_value(address),
-            json_string_value(foursquare_id)
-        );
-
-        return o_v;
+        return object;
     }
 
     return NULL;
 }
 
 ChosenInlineResult * chosen_inline_result_parse(json_t * json){
+    ChosenInlineResult *object = NULL;
     json_t * pcir = json;
 
     if(json_is_object(pcir)){
+        object = (ChosenInlineResult *) malloc(sizeof(ChosenInlineResult));
+        if(!object)
+            return NULL;
+
         json_t *result_id, *from, *location, *inline_message_id, *query;
 
         result_id = json_object_get(pcir, "result_id");
+        object->result_id = alloc_string(json_string_value(result_id));
+
         from = json_object_get(pcir, "from");
+        object->from = user_parse(from);
+
         location = json_object_get(pcir, "location");
+        object->location = location_parse(location);
+
         inline_message_id = json_object_get(pcir, "inline_message_id");
+        object->inline_message_id = alloc_string(json_string_value(inline_message_id));
+
         query = json_object_get(pcir, "query");
+        object->query = alloc_string(json_string_value(query));
 
-        User * ouser = user_parse(from);
-        Location * olocation = location_parse(location);
-
-        ChosenInlineResult * o_cir = chosen_inline_result(
-            json_string_value(result_id),
-            ouser,
-            olocation,
-            json_string_value(inline_message_id),
-            json_string_value(query)
-        );
-
-        return o_cir;
+        return object;
     }
 
     return NULL;
 }
 
 Message * message_parse(json_t *json){
+    Message *message = NULL;
     json_t * pmessage = json;
     size_t length, i;
 
     if(json_is_object(pmessage)){
+        message = (Message *) malloc( sizeof( Message ));
+        if(!message)
+            return NULL;
+
         //Numbers
         json_t *message_id, *date, *forward_from_message_id, *forward_date,
         *edit_date, *delete_chat_photo, *group_chat_created, *supergroup_chat_created,
         *channel_chat_created, *migrate_to_chat_id, *migrate_from_chat_id;
 
-        message_id = json_object_get(pmessage,"message_id");
-        date = json_object_get(pmessage,"date");
-        forward_from_message_id = json_object_get(pmessage,"forward_from_message_id");
-        forward_date = json_object_get(pmessage,"forward_date");
-        edit_date = json_object_get(pmessage,"edit_date");
-        delete_chat_photo = json_object_get(pmessage,"delete_chat_photo");
-        group_chat_created = json_object_get(pmessage,"group_chat_created");
-        supergroup_chat_created = json_object_get(pmessage,"supergroup_chat_created");
-        channel_chat_created = json_object_get(pmessage,"channel_chat_created");
-        migrate_to_chat_id = json_object_get(pmessage,"migrate_to_chat_id");
-        migrate_from_chat_id = json_object_get(pmessage,"migrate_from_chat_id");
+        message_id = json_object_get( pmessage, "message_id" );
+        message->message_id = json_integer_value( message_id );
+
+        date = json_object_get( pmessage, "date" );
+        message->date = json_integer_value( date );
+
+        forward_from_message_id = json_object_get( pmessage, "forward_from_message_id" );
+        message->forward_from_message_id = json_integer_value( forward_from_message_id );
+
+        forward_date = json_object_get( pmessage, "forward_date" );
+        message->forward_date = json_integer_value( forward_date );
+
+        edit_date = json_object_get( pmessage, "edit_date" );
+        message->edit_date = json_integer_value( edit_date );
+
+        delete_chat_photo = json_object_get( pmessage, "delete_chat_photo" );
+        message->delete_chat_photo = json_integer_value( delete_chat_photo );
+
+        group_chat_created = json_object_get( pmessage, "group_chat_created" );
+        message->group_chat_created = json_integer_value( group_chat_created );
+
+        supergroup_chat_created = json_object_get( pmessage, "supergroup_chat_created" );
+        message->supergroup_chat_created = json_integer_value( supergroup_chat_created );
+
+        channel_chat_created = json_object_get( pmessage, "channel_chat_created" );
+        message->channel_chat_created = json_integer_value( channel_chat_created );
+
+        migrate_to_chat_id = json_object_get( pmessage, "migrate_to_chat_id" );
+        message->migrate_to_chat_id = json_integer_value( migrate_to_chat_id );
+
+        migrate_from_chat_id = json_object_get( pmessage, "migrate_from_chat_id" );
+        message->migrate_from_chat_id = json_integer_value( migrate_from_chat_id );
 
         //Strings
         json_t *text, *caption, *new_chat_title, *forward_signature,
-        *media_group_id, *author_signature;
+        *media_group_id, *author_signature, *connected_website;
 
-        text = json_object_get(pmessage,"text");
-        caption = json_object_get(pmessage,"caption");
-        new_chat_title = json_object_get(pmessage,"new_chat_title");
-        forward_signature = json_object_get(pmessage, "forward_signature");
-        media_group_id = json_object_get(pmessage, "media_group_id");
-        author_signature = json_object_get(pmessage, "author_signature");
+        text = json_object_get( pmessage, "text" );
+        message->text = alloc_string( json_string_value( text ));
+
+        caption = json_object_get( pmessage, "caption" );
+        message->caption = alloc_string( json_string_value( caption ));
+
+        new_chat_title = json_object_get( pmessage, "new_chat_title" );
+        message->new_chat_title = alloc_string( json_string_value( new_chat_title ));
+
+        forward_signature = json_object_get( pmessage, "forward_signature" );
+        message->forward_signature = alloc_string( json_string_value( forward_signature));
+
+        media_group_id = json_object_get( pmessage, "media_group_id" );
+        message->media_group_id = alloc_string( json_string_value( media_group_id ));
+
+        author_signature = json_object_get( pmessage, "author_signature" );
+        message->author_signature = alloc_string( json_string_value( author_signature ));
+
+        connected_website = json_object_get( pmessage, "connected_website" );
+        message->connected_website = alloc_string( json_string_value( connected_website ));
 
         //Arrays
         json_t *entities, *photo, *new_chat_photo, *caption_entities,
         *new_chat_members;
 
-        entities = json_object_get(pmessage, "entities");
-        length = json_array_size(entities);
+        entities = json_object_get( pmessage, "entities" );
+        length = json_array_size( entities );
         MessageEntity * oentities = NULL, *_temp_e = NULL;
-        oentities = message_entity_parse(json_array_get(entities, 0));
+        oentities = message_entity_parse( json_array_get(entities, 0));
         if (length > 0) {
             for (i = 1; i < length; i++) {
                 _temp_e = message_entity_parse(json_array_get(entities, i));
@@ -547,8 +676,9 @@ Message * message_parse(json_t *json){
                     message_entity_add(oentities, _temp_e);
             }
         }
+        message->entities = oentities;
 
-        photo = json_object_get(pmessage, "photo");
+        photo = json_object_get( pmessage, "photo" );
         length = json_array_size(photo);
         PhotoSize * ophoto = NULL, *_temp_p = NULL;
         ophoto = photo_size_parse(json_array_get(photo, 0));
@@ -559,8 +689,9 @@ Message * message_parse(json_t *json){
                     photo_size_add(ophoto, _temp_p);
             }
         }
+        message->photo = ophoto;
 
-        new_chat_photo = json_object_get(pmessage, "new_chat_photo");
+        new_chat_photo = json_object_get( pmessage, "new_chat_photo" );
         length = json_array_size(new_chat_photo);
         PhotoSize * onew_chat_photo = NULL, *_temp_ncp = NULL;
         onew_chat_photo = photo_size_parse(json_array_get(new_chat_photo, 0));
@@ -571,8 +702,9 @@ Message * message_parse(json_t *json){
                     photo_size_add(onew_chat_photo, _temp_ncp);
             }
         }
+        message->new_chat_photo= onew_chat_photo;
 
-        caption_entities = json_object_get(pmessage, "caption_entities");
+        caption_entities = json_object_get( pmessage, "caption_entities" );
         length = json_array_size(caption_entities);
         MessageEntity * ocaption_entities = NULL, *_temp_ce = NULL;
         ocaption_entities = message_entity_parse(json_array_get(caption_entities, 0));
@@ -583,8 +715,9 @@ Message * message_parse(json_t *json){
                     message_entity_add(ocaption_entities, _temp_ce);
             }
         }
+        message->caption_entities = ocaption_entities;
 
-        new_chat_members = json_object_get(pmessage, "new_chat_members");
+        new_chat_members = json_object_get( pmessage, "new_chat_members" );
         length = json_array_size(new_chat_members);
         User * onew_chat_members = NULL, *_temp_u = NULL;
         onew_chat_members = user_parse(json_array_get(new_chat_members, 0));
@@ -595,6 +728,7 @@ Message * message_parse(json_t *json){
                     user_add(onew_chat_members, _temp_u);
             }
         }
+        message->new_chat_members = onew_chat_members;
 
         //Objects
         json_t *from, *chat, *forward_from, *forward_from_chat, *reply_to_message, 
@@ -602,486 +736,539 @@ Message * message_parse(json_t *json){
         *location, *venue, *left_chat_member, *pinned_message, 
         *invoice, *successful_payment;
 
-        from = json_object_get(pmessage,"from");
-        User * ofrom = user_parse(from);
+        from = json_object_get( pmessage, "from" );
+        message->from = user_parse(from);
 
-        chat = json_object_get(pmessage,"chat");
-        Chat * ochat = chat_parse(chat);
+        chat = json_object_get( pmessage, "chat" );
+        message->chat = chat_parse(chat);
 
-        forward_from = json_object_get(pmessage,"forward_from");
-        User * oforward_from = user_parse(forward_from);
+        forward_from = json_object_get( pmessage, "forward_from" );
+        message->forward_from = user_parse(forward_from);
 
-        forward_from_chat = json_object_get(pmessage,"forward_from_chat");
-        Chat * oforward_from_chat = chat_parse(forward_from_chat);
+        forward_from_chat = json_object_get( pmessage, "forward_from_chat" );
+        message->forward_from_chat = chat_parse(forward_from_chat);
 
-        reply_to_message = json_object_get(pmessage,"reply_to_message");
-        Message * oreply_to_message = message_parse(reply_to_message);
+        reply_to_message = json_object_get( pmessage, "reply_to_message" );
+        message->reply_to_message = message_parse(reply_to_message);
 
-        audio = json_object_get(pmessage,"audio");
-        Audio * oaudio = audio_parse(audio);
+        audio = json_object_get( pmessage, "audio" );
+        message->audio = audio_parse(audio);
 
-        document = json_object_get(pmessage,"document");
-        Document * odocument = document_parse(document);
+        document = json_object_get( pmessage, "document" );
+        message->document = document_parse(document);
 
-        game = json_object_get(pmessage,"game");
-        Game * ogame = game_parse(game);
+        game = json_object_get( pmessage, "game" );
+        message->game = game_parse(game);
 
-        sticker = json_object_get(pmessage,"sticker");
-        Sticker * osticker = sticker_parse(sticker);
+        sticker = json_object_get( pmessage, "sticker" );
+        message->sticker = sticker_parse(sticker);
 
-        video = json_object_get(pmessage,"video");
-        Video * ovideo = video_parse(video);
+        video = json_object_get( pmessage, "video" );
+        message->video = video_parse(video);
 
-        voice = json_object_get(pmessage,"voice");
-        Voice * ovoice = voice_parse(voice);
+        voice = json_object_get( pmessage, "voice" );
+        message->voice = voice_parse(voice);
 
-        video_note = json_object_get(pmessage, "video_note");
-        VideoNote * ovideo_note = video_note_parse(video_note);
+        video_note = json_object_get( pmessage, "video_note" );
+        message->video_note = video_note_parse(video_note);
 
-        contact = json_object_get(pmessage,"contact");
-        Contact * ocontact = contact_parse(contact);
+        contact = json_object_get( pmessage, "contact" );
+        message->contact = contact_parse(contact);
 
-        location = json_object_get(pmessage,"location");
-        Location * olocation = location_parse(location);
+        location = json_object_get( pmessage, "location" );
+        message->location = location_parse(location);
 
-        venue = json_object_get(pmessage,"venue");
-        Venue * ovenue = venue_parse(venue);
+        venue = json_object_get( pmessage, "venue" );
+        message->venue = venue_parse(venue);
 
-        left_chat_member = json_object_get(pmessage,"left_chat_member");
-        User * oleft_chat_member = user_parse(left_chat_member);
+        left_chat_member = json_object_get( pmessage, "left_chat_member" );
+        message->left_chat_member = user_parse(left_chat_member);
 
-        pinned_message = json_object_get(pmessage,"pinned_message");
-        Message * opinned_message = message_parse(pinned_message);
+        pinned_message = json_object_get( pmessage, "pinned_message" );
+        message->pinned_message = message_parse(pinned_message);
 
-        invoice = json_object_get(pmessage, "invoice");
-        Invoice * oinvoice = invoice_parse(invoice);
+        invoice = json_object_get( pmessage, "invoice" );
+        message->invoice = invoice_parse(invoice);
 
-        successful_payment = json_object_get(pmessage, "successful_payment");
-        SuccessfulPayment * osuccessful_payment = successful_payment_parse(successful_payment);
+        successful_payment = json_object_get( pmessage, "successful_payment" );
+        message->successful_payment = successful_payment_parse(successful_payment);
 
-        Message * o_m = message(
-            json_integer_value(message_id),
-            ofrom,
-            json_integer_value(date),
-            ochat,
-            oforward_from,
-            oforward_from_chat,
-            json_integer_value(forward_from_message_id),
-            json_string_value(forward_signature),
-            json_integer_value(forward_date),
-            oreply_to_message,
-            json_integer_value(edit_date),
-            json_string_value(media_group_id),
-            json_string_value(author_signature),
-            json_string_value(text),
-            oentities,
-            ocaption_entities,
-            oaudio,
-            odocument,
-            ogame,
-            ophoto,
-            osticker,
-            ovideo,
-            ovoice,
-            ovideo_note,
-            json_string_value(caption),
-            ocontact,
-            olocation,
-            ovenue,
-            onew_chat_members, 
-            oleft_chat_member,
-            json_string_value(new_chat_title),
-            onew_chat_photo, 
-            json_integer_value(delete_chat_photo),
-            json_integer_value(group_chat_created), 
-            json_integer_value(supergroup_chat_created),
-            json_integer_value(channel_chat_created), 
-            json_integer_value(migrate_to_chat_id),
-            json_integer_value(migrate_from_chat_id),
-            opinned_message,
-            oinvoice,
-            osuccessful_payment
-        );
-
-        return o_m;
+        return message;
     }
     return NULL;
 }
 
 Update * update_parse(json_t *json){
+    Update *object = NULL;
     json_t * pupdate = json;
 
     if(json_is_object(pupdate)){
+        object = (Update *)  malloc(sizeof(Update));
+        if(!object)
+            return NULL;
+
         json_t *update_id, *message, *edited_message, *channel_post,
         *edited_channel_post, *inline_query, *chosen_inline_result,
         *callback_query, *shipping_query, *pre_checkout_query;
 
         update_id = json_object_get(pupdate,"update_id");
+        object->update_id = json_integer_value(update_id);
+
         message = json_object_get(pupdate,"message");
+        object->message = message_parse(message);
+
         edited_message = json_object_get(pupdate,"edited_message");
+        object->edited_message = message_parse(edited_message);
+
         channel_post = json_object_get(pupdate,"channel_post");
+        object->channel_post = message_parse(channel_post);
+
         edited_channel_post = json_object_get(pupdate,"edited_channel_post");
+        object->edited_channel_post = message_parse(edited_channel_post);
+
         inline_query = json_object_get(pupdate,"inline_query");
+        object->inline_query = inline_query_parse(inline_query);
+
         chosen_inline_result = json_object_get(pupdate,"choosen_inline_result");
+        object->chosen_inline_result = chosen_inline_result_parse(chosen_inline_result);
+
         callback_query = json_object_get(pupdate,"callback_query");
+        object->callback_query = callback_query_parse(callback_query);
+
         shipping_query = json_object_get(pupdate, "shipping_query");
+        object->shipping_query = shipping_query_parse(shipping_query);
+
         pre_checkout_query = json_object_get(pupdate, "pre_checkout_query");
+        object->pre_checkout_query = pre_checkout_query_parse(pre_checkout_query);
 
 
-        Message * omessage = message_parse(message);
-        Message * oedited_message = message_parse(edited_message);
-        Message * ochannel_post = message_parse(channel_post);
-        Message * oedited_channel_post = message_parse(edited_channel_post);
-
-        InlineQuery * oinline_query = inline_query_parse(inline_query);
-        ChosenInlineResult * ochosen_inline_result = chosen_inline_result_parse(chosen_inline_result);
-        CallbackQuery * ocallback_query = callback_query_parse(callback_query);
-        ShippingQuery * oshipping_query = shipping_query_parse(shipping_query);
-        PreCheckoutQuery * opre_checkout_query = pre_checkout_query_parse(pre_checkout_query);
-
-
-        Update * o_u = update(
-            json_integer_value(update_id), omessage,
-            oedited_message, ochannel_post,
-            oedited_channel_post, oinline_query,
-            ochosen_inline_result, ocallback_query,
-            oshipping_query, opre_checkout_query
-        );
-
-        return o_u;
+        return object;
     }
 
     return NULL;
 }
 
 ChatMember *chat_member_parse (json_t *json) {
+    ChatMember *object = NULL;
+
     if (json_is_object(json)) {
+        object = (ChatMember *) malloc(sizeof(ChatMember));
+        if(!object)
+            return NULL;
+
         json_t *user, *status, *until_date, *can_be_edited,
                *can_change_info, *can_post_messages, *can_edit_messages,
                *can_delete_messages, *can_invite_users, *can_restrict_members,
                *can_pin_messages, *can_promote_members, *can_send_messages,
                *can_send_media_messages, *can_send_other_messages, *can_add_web_page_previews;
                
-        user                        = json_object_get(json, "user");
-        status                      = json_object_get(json, "status");
-        until_date                  = json_object_get(json, "until_date");
-        can_be_edited               = json_object_get(json, "can_be_edited");
-        can_change_info             = json_object_get(json, "can_change_info");
-        can_post_messages           = json_object_get(json, "can_post_messages");
-        can_edit_messages           = json_object_get(json, "can_edit_messages");
-        can_delete_messages         = json_object_get(json, "can_delete_messages");
-        can_invite_users            = json_object_get(json, "can_invite_users");
-        can_restrict_members        = json_object_get(json, "can_restrict_members");
-        can_pin_messages            = json_object_get(json, "can_pin_messages");
-        can_promote_members         = json_object_get(json, "can_promote_members");
-        can_send_messages           = json_object_get(json, "can_send_messages");
-        can_send_media_messages     = json_object_get(json, "can_send_media_messages");
-        can_send_other_messages     = json_object_get(json, "can_send_other_messages");
-        can_add_web_page_previews   = json_object_get(json, "can_add_web_page_previews");
+        user         = json_object_get(json, "user");
+        object->user = user_parse(user);
 
-        ChatMember *o_c = chat_member(
-            user_parse(user),
-            json_string_value(status),
-            json_integer_value(until_date),
-            json_boolean_value(can_be_edited),
-            json_boolean_value(can_change_info),
-            json_boolean_value(can_post_messages),
-            json_boolean_value(can_edit_messages),
-            json_boolean_value(can_delete_messages),
-            json_boolean_value(can_invite_users),
-            json_boolean_value(can_restrict_members),
-            json_boolean_value(can_pin_messages),
-            json_boolean_value(can_promote_members),
-            json_boolean_value(can_send_messages),
-            json_boolean_value(can_send_media_messages), 
-            json_boolean_value(can_send_other_messages),
-            json_boolean_value(can_add_web_page_previews)
-        );
+        status         = json_object_get(json, "status");
+        object->status = alloc_string(json_string_value(status));
+
+        until_date = json_object_get(json, "until_date");
+        object->until_date = json_integer_value(until_date);
+
+        can_be_edited         = json_object_get(json, "can_be_edited");
+        object->can_be_edited = json_boolean_value(can_be_edited);
+
+        can_change_info         = json_object_get(json, "can_change_info");
+        object->can_change_info = json_boolean_value(can_change_info);
+
+        can_post_messages         = json_object_get(json, "can_post_messages");
+        object->can_post_messages = json_boolean_value(can_post_messages);
+
+        can_edit_messages         = json_object_get(json, "can_edit_messages");
+        object->can_edit_messages = json_boolean_value(can_edit_messages);
+
+        can_delete_messages         = json_object_get(json, "can_delete_messages");
+        object->can_delete_messages = json_boolean_value(can_delete_messages);
+
+        can_invite_users         = json_object_get(json, "can_invite_users");
+        object->can_invite_users = json_boolean_value(can_invite_users);
+
+        can_restrict_members         = json_object_get(json, "can_restrict_members");
+        object->can_restrict_members = json_boolean_value(can_restrict_members);
+
+        can_pin_messages         = json_object_get(json, "can_pin_messages");
+        object->can_pin_messages = json_boolean_value(can_pin_messages);
+
+        can_promote_members         = json_object_get(json, "can_promote_members");
+        object->can_promote_members = json_boolean_value(can_promote_members);
+
+        can_send_messages         = json_object_get(json, "can_send_messages");
+        object->can_send_messages = json_boolean_value(can_send_messages);
+
+        can_send_media_messages =
+                        json_object_get(json, "can_send_media_messages");
+        object->can_send_media_messages = json_boolean_value(can_send_media_messages);
+
+        can_send_other_messages =
+                        json_object_get(json, "can_send_other_messages");
+        object->can_send_other_messages = json_boolean_value(can_send_other_messages);
+
+        can_add_web_page_previews =
+                        json_object_get(json, "can_add_web_page_previews");
+        object->can_add_web_page_previews = json_boolean_value(can_add_web_page_previews);
         
-        return o_c;
+        return object;
     }
 
     return NULL;
 }
 
 ChatMember *chat_member_array_parse (json_t *cm_array) {
-    if (json_is_array(cm_array)) {
+    ChatMember *object = NULL;
+
+    if (json_is_object(cm_array)) {
+        object = (ChatMember *) malloc(sizeof(ChatMember));
+        if(!object)
+            return NULL;
+
         size_t i, sz = json_array_size(cm_array);
 
-        ChatMember *cm_temp = chat_member_parse(json_array_get(cm_array, 0));
+        if(sz > 0){
+            ChatMember *object = chat_member_parse(json_array_get(cm_array, 0));
 
-        for (i = 1; i < sz; i++) {
-            chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+            for (i = 1; i < sz; i++) {
+                chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+            }
         }
 
-        return cm_temp;
+        return object;
     }
+    
     return NULL;
 }
 
 InlineQuery * inline_query_parse(json_t * json){
+    InlineQuery *object = NULL;
+
     if (json_is_object(json)) {
+        object = (InlineQuery *) malloc(sizeof(InlineQuery));
+        if(!object)
+            return NULL;
+
         json_t *id, *from, *location, *query, *offset;
 
         id = json_object_get(json, "id");
+        object->id = alloc_string(json_string_value(id));
+
         from = json_object_get(json, "from");
+        object->from = user_parse(from);
+
         location = json_object_get(json, "location");
+        object->location = location_parse(location);
+
         query = json_object_get(json, "query");
+        object->query = alloc_string(json_string_value(query));
+
         offset = json_object_get(json, "offset");
+        object->offset = alloc_string(json_string_value(offset));
 
-        User * ouser = user_parse(from);
-        Location * olocation = location_parse(location);
-
-        InlineQuery * o_iq = inline_query(
-            json_string_value(id),
-            ouser, olocation,
-            json_string_value(query),
-            json_string_value(offset)
-        );
-
-        return o_iq;
+        return object;
     }
 
     return NULL;
 }
 
 CallbackQuery * callback_query_parse(json_t * json){
+    CallbackQuery *object = NULL;
+
     if(json_is_object(json)){
-        json_t *id, *from, *message, *inline_message_id, *chat_instance, *date, *game_short_name;
+        object = (CallbackQuery *) malloc(sizeof(CallbackQuery));
+        if(!object)
+            return NULL;
+
+        json_t *id, *from, *message, *inline_message_id, *chat_instance, *data, *game_short_name;
 
         id = json_object_get(json , "id");
+        object->id = alloc_string(json_string_value(id));
+
         from = json_object_get(json , "from");
+        object->from = user_parse(from);
+
         message = json_object_get(json, "message");
+        object->message = message_parse(message);
+
         inline_message_id = json_object_get(json, "inline_message_id");
+        object->inline_message_id = alloc_string(json_string_value(inline_message_id));
+
         chat_instance = json_object_get(json, "chat_instance");
-        date = json_object_get(json, "date");
+        object->chat_instance = alloc_string(json_string_value(chat_instance));
+
+        data = json_object_get(json, "data");
+        object->data = alloc_string(json_string_value(data));
+
         game_short_name = json_object_get(json, "game_short_name");
+        object->game_short_name = alloc_string(json_string_value(game_short_name));
 
-        User * ouser = user_parse(from);
-        Message * omessage = message_parse(message);
-
-        CallbackQuery * o_cq = callback_query(
-            json_string_value(id), ouser, omessage,
-            json_string_value(inline_message_id),
-            json_string_value(chat_instance),
-            json_string_value(date),
-            json_string_value(game_short_name)
-        );
-
-        return o_cq;
+        return object;
     }
 
     return NULL;
 }
 
 VideoNote * video_note_parse(json_t * json){
+    VideoNote *object = NULL;
+
     if(json_is_object(json)){
+        object = (VideoNote *) malloc(sizeof(VideoNote));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *length, *duration, *thumb, *file_size;
 
         file_id = json_object_get(json, "file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         length = json_object_get(json, "length");
+        object->length = json_integer_value(length);
+
         duration = json_object_get(json, "duration");
+        object->duration = json_integer_value(duration);
+
         thumb = json_object_get(json, "thumb");
+        object->thumb = photo_size_parse(thumb);
+
         file_size = json_object_get(json, "file_size");
+        object->file_size = json_integer_value(file_size);
 
-        PhotoSize * othumb = photo_size_parse(thumb);
-        VideoNote * o_vn = video_note(
-            json_string_value(file_id),
-            json_integer_value(length),
-            json_integer_value(duration),
-            othumb,
-            json_integer_value(file_size)
-        );
-
-        return o_vn;
+        return object;
     }
 
     return NULL;
 }
 
 ShippingQuery * shipping_query_parse(json_t * json){
+    ShippingQuery *object = NULL;
+
     if(json_is_object(json)){
+        object = (ShippingQuery *) malloc(sizeof(ShippingQuery));
+        if(!object)
+            return NULL;
+
         json_t *id, *from, *invoice_payload, *shipping_address;
 
         id = json_object_get(json, "id");
+        object->id = alloc_string(json_string_value(id));
+
         from = json_object_get(json, "from");
+        object->from = user_parse(from);
+
         invoice_payload = json_object_get(json, "invoice_payload");
+        object->invoice_payload = alloc_string(json_string_value(invoice_payload));
+
         shipping_address = json_object_get(json, "shipping_address");
+        object->shipping_address = shipping_address_parse(shipping_address);
 
-        User * ofrom = user_parse(from);
-        ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
-
-        ShippingQuery * o_sq = shipping_query(
-            json_string_value(id), ofrom,
-            json_string_value(invoice_payload),
-            oshipping_address
-        );
-
-        return o_sq;
+        return object;
     }
 
     return NULL;
 }
 
 Invoice * invoice_parse(json_t * json){
+    Invoice *object = NULL;
+
     if(json_is_object(json)){
+        object = (Invoice *) malloc(sizeof(Invoice));
+        if(!object)
+            return NULL;
+
         json_t *title, *description, * start_parameter, *currency, *total_amount;
 
         title = json_object_get(json, "invoice");
+        object->title = alloc_string(json_string_value(title));
+
         description = json_object_get(json, "description");
+        object->description = alloc_string(json_string_value(description));
+
         start_parameter = json_object_get(json, "start_parameter");
+        object->start_parameter = alloc_string(json_string_value(start_parameter));
+
         currency = json_object_get(json, "currency");
+        object->currency = alloc_string(json_string_value(currency));
+
         total_amount = json_object_get(json, "total_amount");
+        object->total_amount = json_integer_value(total_amount);
 
-        Invoice * o_i = invoice(
-            json_string_value(title),
-            json_string_value(description),
-            json_string_value(start_parameter),
-            json_string_value(currency),
-            json_integer_value(total_amount)
-        );
-
-        return o_i;
+        return object;
     }
 
     return NULL;
 }
 
 ShippingAddress * shipping_address_parse(json_t * json){
+    ShippingAddress *object = NULL;
+
     if(json_is_object(json)){
+        object = (ShippingAddress *) malloc(sizeof(ShippingAddress));
+        if(!object)
+            return NULL;
+
         json_t *country_code, *state, *city, *street_line1, *street_line2, *post_code;
 
         country_code = json_object_get(json, "country_code");
+        object->country_code = alloc_string(json_string_value(country_code));
+
         state = json_object_get(json, "state");
+        object->state = alloc_string(json_string_value(state));
+
         city = json_object_get(json, "city");
+        object->city = alloc_string(json_string_value(city));
+
         street_line1 = json_object_get(json, "street_line1");
+        object->street_line1 = alloc_string(json_string_value(street_line1));
+
         street_line2 = json_object_get(json, "street_line2");
+        object->street_line2 = alloc_string(json_string_value(street_line2));
+
         post_code = json_object_get(json, "post_code");
+        object->post_code = alloc_string(json_string_value(post_code));
 
-        ShippingAddress * o_sa = shipping_address(
-            json_string_value(country_code),
-            json_string_value(state),
-            json_string_value(city),
-            json_string_value(street_line1),
-            json_string_value(street_line2),
-            json_string_value(post_code)
-        );
-
-        return o_sa;
+        return object;
     }
 
     return NULL;
 }
 
 PreCheckoutQuery * pre_checkout_query_parse(json_t * json){
+    PreCheckoutQuery *object = NULL;
+
     if(json_is_object(json)){
+        object = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
+        if(!object)
+            return NULL;
+
         json_t *id, *from, *currency, *total_amount, *invoice_payload,
         *shipping_option_id, *order_info;
 
         id = json_object_get(json, "id");
+        object->id = alloc_string(json_string_value(id));
+
         from = json_object_get(json, "from");
+        object->from = user_parse(from);
+
         currency = json_object_get(json, "currency");
+        object->currency = alloc_string(json_string_value(currency));
+
         total_amount = json_object_get(json, "total_amount");
+        object->total_amount = json_integer_value(total_amount);
+
         invoice_payload = json_object_get(json, "invoice_payload");
+        object->invoice_payload = alloc_string(json_string_value(invoice_payload));
+
         shipping_option_id = json_object_get(json, "shipping_option_id");
+        object->shipping_option_id = alloc_string(json_string_value(shipping_option_id));
+
         order_info = json_object_get(json, "order_info");
+        object->order_info = order_info_parse(order_info);
 
-        User * ofrom = user_parse(from);
-        OrderInfo * oorder_info = order_info_parse(order_info);
-
-        PreCheckoutQuery * o_pcq = pre_checkout_query(
-            json_string_value(id),
-            ofrom,
-            json_string_value(currency),
-            json_integer_value(total_amount),
-            json_string_value(invoice_payload),
-            json_string_value(shipping_option_id),
-            oorder_info
-        );
-
-        return o_pcq;
+        return object;
     }
 
     return NULL;
 }
 
 OrderInfo * order_info_parse(json_t * json){
+    OrderInfo *object = NULL;
+
     if(json_is_object(json)){
+        object = (OrderInfo *) malloc(sizeof(OrderInfo));
         json_t *name, *phone_number, *email, *shipping_address;
 
         name = json_object_get(json, "name");
+        object->name = alloc_string(json_string_value(name));
+
         phone_number = json_object_get(json, "phone_number");
+        object->phone_number = alloc_string(json_string_value(phone_number));
+
         email = json_object_get(json, "email");
+        object->email = alloc_string(json_string_value(email));
+
         shipping_address = json_object_get(json, "shipping_address");
+        object->shipping_address = shipping_address_parse(shipping_address);
 
-        ShippingAddress * oshipping_address = shipping_address_parse(shipping_address);
-
-        OrderInfo * o_oi = order_info(
-            json_string_value(name),
-            json_string_value(phone_number),
-            json_string_value(email),
-             oshipping_address
-        );
-
-        return o_oi;
+        return object;
     }
 
     return NULL;
 }
 
 SuccessfulPayment * successful_payment_parse(json_t * json){
+    SuccessfulPayment *object = NULL;
+
     if(json_is_object(json)){
+        object = (SuccessfulPayment *) malloc(sizeof(SuccessfulPayment));
+        if(!object)
+            return NULL;
+
         json_t *currency, *total_amount, *invoice_payload, *shipping_option_id,
         *order_info, *telegram_payment_charge_id, *provider_payment_charge_id;
 
         currency = json_object_get(json, "currency");
+        object->currency = alloc_string(json_string_value(currency));
+
         total_amount = json_object_get(json, "total_amount");
+        object->total_amount = json_integer_value(total_amount);
+
         invoice_payload = json_object_get(json, "invoice_payload");
+        object->invoice_payload = alloc_string(json_string_value(invoice_payload));
+
         shipping_option_id = json_object_get(json, "shipping_option_id");
+        object->shipping_option_id = alloc_string(json_string_value(shipping_option_id));
+
         order_info = json_object_get(json, "order_info");
+        object->order_info = order_info_parse(order_info);
+
         telegram_payment_charge_id = json_object_get(json, "telegram_payment_charge_id");
+        object->telegram_payment_charge_id = alloc_string(json_string_value(telegram_payment_charge_id));
+
         provider_payment_charge_id = json_object_get(json, "provider_payment_charge_id");
+        object->provider_payment_charge_id = alloc_string(json_string_value(provider_payment_charge_id));
 
-        OrderInfo * oorder_info = order_info_parse(order_info);
-
-        SuccessfulPayment * o_sp = successful_payment(
-            json_string_value(currency),
-            json_integer_value(total_amount),
-            json_string_value(invoice_payload), 
-            json_string_value(shipping_option_id),
-            oorder_info,
-            json_string_value(telegram_payment_charge_id),
-            json_string_value(provider_payment_charge_id)
-        );
-
-        return o_sp;
+        return object;
     }
 
     return NULL;
 }
 
 File * file_parse(json_t * json){
+    File *object = NULL;
+
     if(json_is_object(json)){
+        object = (File *) malloc(sizeof(File));
+        if(!object)
+            return NULL;
+
         json_t *file_id, *file_size, *file_path;
 
         file_id = json_object_get(json, "file_id");
+        object->file_id = alloc_string(json_string_value(file_id));
+
         file_size = json_object_get(json, "file_size");
+        object->file_size = json_integer_value(file_size);
+
         file_path = json_object_get(json, "file_path");
+        object->file_path = alloc_string(json_string_value(file_path));
 
-        File * o_f = file(
-            json_string_value(file_id),
-            json_integer_value(file_size),
-            json_string_value(file_path)
-        );
-
-        return o_f;
+        return object;
     }
 
     return NULL;
 }
 
 UserProfilePhotos * user_profile_photos_parse(json_t * json){
+    UserProfilePhotos *object = NULL;
+
     if(json_is_object(json)){
+        object = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
+        if(!object)
+            return NULL;
+
         json_t *total_count, *photos, *array_photos;
         size_t _length, i, length_, x;
 
@@ -1112,12 +1299,10 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
             }
         }
 
-        UserProfilePhotos * oupp = user_profile_photos(
-            json_integer_value(total_count),
-            ophotos
-        );
+        object->total_count = json_integer_value(total_count);
+        object->photos = ophotos;
 
-        return oupp;
+        return object;
     }
 
     return NULL;
@@ -1125,18 +1310,22 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
 
 
 ChatPhoto * chat_photo_parse(json_t * json){
+    ChatPhoto *object = NULL;
+
     if(json_is_object(json)){
+        object = (ChatPhoto *) malloc(sizeof(ChatPhoto));
+        if(!object)
+            return NULL;
+
         json_t *small_file_id, *big_file_id;
 
         small_file_id = json_object_get(json, "small_file_id");
+        object->small_file_id = alloc_string(json_string_value(small_file_id));
+
         big_file_id   = json_object_get(json, "big_file_id");
+        object->big_file_id = alloc_string(json_string_value(big_file_id));
 
-        ChatPhoto * o_cp = chat_photo(
-            json_string_value(small_file_id),
-            json_string_value(big_file_id)
-        );
-
-        return o_cp;
+        return object;
     }
 
     return NULL;

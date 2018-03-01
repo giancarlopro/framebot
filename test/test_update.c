@@ -336,6 +336,7 @@ void update_init(Update * update){
 
 int main(int argc, char **argv){
 	size_t update_length, i;
+	Update *update;
 	framebot_init();
 
 	if(argc < 2)
@@ -348,8 +349,8 @@ int main(int argc, char **argv){
     	exit(-1);
     }
 
-	Update * update = get_updates(bot, 0, 0, 0, NULL);
-
+	Framebot *fbot = get_updates(bot, NULL, 0, 0, 0, NULL);
+	update = fbot->message;
 	update_length = update_len(update);
 	printf(BLUE"length = %lu"COLOR_RESET, update_length);
 

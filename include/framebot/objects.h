@@ -1,8 +1,6 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
-typedef struct _document Animation;
-
 typedef struct _error{
     long int error_code;
     char *description;
@@ -70,16 +68,13 @@ typedef struct _photo_size{
     struct _photo_size *next;
 } PhotoSize;
 
-/*
- *Document is equals Animation
- */
 typedef struct _document{
     char *file_id;
     PhotoSize *thumb;
     char *file_name;
     char *mime_type;
     long int file_size;
-} Document;
+} Document, Animation;
 
 typedef struct _game{
     char *title;
@@ -186,7 +181,7 @@ typedef struct _shipping_query{
 
 typedef struct _pre_checkout_query{
     char *id;
-    User *user;
+    User *from;
     char *currency;
     long total_amount;
     char *invoice_payload;
@@ -236,6 +231,7 @@ typedef struct _message{
     struct _message *pinned_message;
     Invoice *invoice;
     SuccessfulPayment *successful_payment;
+    char *connected_website;
 } Message;
 
 typedef struct _inline_query{
@@ -276,7 +272,21 @@ typedef struct _update{
     ShippingQuery *shipping_query;
     PreCheckoutQuery *pre_checkout_query;
 	struct _update *next;
-} Update;
+} Update, UPMessage, UPIQuery, UPIResult, UPCQuery,
+UPSQuery, UPPCQuery;
+
+typedef struct {
+    long int update_id;
+    UPMessage *message;
+    UPMessage *edited_message;
+    UPMessage *channel_post;
+    UPMessage *edited_channel_post;
+    UPIQuery  *inline_query;
+    UPIResult *chosen_inline_result;
+    UPCQuery  *callback_query;
+    UPSQuery  *shipping_query;
+    UPPCQuery *pre_checkout_query;
+} Framebot;
 
 typedef struct _chat_member {
     User *user;
@@ -369,9 +379,7 @@ typedef union _keyboard{
     ReplyKeyboardRemove *reply_keyboard_remove;
     ForceReply *_force_reply;
 } Keyboard;
-
-typedef struct _document Animation;
-
+ 
 //User functions
 User *user(
     long int id, bool is_bot, const char *first_name, const char *last_name,
@@ -380,18 +388,9 @@ void user_add(User *origin, User *next);
 void user_free(User *usr);
 
 //Chat functions
-Chat *chat(
-    long int id, const char *type, const char *title, const char *username,
-    const char *first_name, const char *last_name,
-    bool all_members_are_administrators, ChatPhoto *ochat_photo,
-    const char *description, const char *invite_link, Message *opinned_message,
-    const char *sticker_set_name, bool can_set_sticker_set);
 void chat_free(Chat *cht);
 
 //Message entity functions
-MessageEntity *message_entity(
-    const char *type, long int offset, long int length,
-    const char *url, User *user);
 void message_entity_free(MessageEntity *msgett);
 void message_entity_add(MessageEntity *dest, MessageEntity *src);
 size_t message_entity_len(MessageEntity *message_entity);
@@ -403,7 +402,6 @@ Audio *audio(
     const char *title, const char *mime_type, long int file_size);
 void audio_free(Audio *audio);
 
-PhotoSize *photo_size(const char *file_id, int width, int height, long int file_size);
 void photo_size_free(PhotoSize *photoSize);
 void photo_size_add(PhotoSize *root,PhotoSize *newps);
 PhotoSize *photo_size_get(PhotoSize *root, int i);
@@ -449,18 +447,6 @@ Venue *venue(Location *location, const char *title, const char *address,
     const char *foursquare_id);
 void venue_free(Venue *_venue);
 
-Message *message(long int message_id, User *from, long int date, Chat *chat,
-    User *forward_from, Chat *forward_from_chat, long int forward_from_message_id,
-    const char *forward_signature, long int forward_date, Message *reply_to_message,
-    long int edit_date, const char *media_group_id, const char *author_signature,
-    const char *text, MessageEntity *entities, MessageEntity *ocaption_entiities,
-    Audio *audio, Document *document, Game *game, PhotoSize *photo, Sticker *sticker,
-    Video *video, Voice *voice, VideoNote *video_note, const char *caption,
-    Contact *contact, Location *location, Venue *venue, User *new_chat_member,
-    User *left_chat_member, const char *new_chat_title, PhotoSize *new_chat_photo,
-    int delete_chat_photo, int group_chat_created, int supergroup_chat_created,
-    int channel_chat_created, long int migrate_to_chat_id, long int migrate_from_chat_id,
-    Message *pinned_message, Invoice *oinvoice,SuccessfulPayment *successful_payment);
 void message_free(Message *message);
 
 Bot *bot(const char *token, User *user);
@@ -521,9 +507,6 @@ OrderInfo *order_info(const char *name, const char *phone_number,
     const char *email, ShippingAddress *shipping_address);
 void order_info_free(OrderInfo *order_info);
 
-PreCheckoutQuery *pre_checkout_query(const char *id, User *from,
-    const char *currency, long total_amount, const char *invoice_payload,
-    const char *shipping_option_id, OrderInfo *order_info);
 void pre_checkout_query_free(PreCheckoutQuery *pcq);
 
 SuccessfulPayment *successful_payment(const char *currency, long total_amount,
@@ -544,5 +527,8 @@ void chat_photo_free(ChatPhoto *ochat_photo);
 void error(long int error_code, const char *description);
 void error_free();
 Error *get_error();
+
+void framebot_add( Framebot *framebot, Update *update );
+void framebot_free(Framebot *framebot);
 
 #endif // OBJECTS_H_

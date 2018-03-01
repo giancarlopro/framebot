@@ -1,9 +1,8 @@
 #include <framebot/framebot.h>
 
-Bot * _bot;
-
 int main(int argc, char *argv[]){
-	Message * message;
+	Message * message = NULL;
+	Bot * _bot = NULL;
 
 	framebot_init();
 
@@ -12,17 +11,14 @@ int main(int argc, char *argv[]){
 
     _bot = framebot(argv[1]);
 
-/* Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
-			  char * caption, bool disable_notification,
-			  long int reply_to_message_id){
-*/
-
     if(_bot)
 		message = send_message(_bot, argv[2], "sendMessage = ok", NULL, 0, 0, 0, NULL);
 
 
 	if(message){
 		printf("enviado");
+		message_free(message);
+		bot_free(_bot);
 	}
 	else{
 		Error * error = show_error();
