@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Começando &#8212; documentação Framebot 0.1.0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="prev" title="Welcome to Framebot’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="comecando">
+<h1>Começando<a class="headerlink" href="#comecando" title="Link permanente para este título">¶</a></h1>
+<p>Framebot é uma biblioteca feita em C para facilitar o uso da BOT API do telegram.</p>
+<div class="section" id="instalacao">
+<h2>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h2>
+<dl class="docutils">
+<dt>Para instalar a biblioteca você deve primeiro clonar o nosso repositório:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/giancarlopro/framebot</span></code></dd>
+<dt>Agora você vai precisar ter o <cite>cmake</cite> instalado, e algumas libs:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">cmake</span> <span class="pre">openssl</span> <span class="pre">curl</span> <span class="pre">jansson</span></code></dd>
+<dt>Após isso entre na pasta onde a biblioteca foi clonada, por padrão vai ser <cite>framebot</cite>:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cd</span> <span class="pre">framebot</span></code></dd>
+<dt>Agora crie uma pasta para compilar a biblioteca e rode o cmake para criar o makefile:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">mkdir</span> <span class="pre">build</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cd</span> <span class="pre">build</span></code></p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cmake</span> <span class="pre">..</span></code></p>
+</dd>
+<dt>Agora utilize o makefile para compilar e instalar a biblioteca:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">make</span></code></p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">make</span> <span class="pre">install</span></code></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="configuracao">
+<h2>Configuração<a class="headerlink" href="#configuracao" title="Link permanente para este título">¶</a></h2>
+<p>Para utilizar a biblioteca em seus projetos, você deve informar ao compilador explicitamente
+as bibliotecas que serão compiladas juntas.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Se estiver compilando pelo terminal:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">gcc</span> <span class="pre">projeto.c</span> <span class="pre">-o</span> <span class="pre">out</span> <span class="pre">-lcurl</span> <span class="pre">-ljansson</span> <span class="pre">-lframebot</span></code></dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Se estiver utilizando o cmake basta informar no seu CMakeLists.txt, em target_link_libraries:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">target_link_libraries(seuexecutavel</span> <span class="pre">framebot)</span></code></dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="utilizacao">
+<h2>Utilização<a class="headerlink" href="#utilizacao" title="Link permanente para este título">¶</a></h2>
+<dl class="docutils">
+<dt>Para utilizar a biblioteca em seus projetos, você deve incluir o arquivo <cite>framebot.h</cite>.</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;framebot/framebot.h&gt;</span></code></dd>
+</dl>
+</div>
+<div class="section" id="exemplos">
+<h2>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este título">¶</a></h2>
+<p>Você encontra exemplos de uso da biblioteca na pasta <cite>examples</cite> em nosso repositório no <a class="reference external" href="https://github.com/giancarlopro/framebot/blob/master/examples">GitHub</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Tabela de Conteúdo</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Começando</a><ul>
+<li><a class="reference internal" href="#instalacao">Instalação</a></li>
+<li><a class="reference internal" href="#configuracao">Configuração</a></li>
+<li><a class="reference internal" href="#utilizacao">Utilização</a></li>
+<li><a class="reference internal" href="#exemplos">Exemplos</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="capítulo anterior">Welcome to Framebot’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Essa Página</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/starting.rst.txt"
+            rel="nofollow">Exibir Fonte</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Giancarlo and Ródgger.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/starting.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
