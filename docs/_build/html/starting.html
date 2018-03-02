@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Começando &mdash; documentação Framebot 0.1.0</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Índice"
+              href="genindex.html"/>
+        <link rel="search" title="Buscar" href="search.html"/>
+    <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/>
+        <link rel="prev" title="Welcome to Framebot’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Framebot
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Começando</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#instalacao">Instalação</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracao">Configuração</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilizacao">Utilização</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exemplos">Exemplos</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Framebot</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Começando</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/starting.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="comecando">
+<h1>Começando<a class="headerlink" href="#comecando" title="Link permanente para este título">¶</a></h1>
+<p>Framebot é uma biblioteca feita em C para facilitar o uso da BOT API do telegram.</p>
+<div class="section" id="instalacao">
+<h2>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h2>
+<dl class="docutils">
+<dt>Para instalar a biblioteca você deve primeiro clonar o nosso repositório:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/giancarlopro/framebot</span></code></dd>
+<dt>Agora você vai precisar ter o <cite>cmake</cite> instalado, e algumas libs:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">cmake</span> <span class="pre">openssl</span> <span class="pre">curl</span> <span class="pre">jansson</span></code></dd>
+<dt>Após isso entre na pasta onde a biblioteca foi clonada, por padrão vai ser <cite>framebot</cite>:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cd</span> <span class="pre">framebot</span></code></dd>
+<dt>Agora crie uma pasta para compilar a biblioteca e rode o cmake para criar o makefile:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">mkdir</span> <span class="pre">build</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cd</span> <span class="pre">build</span></code></p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">cmake</span> <span class="pre">..</span></code></p>
+</dd>
+<dt>Agora utilize o makefile para compilar e instalar a biblioteca:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">make</span></code></p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">make</span> <span class="pre">install</span></code></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="configuracao">
+<h2>Configuração<a class="headerlink" href="#configuracao" title="Link permanente para este título">¶</a></h2>
+<p>Para utilizar a biblioteca em seus projetos, você deve informar ao compilador explicitamente
+as bibliotecas que serão compiladas juntas.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Se estiver compilando pelo terminal:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">gcc</span> <span class="pre">projeto.c</span> <span class="pre">-o</span> <span class="pre">out</span> <span class="pre">-lcurl</span> <span class="pre">-ljansson</span> <span class="pre">-lframebot</span></code></dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Se estiver utilizando o cmake basta informar no seu CMakeLists.txt, em target_link_libraries:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">target_link_libraries(seuexecutavel</span> <span class="pre">framebot)</span></code></dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="utilizacao">
+<h2>Utilização<a class="headerlink" href="#utilizacao" title="Link permanente para este título">¶</a></h2>
+<dl class="docutils">
+<dt>Para utilizar a biblioteca em seus projetos, você deve incluir o arquivo <cite>framebot.h</cite>.</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;framebot/framebot.h&gt;</span></code></dd>
+</dl>
+</div>
+<div class="section" id="exemplos">
+<h2>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este título">¶</a></h2>
+<p>Você encontra exemplos de uso da biblioteca na pasta <cite>examples</cite> em nosso repositório no <a class="reference external" href="https://github.com/giancarlopro/framebot/blob/master/examples">GitHub</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Framebot’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Giancarlo and Ródgger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

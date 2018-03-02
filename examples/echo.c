@@ -6,18 +6,24 @@ int main (int argc, char **argv) {
         printf("Usage: ./echo BOT_TOKEN\n");
         exit(-1);
     }
-    framebot_init();
-
-    Bot *echo = framebot(argv[1]);
 
     long int last_offset = 0;
+    Bot *echo;
+    Framebot *frame_update;
+    Update *message, *temp;
 
-    Update *last_updates = get_updates(echo, last_offset, 100, 0, NULL);
-    Update *temp = last_updates;
+    framebot_init();
+
+    echo = framebot(argv[1]);
+
+
+    frame_update = get_updates(echo, NULL, last_offset, 100, 0, NULL);
+    message = frame_update->message;
+    temp = message;
 
     while (temp) {
         if (temp->message) {
-            if (send_message_chat (echo, temp->message->from->id, temp->message->text, "HTML", 0, 0, temp->message->message_id, "")) {
+            if (send_message_chat (echo, temp->message->from->id, temp->message->text, NULL, 0, 0, temp->message->message_id, NULL)) {
                 printf("Sended: \"%s\" to %s!\n", temp->message->text, temp->message->from->username);
             }
         }
@@ -26,6 +32,7 @@ int main (int argc, char **argv) {
         temp = temp->next;
     }
 
-    get_updates(echo, last_offset, 100, 0, NULL); // Reset update list
+    get_updates(echo, frame_update, last_offset, 100, 0, NULL); // Reset update list
+    framebot_free(frame_update);
     return 0;
 }

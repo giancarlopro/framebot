@@ -48,33 +48,42 @@ User *get_me (const char *token) {
  * Returns the updates list
  * https://core.telegram.org/bots/api#getupdates
  */ 
-Update *get_updates (Bot *bot, long int offset, long int limit,
+Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
                      long int timeout, char *allowed_updates) {
 
-    refjson *s_json;
+    refjson *s_json = NULL;
+    Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
         offset, limit, timeout, allowed_updates );
 
+    if( !framebot ){
+        framebot = (Framebot *)malloc( sizeof( Framebot ));
+        
+        /* initialize */
+        framebot->update_id      = 0;
+        framebot->message        = NULL;
+        framebot->edited_message = NULL;
+        framebot->channel_post   = NULL;
+        framebot->edited_channel_post = NULL;
+        framebot->inline_query   = NULL;
+        framebot->chosen_inline_result = NULL;
+        framebot->callback_query = NULL;
+        framebot->shipping_query = NULL;
+        framebot->pre_checkout_query = NULL;
+    }
+
     size_t length, i;
     length = json_array_size(s_json->content);
 
-    Update *up = NULL, *_temp = NULL;
-
-    if (length > 0) {
-        up = update_parse(json_array_get(s_json->content, 0));
-
-        for (i = 1; i < length; i++) {
-            _temp = update_parse(json_array_get(s_json->content, i));
-            if (_temp) {
-                update_add(up, _temp);
-            }
-        }
+    for (i = 0; i < length; i++) {
+        up = update_parse(json_array_get(s_json->content, i));
+        framebot_add( framebot, up );
     }
 
     close_json(s_json);
 
-    return up;
+    return framebot;
 }
 
 
@@ -1730,6 +1739,21 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
     result = delete_chat_sticker_set(bot, cchat_id);
 
     free(cchat_id);
+
+    return result;
+}
+
+bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+    char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
+    bool result;
+    refjson *s_json;
+
+    s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
+        cache_time, is_personal, next_offset, switch_pm_text, switch_pm_parameter);
+
+    result = json_is_true(s_json->content);
+
+    close_json( s_json );
 
     return result;
 }

@@ -1,4 +1,4 @@
-# Framebot - 0.1.0 [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=dev)](https://travis-ci.org/giancarlopro/framebot) [![Open Source Helpers](https://www.codetriage.com/giancarlopro/framebot/badges/users.svg)](https://www.codetriage.com/giancarlopro/framebot)
+# Framebot - 0.1.0 [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=dev)](https://travis-ci.org/giancarlopro/framebot) [![Open Source Helpers](https://www.codetriage.com/giancarlopro/framebot/badges/users.svg)](https://www.codetriage.com/giancarlopro/framebot) [![Documentation Status](https://readthedocs.org/projects/framebot/badge/?version=latest)](http://framebot.readthedocs.io/pt/latest/?badge=latest)
 
 This is the official repository for Framebot.
 

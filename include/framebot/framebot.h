@@ -181,6 +181,14 @@
 #define API_deleteChatStickerSet "deleteChatStickerSet\
 ?chat_id=%s"
 
+#define API_answerInlineQuery "answerInlineQuery\
+?inline_query_id=%s\
+&results=%s\
+&cache_time=%ld\
+&is_personal=%d\
+&next_offset=%s\
+&switch_pm_text=%s\
+&switch_pm_parameter=%s"
 
 /* analyze parameter API methods */
 #define PARSE_MODE(p) (p == NULL ? "" : p) 
@@ -207,6 +215,8 @@
 #define WIDTH(p) (p > 0 ? api_ltoa(p) : NULL)
 #define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
 #define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
+
+#define UPDATE_ID_LAST(x, y) (x->update_id > y->update_id ? x->update_id : y->update_id)
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -267,7 +277,7 @@ Error * show_error();
 
 /** Available methods **/
 User * get_me(const char *token);
-Update *get_updates (Bot *bot, long int offset, long int limit,
+Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
             long int timeout, char *allowed_updates);
 
 /* sendMessage */
@@ -477,5 +487,8 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
         char *inline_message_id, char *reply_markup);
 Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
         char *inline_message_id, char *reply_markup);
+
+bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+    char *next_offset, char *switch_pm_text, char *switch_pm_parameter);
 
 #endif
