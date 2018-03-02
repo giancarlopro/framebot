@@ -65,5 +65,3 @@ build-vs17/
 x64/
 structure
 .vscode/
-_build/
-docs/_build/
