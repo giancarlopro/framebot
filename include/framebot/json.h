@@ -29,7 +29,6 @@ Venue * venue_parse(json_t *json);
 Message * message_parse(json_t *json);
 Update * update_parse(json_t *json);
 User * get_me_parse(char * json);
-bool valid_update(long int update_id);
 ChatMember *chat_member_parse (json_t *json);
 ChatMember *chat_member_array_parse (json_t *cm_array);
 ChosenInlineResult * choosen_inline_result_parse(json_t * json);
