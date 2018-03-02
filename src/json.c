@@ -933,7 +933,7 @@ ChatMember *chat_member_array_parse (json_t *cm_array) {
             ChatMember *object = chat_member_parse(json_array_get(cm_array, 0));
 
             for (i = 1; i < sz; i++) {
-                chat_member_add(cm_temp, chat_member_parse(json_array_get(cm_array, i)));
+                chat_member_add(object, chat_member_parse(json_array_get(cm_array, i)));
             }
         }
 
