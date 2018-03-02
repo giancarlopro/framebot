@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Índice &mdash; documentação Framebot 0.1.0</title>
+  <title>Funções &mdash; documentação Framebot 0.1.0</title>
   
 
   
@@ -34,9 +33,10 @@
 
   
         <link rel="index" title="Índice"
-              href="#"/>
+              href="genindex.html"/>
         <link rel="search" title="Buscar" href="search.html"/>
-    <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/> 
+    <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/>
+        <link rel="prev" title="Objetos" href="objects.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,10 +86,14 @@
             
             
               <p class="caption"><span class="caption-text">Conteúdo:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="starting.html">Começando</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">Objetos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="functions.html">Funções</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Funções</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#funcoes-exclusivas">Funções exclusivas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#funcoes-da-api">Funções da API</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -134,12 +138,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Índice</li>
+      <li>Funções</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/functions.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -151,74 +157,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
+  <div class="section" id="funcoes">
+<h1>Funções<a class="headerlink" href="#funcoes" title="Link permanente para este título">¶</a></h1>
+<p>Aqui você encontra as funções implementadas pela biblioteca.</p>
+<div class="section" id="funcoes-exclusivas">
+<h2>Funções exclusivas<a class="headerlink" href="#funcoes-exclusivas" title="Link permanente para este título">¶</a></h2>
+<p>Funções que são implementadas pela biblioteca, mas não pela API do Telegram.</p>
+<dl class="function">
+<dt id="c.framebot_init">
+void <code class="descname">framebot_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot_init" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Essa função é utilizada para iniciar a biblioteca e suas dependencias.</p>
+</dd></dl>
 
-<h1 id="index">Índice</h1>
+<dl class="function">
+<dt id="c.framebot">
+<a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<code class="descname">framebot</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Essa função é chamada para inicializar um objeto do tipo <a class="reference internal" href="objects.html#c.Bot" title="Bot"><code class="xref c c-type docutils literal notranslate"><span class="pre">Bot</span></code></a>,
+que será usado sempre que for preciso utilizar uma função da API do Telegram.</p>
+</dd></dl>
 
-<div class="genindex-jumpbox">
- <a href="#B"><strong>B</strong></a>
- | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#U"><strong>U</strong></a>
- 
 </div>
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="objects.html#c.Bot">Bot (tipo C)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="objects.html#c.Bot.token">Bot.token (membro C)</a>
-</li>
-      <li><a href="objects.html#c.Bot.user">Bot.user (membro C)</a>
-</li>
-  </ul></td>
-</tr></table>
+<div class="section" id="funcoes-da-api">
+<span id="api-func"></span><h2>Funções da API<a class="headerlink" href="#funcoes-da-api" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="c.get_me">
+<a class="reference internal" href="objects.html#c.User" title="User">User</a> *<code class="descname">get_me</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_me" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Veja em <a class="reference external" href="https://core.telegram.org/bots/api#getme">Telegram API</a></p>
+<p>Uma função para testar seu <cite>token</cite>.
+Requer o parâmetro <cite>token</cite>, e retorna as informações básicas do seu bot em um objeto <a class="reference internal" href="objects.html#c.User" title="User"><code class="xref c c-type docutils literal notranslate"><span class="pre">User</span></code></a>.</p>
+</dd></dl>
 
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="functions.html#c.framebot">framebot (função C)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="functions.html#c.framebot_init">framebot_init (função C)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="functions.html#c.get_me">get_me (função C)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="objects.html#c.User">User (tipo C)</a>
-</li>
-      <li><a href="objects.html#c.User.first_name">User.first_name (membro C)</a>
-</li>
-      <li><a href="objects.html#c.User.id">User.id (membro C)</a>
-</li>
-      <li><a href="objects.html#c.User.is_bot">User.is_bot (membro C)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="objects.html#c.User.language_code">User.language_code (membro C)</a>
-</li>
-      <li><a href="objects.html#c.User.last_name">User.last_name (membro C)</a>
-</li>
-      <li><a href="objects.html#c.User.next">User.next (membro C)</a>
-</li>
-      <li><a href="objects.html#c.User.username">User.username (membro C)</a>
-</li>
-  </ul></td>
-</tr></table>
-
+</div>
+</div>
 
 
            </div>
@@ -227,6 +197,13 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="objects.html" class="btn btn-neutral" title="Objetos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Começando &mdash; documentação Framebot 0.1.0</title>
+  <title>Objetos &mdash; documentação Framebot 0.1.0</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="search" title="Buscar" href="search.html"/>
     <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/>
         <link rel="next" title="Funções" href="functions.html"/>
-        <link rel="prev" title="Framebot - Documentação" href="index.html"/> 
+        <link rel="prev" title="Começando" href="starting.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,11 +88,10 @@
             
               <p class="caption"><span class="caption-text">Conteúdo:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Começando</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#instalacao">Instalação</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuracao">Configuração</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#utilizacao">Utilização</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exemplos">Exemplos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Começando</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Objetos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#objetos-exclusivos">Objetos exclusivos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#objetos-da-api">Objetos da API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="functions.html">Funções</a></li>
@@ -140,13 +139,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Começando</li>
+      <li>Objetos</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/starting.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/objects.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,62 +158,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="comecando">
-<h1>Começando<a class="headerlink" href="#comecando" title="Link permanente para este título">¶</a></h1>
-<p>Framebot é uma biblioteca feita em C para facilitar o uso da BOT API do telegram.</p>
-<div class="section" id="instalacao">
-<h2>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h2>
-<p>Para instalar a biblioteca você deve primeiro clonar o nosso repositório:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/giancarlopro/framebot
-</pre></div>
+  <div class="section" id="objetos">
+<h1>Objetos<a class="headerlink" href="#objetos" title="Link permanente para este título">¶</a></h1>
+<p>Aqui você encontra os objetos implementados pela biblioteca.</p>
+<div class="section" id="objetos-exclusivos">
+<h2>Objetos exclusivos<a class="headerlink" href="#objetos-exclusivos" title="Link permanente para este título">¶</a></h2>
+<p>Objetos que existem somente na biblioteca, e não possuem representação na API do Telegram.</p>
+<dl class="type">
+<dt id="c.Bot">
+<code class="descname">Bot</code><a class="headerlink" href="#c.Bot" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Objeto que vai ser utilizado para referenciar seu bot nas funções da API.</p>
+<dl class="member">
+<dt id="c.Bot.token">
+char *<code class="descname">token</code><a class="headerlink" href="#c.Bot.token" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Seu <cite>token</cite> do Telegram.</p>
+</dd></dl>
+
+<dl class="member">
+<dt id="c.Bot.user">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">user</code><a class="headerlink" href="#c.Bot.user" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Objeto retornado da chamada à <a class="reference internal" href="functions.html#c.get_me" title="get_me"><code class="xref c c-func docutils literal notranslate"><span class="pre">get_me()</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<p>Agora você vai precisar ter o <cite>cmake</cite> instalado, e algumas libs:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo apt install cmake openssl curl jansson
-</pre></div>
-</div>
-<p>Após isso entre na pasta onde a biblioteca foi clonada, por padrão vai ser <cite>framebot</cite>:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> framebot
-</pre></div>
-</div>
-<p>Agora crie uma pasta para compilar a biblioteca e rode o cmake para criar o makefile:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir build
-<span class="nb">cd</span> build
-cmake ..<span class="sb">``</span>
-</pre></div>
-</div>
-<p>Agora utilize o makefile para compilar e instalar a biblioteca:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make
-make install
-</pre></div>
-</div>
-</div>
-<div class="section" id="configuracao">
-<h2>Configuração<a class="headerlink" href="#configuracao" title="Link permanente para este título">¶</a></h2>
-<p>Para utilizar a biblioteca em seus projetos, você deve informar ao compilador explicitamente
-as bibliotecas que serão compiladas juntas.</p>
-<ul class="simple">
-<li>Se estiver compilando pelo terminal:</li>
-</ul>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gcc projeto.c -o out -lcurl -ljansson -lframebot
-</pre></div>
-</div>
-<ul class="simple">
-<li>Se estiver utilizando o cmake basta informar no seu CMakeLists.txt, em target_link_libraries:</li>
-</ul>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>target_link_libraries<span class="o">(</span>seuexecutavel framebot<span class="o">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="utilizacao">
-<h2>Utilização<a class="headerlink" href="#utilizacao" title="Link permanente para este título">¶</a></h2>
-<p>Para utilizar a biblioteca em seus projetos, você deve incluir o arquivo <cite>framebot.h</cite>.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;framebot/framebot.h&gt;</span><span class="cp"></span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="exemplos">
-<h2>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este título">¶</a></h2>
-<p>Você encontra exemplos de uso da biblioteca na pasta <cite>examples</cite> em nosso repositório no <a class="reference external" href="https://github.com/giancarlopro/framebot/blob/master/examples">GitHub</a>.</p>
+<div class="section" id="objetos-da-api">
+<h2>Objetos da API<a class="headerlink" href="#objetos-da-api" title="Link permanente para este título">¶</a></h2>
+<dl class="type">
+<dt id="c.User">
+<code class="descname">User</code><a class="headerlink" href="#c.User" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Veja <a class="reference external" href="https://core.telegram.org/bots/api#user">Telegram User</a></p>
+<dl class="member">
+<dt id="c.User.id">
+long int <code class="descname">id</code><a class="headerlink" href="#c.User.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.is_bot">
+bool <code class="descname">is_bot</code><a class="headerlink" href="#c.User.is_bot" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.first_name">
+char *<code class="descname">first_name</code><a class="headerlink" href="#c.User.first_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.last_name">
+char *<code class="descname">last_name</code><a class="headerlink" href="#c.User.last_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.username">
+char *<code class="descname">username</code><a class="headerlink" href="#c.User.username" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.language_code">
+char *<code class="descname">language_code</code><a class="headerlink" href="#c.User.language_code" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.User.next">
+struct _user *<code class="descname">next</code><a class="headerlink" href="#c.User.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -231,7 +242,7 @@ as bibliotecas que serão compiladas juntas.</p>
         <a href="functions.html" class="btn btn-neutral float-right" title="Funções" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Framebot - Documentação" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="starting.html" class="btn btn-neutral" title="Começando" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
