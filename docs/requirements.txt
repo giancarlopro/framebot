@@ -1,5 +1,0 @@
-CommonMark==0.5.4
-Sphinx==1.7.0
-sphinx-autobuild==0.7.1
-sphinx-rtd-theme==0.2.4
-sphinxcontrib-websupport==1.0.1.dev20170522
