@@ -3,12 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Framebot's documentation!
-====================================
+Framebot - Documentação
+=======================
+
+`Framebot` é um framework escrito C com o objetivo de ajudar programadores a criarem chat bots
+para o `Telegram`_.
+
+.. _`Telegram`: https://core.telegram.org/bots/api
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Conteúdo:
 
    starting
 
