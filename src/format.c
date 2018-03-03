@@ -30,7 +30,7 @@ char *format (char *formats, ...) {
 	va_list params;
 	va_start(params, formats);
 	
-	char *buffer = (char *)malloc(MAX_URL_SZ);
+	char *buffer = (char *)calloc(1, MAX_URL_SZ);
 	
 	vsprintf(buffer, formats, params);
 
@@ -40,7 +40,7 @@ char *format (char *formats, ...) {
 }
 
 char *vsformat (char *formats, va_list params) {
-	char *buffer = (char *) malloc(MAX_URL_SZ);
+	char *buffer = (char *) calloc(1, MAX_URL_SZ);
 
 	vsnprintf(buffer, MAX_URL_SZ, formats, params);
 
@@ -51,9 +51,9 @@ char *vsformat (char *formats, va_list params) {
 char * api_ltoa(long int n){
     char * str;
 
-    str = malloc(STRLONG);
+    str = calloc(1, STRLONG);
 
-    snprintf(str, STRLONG, "%lu", n);
+    snprintf(str, STRLONG, "%ld", n);
 
     return str;
 }
@@ -61,7 +61,7 @@ char * api_ltoa(long int n){
 char * api_itoa(int n){
     char * str;
 
-    str = malloc(STRINT);
+    str = calloc(1, STRINT);
 
     snprintf(str, STRINT, "%d", n);
 
