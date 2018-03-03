@@ -11,6 +11,7 @@ addons:
     - g++-6
     - cmake
     - libjansson4
+    - libjansson-dev
     - libssl-dev
     - libcurl4-openssl-dev
 script:
