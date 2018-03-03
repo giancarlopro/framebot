@@ -41,7 +41,7 @@ refjson * start_json(char * json){
             return s_json;
         }
         else{
-            error_parse(root);
+            error_parse(s_json);
         }
     }
 
@@ -57,10 +57,8 @@ refjson * load(char *json){
     s_json->content = NULL;
 
     s_json->root = json_loads(json, 0, &error);
-    if(s_json->root)
-        return s_json;
 
-    return NULL;
+    return s_json;
 }
 
 void close_json( refjson *s_json ) {
@@ -73,14 +71,18 @@ void close_json( refjson *s_json ) {
     }
 }
 
-void error_parse(json_t * json){
-    if(json_is_object(json)){
+void error_parse(refjson * json){
+
+
+    if(json_is_object(json->root)){
         json_t * error_code, *description;
 
-        error_code = json_object_get(json, "error_code");
-        description = json_object_get(json, "description");
+        error_code = json_object_get(json->root, "error_code");
+        description = json_object_get(json->root, "description");
 
         error(json_integer_value(error_code), json_string_value(description));
+
+        close_json(json);
     }
 }
 

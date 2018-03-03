@@ -10,7 +10,7 @@ typedef struct _struct_json {
 
 refjson * start_json(char * json);
 void close_json( refjson *s_json );
-void error_parse(json_t * error);
+void error_parse(refjson * error);
 refjson * load(char * json);
 User * user_parse(json_t * json);
 Chat * chat_parse(json_t *json);
