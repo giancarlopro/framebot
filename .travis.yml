@@ -15,17 +15,13 @@ script:
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
 - export CC=/usr/bin/gcc-6
 - export CXX=/usr/bin/g++-6
+- bash ./deploy-script.sh
 deploy:
   provider: releases
   api_key:
     secure: Kr6J3d2HdQnCh7cZEg8KUkvweHkl6MztR3/Zj5mumBb0dCsNZfThzvmwymv0uOkXcyl0cSMQcnPGE0katnZrPCa0TMvVMMoBnT5niUxV+83R+9baTiGnHKUNQEBJtRiojXPQD/DmRo/22gcU/v/eBeyn7OJ29Nulh1hbSp5YKbOQTYP6fPQpWF+zAjEB1wuhm/NzkbuIkxxYZWRoD5AQUR7sertI1Dq9xtZ4Xd70hStNwEaLXkMaAbkd9ZeX4L2g5c7MSSR8In0vUFmlcI0YX0Vg6+emoBvDqnvM2ZLGCzZDDtnbLGZ5ocy1seyxH2Te1F/V5PIxPycSvP5th0EceiZ0iQpCPLbhaZyA/KrW5/lflRLgWdO48VR7ALNe0mbjwSomRHzroQHUcDpJ52dWDUcO6xBdbQBYjGREj2hwb+neRdNrN/mQdlhkv48U0TtVu3TE8XAj+z+2gG1GZQgtkc7g4bYNatljXIU97z8Q5bJUC4CR9LrZjHBu9P0lo09TQYW0p5YxXCjr9pfh7PfHnK6/mf7IwyVKKdcclyHFUHqGmR5uolZ2rketZDpRtH7IlZqDFLuf470/FilzHr2fhoRZyETbNQzjaKcAjrzCEnPq0KFiRNQzleJYPSN2FvIhC8uwLnXlk/Q22sURHdO6xQCxaC62JOPL73LbzwRDq4Q=
   file_glob: true
-  file: $TRAVIS_BUILD_DIR/README.md
+  file: "build/src/framebot-bin.zip"
   skip_cleanup: true
-
-  before_release:
-
-    - ls -LR
   on:
-    repo: giancarlopro/framebot
-    branch: master
+    tags: true
