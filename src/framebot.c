@@ -35,6 +35,9 @@ User *get_me (const char *token) {
         return NULL;
 
     s_json = generic_method_call(token, API_GETME);
+    if(!s_json)
+        return NULL;
+
     user = user_parse(s_json->content);
 
     close_json(s_json);
@@ -58,7 +61,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
         offset, limit, timeout, allowed_updates );
 
     if( !framebot ){
-        framebot = (Framebot *)malloc( sizeof( Framebot ));
+        framebot = (Framebot *)calloc(1, sizeof( Framebot ));
         
         /* initialize */
         framebot->update_id      = 0;
@@ -72,6 +75,11 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
         framebot->shipping_query = NULL;
         framebot->pre_checkout_query = NULL;
     }
+
+    if(!s_json){
+        return framebot;
+    }
+
 
     size_t length, i;
     length = json_array_size(s_json->content);
@@ -105,6 +113,9 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
         DISABLE_NOTIFICATION(disable_notification),
         reply_to_message_id, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json ( s_json );
@@ -119,6 +130,7 @@ Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse
     char * cchat_id;
 
     cchat_id = api_ltoa(chat_id);
+
 
     message =  send_message(bot, cchat_id, text, parse_mode,
         disable_web_page_preview, disable_notification, reply_to_message_id,
@@ -139,6 +151,9 @@ Chat *get_chat (Bot *bot, char *chat_id) {
     Chat * chat;
     refjson *s_json = generic_method_call(bot->token, API_getChat, chat_id);
  
+    if(!s_json)
+        return NULL;
+
     chat = chat_parse(s_json->content);
 
     close_json(s_json);
@@ -173,6 +188,9 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
     s_json = generic_method_call(bot->token, API_setChatTitle,
         chat_id, title);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -206,6 +224,9 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, long int user_id) {
     s_json = generic_method_call(bot->token, API_getChatMember,
         chat_id, user_id);
 
+    if(!s_json)
+        return NULL;
+
     chat_member = chat_member_parse(s_json->content);
 
     close_json(s_json);
@@ -238,6 +259,9 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
 
     s_json = generic_method_call(bot->token, API_setChatDescription,
         chat_id, description);
+
+    if(!s_json)
+        return -1;
 
     result = json_is_true(s_json->content);
 
@@ -273,6 +297,9 @@ int get_chat_members_count (Bot *bot, char *chat_id) {
 
     s_json = generic_method_call(bot->token, API_getChatMemberCount, chat_id);
     
+    if(!s_json)
+        return -1;
+
     result = json_integer_value(s_json->content);
 
     close_json(s_json);
@@ -306,6 +333,9 @@ bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_da
 
     s_json = generic_method_call(bot->token, API_kickChatMember, chat_id,
         user_id, until_date);
+
+    if(!s_json)
+        return -1;
 
     result = json_is_true(s_json->content);
 
@@ -350,6 +380,9 @@ bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int u
         CAN_SEND_OTHER_MESSAGES(can_send_other_messages),
         CAN_ADD_WEB_PAGE_PREVIEWS(can_add_web_page_previews) );
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -393,6 +426,9 @@ bool unban_chat_member (Bot *bot, char *chat_id, long int user_id) {
     s_json = generic_method_call(bot->token, API_unbanChatMember,
         chat_id, user_id);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -426,7 +462,10 @@ bool leave_chat (Bot *bot, char *chat_id) {
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_leaveChat, chat_id);
-    
+
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -478,6 +517,9 @@ bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_ch
         CAN_PIN_MESSAGES(can_pin_messages),
         CAN_PROMOTE_MEMBERS(can_promote_members));
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -523,6 +565,9 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
 
     s_json = generic_method_call(bot->token, API_exportChatInviteLink);
 
+    if(!s_json)
+        return NULL;
+
     invite_link = alloc_string(json_string_value(s_json->content));
 
     close_json(s_json);
@@ -567,6 +612,9 @@ int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     s_json = start_json(input->content);
     mem_store_free(input);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -598,6 +646,9 @@ int delete_chat_photo(Bot *bot, char *chat_id){
 
     s_json = generic_method_call(bot->token, API_deleteChatPhoto,
         chat_id);
+
+    if(!s_json)
+        return -1;
 
     btrue = json_is_true(s_json->content);
 
@@ -632,7 +683,10 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_getChatAdministrators, chat_id);
-    
+
+    if(!s_json)
+        return NULL;
+
     chat_member_adm = chat_member_array_parse(s_json->content);
 
     close_json(s_json);
@@ -662,7 +716,10 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
 
     s_json = generic_method_call(bot->token, API_pinChatMessage, chat_id, message_id,
         DISABLE_NOTIFICATION(disable_notification));
-    
+
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -694,6 +751,9 @@ bool unpin_chat_message(Bot *bot, char *chat_id){
 
     s_json = generic_method_call(bot->token, API_unpinChatMessage,
             chat_id);
+
+    if(!s_json)
+        return -1;
 
     result = json_is_true(s_json->content);
 
@@ -752,6 +812,9 @@ char * get_file (Bot * bot, char * dir, const char * file_id){
 
     s_json = generic_method_call(bot->token, API_getfile, file_id);
 
+    if(!s_json)
+        return NULL;
+
     File * ofile = file_parse(s_json->content);
 
     close_json(s_json);
@@ -776,6 +839,9 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id
 
     s_json = generic_method_call(bot->token, API_getUserProfilePhotos,
         user_id, offset, limit);
+
+    if(!s_json)
+        return NULL;
 
     oupp = user_profile_photos_parse(s_json->content);
 
@@ -835,6 +901,9 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+
+    if(!s_json)
+        return NULL;
 
     free(ifile.photo.reply_to_message_id);
     mem_store_free(input);
@@ -914,6 +983,8 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+    if(!s_json)
+        return NULL;
 
     free(ifile.audio.duration);
     free(ifile.audio.reply_to_message_id);
@@ -985,6 +1056,8 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+    if(!s_json)
+        return NULL;
 
     free(ifile.document.reply_to_message_id);
     mem_store_free(input);
@@ -1060,6 +1133,8 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+    if(!s_json)
+        return NULL;
 
     free(ifile.video.duration);
     free(ifile.video.width);
@@ -1134,6 +1209,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+    if(!s_json)
+        return NULL;
 
     free(ifile.voice.duration);
     free(ifile.voice.reply_to_message_id);
@@ -1205,6 +1282,8 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     input = call_method_input_file(bot->token, ifile);
 
     s_json = start_json(input->content);
+    if(!s_json)
+        return NULL;
 
     free(ifile.videonote.duration);
     free(ifile.videonote.length);
@@ -1291,6 +1370,9 @@ Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
     s_json = generic_method_call(bot->token, API_forwardMessage, chat_id, from_chat_id,
         DISABLE_NOTIFICATION(disable_notification), message_id);
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1334,6 +1416,9 @@ Message * send_location (Bot * bot, char * chat_id, float latitude,
         DISABLE_NOTIFICATION(disable_notification),
         reply_to_message_id, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1376,6 +1461,9 @@ Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * fi
         DISABLE_NOTIFICATION(disable_notification),
         reply_to_message_id, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1412,6 +1500,9 @@ int send_chat_action(Bot * bot, char * chat_id, char * action){
     s_json = generic_method_call(bot->token, API_sendChatAction,
             chat_id, action);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content) ? 0 : -1;
 
     return result;
@@ -1445,6 +1536,9 @@ Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
         chat_id, latitude, longitude, title, address, foursquare_id,
         DISABLE_NOTIFICATION(disable_notification),
         reply_to_message_id, REPLY_MARKUP(reply_markup));
+
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1485,6 +1579,9 @@ Message * edit_message_live_location(Bot * bot, char * chat_id, long int message
     s_json = generic_method_call(bot->token, API_editMessageLiveLocation,
         chat_id, message_id, inline_message_id, latitude, longitude, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1519,6 +1616,9 @@ Message * stop_message_live_location(Bot * bot, char * chat_id, long int message
     s_json = generic_method_call(bot->token, API_stopMessageLiveLocation,
                 chat_id, message_id, inline_message_id,
                 REPLY_MARKUP(reply_markup));
+
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1555,6 +1655,9 @@ Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     s_json = generic_method_call(bot->token, API_editMessageText, chat_id, message_id,
         inline_message_id, text, PARSE_MODE(parse_mode),
         DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview), REPLY_MARKUP(reply_markup));
+
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1593,6 +1696,9 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
     s_json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
         message_id, inline_message_id, caption, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1629,6 +1735,9 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
     s_json = generic_method_call(bot->token, API_editMessageReplyMarkup, chat_id,
         message_id, inline_message_id, REPLY_MARKUP(reply_markup));
 
+    if(!s_json)
+        return NULL;
+
     message = message_parse(s_json->content);
 
     close_json(s_json);
@@ -1662,6 +1771,9 @@ bool delete_message(Bot *bot, char *chat_id, long int message_id){
     s_json = generic_method_call(bot->token, API_deleteMessage,
         chat_id, message_id);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -1693,6 +1805,9 @@ bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
     s_json = generic_method_call(bot->token, API_setChatStickerSet,
         chat_id, sticker_set_name);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -1723,6 +1838,9 @@ bool delete_chat_sticker_set(Bot *bot, char *chat_id){
 
     s_json = generic_method_call(bot->token, API_deleteChatStickerSet, chat_id);
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -1750,6 +1868,9 @@ bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int
 
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
         cache_time, is_personal, next_offset, switch_pm_text, switch_pm_parameter);
+
+    if(!s_json)
+        return -1;
 
     result = json_is_true(s_json->content);
 
