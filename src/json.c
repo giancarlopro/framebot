@@ -45,6 +45,8 @@ refjson * start_json(char * json){
         }
     }
 
+    close_json(s_json);
+
     return NULL;
 }
 
