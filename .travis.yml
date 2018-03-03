@@ -10,9 +10,9 @@ addons:
     - gcc-6
     - g++-6
     - cmake
-    - jansson
+    - libjansson4
     - libssl-dev
-    - libcurl-dev
+    - libcurl4-openssl-dev
 script:
 - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
@@ -26,5 +26,6 @@ deploy:
   file_glob: true
   file: "build/src/framebot-bin.zip"
   skip_cleanup: true
+  prerelease: true
   on:
     tags: true
