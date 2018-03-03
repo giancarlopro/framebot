@@ -52,7 +52,7 @@ refjson * load(char *json){
     json_error_t error;
     refjson * s_json;
 
-    s_json = (refjson *)malloc(sizeof(refjson));
+    s_json = (refjson *)calloc(1, sizeof(refjson));
     s_json->root = NULL;
     s_json->content = NULL;
 
@@ -91,7 +91,7 @@ User * user_parse(json_t *json){
     json_t *puser = json;
 
     if(json_is_object(puser)){
-        object = (User *) malloc(sizeof(User));
+        object = (User *) calloc(1, sizeof(User));
         if(!object)
             return NULL;
 
@@ -126,7 +126,7 @@ Chat * chat_parse(json_t *json){
     json_t * pchat = json;
 
     if(json_is_object(pchat)){
-        object = (Chat *) malloc(sizeof(Chat));
+        object = (Chat *) calloc(1, sizeof(Chat));
         if(!object)
             return NULL;
 
@@ -185,7 +185,7 @@ MessageEntity * message_entity_parse(json_t *json){
     json_t * pmessage_entity = json;
 
     if(json_is_object(pmessage_entity)){
-        object = (MessageEntity *) malloc(sizeof(MessageEntity));
+        object = (MessageEntity *) calloc(1, sizeof(MessageEntity));
         if(!object)
             return NULL;
 
@@ -217,7 +217,7 @@ Audio * audio_parse(json_t *json){
     json_t * paudio = json;
 
     if(json_is_object(paudio)){
-        object = (Audio *) malloc(sizeof(Audio));
+        object = (Audio *) calloc(1, sizeof(Audio));
         if(!object)
             return NULL;
 
@@ -251,7 +251,7 @@ PhotoSize * photo_size_parse(json_t *json) {
     json_t * pphoto_size = json;
 
     if(json_is_object(pphoto_size)){
-        object = (PhotoSize *) malloc(sizeof(PhotoSize));
+        object = (PhotoSize *) calloc(1, sizeof(PhotoSize));
         if(!object)
             return NULL;
 
@@ -280,7 +280,7 @@ Document * document_parse(json_t *json){
     json_t * pdocument = json;
 
     if(json_is_object(pdocument)){
-        object = (Document *) malloc(sizeof(Document));
+        object = (Document *) calloc(1, sizeof(Document));
         if(!object)
             return NULL;
 
@@ -312,7 +312,7 @@ Animation * animation_parse(json_t *json){
     json_t * panimation = json;
 
     if(json_is_object(panimation)){
-        object = (Animation *) malloc(sizeof(Animation));
+        object = (Animation *) calloc(1, sizeof(Animation));
         if(!object)
             return NULL;
 
@@ -344,7 +344,7 @@ Game * game_parse(json_t *json){
     json_t * pgame = json;
 
     if(json_is_object(pgame)){
-        object = (Game *) malloc(sizeof(Game));
+        object = (Game *) calloc(1, sizeof(Game));
         if(!object)
             return NULL;
 
@@ -379,7 +379,7 @@ Sticker * sticker_parse(json_t *json){
     json_t * psticker = json;
 
     if(json_is_object(psticker)){
-        object = (Sticker *) malloc(sizeof(Sticker));
+        object = (Sticker *) calloc(1, sizeof(Sticker));
         if(!object)
             return NULL;
 
@@ -414,7 +414,7 @@ Video * video_parse(json_t *json){
     json_t * pvideo = json;
 
     if(json_is_object(pvideo)){
-        object = (Video *) malloc(sizeof(Video));
+        object = (Video *) calloc(1, sizeof(Video));
         if(!object)
             return NULL;
 
@@ -452,7 +452,7 @@ Voice * voice_parse(json_t *json){
     json_t * pvoice = json;
 
     if(json_is_object(pvoice)){
-        object = (Voice *) malloc(sizeof(Voice));
+        object = (Voice *) calloc(1, sizeof(Voice));
         if(!object)
             return NULL;
 
@@ -481,7 +481,7 @@ Contact * contact_parse(json_t *json){
     json_t * pcontact = json;
 
     if(json_is_object(pcontact)){
-        object = (Contact *) malloc(sizeof(Contact));
+        object = (Contact *) calloc(1, sizeof(Contact));
         if(!object)
             return NULL;
 
@@ -510,7 +510,7 @@ Location * location_parse(json_t *json){
     json_t * plocation = json;
 
     if(json_is_object(plocation)){
-        object = (Location *) malloc(sizeof(Location));
+        object = (Location *) calloc(1, sizeof(Location));
         if(!object)
             return NULL;
 
@@ -533,7 +533,7 @@ Venue * venue_parse(json_t *json){
     json_t * pvenue = json;
 
     if(json_is_object(pvenue)){
-        object = (Venue *) malloc(sizeof(Venue));
+        object = (Venue *) calloc(1, sizeof(Venue));
         if(!object)
             return NULL;
 
@@ -562,7 +562,7 @@ ChosenInlineResult * chosen_inline_result_parse(json_t * json){
     json_t * pcir = json;
 
     if(json_is_object(pcir)){
-        object = (ChosenInlineResult *) malloc(sizeof(ChosenInlineResult));
+        object = (ChosenInlineResult *) calloc(1, sizeof(ChosenInlineResult));
         if(!object)
             return NULL;
 
@@ -595,7 +595,7 @@ Message * message_parse(json_t *json){
     size_t length, i;
 
     if(json_is_object(pmessage)){
-        message = (Message *) malloc( sizeof( Message ));
+        message = (Message *) calloc(1,  sizeof( Message ));
         if(!message)
             return NULL;
 
@@ -804,7 +804,7 @@ Update * update_parse(json_t *json){
     json_t * pupdate = json;
 
     if(json_is_object(pupdate)){
-        object = (Update *)  malloc(sizeof(Update));
+        object = (Update *)  calloc(1, sizeof(Update));
         if(!object)
             return NULL;
 
@@ -853,7 +853,7 @@ ChatMember *chat_member_parse (json_t *json) {
     ChatMember *object = NULL;
 
     if (json_is_object(json)) {
-        object = (ChatMember *) malloc(sizeof(ChatMember));
+        object = (ChatMember *) calloc(1, sizeof(ChatMember));
         if(!object)
             return NULL;
 
@@ -924,7 +924,7 @@ ChatMember *chat_member_array_parse (json_t *cm_array) {
     ChatMember *object = NULL;
 
     if (json_is_object(cm_array)) {
-        object = (ChatMember *) malloc(sizeof(ChatMember));
+        object = (ChatMember *) calloc(1, sizeof(ChatMember));
         if(!object)
             return NULL;
 
@@ -948,7 +948,7 @@ InlineQuery * inline_query_parse(json_t * json){
     InlineQuery *object = NULL;
 
     if (json_is_object(json)) {
-        object = (InlineQuery *) malloc(sizeof(InlineQuery));
+        object = (InlineQuery *) calloc(1, sizeof(InlineQuery));
         if(!object)
             return NULL;
 
@@ -979,7 +979,7 @@ CallbackQuery * callback_query_parse(json_t * json){
     CallbackQuery *object = NULL;
 
     if(json_is_object(json)){
-        object = (CallbackQuery *) malloc(sizeof(CallbackQuery));
+        object = (CallbackQuery *) calloc(1, sizeof(CallbackQuery));
         if(!object)
             return NULL;
 
@@ -1016,7 +1016,7 @@ VideoNote * video_note_parse(json_t * json){
     VideoNote *object = NULL;
 
     if(json_is_object(json)){
-        object = (VideoNote *) malloc(sizeof(VideoNote));
+        object = (VideoNote *) calloc(1, sizeof(VideoNote));
         if(!object)
             return NULL;
 
@@ -1047,7 +1047,7 @@ ShippingQuery * shipping_query_parse(json_t * json){
     ShippingQuery *object = NULL;
 
     if(json_is_object(json)){
-        object = (ShippingQuery *) malloc(sizeof(ShippingQuery));
+        object = (ShippingQuery *) calloc(1, sizeof(ShippingQuery));
         if(!object)
             return NULL;
 
@@ -1075,7 +1075,7 @@ Invoice * invoice_parse(json_t * json){
     Invoice *object = NULL;
 
     if(json_is_object(json)){
-        object = (Invoice *) malloc(sizeof(Invoice));
+        object = (Invoice *) calloc(1, sizeof(Invoice));
         if(!object)
             return NULL;
 
@@ -1106,7 +1106,7 @@ ShippingAddress * shipping_address_parse(json_t * json){
     ShippingAddress *object = NULL;
 
     if(json_is_object(json)){
-        object = (ShippingAddress *) malloc(sizeof(ShippingAddress));
+        object = (ShippingAddress *) calloc(1, sizeof(ShippingAddress));
         if(!object)
             return NULL;
 
@@ -1140,7 +1140,7 @@ PreCheckoutQuery * pre_checkout_query_parse(json_t * json){
     PreCheckoutQuery *object = NULL;
 
     if(json_is_object(json)){
-        object = (PreCheckoutQuery *) malloc(sizeof(PreCheckoutQuery));
+        object = (PreCheckoutQuery *) calloc(1, sizeof(PreCheckoutQuery));
         if(!object)
             return NULL;
 
@@ -1178,7 +1178,7 @@ OrderInfo * order_info_parse(json_t * json){
     OrderInfo *object = NULL;
 
     if(json_is_object(json)){
-        object = (OrderInfo *) malloc(sizeof(OrderInfo));
+        object = (OrderInfo *) calloc(1, sizeof(OrderInfo));
         json_t *name, *phone_number, *email, *shipping_address;
 
         name = json_object_get(json, "name");
@@ -1203,7 +1203,7 @@ SuccessfulPayment * successful_payment_parse(json_t * json){
     SuccessfulPayment *object = NULL;
 
     if(json_is_object(json)){
-        object = (SuccessfulPayment *) malloc(sizeof(SuccessfulPayment));
+        object = (SuccessfulPayment *) calloc(1, sizeof(SuccessfulPayment));
         if(!object)
             return NULL;
 
@@ -1241,7 +1241,7 @@ File * file_parse(json_t * json){
     File *object = NULL;
 
     if(json_is_object(json)){
-        object = (File *) malloc(sizeof(File));
+        object = (File *) calloc(1, sizeof(File));
         if(!object)
             return NULL;
 
@@ -1266,7 +1266,7 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
     UserProfilePhotos *object = NULL;
 
     if(json_is_object(json)){
-        object = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
+        object = (UserProfilePhotos *) calloc(1, sizeof(UserProfilePhotos));
         if(!object)
             return NULL;
 
@@ -1280,7 +1280,7 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
         _length = json_array_size(photos);
 
         /* Array of Array PhotoSize */
-        ophotos = (PhotoSize **) malloc(_length * sizeof(PhotoSize));
+        ophotos = (PhotoSize **) calloc(1, _length * sizeof(PhotoSize));
         if (_length > 0) {
             for (i = 0; i < _length; i++) {
                 array_photos = json_array_get(photos, i);
@@ -1314,7 +1314,7 @@ ChatPhoto * chat_photo_parse(json_t * json){
     ChatPhoto *object = NULL;
 
     if(json_is_object(json)){
-        object = (ChatPhoto *) malloc(sizeof(ChatPhoto));
+        object = (ChatPhoto *) calloc(1, sizeof(ChatPhoto));
         if(!object)
             return NULL;
 
