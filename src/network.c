@@ -9,9 +9,9 @@ void network_init(){
 
 
 MemStore * mem_store() {
-    MemStore *mem = (MemStore *)malloc(sizeof(MemStore));
+    MemStore *mem = (MemStore *)calloc(1, sizeof(MemStore));
 
-    mem->content = (char *)malloc(1);
+    mem->content = (char *)calloc(1, 1);
     mem->size = 0;
 
     return mem;
@@ -46,7 +46,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 MemStore * call_method(const char *token, char *method){
     CURLcode res;
     size_t url_size = API_URL_LEN + strlen( token ) + strlen( method ) + 2;
-    char * url = ( char * ) malloc( url_size );
+    char * url = ( char * ) calloc(1,  url_size );
 
     strcpy( url, API_URL );
     strcat( url, token );
@@ -84,7 +84,7 @@ char * call_method_download(const char * token, char * dir, File *ofile){
     char * namefile, *path, *url;
 
     url_size = API_URL_FILE_LEN + strlen(token) + strlen(ofile->file_path) + 2;
-    url = (char *)malloc(url_size);
+    url = (char *)calloc(1, url_size);
 
     strcpy(url, API_URL_FILE);
     strcat(url, token);
@@ -112,7 +112,7 @@ char * call_method_download(const char * token, char * dir, File *ofile){
     else
         path_len = strlen(dir) + strlen(namefile) + 2;
 
-    path = malloc(path_len);
+    path = calloc(1, path_len);
     if(!path)
         return NULL;
 
@@ -503,7 +503,7 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
 
         buff = mem_store();
         url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
-        url = malloc(url_size);
+        url = calloc(1, url_size);
 
         strcpy(url, API_URL);
         strcat(url, token);
@@ -542,7 +542,7 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
 
 MemStore *call_method_wp(char *token, char *method, char *params) {
     size_t len = strlen(method) + strlen(params) + 1;
-    char *tmp = (char *)malloc(len);
+    char *tmp = (char *)calloc(1, len);
 
     MemStore *ms = call_method(token, tmp);
 

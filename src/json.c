@@ -55,8 +55,6 @@ refjson * load(char *json){
     refjson * s_json;
 
     s_json = (refjson *)calloc(1, sizeof(refjson));
-    s_json->root = NULL;
-    s_json->content = NULL;
 
     s_json->root = json_loads(json, 0, &error);
 
@@ -84,7 +82,6 @@ void error_parse(refjson * json){
 
         error(json_integer_value(error_code), json_string_value(description));
 
-        close_json(json);
     }
 }
 

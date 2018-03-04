@@ -62,18 +62,6 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
 
     if( !framebot ){
         framebot = (Framebot *)calloc(1, sizeof( Framebot ));
-        
-        /* initialize */
-        framebot->update_id      = 0;
-        framebot->message        = NULL;
-        framebot->edited_message = NULL;
-        framebot->channel_post   = NULL;
-        framebot->edited_channel_post = NULL;
-        framebot->inline_query   = NULL;
-        framebot->chosen_inline_result = NULL;
-        framebot->callback_query = NULL;
-        framebot->shipping_query = NULL;
-        framebot->pre_checkout_query = NULL;
     }
 
     if(!s_json){
