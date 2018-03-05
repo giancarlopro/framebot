@@ -13,3 +13,4 @@ para o `Telegram`_.
    starting
    objects
    functions
+   types
