@@ -272,20 +272,19 @@ typedef struct _update{
     ShippingQuery *shipping_query;
     PreCheckoutQuery *pre_checkout_query;
 	struct _update *next;
-} Update, UPMessage, UPIQuery, UPIResult, UPCQuery,
-UPSQuery, UPPCQuery;
+} Update;
 
 typedef struct {
     long int update_id;
-    UPMessage *message;
-    UPMessage *edited_message;
-    UPMessage *channel_post;
-    UPMessage *edited_channel_post;
-    UPIQuery  *inline_query;
-    UPIResult *chosen_inline_result;
-    UPCQuery  *callback_query;
-    UPSQuery  *shipping_query;
-    UPPCQuery *pre_checkout_query;
+    Update *update_message;
+    Update *update_edited_message;
+    Update *update_channel_post;
+    Update *update_edited_channel_post;
+    Update *update_inline_query;
+    Update *update_chosen_inline_result;
+    Update *update_callback_query;
+    Update *update_shipping_query;
+    Update *update_pre_checkout_query;
 } Framebot;
 
 typedef struct _chat_member {
