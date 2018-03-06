@@ -154,7 +154,7 @@ Chat * chat_parse(json_t *json){
 
         all_members_are_administrators = json_object_get(pchat,"all_members_are_administrators");
         object->all_members_are_administrators =
-                json_boolean_value(all_members_are_administrators),
+                json_boolean_value(all_members_are_administrators);
 
         photo = json_object_get(json, "photo");
         object->photo = chat_photo_parse(photo);
