@@ -11,6 +11,7 @@ para o `Telegram`_.
    :caption: Conteúdo:
 
    starting
+   tutorial
    objects
    functions
    types
