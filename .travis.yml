@@ -11,8 +11,6 @@ addons:
     - g++-6
     - cmake
     - libjansson-dev
-    - libssl-dev
-    - libcurl4-openssl-dev
 script:
 - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
