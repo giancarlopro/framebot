@@ -13,10 +13,10 @@ include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
 	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(framebot_ jansson libcurl.so)
+	target_link_libraries(framebot_ jansson ${curl})
 
 	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(framebot jansson libcurl.so)
+	target_link_libraries(framebot jansson ${curl})
 	
 	install(TARGETS framebot_ LIBRARY DESTINATION lib)
 	install(TARGETS framebot ARCHIVE DESTINATION lib)
