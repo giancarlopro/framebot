@@ -14,4 +14,3 @@ para o `Telegram`_.
    tutorial
    objects
    functions
-   types

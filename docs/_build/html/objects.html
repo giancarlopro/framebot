@@ -37,7 +37,7 @@
         <link rel="search" title="Buscar" href="search.html"/>
     <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/>
         <link rel="next" title="Funções" href="functions.html"/>
-        <link rel="prev" title="Começando" href="starting.html"/> 
+        <link rel="prev" title="Tutorial" href="tutorial.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -89,9 +89,10 @@
               <p class="caption"><span class="caption-text">Conteúdo:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="starting.html">Começando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Objetos</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#objetos-exclusivos">Objetos exclusivos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#objetos-da-api">Objetos da API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#referencia-completa">Referência completa</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="functions.html">Funções</a></li>
@@ -160,7 +161,9 @@
             
   <div class="section" id="objetos">
 <h1>Objetos<a class="headerlink" href="#objetos" title="Link permanente para este título">¶</a></h1>
-<p>Aqui você encontra os objetos implementados pela biblioteca.</p>
+<p>Nossa biblioteca implementa todos os objetos da API do telegram, com os mesmos nomes,
+e a princípio com os mesmos membros.
+Alguns tipos podem possuir um ponteiro <code class="xref c c-data docutils literal notranslate"><span class="pre">next</span></code> apontando para o próximo objeto.</p>
 <div class="section" id="objetos-exclusivos">
 <h2>Objetos exclusivos<a class="headerlink" href="#objetos-exclusivos" title="Link permanente para este título">¶</a></h2>
 <p>Objetos que existem somente na biblioteca, e não possuem representação na API do Telegram.</p>
@@ -176,20 +179,19 @@ char *<code class="descname">token</code><a class="headerlink" href="#c.Bot.toke
 
 <dl class="member">
 <dt id="c.Bot.user">
-<a class="reference internal" href="types.html#c.User" title="User">User</a> *<code class="descname">user</code><a class="headerlink" href="#c.Bot.user" title="Link permanente para esta definição">¶</a></dt>
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">user</code><a class="headerlink" href="#c.Bot.user" title="Link permanente para esta definição">¶</a></dt>
 <dd><p>Objeto retornado da chamada à <a class="reference internal" href="functions.html#c.get_me" title="get_me"><code class="xref c c-func docutils literal notranslate"><span class="pre">get_me()</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
 </div>
-<div class="section" id="objetos-da-api">
-<h2>Objetos da API<a class="headerlink" href="#objetos-da-api" title="Link permanente para este título">¶</a></h2>
+<div class="section" id="referencia-completa">
+<h2>Referência completa<a class="headerlink" href="#referencia-completa" title="Link permanente para este título">¶</a></h2>
 <dl class="type">
 <dt id="c.User">
 <code class="descname">User</code><a class="headerlink" href="#c.User" title="Link permanente para esta definição">¶</a></dt>
-<dd><p>Veja <a class="reference external" href="https://core.telegram.org/bots/api#user">Telegram User</a></p>
-<dl class="member">
+<dd><dl class="member">
 <dt id="c.User.id">
 long int <code class="descname">id</code><a class="headerlink" href="#c.User.id" title="Link permanente para esta definição">¶</a></dt>
 <dd></dd></dl>
@@ -226,6 +228,1371 @@ struct _user *<code class="descname">next</code><a class="headerlink" href="#c.U
 
 </dd></dl>
 
+<dl class="type">
+<dt>
+<code class="descname">Bot</code></dt>
+<dd><dl class="member">
+<dt>
+char *<code class="descname">token</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">user</code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ChatPhoto">
+<code class="descname">ChatPhoto</code><a class="headerlink" href="#c.ChatPhoto" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ChatPhoto.small_file_id">
+char *<code class="descname">small_file_id</code><a class="headerlink" href="#c.ChatPhoto.small_file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatPhoto.big_file_id">
+char *<code class="descname">big_file_id</code><a class="headerlink" href="#c.ChatPhoto.big_file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Chat">
+<code class="descname">Chat</code><a class="headerlink" href="#c.Chat" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Chat.id">
+long int <code class="descname">id</code><a class="headerlink" href="#c.Chat.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.type">
+char *<code class="descname">type</code><a class="headerlink" href="#c.Chat.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.title">
+char *<code class="descname">title</code><a class="headerlink" href="#c.Chat.title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.username">
+char *<code class="descname">username</code><a class="headerlink" href="#c.Chat.username" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.first_name">
+char *<code class="descname">first_name</code><a class="headerlink" href="#c.Chat.first_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.last_name">
+char *<code class="descname">last_name</code><a class="headerlink" href="#c.Chat.last_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.all_members_are_administrators">
+bool <code class="descname">all_members_are_administrators</code><a class="headerlink" href="#c.Chat.all_members_are_administrators" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.photo">
+<a class="reference internal" href="#c.ChatPhoto" title="ChatPhoto">ChatPhoto</a> *<code class="descname">photo</code><a class="headerlink" href="#c.Chat.photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.description">
+char *<code class="descname">description</code><a class="headerlink" href="#c.Chat.description" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.invite_link">
+char *<code class="descname">invite_link</code><a class="headerlink" href="#c.Chat.invite_link" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.pinned_message">
+struct _message *<code class="descname">pinned_message</code><a class="headerlink" href="#c.Chat.pinned_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.sticker_set_name">
+char *<code class="descname">sticker_set_name</code><a class="headerlink" href="#c.Chat.sticker_set_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Chat.can_set_sticker_set">
+bool <code class="descname">can_set_sticker_set</code><a class="headerlink" href="#c.Chat.can_set_sticker_set" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.MessageEntity">
+<code class="descname">MessageEntity</code><a class="headerlink" href="#c.MessageEntity" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.MessageEntity.type">
+char *<code class="descname">type</code><a class="headerlink" href="#c.MessageEntity.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.MessageEntity.offset">
+long int <code class="descname">offset</code><a class="headerlink" href="#c.MessageEntity.offset" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.MessageEntity.length">
+long int <code class="descname">length</code><a class="headerlink" href="#c.MessageEntity.length" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.MessageEntity.url">
+char *<code class="descname">url</code><a class="headerlink" href="#c.MessageEntity.url" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.MessageEntity.user">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">user</code><a class="headerlink" href="#c.MessageEntity.user" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.MessageEntity.next">
+struct _message_entity *<code class="descname">next</code><a class="headerlink" href="#c.MessageEntity.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Audio">
+<code class="descname">Audio</code><a class="headerlink" href="#c.Audio" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Audio.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.Audio.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Audio.duration">
+long int <code class="descname">duration</code><a class="headerlink" href="#c.Audio.duration" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Audio.performer">
+char *<code class="descname">performer</code><a class="headerlink" href="#c.Audio.performer" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Audio.title">
+char *<code class="descname">title</code><a class="headerlink" href="#c.Audio.title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Audio.mime_type">
+char *<code class="descname">mime_type</code><a class="headerlink" href="#c.Audio.mime_type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Audio.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.Audio.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.PhotoSize">
+<code class="descname">PhotoSize</code><a class="headerlink" href="#c.PhotoSize" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.PhotoSize.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.PhotoSize.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PhotoSize.width">
+int <code class="descname">width</code><a class="headerlink" href="#c.PhotoSize.width" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PhotoSize.height">
+int <code class="descname">height</code><a class="headerlink" href="#c.PhotoSize.height" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PhotoSize.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.PhotoSize.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PhotoSize.next">
+struct _photo_size *<code class="descname">next</code><a class="headerlink" href="#c.PhotoSize.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Game">
+<code class="descname">Game</code><a class="headerlink" href="#c.Game" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Game.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.Game.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.thumb">
+<a class="reference internal" href="#c.PhotoSize" title="PhotoSize">PhotoSize</a> *<code class="descname">thumb</code><a class="headerlink" href="#c.Game.thumb" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.file_name">
+char *<code class="descname">file_name</code><a class="headerlink" href="#c.Game.file_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.mime_type">
+char *<code class="descname">mime_type</code><a class="headerlink" href="#c.Game.mime_type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.Game.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.title">
+char *<code class="descname">title</code><a class="headerlink" href="#c.Game.title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.description">
+char *<code class="descname">description</code><a class="headerlink" href="#c.Game.description" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.text">
+char *<code class="descname">text</code><a class="headerlink" href="#c.Game.text" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Game.animation">
+Animation *<code class="descname">animation</code><a class="headerlink" href="#c.Game.animation" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Sticker">
+<code class="descname">Sticker</code><a class="headerlink" href="#c.Sticker" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Sticker.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.Sticker.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Sticker.width">
+int <code class="descname">width</code><a class="headerlink" href="#c.Sticker.width" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Sticker.height">
+int <code class="descname">height</code><a class="headerlink" href="#c.Sticker.height" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Sticker.thumb">
+<a class="reference internal" href="#c.PhotoSize" title="PhotoSize">PhotoSize</a> *<code class="descname">thumb</code><a class="headerlink" href="#c.Sticker.thumb" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Sticker.emoji">
+char *<code class="descname">emoji</code><a class="headerlink" href="#c.Sticker.emoji" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Sticker.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.Sticker.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Video">
+<code class="descname">Video</code><a class="headerlink" href="#c.Video" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Video.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.Video.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.width">
+int <code class="descname">width</code><a class="headerlink" href="#c.Video.width" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.height">
+int <code class="descname">height</code><a class="headerlink" href="#c.Video.height" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.duration">
+long int <code class="descname">duration</code><a class="headerlink" href="#c.Video.duration" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.thumb">
+<a class="reference internal" href="#c.PhotoSize" title="PhotoSize">PhotoSize</a> *<code class="descname">thumb</code><a class="headerlink" href="#c.Video.thumb" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.mime_type">
+char *<code class="descname">mime_type</code><a class="headerlink" href="#c.Video.mime_type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Video.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.Video.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.VideoNote">
+<code class="descname">VideoNote</code><a class="headerlink" href="#c.VideoNote" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.VideoNote.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.VideoNote.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.VideoNote.length">
+long <code class="descname">length</code><a class="headerlink" href="#c.VideoNote.length" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.VideoNote.duration">
+long <code class="descname">duration</code><a class="headerlink" href="#c.VideoNote.duration" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.VideoNote.thumb">
+<a class="reference internal" href="#c.PhotoSize" title="PhotoSize">PhotoSize</a> *<code class="descname">thumb</code><a class="headerlink" href="#c.VideoNote.thumb" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.VideoNote.file_size">
+long <code class="descname">file_size</code><a class="headerlink" href="#c.VideoNote.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Voice">
+<code class="descname">Voice</code><a class="headerlink" href="#c.Voice" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Voice.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.Voice.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Voice.duration">
+long int <code class="descname">duration</code><a class="headerlink" href="#c.Voice.duration" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Voice.mime_type">
+char *<code class="descname">mime_type</code><a class="headerlink" href="#c.Voice.mime_type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Voice.file_size">
+long int <code class="descname">file_size</code><a class="headerlink" href="#c.Voice.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Contact">
+<code class="descname">Contact</code><a class="headerlink" href="#c.Contact" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Contact.phone_number">
+char *<code class="descname">phone_number</code><a class="headerlink" href="#c.Contact.phone_number" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Contact.first_name">
+char *<code class="descname">first_name</code><a class="headerlink" href="#c.Contact.first_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Contact.last_name">
+char *<code class="descname">last_name</code><a class="headerlink" href="#c.Contact.last_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Contact.user_id">
+long int <code class="descname">user_id</code><a class="headerlink" href="#c.Contact.user_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Location">
+<code class="descname">Location</code><a class="headerlink" href="#c.Location" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Location.latitude">
+float <code class="descname">latitude</code><a class="headerlink" href="#c.Location.latitude" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Location.longitude">
+float <code class="descname">longitude</code><a class="headerlink" href="#c.Location.longitude" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Venue">
+<code class="descname">Venue</code><a class="headerlink" href="#c.Venue" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Venue.location">
+<a class="reference internal" href="#c.Location" title="Location">Location</a> *<code class="descname">location</code><a class="headerlink" href="#c.Venue.location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Venue.title">
+char *<code class="descname">title</code><a class="headerlink" href="#c.Venue.title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Venue.address">
+char *<code class="descname">address</code><a class="headerlink" href="#c.Venue.address" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Venue.foursquare_id">
+char *<code class="descname">foursquare_id</code><a class="headerlink" href="#c.Venue.foursquare_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Invoice">
+<code class="descname">Invoice</code><a class="headerlink" href="#c.Invoice" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Invoice.title">
+char *<code class="descname">title</code><a class="headerlink" href="#c.Invoice.title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Invoice.description">
+char *<code class="descname">description</code><a class="headerlink" href="#c.Invoice.description" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Invoice.start_parameter">
+char *<code class="descname">start_parameter</code><a class="headerlink" href="#c.Invoice.start_parameter" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Invoice.currency">
+char *<code class="descname">currency</code><a class="headerlink" href="#c.Invoice.currency" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Invoice.total_amount">
+long <code class="descname">total_amount</code><a class="headerlink" href="#c.Invoice.total_amount" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ShippingAddress">
+<code class="descname">ShippingAddress</code><a class="headerlink" href="#c.ShippingAddress" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ShippingAddress.country_code">
+char *<code class="descname">country_code</code><a class="headerlink" href="#c.ShippingAddress.country_code" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingAddress.state">
+char *<code class="descname">state</code><a class="headerlink" href="#c.ShippingAddress.state" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingAddress.city">
+char *<code class="descname">city</code><a class="headerlink" href="#c.ShippingAddress.city" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingAddress.street_line1">
+char *<code class="descname">street_line1</code><a class="headerlink" href="#c.ShippingAddress.street_line1" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingAddress.street_line2">
+char *<code class="descname">street_line2</code><a class="headerlink" href="#c.ShippingAddress.street_line2" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingAddress.post_code">
+char *<code class="descname">post_code</code><a class="headerlink" href="#c.ShippingAddress.post_code" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.OrderInfo">
+<code class="descname">OrderInfo</code><a class="headerlink" href="#c.OrderInfo" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.OrderInfo.name">
+char *<code class="descname">name</code><a class="headerlink" href="#c.OrderInfo.name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.OrderInfo.phone_number">
+char *<code class="descname">phone_number</code><a class="headerlink" href="#c.OrderInfo.phone_number" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.OrderInfo.email">
+char *<code class="descname">email</code><a class="headerlink" href="#c.OrderInfo.email" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.OrderInfo.shipping_address">
+<a class="reference internal" href="#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a> *<code class="descname">shipping_address</code><a class="headerlink" href="#c.OrderInfo.shipping_address" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.SuccessfulPayment">
+<code class="descname">SuccessfulPayment</code><a class="headerlink" href="#c.SuccessfulPayment" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.SuccessfulPayment.currency">
+char *<code class="descname">currency</code><a class="headerlink" href="#c.SuccessfulPayment.currency" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.total_amount">
+long <code class="descname">total_amount</code><a class="headerlink" href="#c.SuccessfulPayment.total_amount" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.invoice_payload">
+char *<code class="descname">invoice_payload</code><a class="headerlink" href="#c.SuccessfulPayment.invoice_payload" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.shipping_option_id">
+char *<code class="descname">shipping_option_id</code><a class="headerlink" href="#c.SuccessfulPayment.shipping_option_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.order_info">
+<a class="reference internal" href="#c.OrderInfo" title="OrderInfo">OrderInfo</a> *<code class="descname">order_info</code><a class="headerlink" href="#c.SuccessfulPayment.order_info" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.telegram_payment_charge_id">
+char *<code class="descname">telegram_payment_charge_id</code><a class="headerlink" href="#c.SuccessfulPayment.telegram_payment_charge_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.SuccessfulPayment.provider_payment_charge_id">
+char *<code class="descname">provider_payment_charge_id</code><a class="headerlink" href="#c.SuccessfulPayment.provider_payment_charge_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ShippingQuery">
+<code class="descname">ShippingQuery</code><a class="headerlink" href="#c.ShippingQuery" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ShippingQuery.id">
+char *<code class="descname">id</code><a class="headerlink" href="#c.ShippingQuery.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingQuery.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.ShippingQuery.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingQuery.invoice_payload">
+char *<code class="descname">invoice_payload</code><a class="headerlink" href="#c.ShippingQuery.invoice_payload" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ShippingQuery.shipping_address">
+<a class="reference internal" href="#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a> *<code class="descname">shipping_address</code><a class="headerlink" href="#c.ShippingQuery.shipping_address" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.PreCheckoutQuery">
+<code class="descname">PreCheckoutQuery</code><a class="headerlink" href="#c.PreCheckoutQuery" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.PreCheckoutQuery.id">
+char *<code class="descname">id</code><a class="headerlink" href="#c.PreCheckoutQuery.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.PreCheckoutQuery.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.currency">
+char *<code class="descname">currency</code><a class="headerlink" href="#c.PreCheckoutQuery.currency" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.total_amount">
+long <code class="descname">total_amount</code><a class="headerlink" href="#c.PreCheckoutQuery.total_amount" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.invoice_payload">
+char *<code class="descname">invoice_payload</code><a class="headerlink" href="#c.PreCheckoutQuery.invoice_payload" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.shipping_option_id">
+char *<code class="descname">shipping_option_id</code><a class="headerlink" href="#c.PreCheckoutQuery.shipping_option_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.PreCheckoutQuery.order_info">
+<a class="reference internal" href="#c.OrderInfo" title="OrderInfo">OrderInfo</a> *<code class="descname">order_info</code><a class="headerlink" href="#c.PreCheckoutQuery.order_info" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Message">
+<code class="descname">Message</code><a class="headerlink" href="#c.Message" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Message.message_id">
+long int <code class="descname">message_id</code><a class="headerlink" href="#c.Message.message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.Message.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.date">
+long int <code class="descname">date</code><a class="headerlink" href="#c.Message.date" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.chat">
+<a class="reference internal" href="#c.Chat" title="Chat">Chat</a> *<code class="descname">chat</code><a class="headerlink" href="#c.Message.chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.forward_from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">forward_from</code><a class="headerlink" href="#c.Message.forward_from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.forward_from_chat">
+<a class="reference internal" href="#c.Chat" title="Chat">Chat</a> *<code class="descname">forward_from_chat</code><a class="headerlink" href="#c.Message.forward_from_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.forward_from_message_id">
+long int <code class="descname">forward_from_message_id</code><a class="headerlink" href="#c.Message.forward_from_message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.forward_signature">
+char *<code class="descname">forward_signature</code><a class="headerlink" href="#c.Message.forward_signature" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.forward_date">
+long int <code class="descname">forward_date</code><a class="headerlink" href="#c.Message.forward_date" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.reply_to_message">
+struct _message *<code class="descname">reply_to_message</code><a class="headerlink" href="#c.Message.reply_to_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.edit_date">
+long int <code class="descname">edit_date</code><a class="headerlink" href="#c.Message.edit_date" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.media_group_id">
+char *<code class="descname">media_group_id</code><a class="headerlink" href="#c.Message.media_group_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.author_signature">
+char *<code class="descname">author_signature</code><a class="headerlink" href="#c.Message.author_signature" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.text">
+char *<code class="descname">text</code><a class="headerlink" href="#c.Message.text" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.caption_entities">
+<a class="reference internal" href="#c.MessageEntity" title="MessageEntity">MessageEntity</a> *<code class="descname">caption_entities</code><a class="headerlink" href="#c.Message.caption_entities" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.audio">
+<a class="reference internal" href="#c.Audio" title="Audio">Audio</a> *<code class="descname">audio</code><a class="headerlink" href="#c.Message.audio" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.document">
+Document *<code class="descname">document</code><a class="headerlink" href="#c.Message.document" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.game">
+<a class="reference internal" href="#c.Game" title="Game">Game</a> *<code class="descname">game</code><a class="headerlink" href="#c.Message.game" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.sticker">
+<a class="reference internal" href="#c.Sticker" title="Sticker">Sticker</a> *<code class="descname">sticker</code><a class="headerlink" href="#c.Message.sticker" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.video">
+<a class="reference internal" href="#c.Video" title="Video">Video</a> *<code class="descname">video</code><a class="headerlink" href="#c.Message.video" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.voice">
+<a class="reference internal" href="#c.Voice" title="Voice">Voice</a> *<code class="descname">voice</code><a class="headerlink" href="#c.Message.voice" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.video_note">
+<a class="reference internal" href="#c.VideoNote" title="VideoNote">VideoNote</a> *<code class="descname">video_note</code><a class="headerlink" href="#c.Message.video_note" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.caption">
+char *<code class="descname">caption</code><a class="headerlink" href="#c.Message.caption" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.contact">
+<a class="reference internal" href="#c.Contact" title="Contact">Contact</a> *<code class="descname">contact</code><a class="headerlink" href="#c.Message.contact" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.location">
+<a class="reference internal" href="#c.Location" title="Location">Location</a> *<code class="descname">location</code><a class="headerlink" href="#c.Message.location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.venue">
+<a class="reference internal" href="#c.Venue" title="Venue">Venue</a> *<code class="descname">venue</code><a class="headerlink" href="#c.Message.venue" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.new_chat_members">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">new_chat_members</code><a class="headerlink" href="#c.Message.new_chat_members" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.left_chat_member">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">left_chat_member</code><a class="headerlink" href="#c.Message.left_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.new_chat_title">
+char *<code class="descname">new_chat_title</code><a class="headerlink" href="#c.Message.new_chat_title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.delete_chat_photo">
+bool <code class="descname">delete_chat_photo</code><a class="headerlink" href="#c.Message.delete_chat_photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.group_chat_created">
+bool <code class="descname">group_chat_created</code><a class="headerlink" href="#c.Message.group_chat_created" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.supergroup_chat_created">
+bool <code class="descname">supergroup_chat_created</code><a class="headerlink" href="#c.Message.supergroup_chat_created" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.channel_chat_created">
+bool <code class="descname">channel_chat_created</code><a class="headerlink" href="#c.Message.channel_chat_created" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.migrate_to_chat_id">
+long int <code class="descname">migrate_to_chat_id</code><a class="headerlink" href="#c.Message.migrate_to_chat_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.migrate_from_chat_id">
+long int <code class="descname">migrate_from_chat_id</code><a class="headerlink" href="#c.Message.migrate_from_chat_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.pinned_message">
+struct _message *<code class="descname">pinned_message</code><a class="headerlink" href="#c.Message.pinned_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.invoice">
+<a class="reference internal" href="#c.Invoice" title="Invoice">Invoice</a> *<code class="descname">invoice</code><a class="headerlink" href="#c.Message.invoice" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.successful_payment">
+<a class="reference internal" href="#c.SuccessfulPayment" title="SuccessfulPayment">SuccessfulPayment</a> *<code class="descname">successful_payment</code><a class="headerlink" href="#c.Message.successful_payment" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Message.connected_website">
+char *<code class="descname">connected_website</code><a class="headerlink" href="#c.Message.connected_website" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.InlineQuery">
+<code class="descname">InlineQuery</code><a class="headerlink" href="#c.InlineQuery" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.InlineQuery.id">
+char *<code class="descname">id</code><a class="headerlink" href="#c.InlineQuery.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineQuery.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.InlineQuery.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineQuery.location">
+<a class="reference internal" href="#c.Location" title="Location">Location</a> *<code class="descname">location</code><a class="headerlink" href="#c.InlineQuery.location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineQuery.query">
+char *<code class="descname">query</code><a class="headerlink" href="#c.InlineQuery.query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineQuery.offset">
+char *<code class="descname">offset</code><a class="headerlink" href="#c.InlineQuery.offset" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ChosenInlineResult">
+<code class="descname">ChosenInlineResult</code><a class="headerlink" href="#c.ChosenInlineResult" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ChosenInlineResult.result_id">
+char *<code class="descname">result_id</code><a class="headerlink" href="#c.ChosenInlineResult.result_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChosenInlineResult.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.ChosenInlineResult.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChosenInlineResult.location">
+<a class="reference internal" href="#c.Location" title="Location">Location</a> *<code class="descname">location</code><a class="headerlink" href="#c.ChosenInlineResult.location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChosenInlineResult.inline_message_id">
+char *<code class="descname">inline_message_id</code><a class="headerlink" href="#c.ChosenInlineResult.inline_message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChosenInlineResult.query">
+char *<code class="descname">query</code><a class="headerlink" href="#c.ChosenInlineResult.query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.CallbackQuery">
+<code class="descname">CallbackQuery</code><a class="headerlink" href="#c.CallbackQuery" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.CallbackQuery.id">
+char *<code class="descname">id</code><a class="headerlink" href="#c.CallbackQuery.id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.from">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">from</code><a class="headerlink" href="#c.CallbackQuery.from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.message">
+<a class="reference internal" href="#c.Message" title="Message">Message</a> *<code class="descname">message</code><a class="headerlink" href="#c.CallbackQuery.message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.inline_message_id">
+char *<code class="descname">inline_message_id</code><a class="headerlink" href="#c.CallbackQuery.inline_message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.chat_instance">
+char *<code class="descname">chat_instance</code><a class="headerlink" href="#c.CallbackQuery.chat_instance" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.data">
+char *<code class="descname">data</code><a class="headerlink" href="#c.CallbackQuery.data" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackQuery.game_short_name">
+char *<code class="descname">game_short_name</code><a class="headerlink" href="#c.CallbackQuery.game_short_name" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Framebot">
+<code class="descname">Framebot</code><a class="headerlink" href="#c.Framebot" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Framebot.update_id">
+long int <code class="descname">update_id</code><a class="headerlink" href="#c.Framebot.update_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.message">
+<a class="reference internal" href="#c.Message" title="Message">Message</a> *<code class="descname">message</code><a class="headerlink" href="#c.Framebot.message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.edited_message">
+<a class="reference internal" href="#c.Message" title="Message">Message</a> *<code class="descname">edited_message</code><a class="headerlink" href="#c.Framebot.edited_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.channel_post">
+<a class="reference internal" href="#c.Message" title="Message">Message</a> *<code class="descname">channel_post</code><a class="headerlink" href="#c.Framebot.channel_post" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.edited_channel_post">
+<a class="reference internal" href="#c.Message" title="Message">Message</a> *<code class="descname">edited_channel_post</code><a class="headerlink" href="#c.Framebot.edited_channel_post" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.inline_query">
+<a class="reference internal" href="#c.InlineQuery" title="InlineQuery">InlineQuery</a> *<code class="descname">inline_query</code><a class="headerlink" href="#c.Framebot.inline_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.chosen_inline_result">
+<a class="reference internal" href="#c.ChosenInlineResult" title="ChosenInlineResult">ChosenInlineResult</a> *<code class="descname">chosen_inline_result</code><a class="headerlink" href="#c.Framebot.chosen_inline_result" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.callback_query">
+<a class="reference internal" href="#c.CallbackQuery" title="CallbackQuery">CallbackQuery</a> *<code class="descname">callback_query</code><a class="headerlink" href="#c.Framebot.callback_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.shipping_query">
+<a class="reference internal" href="#c.ShippingQuery" title="ShippingQuery">ShippingQuery</a> *<code class="descname">shipping_query</code><a class="headerlink" href="#c.Framebot.shipping_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.pre_checkout_query">
+<a class="reference internal" href="#c.PreCheckoutQuery" title="PreCheckoutQuery">PreCheckoutQuery</a> *<code class="descname">pre_checkout_query</code><a class="headerlink" href="#c.Framebot.pre_checkout_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Framebot.next">
+struct _update *<code class="descname">next</code><a class="headerlink" href="#c.Framebot.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+long int <code class="descname">update_id</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPMessage *<code class="descname">message</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPMessage *<code class="descname">edited_message</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPMessage *<code class="descname">channel_post</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPMessage *<code class="descname">edited_channel_post</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPIResult *<code class="descname">chosen_inline_result</code></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt>
+UPPCQuery *<code class="descname">pre_checkout_query</code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ChatMember">
+<code class="descname">ChatMember</code><a class="headerlink" href="#c.ChatMember" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ChatMember.user">
+<a class="reference internal" href="#c.User" title="User">User</a> *<code class="descname">user</code><a class="headerlink" href="#c.ChatMember.user" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.status">
+char *<code class="descname">status</code><a class="headerlink" href="#c.ChatMember.status" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.until_date">
+long int <code class="descname">until_date</code><a class="headerlink" href="#c.ChatMember.until_date" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_be_edited">
+bool <code class="descname">can_be_edited</code><a class="headerlink" href="#c.ChatMember.can_be_edited" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_change_info">
+bool <code class="descname">can_change_info</code><a class="headerlink" href="#c.ChatMember.can_change_info" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_post_messages">
+bool <code class="descname">can_post_messages</code><a class="headerlink" href="#c.ChatMember.can_post_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_edit_messages">
+bool <code class="descname">can_edit_messages</code><a class="headerlink" href="#c.ChatMember.can_edit_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_delete_messages">
+bool <code class="descname">can_delete_messages</code><a class="headerlink" href="#c.ChatMember.can_delete_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_invite_users">
+bool <code class="descname">can_invite_users</code><a class="headerlink" href="#c.ChatMember.can_invite_users" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_restrict_members">
+bool <code class="descname">can_restrict_members</code><a class="headerlink" href="#c.ChatMember.can_restrict_members" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_pin_messages">
+bool <code class="descname">can_pin_messages</code><a class="headerlink" href="#c.ChatMember.can_pin_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_promote_members">
+bool <code class="descname">can_promote_members</code><a class="headerlink" href="#c.ChatMember.can_promote_members" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_send_messages">
+bool <code class="descname">can_send_messages</code><a class="headerlink" href="#c.ChatMember.can_send_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_send_media_messages">
+bool <code class="descname">can_send_media_messages</code><a class="headerlink" href="#c.ChatMember.can_send_media_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_send_other_messages">
+bool <code class="descname">can_send_other_messages</code><a class="headerlink" href="#c.ChatMember.can_send_other_messages" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.can_add_web_page_previews">
+bool <code class="descname">can_add_web_page_previews</code><a class="headerlink" href="#c.ChatMember.can_add_web_page_previews" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ChatMember.next">
+struct _chat_member *<code class="descname">next</code><a class="headerlink" href="#c.ChatMember.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.File">
+<code class="descname">File</code><a class="headerlink" href="#c.File" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.File.file_id">
+char *<code class="descname">file_id</code><a class="headerlink" href="#c.File.file_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.File.file_size">
+long <code class="descname">file_size</code><a class="headerlink" href="#c.File.file_size" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.File.file_path">
+char *<code class="descname">file_path</code><a class="headerlink" href="#c.File.file_path" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.UserProfilePhotos">
+<code class="descname">UserProfilePhotos</code><a class="headerlink" href="#c.UserProfilePhotos" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.UserProfilePhotos.total_count">
+long <code class="descname">total_count</code><a class="headerlink" href="#c.UserProfilePhotos.total_count" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.CallbackGame">
+<code class="descname">CallbackGame</code><a class="headerlink" href="#c.CallbackGame" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.CallbackGame.user_id">
+long int <code class="descname">user_id</code><a class="headerlink" href="#c.CallbackGame.user_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.score">
+long int <code class="descname">score</code><a class="headerlink" href="#c.CallbackGame.score" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.force">
+bool <code class="descname">force</code><a class="headerlink" href="#c.CallbackGame.force" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.disable_edit_message">
+bool <code class="descname">disable_edit_message</code><a class="headerlink" href="#c.CallbackGame.disable_edit_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.chat_id">
+long int <code class="descname">chat_id</code><a class="headerlink" href="#c.CallbackGame.chat_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.message_id">
+long int <code class="descname">message_id</code><a class="headerlink" href="#c.CallbackGame.message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.CallbackGame.inline_message_id">
+char *<code class="descname">inline_message_id</code><a class="headerlink" href="#c.CallbackGame.inline_message_id" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.KeyboardButton">
+<code class="descname">KeyboardButton</code><a class="headerlink" href="#c.KeyboardButton" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.KeyboardButton.text">
+char *<code class="descname">text</code><a class="headerlink" href="#c.KeyboardButton.text" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.KeyboardButton.request_contact">
+bool <code class="descname">request_contact</code><a class="headerlink" href="#c.KeyboardButton.request_contact" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.KeyboardButton.request_location">
+bool <code class="descname">request_location</code><a class="headerlink" href="#c.KeyboardButton.request_location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.KeyboardButton.next">
+struct _keyboard_button *<code class="descname">next</code><a class="headerlink" href="#c.KeyboardButton.next" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.InlineKeyboardButton">
+<code class="descname">InlineKeyboardButton</code><a class="headerlink" href="#c.InlineKeyboardButton" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.InlineKeyboardButton.text">
+char *<code class="descname">text</code><a class="headerlink" href="#c.InlineKeyboardButton.text" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.url">
+char *<code class="descname">url</code><a class="headerlink" href="#c.InlineKeyboardButton.url" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.callback_data">
+char *<code class="descname">callback_data</code><a class="headerlink" href="#c.InlineKeyboardButton.callback_data" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.switch_nline_query">
+char *<code class="descname">switch_nline_query</code><a class="headerlink" href="#c.InlineKeyboardButton.switch_nline_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.switch_inline_query_current_chat">
+char *<code class="descname">switch_inline_query_current_chat</code><a class="headerlink" href="#c.InlineKeyboardButton.switch_inline_query_current_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.callback_game">
+<a class="reference internal" href="#c.CallbackGame" title="CallbackGame">CallbackGame</a> *<code class="descname">callback_game</code><a class="headerlink" href="#c.InlineKeyboardButton.callback_game" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.InlineKeyboardButton.pay">
+bool <code class="descname">pay</code><a class="headerlink" href="#c.InlineKeyboardButton.pay" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.InlineKeyboardMarkup">
+<code class="descname">InlineKeyboardMarkup</code><a class="headerlink" href="#c.InlineKeyboardMarkup" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.InlineKeyboardMarkup.type">
+int <code class="descname">type</code><a class="headerlink" href="#c.InlineKeyboardMarkup.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ReplyKeyboardMarkup">
+<code class="descname">ReplyKeyboardMarkup</code><a class="headerlink" href="#c.ReplyKeyboardMarkup" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ReplyKeyboardMarkup.type">
+int <code class="descname">type</code><a class="headerlink" href="#c.ReplyKeyboardMarkup.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ReplyKeyboardMarkup.resize_keyboard">
+bool <code class="descname">resize_keyboard</code><a class="headerlink" href="#c.ReplyKeyboardMarkup.resize_keyboard" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ReplyKeyboardMarkup.one_time_keyboard">
+bool <code class="descname">one_time_keyboard</code><a class="headerlink" href="#c.ReplyKeyboardMarkup.one_time_keyboard" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ReplyKeyboardMarkup.selective">
+bool <code class="descname">selective</code><a class="headerlink" href="#c.ReplyKeyboardMarkup.selective" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ReplyKeyboardRemove">
+<code class="descname">ReplyKeyboardRemove</code><a class="headerlink" href="#c.ReplyKeyboardRemove" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ReplyKeyboardRemove.type">
+int <code class="descname">type</code><a class="headerlink" href="#c.ReplyKeyboardRemove.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ReplyKeyboardRemove.remove_keyboard">
+bool <code class="descname">remove_keyboard</code><a class="headerlink" href="#c.ReplyKeyboardRemove.remove_keyboard" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ReplyKeyboardRemove.selective">
+bool <code class="descname">selective</code><a class="headerlink" href="#c.ReplyKeyboardRemove.selective" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.ForceReply">
+<code class="descname">ForceReply</code><a class="headerlink" href="#c.ForceReply" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.ForceReply.type">
+int <code class="descname">type</code><a class="headerlink" href="#c.ForceReply.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ForceReply.force_reply">
+bool <code class="descname">force_reply</code><a class="headerlink" href="#c.ForceReply.force_reply" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.ForceReply.selective">
+bool <code class="descname">selective</code><a class="headerlink" href="#c.ForceReply.selective" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="c.Keyboard">
+<code class="descname">Keyboard</code><a class="headerlink" href="#c.Keyboard" title="Link permanente para esta definição">¶</a></dt>
+<dd><dl class="member">
+<dt id="c.Keyboard.type">
+int <code class="descname">type</code><a class="headerlink" href="#c.Keyboard.type" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Keyboard.inline_keyboard_markup">
+<a class="reference internal" href="#c.InlineKeyboardButton" title="InlineKeyboardButton">InlineKeyboardButton</a> *<code class="descname">inline_keyboard_markup</code><a class="headerlink" href="#c.Keyboard.inline_keyboard_markup" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Keyboard.reply_keyboard_markup">
+<a class="reference internal" href="#c.ReplyKeyboardMarkup" title="ReplyKeyboardMarkup">ReplyKeyboardMarkup</a> *<code class="descname">reply_keyboard_markup</code><a class="headerlink" href="#c.Keyboard.reply_keyboard_markup" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Keyboard.reply_keyboard_remove">
+<a class="reference internal" href="#c.ReplyKeyboardRemove" title="ReplyKeyboardRemove">ReplyKeyboardRemove</a> *<code class="descname">reply_keyboard_remove</code><a class="headerlink" href="#c.Keyboard.reply_keyboard_remove" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="c.Keyboard._force_reply">
+<a class="reference internal" href="#c.ForceReply" title="ForceReply">ForceReply</a> *<code class="descname">_force_reply</code><a class="headerlink" href="#c.Keyboard._force_reply" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -242,7 +1609,7 @@ struct _user *<code class="descname">next</code><a class="headerlink" href="#c.U
         <a href="functions.html" class="btn btn-neutral float-right" title="Funções" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="starting.html" class="btn btn-neutral" title="Começando" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorial.html" class="btn btn-neutral" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
