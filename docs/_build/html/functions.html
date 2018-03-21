@@ -36,7 +36,6 @@
               href="genindex.html"/>
         <link rel="search" title="Buscar" href="search.html"/>
     <link rel="top" title="documentação Framebot 0.1.0" href="index.html"/>
-        <link rel="next" title="&lt;no title&gt;" href="types.html"/>
         <link rel="prev" title="Objetos" href="objects.html"/> 
 
   
@@ -89,10 +88,10 @@
               <p class="caption"><span class="caption-text">Conteúdo:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="starting.html">Começando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">Objetos</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Funções</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#funcoes-exclusivas">Funções exclusivas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#funcoes-da-api">Funções da API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#referencia-completa">Referencia completa</a></li>
 </ul>
 </li>
 </ul>
@@ -161,32 +160,774 @@
   <div class="section" id="funcoes">
 <h1>Funções<a class="headerlink" href="#funcoes" title="Link permanente para este título">¶</a></h1>
 <p>Aqui você encontra as funções implementadas pela biblioteca.</p>
-<div class="section" id="funcoes-exclusivas">
-<h2>Funções exclusivas<a class="headerlink" href="#funcoes-exclusivas" title="Link permanente para este título">¶</a></h2>
-<p>Funções que são implementadas pela biblioteca, mas não pela API do Telegram.</p>
+<p>Todas as funções disponíveis na API do Telegram, estão disponíveis na biblíoteca
+usando o formato lower case separando os nomes com underscore</p>
+<div class="section" id="referencia-completa">
+<h2>Referencia completa<a class="headerlink" href="#referencia-completa" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="c.user">
+<a class="reference internal" href="objects.html#c.User" title="User">User</a> *<code class="descname">user</code><span class="sig-paren">(</span>long int<em>&nbsp;id</em>, bool<em>&nbsp;is_bot</em>, const char<em>&nbsp;*first_name</em>, const char<em>&nbsp;*last_name</em>, const char<em>&nbsp;*username</em>, const char<em>&nbsp;*language_code</em><span class="sig-paren">)</span><a class="headerlink" href="#c.user" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.user_add">
+void <code class="descname">user_add</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*origin</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*next</em><span class="sig-paren">)</span><a class="headerlink" href="#c.user_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.user_free">
+void <code class="descname">user_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*usr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.user_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_free">
+void <code class="descname">chat_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Chat" title="Chat">Chat</a><em>&nbsp;*cht</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.message_entity_free">
+void <code class="descname">message_entity_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*msgett</em><span class="sig-paren">)</span><a class="headerlink" href="#c.message_entity_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.message_entity_add">
+void <code class="descname">message_entity_add</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*dest</em>, <a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*src</em><span class="sig-paren">)</span><a class="headerlink" href="#c.message_entity_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.message_entity_len">
+size_t <code class="descname">message_entity_len</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*message_entity</em><span class="sig-paren">)</span><a class="headerlink" href="#c.message_entity_len" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.message_entity_get">
+<a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a> *<code class="descname">message_entity_get</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*message_entity</em>, int<em>&nbsp;index</em><span class="sig-paren">)</span><a class="headerlink" href="#c.message_entity_get" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.audio">
+<a class="reference internal" href="objects.html#c.Audio" title="Audio">Audio</a> *<code class="descname">audio</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, long int<em>&nbsp;duration</em>, const char<em>&nbsp;*performer</em>, const char<em>&nbsp;*title</em>, const char<em>&nbsp;*mime_type</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.audio" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.audio_free">
+void <code class="descname">audio_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Audio" title="Audio">Audio</a><em>&nbsp;*audio</em><span class="sig-paren">)</span><a class="headerlink" href="#c.audio_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.photo_size_free">
+void <code class="descname">photo_size_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*photoSize</em><span class="sig-paren">)</span><a class="headerlink" href="#c.photo_size_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.photo_size_add">
+void <code class="descname">photo_size_add</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*root</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*newps</em><span class="sig-paren">)</span><a class="headerlink" href="#c.photo_size_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.photo_size_get">
+<a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a> *<code class="descname">photo_size_get</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*root</em>, int<em>&nbsp;i</em><span class="sig-paren">)</span><a class="headerlink" href="#c.photo_size_get" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.photo_size_len">
+size_t <code class="descname">photo_size_len</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*ophoto_sise</em><span class="sig-paren">)</span><a class="headerlink" href="#c.photo_size_len" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.document">
+Document *<code class="descname">document</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*thumb</em>, const char<em>&nbsp;*file_name</em>, const char<em>&nbsp;*mime_type</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.document" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.document_free">
+void <code class="descname">document_free</code><span class="sig-paren">(</span>Document<em>&nbsp;*document</em><span class="sig-paren">)</span><a class="headerlink" href="#c.document_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.animation">
+Animation *<code class="descname">animation</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*thumb</em>, const char<em>&nbsp;*file_name</em>, const char<em>&nbsp;*mime_type</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.animation" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.animation_free">
+void <code class="descname">animation_free</code><span class="sig-paren">(</span>Animation<em>&nbsp;*animation</em><span class="sig-paren">)</span><a class="headerlink" href="#c.animation_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.game">
+<a class="reference internal" href="objects.html#c.Game" title="Game">Game</a> *<code class="descname">game</code><span class="sig-paren">(</span>const char<em>&nbsp;*title</em>, const char<em>&nbsp;*description</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*photo</em>, const char<em>&nbsp;*text</em>, <a class="reference internal" href="objects.html#c.MessageEntity" title="MessageEntity">MessageEntity</a><em>&nbsp;*text_entities</em>, Animation<em>&nbsp;*animation</em><span class="sig-paren">)</span><a class="headerlink" href="#c.game" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.game_free">
+void <code class="descname">game_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Game" title="Game">Game</a><em>&nbsp;*game</em><span class="sig-paren">)</span><a class="headerlink" href="#c.game_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.sticker">
+<a class="reference internal" href="objects.html#c.Sticker" title="Sticker">Sticker</a> *<code class="descname">sticker</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, int<em>&nbsp;width</em>, int<em>&nbsp;height</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*thumb</em>, const char<em>&nbsp;*emoji</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.sticker" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.sticker_free">
+void <code class="descname">sticker_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Sticker" title="Sticker">Sticker</a><em>&nbsp;*_sticker</em><span class="sig-paren">)</span><a class="headerlink" href="#c.sticker_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.video">
+<a class="reference internal" href="objects.html#c.Video" title="Video">Video</a> *<code class="descname">video</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, int<em>&nbsp;width</em>, int<em>&nbsp;height</em>, long int<em>&nbsp;duration</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*thumb</em>, const char<em>&nbsp;*mime_type</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.video" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.video_free">
+void <code class="descname">video_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Video" title="Video">Video</a><em>&nbsp;*_video</em><span class="sig-paren">)</span><a class="headerlink" href="#c.video_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.voice">
+<a class="reference internal" href="objects.html#c.Voice" title="Voice">Voice</a> *<code class="descname">voice</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, long int<em>&nbsp;duration</em>, const char<em>&nbsp;*mime_type</em>, long int<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.voice" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.voice_free">
+void <code class="descname">voice_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Voice" title="Voice">Voice</a><em>&nbsp;*_voice</em><span class="sig-paren">)</span><a class="headerlink" href="#c.voice_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.contact">
+<a class="reference internal" href="objects.html#c.Contact" title="Contact">Contact</a> *<code class="descname">contact</code><span class="sig-paren">(</span>const char<em>&nbsp;*phone_number</em>, const char<em>&nbsp;*first_name</em>, const char<em>&nbsp;*last_name</em>, long int<em>&nbsp;user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.contact" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.contact_free">
+void <code class="descname">contact_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Contact" title="Contact">Contact</a><em>&nbsp;*_contact</em><span class="sig-paren">)</span><a class="headerlink" href="#c.contact_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.location">
+<a class="reference internal" href="objects.html#c.Location" title="Location">Location</a> *<code class="descname">location</code><span class="sig-paren">(</span>float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em><span class="sig-paren">)</span><a class="headerlink" href="#c.location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.location_free">
+void <code class="descname">location_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Location" title="Location">Location</a><em>&nbsp;*_location</em><span class="sig-paren">)</span><a class="headerlink" href="#c.location_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.venue">
+<a class="reference internal" href="objects.html#c.Venue" title="Venue">Venue</a> *<code class="descname">venue</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Location" title="Location">Location</a><em>&nbsp;*location</em>, const char<em>&nbsp;*title</em>, const char<em>&nbsp;*address</em>, const char<em>&nbsp;*foursquare_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.venue" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.venue_free">
+void <code class="descname">venue_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Venue" title="Venue">Venue</a><em>&nbsp;*_venue</em><span class="sig-paren">)</span><a class="headerlink" href="#c.venue_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.message_free">
+void <code class="descname">message_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*message</em><span class="sig-paren">)</span><a class="headerlink" href="#c.message_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.bot">
+<a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<code class="descname">bot</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*user</em><span class="sig-paren">)</span><a class="headerlink" href="#c.bot" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.bot_free">
+void <code class="descname">bot_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em><span class="sig-paren">)</span><a class="headerlink" href="#c.bot_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chosen_inline_result">
+<a class="reference internal" href="objects.html#c.ChosenInlineResult" title="ChosenInlineResult">ChosenInlineResult</a> *<code class="descname">chosen_inline_result</code><span class="sig-paren">(</span>const char<em>&nbsp;*result_id</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*from</em>, <a class="reference internal" href="objects.html#c.Location" title="Location">Location</a><em>&nbsp;*location</em>, const char<em>&nbsp;*inline_message_id</em>, const char<em>&nbsp;*query</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chosen_inline_result" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chosen_inline_result_free">
+void <code class="descname">chosen_inline_result_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChosenInlineResult" title="ChosenInlineResult">ChosenInlineResult</a><em>&nbsp;*cir</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chosen_inline_result_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.update">
+Update *<code class="descname">update</code><span class="sig-paren">(</span>long int<em>&nbsp;update_id</em>, <a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*message</em>, <a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*edited_message</em>, <a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*channel_post</em>, <a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*edited_channel_post</em>, <a class="reference internal" href="objects.html#c.InlineQuery" title="InlineQuery">InlineQuery</a><em>&nbsp;*inline_query</em>, <a class="reference internal" href="objects.html#c.ChosenInlineResult" title="ChosenInlineResult">ChosenInlineResult</a><em>&nbsp;*chosen_inline_result</em>, <a class="reference internal" href="objects.html#c.CallbackQuery" title="CallbackQuery">CallbackQuery</a><em>&nbsp;*callback_query</em>, <a class="reference internal" href="objects.html#c.ShippingQuery" title="ShippingQuery">ShippingQuery</a><em>&nbsp;*shipping_query</em>, <a class="reference internal" href="objects.html#c.PreCheckoutQuery" title="PreCheckoutQuery">PreCheckoutQuery</a><em>&nbsp;*pre_checkout_query</em><span class="sig-paren">)</span><a class="headerlink" href="#c.update" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.update_free">
+void <code class="descname">update_free</code><span class="sig-paren">(</span>Update<em>&nbsp;*oupdate</em><span class="sig-paren">)</span><a class="headerlink" href="#c.update_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.update_add">
+void <code class="descname">update_add</code><span class="sig-paren">(</span>Update<em>&nbsp;*dest</em>, Update<em>&nbsp;*src</em><span class="sig-paren">)</span><a class="headerlink" href="#c.update_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.update_get">
+Update *<code class="descname">update_get</code><span class="sig-paren">(</span>Update<em>&nbsp;*u</em>, int<em>&nbsp;index</em><span class="sig-paren">)</span><a class="headerlink" href="#c.update_get" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.update_len">
+size_t <code class="descname">update_len</code><span class="sig-paren">(</span>Update<em>&nbsp;*u</em><span class="sig-paren">)</span><a class="headerlink" href="#c.update_len" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_member">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*user</em>, const char<em>&nbsp;*status</em>, long int<em>&nbsp;until_date</em>, bool<em>&nbsp;can_be_edited</em>, bool<em>&nbsp;can_change_info</em>, bool<em>&nbsp;can_post_messages</em>, bool<em>&nbsp;can_edit_messages</em>, bool<em>&nbsp;can_delete_messages</em>, bool<em>&nbsp;can_invite_users</em>, bool<em>&nbsp;can_restrict_members</em>, bool<em>&nbsp;can_pin_messages</em>, bool<em>&nbsp;can_promote_members</em>, bool<em>&nbsp;can_send_messages</em>, bool<em>&nbsp;can_send_media_messages</em>, bool<em>&nbsp;can_send_other_messages</em>, bool<em>&nbsp;can_add_web_page_previews</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_member_free">
+void <code class="descname">chat_member_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a><em>&nbsp;*chatMember</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_member_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_member_add">
+void <code class="descname">chat_member_add</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a><em>&nbsp;*dest</em>, <a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a><em>&nbsp;*src</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_member_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_member_get">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">chat_member_get</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a><em>&nbsp;*chatMember</em>, int<em>&nbsp;index</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_member_get" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_member_len">
+size_t <code class="descname">chat_member_len</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a><em>&nbsp;*chatMember</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_member_len" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.inline_query">
+<a class="reference internal" href="objects.html#c.InlineQuery" title="InlineQuery">InlineQuery</a> *<code class="descname">inline_query</code><span class="sig-paren">(</span>const char<em>&nbsp;*id</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*user</em>, <a class="reference internal" href="objects.html#c.Location" title="Location">Location</a><em>&nbsp;*location</em>, const char<em>&nbsp;*query</em>, const char<em>&nbsp;*offset</em><span class="sig-paren">)</span><a class="headerlink" href="#c.inline_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.inline_query_free">
+void <code class="descname">inline_query_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.InlineQuery" title="InlineQuery">InlineQuery</a><em>&nbsp;*inline_query</em><span class="sig-paren">)</span><a class="headerlink" href="#c.inline_query_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.callback_query">
+<a class="reference internal" href="objects.html#c.CallbackQuery" title="CallbackQuery">CallbackQuery</a> *<code class="descname">callback_query</code><span class="sig-paren">(</span>const char<em>&nbsp;*id</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*user</em>, <a class="reference internal" href="objects.html#c.Message" title="Message">Message</a><em>&nbsp;*message</em>, const char<em>&nbsp;*inline_message_id</em>, const char<em>&nbsp;*chat_instance</em>, const char<em>&nbsp;*data</em>, const char<em>&nbsp;*game_short_name</em><span class="sig-paren">)</span><a class="headerlink" href="#c.callback_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.callback_query_free">
+void <code class="descname">callback_query_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.CallbackQuery" title="CallbackQuery">CallbackQuery</a><em>&nbsp;*callback_query</em><span class="sig-paren">)</span><a class="headerlink" href="#c.callback_query_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.video_note">
+<a class="reference internal" href="objects.html#c.VideoNote" title="VideoNote">VideoNote</a> *<code class="descname">video_note</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, long<em>&nbsp;length</em>, long<em>&nbsp;duration</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a><em>&nbsp;*photo_size</em>, long<em>&nbsp;file_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.video_note" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.video_note_free">
+void <code class="descname">video_note_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.VideoNote" title="VideoNote">VideoNote</a><em>&nbsp;*video_note</em><span class="sig-paren">)</span><a class="headerlink" href="#c.video_note_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.invoice">
+<a class="reference internal" href="objects.html#c.Invoice" title="Invoice">Invoice</a> *<code class="descname">invoice</code><span class="sig-paren">(</span>const char<em>&nbsp;*title</em>, const char<em>&nbsp;*description</em>, const char<em>&nbsp;*start_parameter</em>, const char<em>&nbsp;*currency</em>, long<em>&nbsp;total_amount</em><span class="sig-paren">)</span><a class="headerlink" href="#c.invoice" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.invoice_free">
+void <code class="descname">invoice_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Invoice" title="Invoice">Invoice</a><em>&nbsp;*invoice</em><span class="sig-paren">)</span><a class="headerlink" href="#c.invoice_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.shipping_query">
+<a class="reference internal" href="objects.html#c.ShippingQuery" title="ShippingQuery">ShippingQuery</a> *<code class="descname">shipping_query</code><span class="sig-paren">(</span>const char<em>&nbsp;*id</em>, <a class="reference internal" href="objects.html#c.User" title="User">User</a><em>&nbsp;*from</em>, const char<em>&nbsp;*invoice_payload</em>, <a class="reference internal" href="objects.html#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a><em>&nbsp;*shipping_address</em><span class="sig-paren">)</span><a class="headerlink" href="#c.shipping_query" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.shipping_query_free">
+void <code class="descname">shipping_query_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ShippingQuery" title="ShippingQuery">ShippingQuery</a><em>&nbsp;*shipping_query</em><span class="sig-paren">)</span><a class="headerlink" href="#c.shipping_query_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.shipping_address">
+<a class="reference internal" href="objects.html#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a> *<code class="descname">shipping_address</code><span class="sig-paren">(</span>const char<em>&nbsp;*country_code</em>, const char<em>&nbsp;*state</em>, const char<em>&nbsp;*city</em>, const char<em>&nbsp;*street_line1</em>, const char<em>&nbsp;*street_line2</em>, const char<em>&nbsp;*post_code</em><span class="sig-paren">)</span><a class="headerlink" href="#c.shipping_address" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.shipping_address_free">
+void <code class="descname">shipping_address_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a><em>&nbsp;*shipping_address</em><span class="sig-paren">)</span><a class="headerlink" href="#c.shipping_address_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.order_info">
+<a class="reference internal" href="objects.html#c.OrderInfo" title="OrderInfo">OrderInfo</a> *<code class="descname">order_info</code><span class="sig-paren">(</span>const char<em>&nbsp;*name</em>, const char<em>&nbsp;*phone_number</em>, const char<em>&nbsp;*email</em>, <a class="reference internal" href="objects.html#c.ShippingAddress" title="ShippingAddress">ShippingAddress</a><em>&nbsp;*shipping_address</em><span class="sig-paren">)</span><a class="headerlink" href="#c.order_info" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.order_info_free">
+void <code class="descname">order_info_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.OrderInfo" title="OrderInfo">OrderInfo</a><em>&nbsp;*order_info</em><span class="sig-paren">)</span><a class="headerlink" href="#c.order_info_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.pre_checkout_query_free">
+void <code class="descname">pre_checkout_query_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.PreCheckoutQuery" title="PreCheckoutQuery">PreCheckoutQuery</a><em>&nbsp;*pcq</em><span class="sig-paren">)</span><a class="headerlink" href="#c.pre_checkout_query_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.successful_payment">
+<a class="reference internal" href="objects.html#c.SuccessfulPayment" title="SuccessfulPayment">SuccessfulPayment</a> *<code class="descname">successful_payment</code><span class="sig-paren">(</span>const char<em>&nbsp;*currency</em>, long<em>&nbsp;total_amount</em>, const char<em>&nbsp;*invoice_payload</em>, const char<em>&nbsp;*shipping_option_id</em>, <a class="reference internal" href="objects.html#c.OrderInfo" title="OrderInfo">OrderInfo</a><em>&nbsp;*oorder_info</em>, const char<em>&nbsp;*telegram_payment_charge_id</em>, const char<em>&nbsp;*provider_payment_charge_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.successful_payment" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.successful_payment_free">
+void <code class="descname">successful_payment_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.SuccessfulPayment" title="SuccessfulPayment">SuccessfulPayment</a><em>&nbsp;*spayment</em><span class="sig-paren">)</span><a class="headerlink" href="#c.successful_payment_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.file">
+<a class="reference internal" href="objects.html#c.File" title="File">File</a> *<code class="descname">file</code><span class="sig-paren">(</span>const char<em>&nbsp;*file_id</em>, long int<em>&nbsp;file_size</em>, const char<em>&nbsp;*file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#c.file" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.file_free">
+void <code class="descname">file_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.File" title="File">File</a><em>&nbsp;*ofile</em><span class="sig-paren">)</span><a class="headerlink" href="#c.file_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.user_profile_photos">
+<a class="reference internal" href="objects.html#c.UserProfilePhotos" title="UserProfilePhotos">UserProfilePhotos</a> *<code class="descname">user_profile_photos</code><span class="sig-paren">(</span>long int<em>&nbsp;total_count</em>, <a class="reference internal" href="objects.html#c.PhotoSize" title="PhotoSize">PhotoSize</a> **<em>&nbsp;photo_size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.user_profile_photos" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.user_profile_photos_free">
+void <code class="descname">user_profile_photos_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.UserProfilePhotos" title="UserProfilePhotos">UserProfilePhotos</a><em>&nbsp;*oupp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.user_profile_photos_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_photo">
+<a class="reference internal" href="objects.html#c.ChatPhoto" title="ChatPhoto">ChatPhoto</a> *<code class="descname">chat_photo</code><span class="sig-paren">(</span>const char<em>&nbsp;*small_file_id</em>, const char<em>&nbsp;*big_file_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.chat_photo_free">
+void <code class="descname">chat_photo_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.ChatPhoto" title="ChatPhoto">ChatPhoto</a><em>&nbsp;*ochat_photo</em><span class="sig-paren">)</span><a class="headerlink" href="#c.chat_photo_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.error">
+void <code class="descname">error</code><span class="sig-paren">(</span>long int<em>&nbsp;error_code</em>, const char<em>&nbsp;*description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.error" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.error_free">
+void <code class="descname">error_free</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.error_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_error">
+Error *<code class="descname">get_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.get_error" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.framebot_add">
+void <code class="descname">framebot_add</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Framebot" title="Framebot">Framebot</a><em>&nbsp;*framebot</em>, Update<em>&nbsp;*update</em><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot_add" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.framebot_free">
+void <code class="descname">framebot_free</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Framebot" title="Framebot">Framebot</a><em>&nbsp;*framebot</em><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot_free" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="c.framebot_init">
 void <code class="descname">framebot_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot_init" title="Link permanente para esta definição">¶</a></dt>
-<dd><p>Essa função é utilizada para iniciar a biblioteca e suas dependencias.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="c.framebot">
-<a class="reference internal" href="types.html#c.Bot" title="Bot">Bot</a> *<code class="descname">framebot</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot" title="Link permanente para esta definição">¶</a></dt>
-<dd><p>Essa função é chamada para inicializar um objeto do tipo <a class="reference internal" href="types.html#c.Bot" title="Bot"><code class="xref c c-type docutils literal notranslate"><span class="pre">Bot</span></code></a>,
-que será usado sempre que for preciso utilizar uma função da API do Telegram.</p>
-</dd></dl>
+<a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> * <code class="descname">framebot</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.framebot" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
 
-</div>
-<div class="section" id="funcoes-da-api">
-<span id="api-func"></span><h2>Funções da API<a class="headerlink" href="#funcoes-da-api" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="c.generic_method_call">
+refjson *<code class="descname">generic_method_call</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em>, char<em>&nbsp;*formats</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.generic_method_call" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.show_error">
+Error * <code class="descname">show_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.show_error" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="c.get_me">
-<a class="reference internal" href="types.html#c.User" title="User">User</a> *<code class="descname">get_me</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_me" title="Link permanente para esta definição">¶</a></dt>
-<dd><p>Veja em <a class="reference external" href="https://core.telegram.org/bots/api#getme">Telegram API</a></p>
-<p>Uma função para testar seu <cite>token</cite>.
-Requer o parâmetro <cite>token</cite>, e retorna as informações básicas do seu bot em um objeto <a class="reference internal" href="types.html#c.User" title="User"><code class="xref c c-type docutils literal notranslate"><span class="pre">User</span></code></a>.</p>
-</dd></dl>
+<a class="reference internal" href="objects.html#c.User" title="User">User</a> * <code class="descname">get_me</code><span class="sig-paren">(</span>const char<em>&nbsp;*token</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_me" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_updates">
+<a class="reference internal" href="objects.html#c.Framebot" title="Framebot">Framebot</a> *<code class="descname">get_updates</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, <a class="reference internal" href="objects.html#c.Framebot" title="Framebot">Framebot</a><em>&nbsp;*framebot</em>, long int<em>&nbsp;offset</em>, long int<em>&nbsp;limit</em>, long int<em>&nbsp;timeout</em>, char<em>&nbsp;*allowed_updates</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_updates" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_message">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_message</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char *<em>&nbsp;chat_id</em>, char<em>&nbsp;*text</em>, char *<em>&nbsp;parse_mode</em>, bool<em>&nbsp;disable_web_page_preview</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_message_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_message_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, char<em>&nbsp;*text</em>, char *<em>&nbsp;parse_mode</em>, bool<em>&nbsp;disable_web_page_preview</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_message_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.forward_message_from">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">forward_message_from</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;from_chat_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;message_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.forward_message_from" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.forward_message_from_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">forward_message_from_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, long int<em>&nbsp;from_chat_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;message_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.forward_message_from_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.forward_message">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">forward_message</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;from_chat_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;message_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.forward_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.forward_message_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">forward_message_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;from_chat_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;message_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.forward_message_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_photo">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_photo</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_photo_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_photo_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_photo_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_audio">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_audio</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, long int<em>&nbsp;duration</em>, char *<em>&nbsp;performer</em>, char *<em>&nbsp;title</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_audio" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_audio_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_audio_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, long int<em>&nbsp;duration</em>, char *<em>&nbsp;performer</em>, char *<em>&nbsp;title</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_audio_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_document">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_document</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_document" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_document_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_document_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_document_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_video">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_video</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;video</em>, long int<em>&nbsp;duration</em>, long int<em>&nbsp;width</em>, long int<em>&nbsp;height</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_video" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_video_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_video_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;video</em>, long int<em>&nbsp;duration</em>, long int<em>&nbsp;width</em>, long int<em>&nbsp;height</em>, char *<em>&nbsp;caption</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_video_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_voice">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_voice</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, long int<em>&nbsp;duration</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_voice" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_voice_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_voice_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, char *<em>&nbsp;caption</em>, long int<em>&nbsp;duration</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_voice_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_video_note">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_video_note</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, long int<em>&nbsp;duration</em>, long int<em>&nbsp;length</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_video_note" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_video_note_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_video_note_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;filename</em>, long int<em>&nbsp;duration</em>, long int<em>&nbsp;length</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_video_note_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_location">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_location</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em>, long int<em>&nbsp;live_period</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_location_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_location_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;logitude</em>, long int<em>&nbsp;live_period</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_location_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_live_location">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">edit_message_live_location</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char *<em>&nbsp;inline_message_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_live_location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_live_location_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">edit_message_live_location_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char *<em>&nbsp;inline_message_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_live_location_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.stop_message_live_location">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">stop_message_live_location</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char *<em>&nbsp;inline_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.stop_message_live_location" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.stop_message_live_location_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">stop_message_live_location_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char *<em>&nbsp;inline_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.stop_message_live_location_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_venue">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_venue</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em>, char *<em>&nbsp;title</em>, char *<em>&nbsp;address</em>, char *<em>&nbsp;foursquare_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_venue" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_venue_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_venue_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, float<em>&nbsp;latitude</em>, float<em>&nbsp;longitude</em>, char *<em>&nbsp;title</em>, char *<em>&nbsp;address</em>, char *<em>&nbsp;foursquare_id</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_venue_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_contact">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_contact</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;phone_number</em>, char *<em>&nbsp;first_name</em>, char *<em>&nbsp;last_name</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_contact" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_contact_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> * <code class="descname">send_contact_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;phone_number</em>, char *<em>&nbsp;first_name</em>, char *<em>&nbsp;last_name</em>, bool<em>&nbsp;disable_notification</em>, long int<em>&nbsp;reply_to_message_id</em>, char *<em>&nbsp;reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_contact_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_chat_action">
+int <code class="descname">send_chat_action</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;chat_id</em>, char *<em>&nbsp;action</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_chat_action" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.send_chat_action_chat">
+int <code class="descname">send_chat_action_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, long int<em>&nbsp;chat_id</em>, char *<em>&nbsp;action</em><span class="sig-paren">)</span><a class="headerlink" href="#c.send_chat_action_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_user_profile_photos">
+<a class="reference internal" href="objects.html#c.UserProfilePhotos" title="UserProfilePhotos">UserProfilePhotos</a> * <code class="descname">get_user_profile_photos</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;dir</em>, char<em>&nbsp;*user_id</em>, long<em>&nbsp;offset</em>, long<em>&nbsp;limit</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_user_profile_photos" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_user_profile_photos_chat">
+<a class="reference internal" href="objects.html#c.UserProfilePhotos" title="UserProfilePhotos">UserProfilePhotos</a> * <code class="descname">get_user_profile_photos_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;dir</em>, long<em>&nbsp;user_id</em>, long<em>&nbsp;offset</em>, long<em>&nbsp;limit</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_user_profile_photos_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_file">
+char * <code class="descname">get_file</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a> *<em>&nbsp;bot</em>, char *<em>&nbsp;dir</em>, const char *<em>&nbsp;file_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_file" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.kick_chat_member">
+bool <code class="descname">kick_chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;user_id</em>, char<em>&nbsp;*until_date</em><span class="sig-paren">)</span><a class="headerlink" href="#c.kick_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.kick_chat_member_chat">
+bool <code class="descname">kick_chat_member_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;user_id</em>, char<em>&nbsp;*until_date</em><span class="sig-paren">)</span><a class="headerlink" href="#c.kick_chat_member_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.unban_chat_member">
+bool <code class="descname">unban_chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.unban_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.unban_chat_member_chat">
+bool <code class="descname">unban_chat_member_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.unban_chat_member_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.restrict_chat_member">
+bool <code class="descname">restrict_chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;user_id</em>, long int<em>&nbsp;until_date</em>, bool<em>&nbsp;can_send_messages</em>, bool<em>&nbsp;can_send_media_messages</em>, bool<em>&nbsp;can_send_other_messages</em>, bool<em>&nbsp;can_add_web_page_previews</em><span class="sig-paren">)</span><a class="headerlink" href="#c.restrict_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.restrict_chat_member_chat">
+bool <code class="descname">restrict_chat_member_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;user_id</em>, long int<em>&nbsp;until_date</em>, bool<em>&nbsp;can_send_messages</em>, bool<em>&nbsp;can_send_media_messages</em>, bool<em>&nbsp;can_send_other_messages</em>, bool<em>&nbsp;can_add_web_page_previews</em><span class="sig-paren">)</span><a class="headerlink" href="#c.restrict_chat_member_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.promote_chat_member">
+bool <code class="descname">promote_chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;user_id</em>, bool<em>&nbsp;can_change_info</em>, bool<em>&nbsp;can_post_messages</em>, bool<em>&nbsp;can_edit_messages</em>, bool<em>&nbsp;can_delete_messages</em>, bool<em>&nbsp;can_invite_users</em>, bool<em>&nbsp;can_restrict_members</em>, bool<em>&nbsp;can_pin_messages</em>, bool<em>&nbsp;can_promote_members</em><span class="sig-paren">)</span><a class="headerlink" href="#c.promote_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.promote_chat_member_chat">
+bool <code class="descname">promote_chat_member_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;user_id</em>, bool<em>&nbsp;can_change_info</em>, bool<em>&nbsp;can_post_messages</em>, bool<em>&nbsp;can_edit_messages</em>, bool<em>&nbsp;can_delete_messages</em>, bool<em>&nbsp;can_invite_users</em>, bool<em>&nbsp;can_restrict_members</em>, bool<em>&nbsp;can_pin_messages</em>, bool<em>&nbsp;can_promote_members</em><span class="sig-paren">)</span><a class="headerlink" href="#c.promote_chat_member_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.export_chat_invite_link">
+char *<code class="descname">export_chat_invite_link</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.export_chat_invite_link" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.export_chat_invite_link_chat">
+char *<code class="descname">export_chat_invite_link_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.export_chat_invite_link_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_photo">
+int <code class="descname">set_chat_photo</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char *<em>&nbsp;chat_id</em>, char<em>&nbsp;*filename</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_photo_chat">
+int <code class="descname">set_chat_photo_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, char<em>&nbsp;*filename</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_photo_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.delete_chat_photo">
+int <code class="descname">delete_chat_photo</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.delete_chat_photo" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.delete_chat_photo_chat">
+int <code class="descname">delete_chat_photo_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.delete_chat_photo_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_title">
+int <code class="descname">set_chat_title</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, char<em>&nbsp;*title</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_title" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_title_chat">
+int <code class="descname">set_chat_title_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, char<em>&nbsp;*title</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_title_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_description">
+bool <code class="descname">set_chat_description</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, char<em>&nbsp;*description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_description" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.set_chat_description_chat">
+bool <code class="descname">set_chat_description_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, char<em>&nbsp;*description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.set_chat_description_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.pin_chat_message">
+bool <code class="descname">pin_chat_message</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;message_id</em>, bool<em>&nbsp;disable_notification</em><span class="sig-paren">)</span><a class="headerlink" href="#c.pin_chat_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.pin_chat_message_chat">
+bool <code class="descname">pin_chat_message_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, bool<em>&nbsp;disable_notification</em><span class="sig-paren">)</span><a class="headerlink" href="#c.pin_chat_message_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.unpin_chat_message">
+bool <code class="descname">unpin_chat_message</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.unpin_chat_message" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.unpin_chat_message_chat">
+bool <code class="descname">unpin_chat_message_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.unpin_chat_message_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.leave_chat">
+bool <code class="descname">leave_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.leave_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.leave_chat_chat">
+bool <code class="descname">leave_chat_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.leave_chat_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat">
+<a class="reference internal" href="objects.html#c.Chat" title="Chat">Chat</a> *<code class="descname">get_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_chat">
+<a class="reference internal" href="objects.html#c.Chat" title="Chat">Chat</a> *<code class="descname">get_chat_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_administrators">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">get_chat_administrators</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_administrators" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_administrators_chat">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">get_chat_administrators_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_administrators_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_members_count">
+int <code class="descname">get_chat_members_count</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_members_count" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_members_count_chat">
+int <code class="descname">get_chat_members_count_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_members_count_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_member">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">get_chat_member</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_member" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.get_chat_member_chat">
+<a class="reference internal" href="objects.html#c.ChatMember" title="ChatMember">ChatMember</a> *<code class="descname">get_chat_member_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.get_chat_member_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_text">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_text</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*text</em>, char<em>&nbsp;*parse_mode</em>, bool<em>&nbsp;disable_web_page_preview</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_text" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_text_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_text_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*text</em>, char<em>&nbsp;*parse_mode</em>, bool<em>&nbsp;disable_web_page_preview</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_text_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_caption">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_caption</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*caption</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_caption" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_caption_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_caption_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*caption</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_caption_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_reply_markup">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_reply_markup</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_reply_markup" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.edit_message_reply_markup_chat">
+<a class="reference internal" href="objects.html#c.Message" title="Message">Message</a> *<code class="descname">edit_message_reply_markup_chat</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, long int<em>&nbsp;chat_id</em>, long int<em>&nbsp;message_id</em>, char<em>&nbsp;*inline_message_id</em>, char<em>&nbsp;*reply_markup</em><span class="sig-paren">)</span><a class="headerlink" href="#c.edit_message_reply_markup_chat" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.answerInlineQuery">
+bool <code class="descname">answerInlineQuery</code><span class="sig-paren">(</span><a class="reference internal" href="objects.html#c.Bot" title="Bot">Bot</a><em>&nbsp;*bot</em>, char<em>&nbsp;*inline_query_id</em>, char<em>&nbsp;*results</em>, long int<em>&nbsp;cache_time</em>, bool<em>&nbsp;is_personal</em>, char<em>&nbsp;*next_offset</em>, char<em>&nbsp;*switch_pm_text</em>, char<em>&nbsp;*switch_pm_parameter</em><span class="sig-paren">)</span><a class="headerlink" href="#c.answerInlineQuery" title="Link permanente para esta definição">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>
@@ -200,8 +941,6 @@ Requer o parâmetro <cite>token</cite>, e retorna as informações básicas do s
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="types.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="objects.html" class="btn btn-neutral" title="Objetos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
