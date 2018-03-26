@@ -1399,10 +1399,6 @@ void framebot_add( Framebot *framebot, Update *update ){
     }
 
 
-    else if( !update->inline_query ) {
-                    framebot->inline_query = update;
-    }
-
     else if( update->inline_query ) {
         if(!framebot->inline_query)
             framebot->inline_query = update;
