@@ -1,5 +1,3 @@
-#define DEBUG
-
 #include <framebot/framebot.h>
 
 #include <stdio.h>
@@ -7,10 +5,10 @@
 
 #ifdef _WIN32
     #include <Windows.h>
-    #define sleep(mili) Sleep(mili)
+    #define custom_sleep(mili) Sleep(mili)
 #else
     #include <unistd.h>
-    #define sleep(mili) usleep(mili)
+    #define custom_sleep(mili) sleep(mili/1000)
 #endif
 
 int main (int argc, char **argv) {
@@ -20,21 +18,33 @@ int main (int argc, char **argv) {
     }
     framebot_init();
 
-    char *result = alloc_string("[{\"type\":\"sticker\",\"id\":\"1\",\"sticker_file_id\":\"CAADAQADCQADEcFSHDYMLlVh2wPKAg\"}]");
+    char *result = alloc_string("[{\"type\":\"sticker\",\"id\":\"1\",\"sticker_file_id\":\"CAADAQADHAADDf4xFY94M8CVYwIeAg\"}]");
     Bot *inbot = framebot(argv[1]);
     if(!inbot)
     	return -1;
 
-    Framebot *updates = NULL;
+    Framebot *updates = get_updates(inbot, NULL, 0, 100, 0, NULL);
     Update *queries = NULL;
 
-    updates = get_updates(inbot, NULL, 0, 100, 0, NULL);
-    if (updates->inline_query) {
-        queries = updates->inline_query;
+    long int last_update = 0;
 
-        answer_inline_query(inbot, queries->inline_query->id, result, 0, 0, NULL, NULL, NULL);
+    while (1) {
+        if (updates->inline_query) {
+            queries = updates->inline_query;
+
+            while (queries) {
+                if (answer_inline_query(inbot, queries->inline_query->id, result, 0, 0, NULL, NULL, NULL)) {
+                    printf("Answered %s!\n", queries->inline_query->from->username);
+                }
+
+                last_update = queries->update_id;
+                queries = queries->next;
+            }
+        }
+        custom_sleep(3000);
+        get_updates(inbot, updates, last_update, 100, 0, NULL);
     }
-    
+
     bot_free(inbot);
     free(result);
     framebot_free(updates);
