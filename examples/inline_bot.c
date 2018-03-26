@@ -22,6 +22,8 @@ int main (int argc, char **argv) {
 
     char *result = alloc_string("[{\"type\":\"sticker\",\"id\":\"1\",\"sticker_file_id\":\"CAADAQADCQADEcFSHDYMLlVh2wPKAg\"}]");
     Bot *inbot = framebot(argv[1]);
+    if(!inbot)
+    	return -1;
 
     Framebot *updates = NULL;
     Update *queries = NULL;

@@ -840,6 +840,7 @@ Update * update_parse(json_t *json){
         pre_checkout_query = json_object_get(pupdate, "pre_checkout_query");
         object->pre_checkout_query = pre_checkout_query_parse(pre_checkout_query);
 
+        object->next = NULL;
 
         return object;
     }

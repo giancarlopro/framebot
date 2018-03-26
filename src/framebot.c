@@ -1753,6 +1753,9 @@ bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long i
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
         cache_time, is_personal, IF_STRING_NULL(next_offset), IF_STRING_NULL(switch_pm_text), IF_STRING_NULL(switch_pm_parameter));
 
+    if(!s_json)
+        return -1;
+
     result = json_is_object(s_json->content);
 
     close_json( s_json );

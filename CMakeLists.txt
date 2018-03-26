@@ -3,7 +3,6 @@ project(FramebotFramework)
 
 find_package(OpenSSL REQUIRED)
 
-set(curl libcurl.so)
 
 add_subdirectory(src)
 add_subdirectory(test)
