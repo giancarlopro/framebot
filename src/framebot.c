@@ -727,11 +727,9 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
 
     char *method_base = vsformat(formats, params);
     MemStore *response = call_method(token, method_base);
-    printf("\n\nParams: %s\n\n", method_base);
     free(method_base);
 
     if(response){
-        printf("Debug: %s\n\n", response->content);
         s_json = start_json(response->content);
         mem_store_free(response);
 
