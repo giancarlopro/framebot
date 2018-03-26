@@ -55,7 +55,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
     Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
-        offset, limit, timeout, allowed_updates );
+        offset, limit, timeout, IF_STRING_NULL(allowed_updates) );
 
     if( !framebot ){
         framebot = (Framebot *)malloc( sizeof( Framebot ));
@@ -727,9 +727,11 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
 
     char *method_base = vsformat(formats, params);
     MemStore *response = call_method(token, method_base);
+    printf("\n\nParams: %s\n\n", method_base);
     free(method_base);
 
     if(response){
+        printf("Debug: %s\n\n", response->content);
         s_json = start_json(response->content);
         mem_store_free(response);
 
@@ -1743,15 +1745,15 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
     return result;
 }
 
-bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
     bool result;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
-        cache_time, is_personal, next_offset, switch_pm_text, switch_pm_parameter);
+        cache_time, is_personal, IF_STRING_NULL(next_offset), IF_STRING_NULL(switch_pm_text), IF_STRING_NULL(switch_pm_parameter));
 
-    result = json_is_true(s_json->content);
+    result = json_is_object(s_json->content);
 
     close_json( s_json );
 
