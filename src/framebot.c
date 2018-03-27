@@ -919,6 +919,8 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     free(ifile.audio.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
