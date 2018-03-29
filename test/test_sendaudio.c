@@ -165,10 +165,10 @@ int main(int argc, char *argv[]){
 
 	update = get_updates(_bot, update, 0, 0, 0, "message");
 
-	while(update->message){
-		if(strcmp(update->message->message->from->username, argv[2]) == 0){
+	while(update->up_message){
+		if(strcmp(update->up_message->message->from->username, argv[2]) == 0){
 			valid_username = 1;
-			chat_id = update->message->message->from->id;
+			chat_id = update->up_message->message->from->id;
 			_audio();
 			break;
 		}

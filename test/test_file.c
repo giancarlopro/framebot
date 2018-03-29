@@ -52,7 +52,7 @@ int main(int argc, char **argv){
 
 	Update * update;
 	Framebot *fbot = get_updates(_bot, NULL, 0, 0, 0, NULL);
-	update = fbot->update_message;
+	update = fbot->up_message;
 
 	update_length = update_len(update);
 

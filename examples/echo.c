@@ -18,7 +18,7 @@ int main (int argc, char **argv) {
 
 
     frame_update = get_updates(echo, NULL, last_offset, 100, 0, NULL);
-    message = frame_update->update_message;
+    message = frame_update->up_message;
     temp = message;
 
     while (temp) {

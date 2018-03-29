@@ -106,9 +106,6 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
 
     message = message_parse(s_json->content);
 
-    if(!s_json)
-        return NULL;
-
     close_json ( s_json );
 
     return message;

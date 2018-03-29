@@ -276,15 +276,15 @@ typedef struct _update{
 
 typedef struct {
     long int update_id;
-    Update *update_message;
-    Update *update_edited_message;
-    Update *update_channel_post;
-    Update *update_edited_channel_post;
-    Update *update_inline_query;
-    Update *update_chosen_inline_result;
-    Update *update_callback_query;
-    Update *update_shipping_query;
-    Update *update_pre_checkout_query;
+    Update *up_message;
+    Update *up_edited_message;
+    Update *up_channel_post;
+    Update *up_edited_channel_post;
+    Update *up_inline_query;
+    Update *up_chosen_inline_result;
+    Update *up_callback_query;
+    Update *up_shipping_query;
+    Update *up_pre_checkout_query;
 } Framebot;
 
 typedef struct _chat_member {

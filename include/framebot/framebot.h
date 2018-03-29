@@ -258,7 +258,7 @@ typedef int bool;
 
 /* parameter parse_mode */
 #define MODE_HTML "HTML"
-#define MODE_MARKDOWN "MARKDOWN"
+#define MODE_MARKDOWN "Markdown"
 
 #include <curl/curl.h>
 #include <jansson.h>

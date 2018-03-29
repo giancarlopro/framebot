@@ -1368,74 +1368,74 @@ void chat_photo_free(ChatPhoto *ochat_photo){
 void framebot_add( Framebot *framebot, Update *update ){
     
     if( update->message ) {
-        if(!framebot->update_message)
-            framebot->update_message = update;
+        if(!framebot->up_message)
+            framebot->up_message = update;
         else
-            update_add(framebot->update_message, update);
+            update_add(framebot->up_message, update);
     }
 
 
     else if( update->edited_message ) {
-        if(!framebot->update_edited_message)
-            framebot->update_edited_message = update;
+        if(!framebot->up_edited_message)
+            framebot->up_edited_message = update;
         else
-            update_add(framebot->update_edited_message, update);
+            update_add(framebot->up_edited_message, update);
     }
 
 
     else if( update->channel_post ) {
-        if(!framebot->update_channel_post)
-            framebot->update_channel_post = update;
+        if(!framebot->up_channel_post)
+            framebot->up_channel_post = update;
         else
-            update_add(framebot->update_channel_post, update);
+            update_add(framebot->up_channel_post, update);
     }
 
 
     else if( update->edited_channel_post ) {
-        if(!framebot->update_edited_channel_post)
-            framebot->update_edited_channel_post = update;
+        if(!framebot->up_edited_channel_post)
+            framebot->up_edited_channel_post = update;
         else
-            update_add(framebot->update_edited_channel_post, update);
+            update_add(framebot->up_edited_channel_post, update);
     }
 
 
     else if( update->inline_query ) {
-        if(!framebot->update_inline_query)
-            framebot->update_inline_query = update;
+        if(!framebot->up_inline_query)
+            framebot->up_inline_query = update;
         else
-            update_add(framebot->update_inline_query, update);
+            update_add(framebot->up_inline_query, update);
     }
 
 
     else if( update->chosen_inline_result ) {
-        if(!framebot->update_chosen_inline_result)
-            framebot->update_chosen_inline_result = update;
+        if(!framebot->up_chosen_inline_result)
+            framebot->up_chosen_inline_result = update;
         else
-            update_add(framebot->update_chosen_inline_result, update);
+            update_add(framebot->up_chosen_inline_result, update);
     }
 
 
     else if( update->callback_query ) {
-        if(!framebot->update_callback_query)
-            framebot->update_callback_query = update;
+        if(!framebot->up_callback_query)
+            framebot->up_callback_query = update;
         else
-            update_add(framebot->update_callback_query, update);
+            update_add(framebot->up_callback_query, update);
     }
 
 
     else if( update->shipping_query ) {
-        if(!framebot->update_shipping_query)
-            framebot->update_shipping_query = update;
+        if(!framebot->up_shipping_query)
+            framebot->up_shipping_query = update;
         else
-            update_add(framebot->update_shipping_query, update);
+            update_add(framebot->up_shipping_query, update);
     }
 
 
     else if( update->pre_checkout_query ) {
-        if(!framebot->update_pre_checkout_query)
-            framebot->update_pre_checkout_query = update;
+        if(!framebot->up_pre_checkout_query)
+            framebot->up_pre_checkout_query = update;
         else
-            update_add(framebot->update_pre_checkout_query, update);
+            update_add(framebot->up_pre_checkout_query, update);
     }
 
     framebot->update_id = UPDATE_ID_LAST(framebot, update);
@@ -1445,32 +1445,32 @@ void framebot_add( Framebot *framebot, Update *update ){
 
 void framebot_free(Framebot *framebot) {
 
-    if(framebot->update_message) {
-        update_free(framebot->update_message);
+    if(framebot->up_message) {
+        update_free(framebot->up_message);
     }
-    else if(framebot->update_edited_message) {
-        update_free(framebot->update_edited_message);
+    else if(framebot->up_edited_message) {
+        update_free(framebot->up_edited_message);
     }
-    else if(framebot->update_channel_post) {
-        update_free(framebot->update_channel_post);
+    else if(framebot->up_channel_post) {
+        update_free(framebot->up_channel_post);
     }
-    else if(framebot->update_edited_channel_post) {
-        update_free(framebot->update_edited_channel_post);
+    else if(framebot->up_edited_channel_post) {
+        update_free(framebot->up_edited_channel_post);
     }
-    else if(framebot->update_inline_query) {
-        update_free(framebot->update_inline_query);
+    else if(framebot->up_inline_query) {
+        update_free(framebot->up_inline_query);
     }
-    else if(framebot->update_chosen_inline_result) {
-        update_free(framebot->update_chosen_inline_result);
+    else if(framebot->up_chosen_inline_result) {
+        update_free(framebot->up_chosen_inline_result);
     }
-    else if(framebot->update_callback_query) {
-        update_free(framebot->update_callback_query);
+    else if(framebot->up_callback_query) {
+        update_free(framebot->up_callback_query);
     }
-    else if(framebot->update_shipping_query) {
-        update_free(framebot->update_shipping_query);
+    else if(framebot->up_shipping_query) {
+        update_free(framebot->up_shipping_query);
     }
-    else if(framebot->update_pre_checkout_query) {
-        update_free(framebot->update_pre_checkout_query);
+    else if(framebot->up_pre_checkout_query) {
+        update_free(framebot->up_pre_checkout_query);
     }
 
     free(framebot);

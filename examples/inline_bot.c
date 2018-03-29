@@ -29,8 +29,8 @@ int main (int argc, char **argv) {
     long int last_update = 0;
 
     while (1) {
-        if (updates->inline_query) {
-            queries = updates->inline_query;
+        if (updates->up_inline_query) {
+            queries = updates->up_inline_query;
 
             while (queries) {
                 if (answer_inline_query(inbot, queries->inline_query->id, result, 0, 0, NULL, NULL, NULL)) {
