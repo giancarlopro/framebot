@@ -20,232 +20,117 @@
 #define WHITE "\033[01;37m"
 
 
-Bot * _bot;
+Bot * _bot = NULL;
+char *username = NULL;
+long int chat_id = 0;
+int valid_username = 0;
+char *filename = NULL;
+Message *result = NULL;
 
-void read_message(Message * message){
-	printf(BLUE"\tmessage_id = %lu\n"COLOR_RESET, message->message_id);
-	if(message->from){
-		printf(BLUE"\ttfrom = (type User)\n"COLOR_RESET);
-		printf(BLUE"\ttfrom->id = %ld\n"COLOR_RESET, message->from->id);
+int _photo(){
+	printf(WHITE "Send audio ... \n");
+
+	printf(WHITE "Send chat_id ......... " COLOR_RESET);
+	fflush(stdout);
+	result = send_photo_chat(_bot, chat_id, filename, NULL,
+            0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
 	}
 	else{
-		printf("\ttfrom = NULL\n"COLOR_RESET);
+		Error *error = get_error();
+		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
 	}
 
-	if(message->date)
-		printf(BLUE"\ttdate = %ld\n"COLOR_RESET, message->date);
-	else
-		printf("\ttdate = NULL\n"COLOR_RESET);
+	printf(WHITE "Send username ......... " COLOR_RESET);
+	fflush(stdout);
+	result = send_photo_chat(_bot, chat_id, filename, NULL,
+            0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+	}
+	else{
+		Error *error = get_error();
+		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
 
-	if(message->chat)
-		printf(BLUE"\ttchat = (type Chat)\n"COLOR_RESET);
-	else
-		printf("\ttchat = NULL\n"COLOR_RESET);
+	printf(WHITE "Send caption ......... " COLOR_RESET);
+	fflush(stdout);
+	result = send_photo_chat(_bot, chat_id, filename, "caption",
+            0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+	}
+	else{
+		Error *error = get_error();
+		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
 
-	if(message->forward_from)
-		printf(BLUE"\ttforward_from = (type User)\n"COLOR_RESET);
-	else
-		printf("\ttforward_from = NULL\n"COLOR_RESET);
+	printf(WHITE "Send disable_notification ......... " COLOR_RESET);
+	fflush(stdout);
+	result = send_photo_chat(_bot, chat_id, filename, "disable_notification",
+            1, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+	}
+	else{
+		Error *error = get_error();
+		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
 
-	if(message->forward_from_chat)
-		printf(BLUE"\ttforward_from_chat = (type Chat)\n"COLOR_RESET);
-	else
-		printf("\ttforward_from_chat = NULL\n"COLOR_RESET);
+	printf(WHITE "Send reply_to_message_id ......... " COLOR_RESET);
+	fflush(stdout);
+	Message * forward = send_photo_chat(_bot, chat_id, filename, "reply_to_message_id",
+            1, result->message_id, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+	}
+	else{
+		Error *error = get_error();
+		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
 
-	if(message->forward_from_message_id)
-		printf(BLUE"\tforward_from_message_id = %ld\n"COLOR_RESET, message->forward_from_message_id);
-	else
-		printf("\tforward_from_message_id = NULL\n"COLOR_RESET);
-
-	if(message->forward_signature)
-		printf(BLUE"\tforward_signature = %s\n"COLOR_RESET, message->forward_signature);
-	else
-		printf("\tforward_signature = NULL\n"COLOR_RESET);
-
-	if(message->forward_date)
-		printf(BLUE"\tforward_date = %ld\n"COLOR_RESET, message->forward_date);
-	else
-		printf("\tforward_date = NULL\n"COLOR_RESET);
-
-	if(message->reply_to_message)
-		printf(BLUE"\treply_to_message = (type Message)\n"COLOR_RESET);
-	else
-		printf("\treply_to_message = NULL\n"COLOR_RESET);
-		
-	if(message->edit_date)
-		printf(BLUE"\tedit_date = %ld\n"COLOR_RESET, message->edit_date);
-	else
-		printf("\tedit_date = NULL\n"COLOR_RESET);
-
-	if(message->author_signature)
-		printf(BLUE"\tauthor_signature = %s\n"COLOR_RESET, message->author_signature);
-	else
-		printf("\tauthor_signature = NULL\n"COLOR_RESET);
-
-	if(message->text)
-		printf(BLUE"\ttext = %s\n"COLOR_RESET, message->text);
-	else
-		printf("\ttext = NULL\n"COLOR_RESET);
-
-	if(message->entities)
-		printf(BLUE"\tentities = (type MessageEntities)\n"COLOR_RESET);
-	else
-		printf("\tentities = NULL\n"COLOR_RESET);
-
-	if(message->caption_entities)
-		printf(BLUE"\tcaption_entities = (type MessageEntities)\n"COLOR_RESET);
-	else
-		printf("\tcaption_entities = NULL\n"COLOR_RESET);
-
-	if(message->audio)
-		printf(BLUE"\taudio = (type Audio)\n"COLOR_RESET);
-	else
-		printf("\taudio = NULL\n"COLOR_RESET);
-
-	if(message->document)
-		printf(BLUE"\tdocument = (type Document)\n"COLOR_RESET);
-	else
-		printf("\tdocument = NULL\n"COLOR_RESET);
-
-	if(message->game)
-		printf(BLUE"\tgame = (type Game)\n"COLOR_RESET);
-	else
-		printf("\tgame = NULL\n"COLOR_RESET);
-
-	if(message->photo)
-		printf(BLUE"\tphoto = (type PhotoSize)\n"COLOR_RESET);
-	else
-		printf("\tphoto = NULL\n"COLOR_RESET);
-
-	if(message->sticker)
-		printf(BLUE"\tsticker = (type Sticker)\n"COLOR_RESET);
-	else
-		printf("\tsticker = NULL\n"COLOR_RESET);
-
-	if(message->video)
-		printf(BLUE"\tvideo = (type Video)\n"COLOR_RESET);
-	else
-		printf("\tvideo = NULL\n"COLOR_RESET);
-
-	if(message->voice)
-		printf(BLUE"\tvoice = (type Voice)\n"COLOR_RESET);
-	else
-		printf("\tvoice = NULL\n"COLOR_RESET);
-
-	if(message->video_note)
-		printf(BLUE"\tvideo_note = (type VideoNote)\n"COLOR_RESET);
-	else
-		printf("\tvideo_note = NULL\n"COLOR_RESET);
-
-	if(message->caption)
-		printf(BLUE"\tcaption = %s\n"COLOR_RESET, message->caption);
-	else
-		printf("\tcaption = NULL\n"COLOR_RESET);
-
-	if(message->contact)
-		printf(BLUE"\tcontact = (type Contact)\n"COLOR_RESET);
-	else
-		printf("\tcontact = NULL\n"COLOR_RESET);
-
-	if(message->location)
-		printf(BLUE"\tlocation = (type Location)\n"COLOR_RESET);
-	else
-		printf("\tlocation = NULL\n"COLOR_RESET);
-
-	if(message->venue)
-		printf(BLUE"\tvenue = (type Venue)\n"COLOR_RESET);
-	else
-		printf("\tvenue = NULL\n"COLOR_RESET);
-
-	if(message->new_chat_members)
-		printf(BLUE"\tnew_chat_members = (type User)\n"COLOR_RESET);
-	else
-		printf("\tnew_chat_member = NULL\n"COLOR_RESET);
-
-	if(message->left_chat_member)
-		printf(BLUE"\tleft_chat_member = (type User)\n"COLOR_RESET);
-	else
-		printf("\tleft_chat_member = NULL\n"COLOR_RESET);
-
-	if(message->new_chat_title)
-		printf(BLUE"\tnew_chat_title = %s\n"COLOR_RESET, message->new_chat_title);
-	else
-		printf("\tnew_chat_title = NULL\n"COLOR_RESET);
-
-	if(message->new_chat_photo)
-		printf(BLUE"\tnew_chat_photo = (type PhotoSize)\n"COLOR_RESET);
-	else
-		printf("\tnew_chat_photo = NULL\n"COLOR_RESET);
-
-	if(message->delete_chat_photo)
-		printf(BLUE"\tdelete_chat_photo = %d\n"COLOR_RESET, message->delete_chat_photo);
-	else
-		printf("\tdelete_chat_photo = NULL\n"COLOR_RESET);
-
-	if(message->group_chat_created)
-		printf(BLUE"\tgroup_chat_created = %d\n"COLOR_RESET, message->group_chat_created);
-	else
-		printf("\tgroup_chat_created = NULL\n"COLOR_RESET);
-
-	if(message->supergroup_chat_created)
-		printf(BLUE"\tsupergroup_chat_created = %d\n"COLOR_RESET, message->supergroup_chat_created);
-	else
-		printf("\tsupergroup_chat_created = NULL\n"COLOR_RESET);
-
-	if(message->channel_chat_created)
-		printf(BLUE"\tchannel_chat_created = %d\n"COLOR_RESET, message->channel_chat_created);
-	else
-		printf("\tchannel_chat_created = NULL\n"COLOR_RESET);
-
-	if(message->migrate_to_chat_id)
-		printf(BLUE"\tmigrate_to_chat_id = %ld\n"COLOR_RESET, message->migrate_to_chat_id);
-	else
-		printf("\tmigrate_to_chat_id = NULL\n"COLOR_RESET);
-
-	if(message->migrate_from_chat_id)
-		printf(BLUE"\tmigrate_from_chat_id = %ld\n"COLOR_RESET);
-	else
-		printf("\tmigrate_from_chat_id = NULL\n"COLOR_RESET);
-
-	if(message->pinned_message)
-		printf(BLUE"\tpinned_message = (type Message)\n"COLOR_RESET);
-	else
-		printf("\tpinned_message = NULL\n"COLOR_RESET);
-
-	if(message->invoice)
-		printf(BLUE"\tinvoice = (type Invoice)\n"COLOR_RESET);
-	else
-		printf("\tinvoice = NULL\n"COLOR_RESET);
-
-	if(message->successful_payment)
-		printf(BLUE"\tsuccessful_payment = (type SuccessfulPayment)\n"COLOR_RESET);
-	else
-		printf("\tsuccessful_payment = NULL\n"COLOR_RESET);
+	return 0;
 }
-
 
 int main(int argc, char *argv[]){
 	framebot_init();
 
-	if(argc < 4)
-		fprintf(stderr, "sendphoto <token> <id_user> <path picture>");
-
-    _bot = framebot(argv[1]);
-
-/* Message * send_photo_chat(Bot * bot, long int chat_id, char * filename,
-			  char * caption, bool disable_notification,
-			  long int reply_to_message_id){
-*/
-	Message * message = send_photo(_bot, argv[2], argv[3], "descrição", 1, 0, NULL);
-
-	if(message){
-		read_message(message);
+	if(argc < 4){
+		fprintf(stderr, "sendphoto <token> <username> <path audio>");
+		exit(-1);
 	}
-	else{
-		Error * error = show_error();
-		if(error)
-			printf("error_code=%ld error_descriptio=n%s\n", error->error_code, error->description);
+
+	_bot = framebot(argv[1]);
+	if(!_bot){
+		fprintf(stderr, "ERROR authentic");
+		exit(-1);
 	}
+
+	filename = argv[3];
+	username = argv[2];
+
+	Framebot *update = NULL;
+
+	update = get_updates(_bot, update, 0, 0, 0, "message");
+
+	while(update->message){
+		if(strcmp(update->message->message->from->username, argv[2]) == 0){
+			valid_username = 1;
+			chat_id = update->message->message->from->id;
+			_photo();
+			break;
+		}
+	}
+
+	if(valid_username == 0)
+		printf("Username not found");
+
 
 	return 0;
 }
