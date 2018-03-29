@@ -531,8 +531,6 @@ MemStore * call_method_input_file(const char * token, IFile ifile){
         /* then cleanup the form */
         curl_mime_free(form);
 
-        curl_easy_cleanup(curl);
-
         if(res == CURLE_OK)
             return buff;
     }

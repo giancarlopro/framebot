@@ -58,7 +58,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
     Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
-        offset, limit, timeout, allowed_updates );
+        offset, limit, timeout, IF_STRING_NULL(allowed_updates) );
 
     if( !framebot ){
         framebot = (Framebot *)calloc(1, sizeof( Framebot ));
@@ -105,6 +105,9 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
         return NULL;
 
     message = message_parse(s_json->content);
+
+    if(!s_json)
+        return NULL;
 
     close_json ( s_json );
 
@@ -896,6 +899,8 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     free(ifile.photo.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -978,6 +983,8 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     free(ifile.audio.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1204,6 +1211,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     free(ifile.voice.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1277,6 +1286,9 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     free(ifile.videonote.length);
     free(ifile.videonote.reply_to_message_id);
     mem_store_free(input);
+
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1849,13 +1861,13 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
     return result;
 }
 
-bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
     bool result;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
-        cache_time, is_personal, next_offset, switch_pm_text, switch_pm_parameter);
+        cache_time, is_personal, IF_STRING_NULL(next_offset), IF_STRING_NULL(switch_pm_text), IF_STRING_NULL(switch_pm_parameter));
 
     if(!s_json)
         return -1;
