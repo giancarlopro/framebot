@@ -114,6 +114,8 @@ User * user_parse(json_t *json){
         language_code = json_object_get(puser, "language_code");
         object->language_code =alloc_string(json_string_value(language_code));
 
+        object->next = NULL;
+
         return object;
     }
 
@@ -204,6 +206,8 @@ MessageEntity * message_entity_parse(json_t *json){
 
         user = json_object_get(pmessage_entity,"user");
         object->user = user_parse(user);
+
+        object->next = NULL;
 
         return object;
     }
@@ -916,6 +920,8 @@ ChatMember *chat_member_parse (json_t *json) {
                         json_object_get(json, "can_add_web_page_previews");
         object->can_add_web_page_previews = json_boolean_value(can_add_web_page_previews);
         
+        object->next = NULL;
+
         return object;
     }
 

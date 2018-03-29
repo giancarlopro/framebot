@@ -1287,8 +1287,6 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     free(ifile.videonote.reply_to_message_id);
     mem_store_free(input);
 
-    if(!s_json)
-        return NULL;
 
     message = message_parse(s_json->content);
 
