@@ -107,6 +107,9 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
 
     message = message_parse(s_json->content);
 
+    if(!s_json)
+        return NULL;
+
     close_json ( s_json );
 
     return message;
@@ -839,6 +842,8 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     free(ifile.photo.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1141,6 +1146,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     free(ifile.voice.reply_to_message_id);
     mem_store_free(input);
 
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 
@@ -1212,6 +1219,9 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     free(ifile.videonote.length);
     free(ifile.videonote.reply_to_message_id);
     mem_store_free(input);
+
+    if(!s_json)
+        return NULL;
 
     message = message_parse(s_json->content);
 

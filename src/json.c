@@ -267,6 +267,8 @@ PhotoSize * photo_size_parse(json_t *json) {
         file_size = json_object_get(pphoto_size,"file_size");
         object->file_size = json_integer_value(file_size);
 
+        object->next = NULL;
+
         return object;
     }
 

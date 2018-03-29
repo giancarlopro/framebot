@@ -74,7 +74,7 @@ int _audio(){
 
 	printf(WHITE "Send duration ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_audio_chat(_bot, chat_id, filename, "caption",
+	result = send_audio_chat(_bot, chat_id, filename, "duration",
 			10, NULL, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -88,7 +88,7 @@ int _audio(){
 
 	printf(WHITE "Send performer ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_audio_chat(_bot, chat_id, filename, "caption",
+	result = send_audio_chat(_bot, chat_id, filename, "performer",
 			10, "performer", NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -102,7 +102,7 @@ int _audio(){
 
 	printf(WHITE "Send title ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_audio_chat(_bot, chat_id, filename, "caption",
+	result = send_audio_chat(_bot, chat_id, filename, "title",
 			10, "performer", "Title", 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -115,7 +115,7 @@ int _audio(){
 
 
 	printf(WHITE "Send disable_notification ......... " COLOR_RESET);
-	result = send_audio_chat(_bot, chat_id, filename, "caption",
+	result = send_audio_chat(_bot, chat_id, filename, "disable_notification",
 			10, "performer", "Title", 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -126,8 +126,8 @@ int _audio(){
 		exit(-1);
 	}
 
-	printf(WHITE "Send forward ......... " COLOR_RESET);
-	Message * forward = send_audio_chat(_bot, chat_id, filename, "caption",
+	printf(WHITE "Send reply_to_message_id ......... " COLOR_RESET);
+	Message * forward = send_audio_chat(_bot, chat_id, filename, "reply_to_message_id",
 			10, "performer", "Title", 1, result->message_id, NULL);
 	if(forward){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
 
 	update = get_updates(_bot, update, 0, 0, 0, "message");
 
-	while(update){
+	while(update->message){
 		if(strcmp(update->message->message->from->username, argv[2]) == 0){
 			valid_username = 1;
 			chat_id = update->message->message->from->id;
