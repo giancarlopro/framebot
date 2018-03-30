@@ -162,7 +162,11 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.photo.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "photo");
-                    curl_mime_filedata(field, ifile.photo.filename);
+                    if(api_tg_exist(ifile.photo.filename))
+                        curl_mime_filedata(field, ifile.photo.filename);
+                    else
+                        curl_mime_data(field, ifile.photo.filename, CURL_ZERO_TERMINATED);
+
                 }
 
                 /* Photo caption */
@@ -206,7 +210,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.audio.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "audio");
-                    curl_mime_filedata(field, ifile.audio.filename);
+                    if(api_tg_exist(ifile.audio.filename))
+                        curl_mime_filedata(field, ifile.audio.filename);
+                    else
+                        curl_mime_data(field, ifile.audio.filename, CURL_ZERO_TERMINATED);
                 }
 
                 /* Audio caption */
@@ -271,7 +278,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.document.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "document");
-                    curl_mime_filedata(field, ifile.document.filename);
+                    if(api_tg_exist(ifile.document.filename))
+                        curl_mime_filedata(field, ifile.document.filename);
+                    else
+                        curl_mime_data(field, ifile.document.filename, CURL_ZERO_TERMINATED);
                 }
 
                 /* Document caption */
@@ -315,7 +325,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.video.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "video");
-                    curl_mime_filedata(field, ifile.video.filename);
+                    if(api_tg_exist(ifile.video.filename))
+                        curl_mime_filedata(field, ifile.video.filename);
+                    else
+                        curl_mime_data(field, ifile.video.filename, CURL_ZERO_TERMINATED);
                 }
 
                 /* Document caption */
@@ -380,7 +393,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.voice.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "voice");
-                    curl_mime_filedata(field, ifile.voice.filename);
+                    if(api_tg_exist(ifile.voice.filename))
+                        curl_mime_filedata(field, ifile.voice.filename);
+                    else
+                        curl_mime_data(field, ifile.voice.filename, CURL_ZERO_TERMINATED);
                 }
 
                 /* voice caption */
@@ -431,7 +447,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.videonote.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "video_note");
-                    curl_mime_filedata(field, ifile.videonote.filename);
+                    if(api_tg_exist(ifile.videonote.filename))
+                        curl_mime_filedata(field, ifile.videonote.filename);
+                    else
+                        curl_mime_data(field, ifile.videonote.filename, CURL_ZERO_TERMINATED);
                 }
 
                 /* Duration of the voice in seconds */
@@ -472,7 +491,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 strcpy(method, "setChatPhoto");
 
                 /* Fill in the file upload field */
-                if(ifile.videonote.chat_id != NULL){
+                if(ifile.chatphoto.chat_id != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "chat_id");
                     curl_mime_data(field, ifile.chatphoto.chat_id, CURL_ZERO_TERMINATED);
@@ -482,7 +501,10 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 if(ifile.videonote.filename != NULL){
                     field = curl_mime_addpart(form);
                     curl_mime_name(field, "video_note");
-                    curl_mime_filedata(field, ifile.chatphoto.filename);
+                    if(api_tg_exist(ifile.chatphoto.filename))
+                        curl_mime_filedata(field, ifile.chatphoto.filename);
+                    else
+                        curl_mime_data(field, ifile.chatphoto.filename, CURL_ZERO_TERMINATED);
                 }
             break;
 

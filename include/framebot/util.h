@@ -3,8 +3,8 @@
 
 #include <framebot/framebot.h>
 
+int api_tg_exist(const char *filename);
 char * file_extension_download(char *tgname, char *namefile);
-char * vsboolean_param_parser (char *base, int psize, ...);
 char * api_ltoa(long int n);
 char * api_itoa(int n);
 int api_atoi(char * str_int);

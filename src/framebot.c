@@ -597,7 +597,7 @@ int set_chat_photo(Bot *bot, char * chat_id, char *filename){
 
     input = call_method_upload(bot->token, ifile);
     if(!input)
-        return NULL;
+        return 0;
 
     s_json = start_json(input->content);
     mem_store_free(input);
@@ -1051,7 +1051,7 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
-    if(!inpu    t)
+    if(!input)
         return NULL;
 
     s_json = start_json(input->content);
