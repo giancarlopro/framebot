@@ -322,7 +322,8 @@ Document *document(const char *file_id,PhotoSize *thumb, const char *file_name,
 
 void document_free(Document *document){
     free(document->file_id);
-    photo_size_free(document->thumb);
+    if(document->thumb)
+        photo_size_free(document->thumb);
     free(document->file_name);
     free(document->mime_type);
     free(document);

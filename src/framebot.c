@@ -61,16 +61,19 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
         offset, limit, timeout, IF_STRING_NULL(allowed_updates) );
 
     if( !framebot ){
-        framebot = (Framebot *)calloc(1, sizeof( Framebot ));
+        framebot = calloc(1, sizeof( Framebot ));
     }
 
     if(!s_json){
         return framebot;
     }
 
-
     size_t length, i;
     length = json_array_size(s_json->content);
+    if(length == 0){
+        close_json(s_json);
+        return framebot;
+    }
 
     for (i = 0; i < length; i++) {
         up = update_parse(json_array_get(s_json->content, i));

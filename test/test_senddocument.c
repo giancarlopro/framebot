@@ -39,6 +39,7 @@ int _document(){
 	result = send_document_chat(_bot, chat_id, filename, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
@@ -51,6 +52,7 @@ int _document(){
 	result = send_document_chat(_bot, chat_id, filename, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
@@ -63,6 +65,7 @@ int _document(){
 	result = send_document_chat(_bot, chat_id, filename, "caption", 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
@@ -87,6 +90,8 @@ int _document(){
 	Message * forward = send_document_chat(_bot, chat_id, filename, "caption", 1, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
+		message_free(forward);
 	}
 	else{
 		Error *error = get_error();
@@ -96,6 +101,20 @@ int _document(){
 
 	return 0;
 }
+
+void _free(Framebot *update){
+	Update * m = NULL, *n = NULL;
+
+	m = update->up_message;
+	framebot_free(update);
+
+	while(m){
+		n = m->next;
+		update_free(m);
+		m = n;
+	}
+}
+
 
 int main(int argc, char *argv[]){
 	framebot_init();
@@ -125,7 +144,10 @@ int main(int argc, char *argv[]){
 			_document();
 			break;
 		}
+		update->up_message = update->up_message->next;
 	}
+
+	_free(update);
 
 	if(valid_username == 0)
 		printf("Username not found");

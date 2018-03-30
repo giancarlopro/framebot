@@ -541,6 +541,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
         /* always cleanup */
         curl_easy_cleanup(curl);
 
+        free(url);
         /* then cleanup the form */
         curl_mime_free(form);
 
