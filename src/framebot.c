@@ -596,6 +596,8 @@ int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
     mem_store_free(input);
@@ -886,6 +888,8 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
 
@@ -970,6 +974,8 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1045,8 +1051,11 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!inpu    t)
+        return NULL;
 
     s_json = start_json(input->content);
+
     if(!s_json)
         return NULL;
 
@@ -1122,6 +1131,8 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1198,6 +1209,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1273,6 +1286,8 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    if(!input)
+        return NULL;
 
     s_json = start_json(input->content);
     if(!s_json)
