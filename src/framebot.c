@@ -595,7 +595,7 @@ int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     mem_store_free(input);
@@ -885,7 +885,7 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
 
@@ -969,7 +969,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1044,7 +1044,7 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1121,7 +1121,7 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1197,7 +1197,7 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     if(!s_json)
@@ -1272,7 +1272,7 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
     MemStore * input;
     refjson *s_json;
 
-    input = call_method_input_file(bot->token, ifile);
+    input = call_method_upload(bot->token, ifile);
 
     s_json = start_json(input->content);
     if(!s_json)

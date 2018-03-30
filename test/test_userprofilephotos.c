@@ -2,7 +2,6 @@
 
 Bot * _bot;
 
-
 void upp(UserProfilePhotos * oupp){
 	int i, x, q;
 	PhotoSize * l;

@@ -135,7 +135,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
     return 0;
 }
 
-MemStore * call_method_input_file(const char * token, IFile ifile){
+MemStore * call_method_upload(const char * token, IFile ifile){
     char method[25];
     CURL * curl;
     CURLcode res;
