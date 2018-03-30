@@ -792,29 +792,28 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
 /**
  * getFile
  * https://core.telegram.org/bots/api#getfile
+ * info file
  */
-char * get_file (Bot * bot, char * dir, const char * file_id){
+File * get_file (Bot * bot, const char * file_id){
 
     refjson *s_json;
-    char *path_file;
+    int ok = 0;
 
     s_json = generic_method_call(bot->token, API_getfile, file_id);
 
     if(!s_json)
-        return NULL;
+        return 0;
 
     File * ofile = file_parse(s_json->content);
 
     close_json(s_json);
 
-    if(ofile){
-        path_file = call_method_download(bot->token, dir, ofile);
-        file_free(ofile);
-    }
-
-    return path_file;
+    return ofile;
 }
 
+int file_download(Bot * bot, File * ofile, char *path){
+    return call_method_download(bot->token, path, ofile);
+}
 
 /**
  * getUserProfilePhotos

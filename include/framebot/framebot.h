@@ -390,7 +390,8 @@ UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, char * dir, long use
     long offset, long limit);
 
 /* getFile */
-char * get_file(Bot * bot, char * dir, const char * file_id);
+File * get_file(Bot * bot, const char * file_id);
+int file_download(Bot * bot, File * ofile, char *path);
 
 /* kickChatMember */
 bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_date);

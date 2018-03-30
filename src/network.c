@@ -1,6 +1,7 @@
 #include <framebot/framebot.h>
 
 static CURL *curl = NULL;
+static CURL *down_curl = NULL;
 
 /* start curl in framebot_init */
 void network_init(){
@@ -77,11 +78,14 @@ MemStore * call_method(const char *token, char *method){
     return NULL;
 }
 
-char * call_method_download(const char * token, char * dir, File *ofile){
+int call_method_download(const char * token, char * namefile, File *ofile){
     FILE * binary;
     CURLcode res;
-    size_t path_len, url_size; 
-    char * namefile, *path, *url;
+    size_t url_size;
+    char *url, *path;
+
+    if(!ofile)
+        return 0;
 
     url_size = API_URL_FILE_LEN + strlen(token) + strlen(ofile->file_path) + 2;
     url = (char *)calloc(1, url_size);
@@ -93,55 +97,42 @@ char * call_method_download(const char * token, char * dir, File *ofile){
 
     url[url_size - 1] = '\0';
 
-    CURL * curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, url);
+    if(!down_curl)
+         down_curl = curl_easy_init();
 
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(down_curl, CURLOPT_URL, url);
+    curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
     free(url);
 
-    namefile = strstr(ofile->file_path, "/");
-    namefile++;
-
-    if(dir[strlen(dir) - 1] == '/')
-        dir[strlen(dir) - 1] = '\0';
-
-    if(!dir)
-        path_len = strlen(namefile) + 2;
-    else
-        path_len = strlen(dir) + strlen(namefile) + 2;
-
-    path = calloc(1, path_len);
-    if(!path)
-        return NULL;
-
-    if(dir){
-        strcpy(path, dir);
-        strcat(path, "/");
-        strcat(path, namefile);
+    if(namefile){
+        binary = fopen(namefile, "wb");
     }
     else{
-        strcpy(path, namefile);
+        char name[10];
+        static int id = 0;
+        sprintf(name, "file%d", id++);
+
+        binary = fopen(name, "wb");
     }
 
-    binary = fopen(path, "wb");
-
     if(binary){
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)binary);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-        fclose(binary);
+        curl_easy_setopt(down_curl, CURLOPT_WRITEDATA, (void *)binary);
+        curl_easy_setopt(down_curl, CURLOPT_WRITEFUNCTION, NULL);
+    }
+    else{
+        return 0;
     }
 
     /* Perform the request, res will get the return code */
-    res = curl_easy_perform(curl);
-
-    curl_easy_cleanup(curl);
+    res = curl_easy_perform(down_curl);
+    fclose(binary);
 
     if (res == CURLE_OK)
-        return path;
+        return 1;
 
-    return NULL;
+    return 0;
 }
 
 MemStore * call_method_input_file(const char * token, IFile ifile){

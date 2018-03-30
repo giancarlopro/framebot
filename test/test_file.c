@@ -19,47 +19,70 @@
 #define LIGHT_CYAN "\033[01;36m"
 #define WHITE "\033[01;37m"
 
-const char *token;
-Bot *_bot;
+Bot * _bot = NULL;
+char *username = NULL;
+long int chat_id = 0;
+int valid_username = 0;
+char *file_id = NULL;
+char *namefile = NULL;
 
-int _file(char * file_id){
-	char str[15];
-	strcpy(str, "CMakeFiles/");
 
-	get_file(_bot, str, file_id);
-}
+int _file(){
+	printf(WHITE "Send file ... "COLOR_RESET);
 
-void _message(Update * update){
-	if(update){
-		if(update->message){
-			if(update->message->document)
-				_file(update->message->document->file_id);
-		}
+	if(file_download(_bot, get_file(_bot, file_id), namefile)){
+			printf(BLUE "OK\n" COLOR_RESET);
+	}
+	else{
+		Error *error = get_error();
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+	
+		exit(-1);
 	}
 
+	return 0;
 }
 
 
-/* only document */
-int main(int argc, char **argv){
-	size_t update_length, i;
+int main(int argc, char *argv[]){
 	framebot_init();
 
-	if(argc != 2)
-		fprintf(stderr, "file <token>");
+	if(argc < 4){
+		fprintf(stderr, "file <token> <username> <namefile>");
+		exit(-1);
+	}
 
-    _bot = framebot(argv[1]);
+	_bot = framebot(argv[1]);
+	if(!_bot){
+		fprintf(stderr, "ERROR authentic");
+		exit(-1);
+	}
 
-	Update * update;
-	Framebot *fbot = get_updates(_bot, NULL, 0, 0, 0, NULL);
-	update = fbot->up_message;
+	username = argv[2];
+	namefile = argv[3];
 
-	update_length = update_len(update);
+	Framebot *_update = NULL;
+
+	_update = get_updates(_bot, _update, 0, 0, 100, NULL);
+	Update *update = _update->up_message;
 
 	while(update){
-		_message(update);
+		if(update->message->document){
+			if(strcmp(update->message->from->username, argv[2]) == 0){
+				file_id = update->message->document->file_id;
+				valid_username = 1;
+				chat_id = update->message->from->id;
+				_file();
+				break;
+			}
+		}
+
 		update = update->next;
 	}
+
+	if(valid_username == 0)
+		printf("Username not found\n");
 
 	return 0;
 }

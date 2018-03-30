@@ -5,6 +5,7 @@
 #define STRLONG 21
 #define STRINT 13 
 
+
 char *escape_string(char *str) {
 	CURL *curl = curl_easy_init();
 	if (curl) {

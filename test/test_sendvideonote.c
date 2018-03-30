@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
 	framebot_init();
 
 	if(argc < 4){
-		fprintf(stderr, "sendphoto <token> <username> <path audio>");
+		fprintf(stderr, "sendvideonote <token> <username> <path audio>");
 		exit(-1);
 	}
 

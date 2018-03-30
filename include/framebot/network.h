@@ -115,7 +115,7 @@ MemStore * mem_store();
 void mem_store_free(MemStore * memStore);
 size_t mem_write_callback(void *content, size_t size, size_t nmemb, void *userp);
 MemStore *call_method(const char *token, char *method);
-char * call_method_download(const char * token, char * dir, File * ofile);
+int call_method_download(const char * token, char * namefile, File * ofile);
 MemStore * call_method_input_file(const char * token, IFile ifile);
 
 #endif
