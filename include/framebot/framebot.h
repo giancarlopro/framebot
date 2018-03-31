@@ -384,9 +384,9 @@ int send_chat_action(Bot * bot, char * chat_id, char * action);
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
 
 /* getUserProfilePhotos */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id,
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char *user_id,
     long offset, long limit);
-UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, char * dir, long user_id,
+UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, long user_id,
     long offset, long limit);
 
 /* getFile */

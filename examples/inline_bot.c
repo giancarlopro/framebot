@@ -23,7 +23,7 @@ int main (int argc, char **argv) {
     if(!inbot)
     	return -1;
 
-    Framebot *updates = get_updates(inbot, NULL, 0, 100, 0, NULL);
+    Framebot *updates = get_updates(inbot, NULL, 0, 100, 0, "inline_query");
     Update *queries = NULL;
 
     long int last_update = 0;
@@ -41,7 +41,6 @@ int main (int argc, char **argv) {
                 queries = queries->next;
             }
         }
-        custom_sleep(3000);
         get_updates(inbot, updates, last_update, 100, 0, NULL);
     }
 

@@ -824,7 +824,7 @@ int file_download(Bot * bot, File * ofile, char *path){
  * getUserProfilePhotos
  * https://core.telegram.org/bots/api#getuserprofilephotos
  */
-UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id,
+UserProfilePhotos * get_user_profile_photos(Bot * bot, char *user_id,
             long offset, long limit) {
     UserProfilePhotos * oupp;
     refjson *s_json;
@@ -842,14 +842,14 @@ UserProfilePhotos * get_user_profile_photos(Bot * bot, char * dir, char *user_id
     return oupp;
 }
 
-UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, char * dir, long user_id,
+UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, long user_id,
             long offset, long limit) {
     UserProfilePhotos * oupp;
     char *cuser_id;
 
     cuser_id = api_ltoa(user_id);
 
-    oupp = get_user_profile_photos(bot, dir, cuser_id, offset, limit);
+    oupp = get_user_profile_photos(bot, cuser_id, offset, limit);
 
     free(cuser_id);
 

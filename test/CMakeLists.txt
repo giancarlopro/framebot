@@ -14,6 +14,7 @@ include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_definitions("-g")
 
+add_executable(methods_chat test_chat.c)
 add_executable(update test_update.c)
 add_executable(file test_file.c)
 add_executable(userprofilephotos test_userprofilephotos.c)
@@ -26,6 +27,7 @@ add_executable(sendvideonote test_sendvideonote.c)
 add_executable(sendmessage test_sendmessage.c)
 
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+	target_link_libraries(methods_chat jansson libcurl.so framebot)
 	target_link_libraries(update jansson libcurl.so framebot)
 	target_link_libraries(file jansson libcurl.so framebot)
 	target_link_libraries(userprofilephotos jansson libcurl.so framebot)
@@ -39,6 +41,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif (CMAKE_SYSTEM_NAME STREQUAL Linux)
 
 if (WIN32)
+	target_link_libraries(methods_chat jansson libcurl_a framebot)
 	target_link_libraries(update jansson libcurl_a framebot)
 	target_link_libraries(file jansson libcurl_a framebot)
 	target_link_libraries(userprofilephotos jansson libcurl_a framebot)

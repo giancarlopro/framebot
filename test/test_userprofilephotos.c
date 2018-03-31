@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     	exit(-1);
     }
 
-	UserProfilePhotos * oupp = get_user_profile_photos(_bot, argv[2], argv[3], 0, 0);
+	UserProfilePhotos * oupp = get_user_profile_photos(_bot, argv[3], 0, 0);
 
 	if(oupp){
 		printf("true");

@@ -1279,25 +1279,25 @@ UserProfilePhotos * user_profile_photos_parse(json_t * json){
             return NULL;
 
         json_t *total_count, *photos, *array_photos;
-        size_t _length, i, length_, x;
+        size_t length_i, i, length_x, x;
 
         total_count = json_object_get(json, "total_count");
 
         PhotoSize ** ophotos = NULL, *_temp = NULL;
         photos = json_object_get(json, "photos");
-        _length = json_array_size(photos);
+        length_i = json_array_size(photos);
 
         /* Array of Array PhotoSize */
-        ophotos = (PhotoSize **) calloc(1, _length * sizeof(PhotoSize));
-        if (_length > 0) {
-            for (i = 0; i < _length; i++) {
+        if (length_i > 0) {
+            ophotos = (PhotoSize **) calloc(length_i, sizeof(PhotoSize));
+            for (i = 0; i < length_i; i++) {
                 array_photos = json_array_get(photos, i);
-                length_ = json_array_size(array_photos);
+                length_x = json_array_size(array_photos);
 
-                if(length_ > 0){
+                if(length_x > 0){
                     ophotos[i] = photo_size_parse(json_array_get(array_photos, 0));
 
-                    for(x = 1; x < length_; x++){
+                    for(x = 1; x < length_x; x++){
                         _temp = photo_size_parse(json_array_get(array_photos, x));
                         if(_temp)
                             photo_size_add(ophotos[i], _temp);

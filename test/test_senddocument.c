@@ -148,6 +148,7 @@ int main(int argc, char *argv[]){
 	}
 
 	_free(update);
+	bot_free(_bot);
 
 	if(valid_username == 0)
 		printf("Username not found");

@@ -66,11 +66,11 @@ Error *get_error(){
 void user_add(User *origin, User *next){
     User *o = origin;
 
-    while(o){
+    while(o->next){
         o = o->next;
     }
 
-    o = next;
+    o->next = next;
 }
 
 void user_free(User *usr){
@@ -256,10 +256,13 @@ void audio_free(Audio *audio){
  ** https://core.telegram.org/bots/api#photosize
  **/
 void photo_size_free(PhotoSize *photoSize){
-    if(photoSize->file_id)
-        free(photoSize->file_id);
+    if(photoSize != NULL){
+        if(photoSize->file_id)
+            free(photoSize->file_id);
 
-    free(photoSize);
+        free(photoSize);
+    }
+
     photoSize = NULL;
 }
 
@@ -267,8 +270,9 @@ void photo_size_free(PhotoSize *photoSize){
 void photo_size_add(PhotoSize *root, PhotoSize *newps){
     PhotoSize *aux = root;
 
-    while(aux->next)
+    while(aux->next){
         aux = aux->next;
+    }
 
     aux->next = newps;
 }
@@ -1317,23 +1321,21 @@ UserProfilePhotos *user_profile_photos(long int total_count, PhotoSize ** photos
 }
 
 void user_profile_photos_free(UserProfilePhotos *oupp){
-    size_t i;
+    size_t i, m = 0;
 
     PhotoSize *photo, *upp_n;
 
     if(oupp->photos){
         for(i = 0; i < oupp->total_count; i++){
             photo = oupp->photos[i];
-            upp_n = photo;
   
             while(photo){
                 upp_n = photo->next;
                 photo_size_free(photo);
                 photo = upp_n;
             }
-
-            photo_size_free(oupp->photos[i]);
         }
+        free(oupp->photos);
     }
 
     free(oupp);
