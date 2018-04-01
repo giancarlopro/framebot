@@ -491,6 +491,10 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
 Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
         char *inline_message_id, char *reply_markup);
 
+/* delete message */
+bool delete_message(Bot *bot, char *chat_id, long int message_id);
+bool delete_message_chat(Bot *bot, long int chat_id, long int message_id);
+
 bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter);
 

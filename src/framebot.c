@@ -1515,9 +1515,9 @@ int send_chat_action(Bot * bot, char * chat_id, char * action){
     if(!s_json)
         return -1;
 
-    result = json_is_true(s_json->content) ? 0 : -1;
+    result = json_is_true(s_json->content);
 
-    return result;
+    return result > 0  ? 1 : 0;
 }
 
 int send_chat_action_chat(Bot * bot, long int chat_id, char * action){

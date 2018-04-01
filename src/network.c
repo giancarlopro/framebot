@@ -44,7 +44,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 }
 
 /* send data to telegram */
-MemStore * call_method(const char *token, char *method){
+MemStore * call_method(const char *token, const char *method){
     CURLcode res;
     size_t url_size = API_URL_LEN + strlen( token ) + strlen( method ) + 2;
     char * url = ( char * ) calloc(1,  url_size );

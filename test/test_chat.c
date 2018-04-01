@@ -127,7 +127,7 @@ int _func(){
 	}
 
 
-	printf("send_contact ...... ");
+/*	printf("send_contact ...... ");
 	Message * e = send_contact_chat(_bot, chat_id, "65 9999-9992", "Framebot",
             "API", 0, 0, NULL);
 	if(e){
@@ -140,7 +140,7 @@ int _func(){
 		if(e1)
 			printf("false\ncode:%ld | description:%s\n", e1->error_code, e1->description);
 		exit(-1);
-	}
+	}*/
 
 	#ifdef _WIN32
 		custom_sleep(5000);
@@ -149,7 +149,7 @@ int _func(){
 	#endif
 
 	printf("send sendchataction ............ ");
-	if(send_chat_action_chat(_bot, chat_id, "typing")){
+	if(send_chat_action_chat(_bot, chat_id, "typing") == 1){
 		printf("ok\n");
 	}
 	else{
@@ -176,6 +176,17 @@ int _func(){
 		exit(-1);
     }
 
+    printf("send delete_message_chat ............. ");
+    if(delete_message_chat(_bot, chat_id, result->message_id) == 1){
+		printf("ok\n");
+	}
+	else{
+		printf("false\n");
+		Error *e1 = get_error();
+		if(e1)
+			printf("false\ncode:%ld | description:%s\n", e1->error_code, e1->description);
+		exit(-1);
+	}
 
 	return 0;
 }
