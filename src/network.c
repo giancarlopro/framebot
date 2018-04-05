@@ -359,6 +359,20 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                     curl_mime_data(field, ifile.video.caption, CURL_ZERO_TERMINATED);
                 }
 
+                /* Document parse_mode */
+                if(ifile.video.parse_mode != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "parse_mode");
+                    curl_mime_data(field, ifile.video.parse_mode, CURL_ZERO_TERMINATED);
+                }
+
+                /* Document supports_streaming */
+                if(ifile.video.supports_streaming != NULL){
+                    field = curl_mime_addpart(form);
+                    curl_mime_name(field, "supports_streaming");
+                    curl_mime_data(field, ifile.video.supports_streaming, CURL_ZERO_TERMINATED);
+                }
+
                 /* Sends the message silently */
                 if(ifile.video.disable_notification != NULL){
                     field = curl_mime_addpart(form);

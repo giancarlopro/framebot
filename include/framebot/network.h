@@ -65,6 +65,8 @@ typedef struct _svideo{
 	char * width;
 	char * height;
 	char * caption;
+	char * parse_mode;
+	char * supports_streaming;
 	char * disable_notification;
 	char * reply_to_message_id;
 	char * reply_markup;

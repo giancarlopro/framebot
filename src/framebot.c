@@ -1096,8 +1096,8 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
  *
  */
 Message * send_video(Bot * bot, char * chat_id, char * filename, long int duration,
-            long int width, long int height, char * caption, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            long int width, long int height, char * caption, char *parse_mode, bool supports_streaming,
+            bool disable_notification, long int reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
@@ -1121,6 +1121,12 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
 
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
+
+    /* parse mode MODE_HTML or MODE_MARKDOWN */
+    ifile.video.parse_mode = PARSE_MODE(parse_mode);
+
+
+    ifile.video.supports_streaming = STREAMING(supports_streaming);
 
     /* Sends the message silently */
     ifile.video.disable_notification = DISABLE_NOTIFICATION(disable_notification);
@@ -1158,16 +1164,16 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
 
 
 Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int duration,
-            long int width, long int height, char * caption, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            long int width, long int height, char * caption, char *parse_mode, bool supports_streaming,
+            bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_video(bot, cchat_id, filename, duration, width, height, caption,
-                disable_notification, reply_to_message_id, REPLY_MARKUP(reply_markup));
+    message = send_video(bot, cchat_id, filename, duration, width, height, caption, parse_mode,
+                supports_streaming, disable_notification, reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
 

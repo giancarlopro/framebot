@@ -219,6 +219,7 @@ typedef struct _message{
     Location *location;
     Venue *venue;
     User *new_chat_members;
+    User *left_chat_member;
     char *new_chat_title;
     PhotoSize *new_chat_photo;//Array
     bool delete_chat_photo:1;

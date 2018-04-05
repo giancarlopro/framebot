@@ -210,6 +210,7 @@
 #define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "0")
 #define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "0")
 
+#define STREAMING(p) (p > 0 ? api_ltoa(p) : NULL)
 #define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)
 #define REPLY_TO_MESSAGE_ID(p) (p > 0 ? api_ltoa(p) : NULL)
 #define WIDTH(p) (p > 0 ? api_ltoa(p) : NULL)
@@ -322,10 +323,10 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
 
 /* sendvideo */
 Message * send_video(Bot * bot, char * chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, bool disable_notification, long int reply_to_message_id,
+        long int height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, long int reply_to_message_id,
          char * reply_markup);
 Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, bool disable_notification, long int reply_to_message_id,
+        long int height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, long int reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */

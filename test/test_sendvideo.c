@@ -37,73 +37,141 @@ int _video(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, NULL, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 0, 0, 0 , 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, NULL, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
 	printf(WHITE "Send duration ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 0, 0 , 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 0, 0, NULL, NULL, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
-	printf(WHITE "Send length ........." COLOR_RESET);
+	printf(WHITE "Send width ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 0 , 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 0, NULL, NULL, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
+
+	printf(WHITE "Send height ........." COLOR_RESET);
+	fflush(stdout);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 10, NULL, NULL, 0, 0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
+	}
+	else{
+		Error *error = get_error();
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
+
+	printf(WHITE "Send caption ........." COLOR_RESET);
+	fflush(stdout);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 0, 0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
+	}
+	else{
+		Error *error = get_error();
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
+
+	printf(WHITE "Send parse_mode ........." COLOR_RESET);
+	fflush(stdout);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "<b>caption</b>", MODE_HTML, 0, 0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
+	}
+	else{
+		Error *error = get_error();
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		exit(-1);
+	}
+
+	printf(WHITE "Send supports_streaming ........." COLOR_RESET);
+	fflush(stdout);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, 0, 0, NULL);
+	if(result){
+		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(result);
+	}
+	else{
+		Error *error = get_error();
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 1, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message *forward = send_video_note_chat(_bot, chat_id, filename, 10, 10, 1, result->message_id, NULL);
-	if(result){
+	Message *forward = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, 1, result->message_id, NULL);
+	if(forward){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(forward);
+		message_free(result);
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 		exit(-1);
 	}
 
