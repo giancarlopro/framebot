@@ -41,7 +41,7 @@
 #define API_kickChatMember "kickChatMember\
 ?chat_id=%s\
 &user_id=%ld\
-&until_date=%s"
+&until_date=%ld"
 
 #define API_restrictChatMember "restrictChatMember\
 ?chat_id=%s\
@@ -395,8 +395,8 @@ File * get_file(Bot * bot, const char * file_id);
 int file_download(Bot * bot, File * ofile, char *path);
 
 /* kickChatMember */
-bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_date);
-bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date);
+bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date);
+bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date);
 
 /* unbanChatMember */
 bool unban_chat_member (Bot *bot, char *chat_id, long int user_id);
