@@ -335,7 +335,7 @@ bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until
     return result;
 }
 
-bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, char *until_date) {
+bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date) {
     bool result;
     char * cchat_id;
 
