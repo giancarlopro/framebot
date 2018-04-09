@@ -318,7 +318,7 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id) {
  * Ban a chat user
  * https://core.telegram.org/bots/api#kickchatmember
  */
-bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, char *until_date) {
+bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date) {
     bool result;
     refjson *s_json;
 

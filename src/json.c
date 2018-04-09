@@ -929,21 +929,14 @@ ChatMember *chat_member_parse (json_t *json) {
 }
 
 ChatMember *chat_member_array_parse (json_t *cm_array) {
-    ChatMember *object = NULL;
+    ChatMember *object = NULL;   
 
-    if (json_is_object(cm_array)) {
-        object = (ChatMember *) calloc(1, sizeof(ChatMember));
-        if(!object)
-            return NULL;
+    size_t i, sz = json_array_size(cm_array);
 
-        size_t i, sz = json_array_size(cm_array);
-
-        if(sz > 0){
-            ChatMember *object = chat_member_parse(json_array_get(cm_array, 0));
-
-            for (i = 1; i < sz; i++) {
-                chat_member_add(object, chat_member_parse(json_array_get(cm_array, i)));
-            }
+    if(sz > 0){
+        object = chat_member_parse(json_array_get(cm_array, 0));
+        for (i = 1; i < sz; i++) {
+            chat_member_add(object, chat_member_parse(json_array_get(cm_array, i)));
         }
 
         return object;
