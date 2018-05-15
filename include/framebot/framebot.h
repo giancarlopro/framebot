@@ -229,7 +229,7 @@
 #include <errno.h>
 
 
-#ifdef __linux__
+#if defined __linux__ || defined __FreeBSD__
 #include <unistd.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -237,7 +237,7 @@
 #include <Windows.h>
 #include <io.h>
 #else
-# error "Only windows or Linux"
+# error "Only Windows, Linux and FreeBSD are supported at the moment."
 #endif
 
 #include <limits.h>
