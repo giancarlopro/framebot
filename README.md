@@ -4,6 +4,7 @@ This is the official repository for Framebot.
 
 ## Building from source
 
+### Ubuntu/Debian
 First you need to install the dependencies
 
 ```
@@ -19,6 +20,29 @@ cmake ..
 
 and use make to build and install
 ```
+make
+make install
+```
+
+### FreeBSD
+The required packages can be installed using either ports:
+
+```
+make -C /usr/ports/{cmake,jansson,openssl,curl} install clean
+```
+
+Or binary packages:
+
+```
+pkg install cmake jansson openssl curl
+```
+
+After that, cd into the framebot repository continue the same way as above:
+
+```
+mkdir build
+cd build
+cmake ..
 make
 make install
 ```
