@@ -5,20 +5,22 @@ include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_definitions("-g")
 
-set(OS_FREEBSD CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+if(UNIX)
+	if(NOT CMAKE_SYSTEM_NAME STREQUAL Linux AND NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+		# This is probably an unsupported BSD or OSX.
+		# Show an error, but try to proceed.
+		message(SEND_ERROR "Only Linux, FreeBSD and Windows are supported at this time.")
+	endif()
 
-if(${OS_FREEBSD})
-	# Add /usr/local/lib so we can find the libs on FreeBSD
-	link_directories(/usr/local/lib /usr/lib /lib)
+	# Search for the required libraries, erroring out if they aren't found
+	find_library(JANSSON_LIB NAMES jansson)
+	find_package(CURL REQUIRED)
+	# Add the include directories for the libraries
+	include_directories(${CURL_INCLUDE_DIRS})
 endif()
 
 add_executable(echo echo.c)
-target_link_libraries(echo jansson libcurl.so framebot)
+target_link_libraries(echo ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
 
 add_executable(inline inline_bot.c)
-target_link_libraries(inline jansson libcurl.so framebot)
-
-if(${OS_FREEBSD})
-	target_compile_options(echo PUBLIC -I/usr/local/include)
-	target_compile_options(inline PUBLIC -I/usr/local/include)
-endif()
+target_link_libraries(inline ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
