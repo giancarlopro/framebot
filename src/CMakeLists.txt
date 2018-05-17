@@ -5,30 +5,28 @@ include_directories (${PROJECT_SOURCE_DIR}/../include)
 
 add_definitions("-g")
 
-set(OS_LINUX CMAKE_SYSTEM_NAME STREQUAL Linux)
-set(OS_FREEBSD CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
-
-if(${OS_LINUX} OR ${OS_FREEBSD})
-	if(${OS_FREEBSD})
-		# Add /usr/local/lib so we can find the libs on FreeBSD
-		link_directories(/usr/local/lib /usr/lib /lib)
+if(UNIX)
+	if(NOT CMAKE_SYSTEM_NAME STREQUAL Linux AND NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+		# This is probably an unsupported BSD or OSX.
+		# Show an error, but try to proceed.
+		message(SEND_ERROR "Only Linux, FreeBSD and Windows are supported at this time.")
 	endif()
+
+	# Search for the required libraries, erroring out if they aren't found
+	find_library(JANSSON_LIB NAMES jansson)
+	find_package(CURL REQUIRED)
+	# Add the include directories for the libraries
+	include_directories(${CURL_INCLUDE_DIRS})
 
 	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(framebot_ jansson libcurl.so)
+	target_link_libraries(framebot_ ${JANSSON_LIB} ${CURL_LIBRARIES})
 
 	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c)
-	target_link_libraries(framebot jansson libcurl.so)
-	
-	if(${OS_FREEBSD})
-		# The default FreeBSD include path
-		target_compile_options(framebot_ PUBLIC -I/usr/local/include)
-		target_compile_options(framebot PUBLIC -I/usr/local/include)
-	endif()
+	target_link_libraries(framebot ${JANSSON_LIB} ${CURL_LIBRARIES})
 
 	install(TARGETS framebot_ LIBRARY DESTINATION lib)
 	install(TARGETS framebot ARCHIVE DESTINATION lib)
-	
+
 	if(DEBUG EQUAL 1)
 		add_definitions("-g")
 		add_definitions("-Wall")
