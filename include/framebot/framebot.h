@@ -265,7 +265,6 @@ typedef int bool;
 
 #include <curl/curl.h>
 #include <jansson.h>
-#include <pthread.h>
 
 #include <framebot/memory.h>
 #include <framebot/objects.h>
