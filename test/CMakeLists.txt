@@ -3,7 +3,11 @@ project(framebotTest)
 
 include_directories (${PROJECT_SOURCE_DIR}/../include)
 
-add_definitions("-g")
+# Search for the required libraries, erroring out if they aren't found
+find_library(JANSSON_LIB NAMES jansson)
+find_package(CURL REQUIRED)
+# Add the include directories for the libraries
+include_directories(${CURL_INCLUDE_DIRS})
 
 if(UNIX)
 	if(NOT CMAKE_SYSTEM_NAME STREQUAL Linux AND NOT CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
@@ -11,12 +15,6 @@ if(UNIX)
 		# Show an error, but try to proceed.
 		message(SEND_ERROR "Only Linux, FreeBSD and Windows are supported at this time.")
 	endif()
-
-	# Search for the required libraries, erroring out if they aren't found
-	find_library(JANSSON_LIB NAMES jansson)
-	find_package(CURL REQUIRED)
-	# Add the include directories for the libraries
-	include_directories(${CURL_INCLUDE_DIRS})
 endif()
 
 add_executable(methods_chat test_chat.c)
@@ -46,15 +44,15 @@ if (UNIX)
 endif ()
 
 if (WIN32)
-	target_link_libraries(methods_chat jansson libcurl_a framebot)
-	target_link_libraries(update jansson libcurl_a framebot)
-	target_link_libraries(file jansson libcurl_a framebot)
-	target_link_libraries(userprofilephotos jansson libcurl_a framebot)
-	target_link_libraries(sendphotos jansson libcurl_a framebot)
-	target_link_libraries(sendphotos jansson libcurl_a framebot)
-	target_link_libraries(sendaudio jansson libcurl_a framebot)
-	target_link_libraries(senddocument jansson libcurl_a framebot)
-	target_link_libraries(sendvideo jansson libcurl_a framebot)
-	target_link_libraries(sendvideonote jansson libcurl_a framebot)
-	target_link_libraries(sendmessage jansson libcurl_a framebot)
+	target_link_libraries(methods_chat ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(update ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(file ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(userprofilephotos ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendphotos ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendphotos ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendaudio ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(senddocument ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendvideo ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendvideonote ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
+	target_link_libraries(sendmessage ${JANSSON_LIB} ${CURL_LIBRARIES} framebot)
 endif (WIN32)

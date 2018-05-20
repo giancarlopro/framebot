@@ -3,7 +3,6 @@ project(FramebotFramework)
 
 find_package(OpenSSL REQUIRED)
 
-
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(examples)
