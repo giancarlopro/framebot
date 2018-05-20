@@ -46,7 +46,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 /* send data to telegram */
 MemStore * call_method(const char *token, const char *method){
     CURLcode res;
-    size_t url_size = API_URL_LEN + strlen( token ) + strlen( method ) + 2;
+    size_t url_size = API_URL_LEN + fstrlen( token ) + fstrlen( method ) + 2;
     char * url = ( char * ) calloc(1,  url_size );
 
     strcpy( url, API_URL );
@@ -87,7 +87,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
     if(!ofile)
         return 0;
 
-    url_size = API_URL_FILE_LEN + strlen(token) + strlen(ofile->file_path) + 2;
+    url_size = API_URL_FILE_LEN + fstrlen(token) + fstrlen(ofile->file_path) + 2;
     url = (char *)calloc(1, url_size);
 
     strcpy(url, API_URL_FILE);
@@ -529,7 +529,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
         char * url = NULL;
 
         buff = mem_store();
-        url_size = API_URL_LEN + strlen(token) + strlen(method) + 2;
+        url_size = API_URL_LEN + fstrlen(token) + fstrlen(method) + 2;
         url = calloc(1, url_size);
 
         strcpy(url, API_URL);
@@ -567,7 +567,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
 }
 
 MemStore *call_method_wp(char *token, char *method, char *params) {
-    size_t len = strlen(method) + strlen(params) + 1;
+    size_t len = fstrlen(method) + fstrlen(params) + 1;
     char *tmp = (char *)calloc(1, len);
 
     MemStore *ms = call_method(token, tmp);

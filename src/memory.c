@@ -3,20 +3,20 @@
 char * alloc_string(const char * str){
 
     if (str) {
-        char *nstr = (char *) malloc(strlen(str) + 1);
+        char *nstr = (char *) malloc(fstrlen(str) + 1);
         strcpy(nstr, str);
 
-        return (char *) nstr;
+        return nstr;
     }
 
-    return (char *) NULL;
+    return NULL;
 }
 
 char *realloc_string (char *base, char *str) {
     if (!str)
         return base;
     
-    char *tmp = (char *) realloc(base, strlen(base) + strlen(str) + 1);
+    char *tmp = (char *) realloc(base, fstrlen(base) + fstrlen(str) + 1);
 
     if (tmp)
         strcat(tmp, str);

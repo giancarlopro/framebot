@@ -58,7 +58,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
     Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
-        offset, limit, timeout, IF_STRING_NULL(allowed_updates) );
+        offset, limit, timeout, STRING_NULL(allowed_updates) );
 
     if( !framebot ){
         framebot = calloc(1, sizeof( Framebot ));
@@ -1885,7 +1885,7 @@ bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long i
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
-        cache_time, is_personal, IF_STRING_NULL(next_offset), IF_STRING_NULL(switch_pm_text), IF_STRING_NULL(switch_pm_parameter));
+        cache_time, is_personal, STRING_NULL(next_offset), STRING_NULL(switch_pm_text), STRING_NULL(switch_pm_parameter));
 
     if(!s_json)
         return -1;

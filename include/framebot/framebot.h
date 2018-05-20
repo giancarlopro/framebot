@@ -217,7 +217,9 @@
 #define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
 #define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
 
-#define IF_STRING_NULL(p) (p == NULL?"null":p)
+#define fstrlen(p) (p == NULL ? 0 : strlen(p))
+
+#define STRING_NULL(p) (p == NULL ? "null":p)
 
 #define UPDATE_ID_LAST(x, y) (x->update_id > y->update_id ? x->update_id : y->update_id)
 
