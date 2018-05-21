@@ -1,0 +1,14 @@
+configuration: Debug
+install:
+  - git clone https://github.com/akheron/jansson.git
+  - cd jansson
+  - autoreconf -i
+  - ./configure
+  - make
+  - make install
+  - cd ..
+build:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
