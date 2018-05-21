@@ -3,11 +3,9 @@ configuration: Debug
 install:
   - git clone https://github.com/akheron/jansson.git
   - cd jansson
-  - autoreconf -i
-  - ./configure
-  - make
-  - make install
-  - cd ..
+  - cmake ..
+  - cmake --build .
+  - cmake --build . --target INSTALL
 build_script:
   - mkdir build
   - cd build
