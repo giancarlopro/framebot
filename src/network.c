@@ -82,7 +82,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
     FILE * binary;
     CURLcode res;
     size_t url_size;
-    char *url, *path;
+    char *url;
 
     if(!ofile)
         return 0;
