@@ -581,7 +581,7 @@ char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
 
 /**
  * setChatPhoto
- *
+ * https://core.telegram.org/bots/api#setchatphoto
  */
 int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     bool result;
@@ -631,7 +631,7 @@ int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
 
 /**
  * deleteChatPhoto
- *
+ * https://core.telegram.org/bots/api#deletechatphoto
  */
 int delete_chat_photo(Bot *bot, char *chat_id){
     refjson *s_json;
@@ -670,6 +670,7 @@ int delete_chat_photo_chat(Bot *bot, long int chat_id){
  * that contains information about all chat administrators except other bots.
  * If the chat is a group or a supergroup and no administrators were appointed,
  * only the creator will be returned.
+ * https://core.telegram.org/bots/api#getchatadministrators
  */
 ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
     ChatMember * chat_member_adm;
@@ -736,7 +737,7 @@ bool pin_chat_message_chat(Bot *bot, long int chat_id, long int message_id, bool
 
 /**
  * unpinChatMessage
- *
+ * https://core.telegram.org/bots/api#unpinchatmessage
  */
 bool unpin_chat_message(Bot *bot, char *chat_id){
     int result;
@@ -798,6 +799,7 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
  * getFile
  * https://core.telegram.org/bots/api#getfile
  * info file
+ * https://core.telegram.org/bots/api#getfile
  */
 File * get_file (Bot * bot, const char * file_id){
 
@@ -858,7 +860,7 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, long user_id,
 
 /**
  * sendPhoto
- *
+ * https://core.telegram.org/bots/api#sendphoto
  */
 Message * send_photo(Bot * bot, char * chat_id, char * filename,
                              char * caption, char *parse_mode, bool disable_notification,
@@ -936,7 +938,7 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
 
 /**
  * sendAudio
- *
+ * https://core.telegram.org/bots/api#sendaudio
  */
 Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             long int duration, char * performer, char * title, bool disable_notification,
@@ -1025,7 +1027,7 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
 
 /**
  * sendDocument
- *
+ * https://core.telegram.org/bots/api#senddocument
  */
 Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
@@ -1099,7 +1101,7 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
 
 /**
  * sendVideo
- *
+ * https://core.telegram.org/bots/api#sendvideo
  */
 Message * send_video(Bot * bot, char * chat_id, char * filename, long int duration,
             long int width, long int height, char * caption, char *parse_mode, bool supports_streaming,
@@ -1191,7 +1193,7 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
 
 /**
  * sendVoice
- *
+ * https://core.telegram.org/bots/api#sendvoice
  */
 Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             long int duration, bool disable_notification, long int reply_to_message_id,
@@ -1271,7 +1273,7 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
 
 /**
  * sendVideoNote
- *
+ * https://core.telegram.org/bots/api#sendvideonote
  */
 Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,
             long int length, bool disable_notification, long int reply_to_message_id, char * reply_markup){
@@ -1354,7 +1356,7 @@ Error * show_error(){
 
 /**
  * forwardMessage
- *
+ * https://core.telegram.org/bots/api#forwardmessage
  */
 Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,
             bool disable_notification, long int message_id){
@@ -1431,7 +1433,7 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
 
 /**
  * sendLocation
- *
+ * https://core.telegram.org/bots/api#sendlocation
  */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
             float longitude, long int live_period, bool disable_notification,
@@ -1476,7 +1478,7 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float
 
 /**
  * sendContact
- *
+ * https://core.telegram.org/bots/api#sendcontact
  */
 Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,
             char * last_name, bool disable_notification, long int reply_to_message_id,
@@ -1519,7 +1521,7 @@ Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, ch
 
 /**
  * sendChatAction
- *
+ * https://core.telegram.org/bots/api#sendchataction
  */
 int send_chat_action(Bot * bot, char * chat_id, char * action){
     refjson *s_json;
@@ -1552,7 +1554,7 @@ int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
 
 /**
  * sendVenue
- *
+ * https://core.telegram.org/bots/api#sendvenue
  */
 Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
@@ -1597,7 +1599,7 @@ Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float lon
 
 /**
  * editMessageLiveLocation
- *
+ * https://core.telegram.org/bots/api#editmessagelivelocation
  */
 Message * edit_message_live_location(Bot * bot, char * chat_id, long int message_id,
             char * inline_message_id, float latitude, float longitude, char * reply_markup){
@@ -1634,7 +1636,7 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
 
 /**
  * stopMessageLiveLocation
- *
+ * https://core.telegram.org/bots/api#stopmessagelivelocation
  */
 Message * stop_message_live_location(Bot * bot, char * chat_id, long int message_id,
             char * inline_message_id, char * reply_markup){
@@ -1672,7 +1674,7 @@ Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int 
 
 /**
  * editMessageText
- *
+ * https://core.telegram.org/bots/api#editmessagetext
  */
 Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     char *inline_message_id, char *text, char *parse_mode,
@@ -1713,7 +1715,7 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
 
 /**
  * editMessageCaption
- *
+ * https://core.telegram.org/bots/api#editmessagecaption
  */
 Message *edit_message_caption(Bot *bot, char *chat_id,
     long int message_id, char *inline_message_id, char *caption,
@@ -1753,7 +1755,7 @@ Message *edit_message_caption_chat(Bot *bot, long int chat_id,
 
 /**
  * editMessageReplyMarkup
- *
+ * https://core.telegram.org/bots/api#editmessagereplymarkup
  */
 Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
         char *inline_message_id, char *reply_markup){
@@ -1790,7 +1792,7 @@ Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int mes
 
 /**
  * deleteMessage
- *
+ * https://core.telegram.org/bots/api#deletemessage
  */
 bool delete_message(Bot *bot, char *chat_id, long int message_id){
     bool result;
@@ -1824,7 +1826,7 @@ bool delete_message_chat(Bot *bot, long int chat_id, long int message_id){
 
 /**
  * setChatStickerSet
- *
+ * https://core.telegram.org/bots/api#setchatstickerset
  */
 bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
     bool result;
@@ -1858,7 +1860,7 @@ bool set_chat_sticker_set_chat(Bot *bot, long int chat_id, long int sticker_set_
 
 /**
  * deleteChatStickerSet
- *
+ * https://core.telegram.org/bots/api#deletechatstickerset
  */
 bool delete_chat_sticker_set(Bot *bot, char *chat_id){
     bool result;
@@ -1889,6 +1891,9 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
     return result;
 }
 
+/*
+ * https://core.telegram.org/bots/api#answerinlinequery
+ */
 bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
     bool result;

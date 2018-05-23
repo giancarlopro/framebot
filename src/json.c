@@ -1180,6 +1180,9 @@ OrderInfo * order_info_parse(json_t * json){
 
     if(json_is_object(json)){
         object = (OrderInfo *) calloc(1, sizeof(OrderInfo));
+        if(!object)
+            return NULL;
+        
         json_t *name, *phone_number, *email, *shipping_address;
 
         name = json_object_get(json, "name");
