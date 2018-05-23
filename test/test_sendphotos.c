@@ -32,7 +32,7 @@ int _photo(){
 
 	printf(WHITE "Send chat_id ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_photo_chat(_bot, chat_id, filename, NULL,
+	result = send_photo_chat(_bot, chat_id, filename, NULL, NULL,
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -46,7 +46,7 @@ int _photo(){
 	printf(WHITE "Send username ......... " COLOR_RESET);
 	fflush(stdout);
 	result = send_photo_chat(_bot, chat_id, filename, NULL,
-            0, 0, NULL);
+            NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -58,7 +58,7 @@ int _photo(){
 
 	printf(WHITE "Send caption ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_photo_chat(_bot, chat_id, filename, "caption",
+	result = send_photo_chat(_bot, chat_id, filename, "caption", NULL,
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -71,7 +71,7 @@ int _photo(){
 
 	printf(WHITE "Send disable_notification ......... " COLOR_RESET);
 	fflush(stdout);
-	result = send_photo_chat(_bot, chat_id, filename, "disable_notification",
+	result = send_photo_chat(_bot, chat_id, filename, "disable_notification", NULL,
             1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -85,7 +85,7 @@ int _photo(){
 	printf(WHITE "Send reply_to_message_id ......... " COLOR_RESET);
 	fflush(stdout);
 	Message * forward = send_photo_chat(_bot, chat_id, filename, "reply_to_message_id",
-            1, result->message_id, NULL);
+            NULL, 1, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}

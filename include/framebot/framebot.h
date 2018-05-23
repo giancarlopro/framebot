@@ -219,7 +219,7 @@
 
 #define fstrlen(p) (p == NULL ? 0 : strlen(p))
 
-#define STRING_NULL(p) (p == NULL ? "null":p)
+#define STRING_NULL(p) (p == NULL ? "null": p)
 
 #define UPDATE_ID_LAST(x, y) (x->update_id > y->update_id ? x->update_id : y->update_id)
 
@@ -303,37 +303,37 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
         bool disable_notification, long int message_id);
 
 /* sendphoto */
-Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption,
+Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
         bool disable_notification, long int reply_to_message_id, char * reply_markup);
-Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, 
+Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode,
         bool disable_notification, long int reply_to_message_id, char * reply_markup);
 
 /* sendaudio */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, long int duration,
         char * performer, char * title, bool disable_notification, long int reply_to_message_id,
         char * reply_markup);
-Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, long int duration,
+Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode, long int duration,
         char * performer, char * title, bool disable_notification, long int reply_to_message_id,
         char * reply_markup);
 
 /* senddocument */
-Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,
+Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char * parse_mode,
         bool disable_notification, long int reply_to_message_id,  char * reply_markup);
-Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode,
         bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 
 /* sendvideo */
 Message * send_video(Bot * bot, char * chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, long int reply_to_message_id,
+        long int height, char * caption, char *parse_mode, bool supports_streaming,bool disable_notification, long int reply_to_message_id,
          char * reply_markup);
 Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,
         long int height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, long int reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, long int duration,
         bool disable_notification, long int reply_to_message_id,  char * reply_markup);
-Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,
+Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, char * parse_mode, long int duration,
         bool disable_notification, long int reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,
@@ -482,10 +482,10 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
 /* editMessageText */
 Message *edit_message_caption(Bot *bot, char *chat_id,
     long int message_id, char *inline_message_id, char *caption,
-    char *reply_markup);
+    char * parse_mode, char *reply_markup);
 Message *edit_message_caption_chat(Bot *bot, long int chat_id,
     long int message_id, char *inline_message_id, char *caption,
-    char *reply_markup);
+    char * parse_mode, char *reply_markup);
 
 /* editMessageCaption */
 Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,

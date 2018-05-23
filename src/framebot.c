@@ -861,7 +861,7 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, long user_id,
  *
  */
 Message * send_photo(Bot * bot, char * chat_id, char * filename,
-                             char * caption, bool disable_notification,
+                             char * caption, char *parse_mode, bool disable_notification,
                              long int reply_to_message_id, char * reply_markup){
     Message * message;
 
@@ -878,6 +878,8 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
     /* Photo caption (may also be used when resending 
      * photos by file_id), 0-200 characters */
     ifile.photo.caption = caption;
+
+    ifile.photo.parse_mode = PARSE_MODE(parse_mode);
 
     /* Sends the message silently */
     ifile.photo.disable_notification = DISABLE_NOTIFICATION(disable_notification);
@@ -914,7 +916,7 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
 
 
 
-Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -922,7 +924,7 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_photo(bot, cchat_id, filename, caption,
+    message = send_photo(bot, cchat_id, filename, caption, parse_mode,
                                  disable_notification, reply_to_message_id,
                                  REPLY_MARKUP(reply_markup));
 
@@ -936,7 +938,7 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
  * sendAudio
  *
  */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             long int duration, char * performer, char * title, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
     
@@ -954,6 +956,8 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
 
     /* Audio caption, 0-200 characters */
     ifile.audio.caption = caption;
+
+    ifile.audio.caption = PARSE_MODE(parse_mode);
 
     /* Duration of the audio in seconds */
     ifile.audio.duration = DURATION(duration);
@@ -1000,7 +1004,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
 
 
 
-Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
             long int duration, char * performer, char * title, bool disable_notification,
             long int reply_to_message_id, char * reply_markup){
 
@@ -1009,9 +1013,9 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_audio(bot, cchat_id, filename, caption, duration,
+    message = send_audio(bot, cchat_id, filename, caption, parse_mode, duration,
                                  performer, title, disable_notification,
-                                 reply_to_message_id, REPLY_MARKUP(reply_markup));
+                                 reply_to_message_id, reply_markup);
 
     free(cchat_id);
 
@@ -1023,7 +1027,7 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
  * sendDocument
  *
  */
-Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,
+Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1041,6 +1045,8 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
     /* Document caption (may also be used when resending 
      * Documents by file_id), 0-200 characters */
     ifile.document.caption = caption;
+
+    ifile.document.parse_mode = PARSE_MODE(parse_mode);
 
     /* Sends the message silently */
     ifile.document.disable_notification = DISABLE_NOTIFICATION(disable_notification);
@@ -1073,7 +1079,7 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
 
 
 
-Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,
+Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1081,7 +1087,7 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_document(bot, cchat_id, filename, caption,
+    message = send_document(bot, cchat_id, filename, caption, parse_mode,
                                  disable_notification, reply_to_message_id,
                                  REPLY_MARKUP(reply_markup));
 
@@ -1121,6 +1127,8 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
 
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
+
+    ifile.video.caption = PARSE_MODE(parse_mode);
 
     /* parse mode MODE_HTML or MODE_MARKDOWN */
     ifile.video.parse_mode = PARSE_MODE(parse_mode);
@@ -1185,7 +1193,7 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
  * sendVoice
  *
  */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
             long int duration, bool disable_notification, long int reply_to_message_id,
             char * reply_markup){
     Message * message;
@@ -1202,6 +1210,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
 
     /* Audio caption, 0-200 characters */
     ifile.voice.caption = caption;
+
+    ifile.voice.parse_mode = PARSE_MODE(parse_mode);
 
     /* Duration of the audio in seconds */
     ifile.voice.duration = DURATION(duration);
@@ -1241,7 +1251,7 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
 
 
 
-Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,
+Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, char *parse_mode, long int duration,
             bool disable_notification, long int reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1249,7 +1259,7 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_voice(bot, cchat_id, filename, caption, duration,
+    message = send_voice(bot, cchat_id, filename, caption, parse_mode, duration,
                                  disable_notification,reply_to_message_id,
                                  REPLY_MARKUP(reply_markup));
 
@@ -1707,12 +1717,12 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
  */
 Message *edit_message_caption(Bot *bot, char *chat_id,
     long int message_id, char *inline_message_id, char *caption,
-    char *reply_markup){
+    char *parse_mode, char *reply_markup){
     Message *message;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
-        message_id, inline_message_id, caption, REPLY_MARKUP(reply_markup));
+        message_id, inline_message_id, caption, parse_mode, REPLY_MARKUP(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1726,14 +1736,14 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
 
 Message *edit_message_caption_chat(Bot *bot, long int chat_id,
     long int message_id, char *inline_message_id, char *caption,
-    char *reply_markup){
+    char *parse_mode, char *reply_markup){
     Message *message;
     char *cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_caption(bot, cchat_id, message_id,
-        inline_message_id, caption, reply_markup);
+        inline_message_id, caption, PARSE_MODE(parse_mode), reply_markup);
 
     free(cchat_id);
 

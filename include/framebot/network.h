@@ -29,6 +29,7 @@ typedef struct _sphoto{
 	char * chat_id;
 	char * filename;
 	char * caption;
+	char * parse_mode;
 	char * disable_notification;
 	char * reply_to_message_id;
 	char * reply_markup;
@@ -39,6 +40,7 @@ typedef struct _saudio{
 	char * chat_id;
 	char * filename;
 	char * caption;
+	char * parse_mode;
 	char * duration;
 	char * performer;
 	char * title;
@@ -52,6 +54,7 @@ typedef struct _sdocument{
 	char * chat_id;
 	char * filename;
 	char * caption;
+	char * parse_mode;
 	char * disable_notification;
 	char * reply_to_message_id;
 	char * reply_markup;
@@ -77,6 +80,7 @@ typedef struct _svoice{
 	char * chat_id;
 	char * filename;
 	char * caption;
+	char * parse_mode;
 	char * duration;
 	char * disable_notification;
 	char * reply_to_message_id;
