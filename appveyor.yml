@@ -1,7 +1,7 @@
 version: 0.1.{build}
 configuration: Debug
 install:
-  - git clone https://github.com/akheron/jansson.git && cd jansson && cmake .. && cmake --build . && cmake --build . --target INSTALL
+  - cmd: git clone https://github.com/akheron/jansson.git & cd jansson & cmake .. & cmake --build . --target INSTALL
 build_script:
   - mkdir build
   - cd build
