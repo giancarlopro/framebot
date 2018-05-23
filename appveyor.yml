@@ -1,6 +1,7 @@
 version: 0.1.{build}
 configuration: Debug
 install:
+  - vcpkg install curl
   - vcpkg install jansson
 build_script:
   - mkdir build
