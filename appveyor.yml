@@ -1,7 +1,7 @@
 version: 0.1.{build}
 configuration: Debug
 install:
-  - cmd: git clone https://github.com/akheron/jansson.git & cd jansson & cmake .. & cmake --build . --target INSTALL
+  - vcpkg install jansson
 build_script:
   - mkdir build
   - cd build
