@@ -100,8 +100,7 @@ Bot *bot(const char *token, User *user){
         return NULL;
 
     bot->token = alloc_string(token);
-    if(user)
-        bot->user = user;
+    bot->user = user;
 
     return bot;
 }
@@ -114,7 +113,6 @@ void bot_free(Bot *bot){
     user_free(bot->user);
 
     free(bot);
-    bot = NULL;
 }
 
 /**

@@ -280,7 +280,7 @@ refjson *generic_method_call (const char *token, char *formats, ...);
 Error * show_error();
 
 /** Available methods **/
-User * get_me(const char *token);
+User * get_me(Bot *bot);
 Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
             long int timeout, char *allowed_updates);
 

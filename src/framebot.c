@@ -9,14 +9,17 @@ void framebot_init () {
  * Authentic bot token
  */
 Bot * framebot (const char *token) {
+	Bot *obot = bot(token, NULL);
 
-    User *bot_user = get_me(token);
+    User *bot_user = get_me(obot);
 
     if (bot_user) {
-        Bot *obot = bot(token, bot_user);
+        obot->user = bot_user;
 
         return obot;
     }
+
+    bot_free(obot);
 
     return NULL;
 }
@@ -27,14 +30,11 @@ Bot * framebot (const char *token) {
  * Returns a User object of the owner bot.
  * https://core.telegram.org/bots/api#getme
  */ 
-User *get_me (const char *token) {
+User *get_me (Bot *bot) {
     User * user = NULL;
     refjson *s_json = NULL;
 
-    if (!token)
-        return NULL;
-
-    s_json = generic_method_call(token, API_GETME);
+    s_json = generic_method_call(bot->token, API_GETME);
     if(!s_json)
         return NULL;
 
