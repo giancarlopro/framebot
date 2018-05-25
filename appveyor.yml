@@ -4,7 +4,7 @@ cache: c:\tools\vcpkg\installed\
 install:
   - vcpkg install curl
   - vcpkg install jansson
-  - cd c:\tools\vcpkg & vcpkg integrate install
+  - vcpkg integrate install
 build_script:
   - mkdir build
   - cd build
