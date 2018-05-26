@@ -106,10 +106,10 @@ typedef struct _video{
 
 typedef struct video_note{
     char *file_id;
-    long length;
-    long duration;
+    int64_t length;
+    int64_t duration;
     PhotoSize *thumb;
-    long file_size;
+    int64_t file_size;
 } VideoNote;
 
 typedef struct _voice{
@@ -127,8 +127,8 @@ typedef struct _contact{
 } Contact;
 
 typedef struct _location{
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
 } Location;
 
 typedef struct _venue{
@@ -143,7 +143,7 @@ typedef struct _invoice{
     char *description;
     char *start_parameter;
     char *currency;
-    long total_amount;
+    int64_t total_amount;
 } Invoice;
 
 typedef struct _shipping_address{
@@ -164,7 +164,7 @@ typedef struct _order_info{
 
 typedef struct _successful_payment{
     char *currency;
-    long total_amount;
+    int64_t total_amount;
     char *invoice_payload;
     char *shipping_option_id;
     OrderInfo *order_info;
@@ -183,7 +183,7 @@ typedef struct _pre_checkout_query{
     char *id;
     User *from;
     char *currency;
-    long total_amount;
+    int64_t total_amount;
     char *invoice_payload;
     char *shipping_option_id;
     OrderInfo *order_info;
@@ -310,12 +310,12 @@ typedef struct _chat_member {
 
 typedef struct _file{
     char *file_id;
-    long file_size;
+    int64_t file_size;
     char *file_path;
 } File;
 
 typedef struct _user_profile_photos{
-    long total_count;
+    int64_t total_count;
     PhotoSize ** photos;
 } UserProfilePhotos;
 
@@ -437,12 +437,12 @@ CallbackQuery *callback_query(const char *id, User *user, Message *message,
     const char *data, const char *game_short_name);
 void callback_query_free(CallbackQuery *callback_query);
 
-VideoNote *video_note(const char *file_id, long length, long duration,
-    PhotoSize *photo_size, long file_size);
+VideoNote *video_note(const char *file_id, int64_t length, int64_t duration,
+    PhotoSize *photo_size, int64_t file_size);
 void video_note_free(VideoNote *video_note);
 
 Invoice *invoice(const char *title, const char *description,
-    const char *start_parameter, const char *currency, long total_amount);
+    const char *start_parameter, const char *currency, int64_t total_amount);
 void invoice_free(Invoice *invoice);
 
 ShippingQuery *shipping_query(const char *id, User *from,
@@ -460,7 +460,7 @@ void order_info_free(OrderInfo *order_info);
 
 void pre_checkout_query_free(PreCheckoutQuery *pcq);
 
-SuccessfulPayment *successful_payment(const char *currency, long total_amount,
+SuccessfulPayment *successful_payment(const char *currency, int64_t total_amount,
     const char *invoice_payload, const char *shipping_option_id,
     OrderInfo *oorder_info, const char *telegram_payment_charge_id,
     const char *provider_payment_charge_id);

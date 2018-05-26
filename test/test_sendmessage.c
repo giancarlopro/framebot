@@ -106,6 +106,7 @@ int _message(){
 	Message * forward = send_message_chat(_bot, chat_id, "parameter reply_to_message_id", NULL, 1, 0, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(forward);
 	}
 	else{
 		Error *error = get_error();

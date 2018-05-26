@@ -88,6 +88,7 @@ int _photo(){
             NULL, 1, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
+		message_free(forward);
 	}
 	else{
 		Error *error = get_error();

@@ -264,10 +264,10 @@ PhotoSize * photo_size_parse(json_t *json) {
         object->file_id = alloc_string(json_string_value(file_id));
 
         width = json_object_get(pphoto_size,"width");
-        object->width = json_integer_value(width);
+        object->width = (int)json_integer_value(width);
 
         height = json_object_get(pphoto_size,"height");
-        object->height = json_integer_value(height);
+        object->height = (int)json_integer_value(height);
 
         file_size = json_object_get(pphoto_size,"file_size");
         object->file_size = json_integer_value(file_size);

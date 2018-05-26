@@ -37,7 +37,7 @@ void read_message(Update * update){
 
 	while(i < 4){
 		if(message[i]){
-			printf(GREEN"\n type Message\n", i);
+			printf(GREEN "\n type Message %lu\n", i);
 			if(i == 0)
 				printf(" update->message\n" COLOR_RESET);
 			else if(i == 1)
@@ -47,7 +47,7 @@ void read_message(Update * update){
 			else if(i == 3)
 				printf(" update->edited_channel_post\n" COLOR_RESET);
 
-			printf(BLUE"\tmessage_id = %lu\n"COLOR_RESET, message[i]->message_id);
+			printf(BLUE"\tmessage_id = %ld\n"COLOR_RESET, message[i]->message_id);
 			if(message[i]->from){
 				printf(BLUE"\ttfrom = (type User)\n"COLOR_RESET);
 				printf(BLUE"\ttfrom->id = %ld\n"COLOR_RESET, message[i]->from->id);
@@ -226,11 +226,6 @@ void read_message(Update * update){
 			else
 				printf("\tmigrate_to_chat_id = NULL\n"COLOR_RESET);
 
-			if(message[i]->migrate_from_chat_id)
-				printf(BLUE"\tmigrate_from_chat_id = %ld\n"COLOR_RESET);
-			else
-				printf("\tmigrate_from_chat_id = NULL\n"COLOR_RESET);
-
 			if(message[i]->pinned_message)
 				printf(BLUE"\tpinned_message = (type Message)\n"COLOR_RESET);
 			else
@@ -352,7 +347,7 @@ int main(int argc, char **argv){
 	Framebot *fbot = get_updates(bot, NULL, 0, 0, 0, NULL);
 	update = fbot->up_message;
 	update_length = update_len(update);
-	printf(BLUE"length = %lu"COLOR_RESET, update_length);
+	printf(BLUE"length = %ld"COLOR_RESET, update_length);
 
 	for(i = 0; update; i++){
 		printf("\npress enter for the show update");

@@ -3,7 +3,7 @@
 Bot * _bot;
 
 void upp(UserProfilePhotos * oupp){
-	int i, x, q;
+	int i, x;
 	PhotoSize * l;
 	printf("%ld", oupp->total_count);
 	for(i = 0; i < oupp->total_count; i++){
