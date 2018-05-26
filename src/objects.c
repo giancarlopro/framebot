@@ -100,8 +100,7 @@ Bot *bot(const char *token, User *user){
         return NULL;
 
     bot->token = alloc_string(token);
-    if(user)
-        bot->user = user;
+    bot->user = user;
 
     return bot;
 }
@@ -114,7 +113,6 @@ void bot_free(Bot *bot){
     user_free(bot->user);
 
     free(bot);
-    bot = NULL;
 }
 
 /**
@@ -212,27 +210,6 @@ MessageEntity *message_entity_get(MessageEntity *message_entity, int index){
     return NULL;;
 }
 
-/**
- ** Functions audio
- ** https://core.telegram.org/bots/api#audio
- **/
-Audio *audio(const char *file_id, long int duration, const char *performer,
-              const char *title, const char *mime_type, long int file_size){
-    Audio *audio = (Audio *)malloc(sizeof(Audio));
-    if(!audio)
-        return NULL;
-
-    audio->duration = duration;
-    audio->file_size = file_size;
-
-    audio->file_id = alloc_string(file_id);
-    audio->performer = alloc_string(performer);
-    audio->title = alloc_string(title);
-    audio->mime_type = alloc_string(mime_type);
-
-    return audio;
-}
-
 
 void audio_free(Audio *audio){
     if(audio->file_id)
@@ -304,26 +281,6 @@ size_t photo_size_len(PhotoSize *ophoto_size){
     return i;
 }
 
-/**
- ** functions document
- ** https://core.telegram.org/bots/api#document
- **/
-Document *document(const char *file_id,PhotoSize *thumb, const char *file_name,
-                   const char *mime_type, long int file_size){
-    Document *document = (Document *)malloc(sizeof(Document));
-    if(!document)
-        return NULL;
-
-    document->file_id = alloc_string(file_id);
-    document->thumb = thumb;
-    document->file_name = alloc_string(file_name);
-    document->mime_type = alloc_string(mime_type);
-    document->file_size = file_size;
-
-    return document;
-}
-
-
 void document_free(Document *document){
     free(document->file_id);
     if(document->thumb)
@@ -332,25 +289,6 @@ void document_free(Document *document){
     free(document->mime_type);
     free(document);
     document = NULL;
-}
-
-/**
- ** functions animation
- ** https://core.telegram.org/bots/api#animation
- **/
-Animation *animation(const char *file_id,PhotoSize *thumb, const char *file_name,
-                     const char *mime_type, long int file_size){
-    Animation *animation = (Animation *)malloc(sizeof(Animation));
-    if(!animation)
-        return NULL;
-
-    animation->file_id = alloc_string(file_id);
-    animation->thumb = thumb;
-    animation->file_name = alloc_string(file_name);
-    animation->mime_type = alloc_string(mime_type);
-    animation->file_size = file_size;
-
-    return animation;
 }
 
 
@@ -363,28 +301,6 @@ void animation_free(Animation *animation){
     animation = NULL;
 }
 
-
-/**
- ** functions game
- ** https://core.telegram.org/bots/api#game
- **/
-Game *game( const char *title, const char *description, PhotoSize *photo,
-            const char *text, MessageEntity *text_entities, Animation *animation){
-    Game *game = (Game *)malloc(sizeof(Game));
-    if(!game)
-        return NULL;
-
-    game->title = alloc_string(title);
-    game->description = alloc_string(description);
-    game->photo = photo;
-    game->text = alloc_string(text);
-    game->text_entities = text_entities;
-    game->animation = animation;
-
-    return game;
-}
-
-
 void game_free(Game *game){
     free(game->title);
     free(game->description);
@@ -394,29 +310,6 @@ void game_free(Game *game){
     animation_free(game->animation);
     free(game);
     game = NULL;
-}
-
-
-/**
- ** functions sticker
- ** https://core.telegram.org/bots/api#sticker
- **/
-Sticker *sticker(const char *file_id, int width, int height,PhotoSize *thumb,
-                 const char *emoji, long int file_size){
-    Sticker *_sticker = (Sticker *)malloc(sizeof(Sticker));
-    if(!_sticker)
-        return NULL;
-
-    _sticker->file_id = alloc_string(file_id);
-    _sticker->emoji = alloc_string(emoji);
-
-    _sticker->width = width;
-    _sticker->height = height;
-    _sticker->file_size = file_size;
-
-    _sticker->thumb = thumb;
-
-    return _sticker;
 }
 
 
@@ -435,30 +328,6 @@ void sticker_free(Sticker *_sticker){
 }
 
 
-/**
- ** functions video
- ** https://core.telegram.org/bots/api#video
- **/
-Video *video(const char *file_id, int width, int height, long int duration,
-             PhotoSize *thumb, const char *mime_type, long int file_size){
-    Video *_video = (Video *)malloc(sizeof(Video));
-    if(!_video)
-        return NULL;
-
-    _video->file_id = alloc_string(file_id);
-    _video->mime_type = alloc_string(mime_type);
-
-    _video->width = width;
-    _video->height = height;
-    _video->duration = duration;
-    _video->file_size = file_size;
-
-    _video->thumb = thumb;
-
-    return _video;
-}
-
-
 void video_free(Video *_video){
     if(_video->file_id)
         free(_video->file_id);
@@ -471,26 +340,6 @@ void video_free(Video *_video){
 }
 
 
-/**
- ** functions voice
- ** https://core.telegram.org/bots/api#voice
- **/
-Voice *voice(const char *file_id, long int duration, const char *mime_type, 
-             long int file_size){
-    Voice *_voice = (Voice *)malloc(sizeof(Voice));
-    if(!_voice)
-        return NULL;
-
-    _voice->file_id = alloc_string(file_id);
-    _voice->mime_type = alloc_string(mime_type);
-
-    _voice->duration = duration;
-    _voice->file_size = file_size;
-
-    return _voice;
-}
-
-
 void voice_free(Voice *_voice){
     if(_voice->file_id)
         free(_voice->file_id);
@@ -499,27 +348,6 @@ void voice_free(Voice *_voice){
     free(_voice);
     _voice = NULL;
 }
-
-
-/**
- ** functions contact
- ** https://core.telegram.org/bots/api#contact
- **/
-Contact *contact(const char *phone_number, const char *first_name, const char *last_name,
-                 long int user_id){
-    Contact *_contact = (Contact *)malloc(sizeof(Contact));
-    if(!_contact)
-        return NULL;
-
-    _contact->phone_number = alloc_string(phone_number);
-    _contact->first_name = alloc_string(first_name);
-    _contact->last_name = alloc_string(last_name);
-
-    _contact->user_id = user_id;
-
-    return _contact;
-}
-
 
 void contact_free(Contact *_contact){
     if(_contact->phone_number)
@@ -532,44 +360,11 @@ void contact_free(Contact *_contact){
     _contact = NULL;
 }
 
-/**
- ** functions location
- ** https://core.telegram.org/bots/api#location
- **/
-Location *location(float latitude,float longitude){
-    Location *_location = (Location *)malloc(sizeof(Location));
-    if(!_location)
-        return NULL;
-
-    _location->latitude = latitude;
-    _location->longitude = longitude;
-
-    return _location;
-}
-
 void location_free(Location *_location){
     free(_location);
     _location = NULL;
 }
 
-/**
- ** functions venue
- ** https://core.telegram.org/bots/api#venue
- **/
-Venue *venue(Location *location, const char *title, const char *address,
-             const char *foursquare_id){
-    Venue *_venue = (Venue *)malloc(sizeof(Venue));
-    if(!_venue)
-        return NULL;
-
-    _venue->location = location;
-
-    _venue->title = alloc_string(title);
-    _venue->address = alloc_string(address);
-    _venue->foursquare_id = alloc_string(foursquare_id);
-
-    return _venue;
-}
 
 void venue_free(Venue *_venue){
     if(_venue->location)
@@ -713,35 +508,6 @@ void message_free(Message *message){
     message = NULL;
 }
 
-/**
- ** functions update
- ** https://core.telegram.org/bots/api#update
- **/
-Update *update(long int update_id, Message *message, Message *edited_message,
-                Message *channel_post, Message *edited_channel_post,
-                InlineQuery *inline_query, ChosenInlineResult *chosen_inline_result,
-                CallbackQuery *callback_query, ShippingQuery *shipping_query,
-                PreCheckoutQuery *pre_checkout_query){
-    Update *oupdate = (Update *)malloc(sizeof(Update));
-    if(!oupdate)
-        return NULL;
-
-    oupdate->update_id = update_id;
-    oupdate->message = message;
-    oupdate->edited_message = edited_message;
-    oupdate->channel_post = channel_post;
-    oupdate->edited_channel_post = edited_channel_post;
-    oupdate->inline_query = inline_query;
-    oupdate->chosen_inline_result = chosen_inline_result;
-    oupdate->callback_query = callback_query;
-    oupdate->shipping_query = shipping_query;
-    oupdate->pre_checkout_query = pre_checkout_query;
-
-    oupdate->next = NULL;
-
-    return oupdate;
-}
-
 
 void update_free(Update *oupdate){
     if(oupdate->message)
@@ -804,41 +570,6 @@ size_t update_len(Update *u) {
     return i;
 }
 
-/**
- ** functions chat_member
- ** https://core.telegram.org/bots/api#chatmember
- **/
-ChatMember *chat_member(User *user, const char *status, long int until_date,
-                        bool can_be_edited, bool can_change_info, bool can_post_messages,
-                        bool can_edit_messages, bool can_delete_messages,
-                        bool can_invite_users, bool can_restrict_members,
-                        bool can_pin_messages, bool can_promote_members,
-                        bool can_send_messages, bool can_send_media_messages,
-                        bool can_send_other_messages, bool can_add_web_page_previews) {
-    
-    ChatMember *_cmember = (ChatMember *) malloc(sizeof(ChatMember));
-    if(!_cmember)
-        return NULL;
-
-    _cmember->user               = user;
-    _cmember->status             = alloc_string(status);
-    _cmember->until_date         = until_date;
-    _cmember->can_be_edited      = can_be_edited;
-    _cmember->can_change_info    = can_change_info;
-    _cmember->can_post_messages  = can_post_messages;
-    _cmember->can_edit_messages  = can_edit_messages;
-    _cmember->can_delete_messages = can_delete_messages;
-    _cmember->can_invite_users  = can_invite_users;
-    _cmember->can_restrict_members = can_restrict_members;
-    _cmember->can_pin_messages  = can_pin_messages;
-    _cmember->can_promote_members = can_promote_members;
-    _cmember->can_send_messages = can_send_messages;
-    _cmember->can_send_media_messages = can_send_media_messages;
-    _cmember->can_send_other_messages = can_send_other_messages;
-    _cmember->can_add_web_page_previews = can_add_web_page_previews;
-    
-    return _cmember;
-}
 
 void chat_member_free(ChatMember *chatMember) {
     if(chatMember->user)
@@ -888,22 +619,6 @@ size_t chat_member_len (ChatMember *chatMember) {
  ** functions choosen_inline_result
  ** https://core.telegram.org/bots/api#choseninlineresult
  **/
-ChosenInlineResult *chosen_inline_result(const char *result_id, User *from,
-                                         Location *location, const char *inline_message_id,
-                                         const char *query) {
-
-    ChosenInlineResult *cir = (ChosenInlineResult *) malloc (sizeof(ChosenInlineResult));
-    if(!cir)
-        return NULL;
-
-    cir->result_id = alloc_string(result_id);
-    cir->from      = from;
-    cir->location  = location;
-    cir->inline_message_id = alloc_string(inline_message_id);
-    cir->query     = alloc_string(query);
-
-    return cir;
-}
 
 void chosen_inline_result_free(ChosenInlineResult *cir){
     if(cir->result_id){
@@ -937,21 +652,6 @@ void chosen_inline_result_free(ChosenInlineResult *cir){
  ** functions inline_query
  ** https://core.telegram.org/bots/api#inlinequery
  **/
-InlineQuery *inline_query(const char *id, User *user, Location *location,
-                          const char *query, const char *offset){
-
-    InlineQuery *inline_query = (InlineQuery *) malloc(sizeof(InlineQuery));
-    if(!inline_query)
-        return NULL;
-
-    inline_query->id = alloc_string(id);
-    inline_query->from = user;
-    inline_query->location = location;
-    inline_query->query = alloc_string(query);
-    inline_query->offset = alloc_string(offset);
-
-    return inline_query;
-}
 
 void inline_query_free(InlineQuery *inline_query){
     if(inline_query->id)
@@ -977,23 +677,6 @@ void inline_query_free(InlineQuery *inline_query){
  ** functions callback_query
  ** https://core.telegram.org/bots/api#callbackquery
  **/
-CallbackQuery *callback_query(const char *id, User *user, Message *message,
-                               const char *inline_message_id, const char *chat_instance,
-                               const char *data, const char *game_short_name) {
-    CallbackQuery *ocallbac_query = (CallbackQuery *) malloc(sizeof(CallbackQuery));
-    if(!ocallbac_query)
-        return NULL;
-
-    ocallbac_query->id = alloc_string(id);
-    ocallbac_query->from = user;
-    ocallbac_query->message = message;
-    ocallbac_query->inline_message_id = alloc_string(inline_message_id);
-    ocallbac_query->chat_instance = alloc_string(chat_instance);
-    ocallbac_query->data = alloc_string(data);
-    ocallbac_query->game_short_name = alloc_string(game_short_name);
-
-    return ocallbac_query;
-}
 
 void callback_query_free(CallbackQuery *callback_query){
     if(callback_query->id)
@@ -1025,20 +708,6 @@ void callback_query_free(CallbackQuery *callback_query){
  ** functions video_note
  ** https://core.telegram.org/bots/api#videonote
  **/
-VideoNote *video_note(const char *file_id, long length, long duration,
-                       PhotoSize *photo_size, long file_size){
-    VideoNote *ovide_note = (VideoNote *) malloc(sizeof(VideoNote));
-    if(!ovide_note)
-        return NULL;
-
-    ovide_note->file_id = alloc_string(file_id);
-    ovide_note->length = length;
-    ovide_note->duration = duration;
-    ovide_note->thumb = photo_size;
-    ovide_note->file_size = file_size;
-
-    return ovide_note;
-}
 
 void video_note_free(VideoNote *video_note){
     if(video_note->file_id)
@@ -1055,21 +724,6 @@ void video_note_free(VideoNote *video_note){
  ** functions invoice
  ** https://core.telegram.org/bots/api#invoice
  **/
-Invoice *invoice(const char *title, const char *description, const char *start_parameter,
-                  const char *currency, long total_amount){
-    Invoice  *oinvoice = (Invoice *) malloc(sizeof(Invoice));
-    if(!oinvoice)
-        return NULL;
-
-    oinvoice->title = alloc_string(title);
-    oinvoice->description = alloc_string(description);
-    oinvoice->start_parameter = alloc_string(start_parameter);
-    oinvoice->currency = alloc_string(currency);
-    oinvoice->total_amount = total_amount;
-
-    return oinvoice;
-}
-
 void invoice_free(Invoice *invoice){
     if(invoice->title)
         free(invoice->title);
@@ -1091,20 +745,6 @@ void invoice_free(Invoice *invoice){
  ** functions shipping_query
  ** https://core.telegram.org/bots/api#shippingquery
  **/
-ShippingQuery *shipping_query(const char *id, User *from, const char *invoice_payload,
-                               ShippingAddress *shipping_address){
-    ShippingQuery *oshipping_query = (ShippingQuery *) malloc(sizeof(ShippingQuery));
-    if(!oshipping_query)
-        return NULL;
-
-    oshipping_query->id = alloc_string(id);
-    oshipping_query->from = from;
-    oshipping_query->invoice_payload = alloc_string(invoice_payload);
-    oshipping_query->shipping_address = shipping_address;
-
-    return oshipping_query;
-}
-
 void shipping_query_free(ShippingQuery *shipping_query){
     if(shipping_query->id)
         free(shipping_query->id);
@@ -1126,23 +766,6 @@ void shipping_query_free(ShippingQuery *shipping_query){
  ** functions shipping_address
  ** https://core.telegram.org/bots/api#shippingaddress
  **/
-ShippingAddress *shipping_address(const char *country_code, const char *state,
-                                   const char *city, const char *street_line1,
-                                   const char *street_line2, const char *post_code){
-    ShippingAddress *oshipping_address = (ShippingAddress *) malloc(sizeof(ShippingAddress));
-    if(!oshipping_address)
-        return NULL;
-
-    oshipping_address->country_code = alloc_string(country_code);
-    oshipping_address->state = alloc_string(state);
-    oshipping_address->city = alloc_string(city);
-    oshipping_address->street_line1 = alloc_string(street_line1);
-    oshipping_address->street_line2 = alloc_string(street_line2);
-    oshipping_address->post_code = alloc_string(post_code);
-
-    return oshipping_address;
-}
-
 void shipping_address_free(ShippingAddress *shipping_address){
     if(shipping_address->country_code)
         free(shipping_address->country_code);
@@ -1198,20 +821,6 @@ void pre_checkout_query_free(PreCheckoutQuery *pcq){
  ** functions order_info
  ** https://core.telegram.org/bots/api#orderinfo
  **/
-OrderInfo *order_info(const char *name, const char *phone_number, const char *email,
-                      ShippingAddress *shipping_address){
-    OrderInfo *oorder_info = (OrderInfo *) malloc(sizeof(OrderInfo));
-    if(!oorder_info)
-        return NULL;
-
-    oorder_info->name = alloc_string(name);
-    oorder_info->phone_number = alloc_string(phone_number);
-    oorder_info->email = alloc_string(email);
-    oorder_info->shipping_address = shipping_address;
-
-    return oorder_info;
-}
-
 void order_info_free(OrderInfo *order_info){
     if(order_info->name)
         free(order_info->name);
@@ -1233,27 +842,6 @@ void order_info_free(OrderInfo *order_info){
  ** functions successful_payment
  ** https://core.telegram.org/bots/api#successfulpayment
  **/
-SuccessfulPayment *successful_payment(const char *currency, long total_amount,
-                                       const char *invoice_payload,
-                                       const char *shipping_option_id,
-                                       OrderInfo *oorder_info,
-                                       const char *telegram_payment_charge_id,
-                                       const char *provider_payment_charge_id){
-    SuccessfulPayment *spayment = (SuccessfulPayment *) malloc(sizeof(oorder_info));
-    if(!spayment)
-        return NULL;
-
-    spayment->currency = alloc_string(currency);
-    spayment->total_amount = total_amount;
-    spayment->invoice_payload = alloc_string(invoice_payload);
-    spayment->shipping_option_id = alloc_string(shipping_option_id);
-    spayment->order_info = oorder_info;
-    spayment->telegram_payment_charge_id = alloc_string(telegram_payment_charge_id);
-    spayment->provider_payment_charge_id = alloc_string(provider_payment_charge_id);
-
-    return spayment;
-}
-
 void successful_payment_free(SuccessfulPayment *spayment){
     if(spayment->currency)
         free(spayment->currency);
@@ -1281,18 +869,6 @@ void successful_payment_free(SuccessfulPayment *spayment){
  ** functions file
  ** https://core.telegram.org/bots/api#file
  **/
-File *file(const char *file_id, long int file_size, const char *file_path){
-    File *ofile = (File *) malloc(sizeof(File));
-    if(!ofile)
-        return NULL;
-
-    ofile->file_id = alloc_string(file_id);
-    ofile->file_size = file_size;
-    ofile->file_path = alloc_string(file_path);
-
-    return ofile;
-}
-
 void file_free(File *ofile){
     if(ofile->file_id)
         free(ofile->file_id);
@@ -1309,16 +885,6 @@ void file_free(File *ofile){
  ** functions user_profile_photos
  ** https://core.telegram.org/bots/api#userprofilephotos
  **/
-UserProfilePhotos *user_profile_photos(long int total_count, PhotoSize ** photos){
-    UserProfilePhotos *oupp = (UserProfilePhotos *) malloc(sizeof(UserProfilePhotos));
-    if(!oupp)
-        return NULL;
-
-    oupp->total_count = total_count;
-    oupp->photos = photos;
-
-    return oupp;
-}
 
 void user_profile_photos_free(UserProfilePhotos *oupp){
     size_t i;
@@ -1346,17 +912,6 @@ void user_profile_photos_free(UserProfilePhotos *oupp){
  ** functions chat_photo
  ** https://core.telegram.org/bots/api#chatphoto
  **/
-ChatPhoto *chat_photo(const char *small_file_id, const char *big_file_id){
-    ChatPhoto *o_cp = (ChatPhoto *) malloc(sizeof(ChatPhoto));
-    if(!o_cp)
-        return NULL;
-
-    o_cp->small_file_id = alloc_string(small_file_id);
-    o_cp->big_file_id   = alloc_string(big_file_id); 
-
-    return o_cp;
-}
-
 void chat_photo_free(ChatPhoto *ochat_photo){
     if(ochat_photo->small_file_id)
         free(ochat_photo->small_file_id);

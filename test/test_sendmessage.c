@@ -133,20 +133,26 @@ int main(int argc, char *argv[]){
 	username = argv[2];
 
 	Framebot *update = NULL;
+	Update *message = NULL;
 
 	update = get_updates(_bot, update, 0, 0, 0, "message");
+	message = update->up_message;
 
-	while(update->up_message){
+	while(message){
 		if(strcmp(update->up_message->message->from->username, argv[2]) == 0){
 			valid_username = 1;
 			chat_id = update->up_message->message->from->id;
 			_message();
 			break;
 		}
+
+		printf("\nuser found: %s\n", update->up_message->message->from->username);
+		message = message->next;
+
 	}
 
 	if(valid_username == 0)
-		printf("Username not found");
+		printf("\nUsername %s not found", argv[2]);
 
 
 	return 0;
