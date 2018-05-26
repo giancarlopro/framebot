@@ -234,7 +234,7 @@
 #elif _WIN32
 #include <Windows.h>
 #include <io.h>
-#define scpy (a, b, c) strcpy_s(a, c, b)
+#define scpy(a, b, c) strcpy_s(a, c, b)
 #else
 # error "Only Windows, Linux and FreeBSD are supported at the moment."
 #endif
