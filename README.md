@@ -1,4 +1,4 @@
-# Framebot - 0.1.0 [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=dev)](https://travis-ci.org/giancarlopro/framebot) [![Open Source Helpers](https://www.codetriage.com/giancarlopro/framebot/badges/users.svg)](https://www.codetriage.com/giancarlopro/framebot) [![Documentation Status](https://readthedocs.org/projects/framebot/badge/?version=latest)](http://framebot.readthedocs.io/pt/latest/?badge=latest)
+# Framebot - 0.1.0 [![Build Status](https://travis-ci.org/giancarlopro/framebot.svg?branch=dev)](https://travis-ci.org/giancarlopro/framebot) [![Build status](https://ci.appveyor.com/api/projects/status/g8h0y0ebd4twwniv/branch/master?svg=true)](https://ci.appveyor.com/project/giancarlopro/framebot/branch/master) [![Open Source Helpers](https://www.codetriage.com/giancarlopro/framebot/badges/users.svg)](https://www.codetriage.com/giancarlopro/framebot) [![Documentation Status](https://readthedocs.org/projects/framebot/badge/?version=latest)](http://framebot.readthedocs.io/pt/latest/?badge=latest)
 
 This is the official repository for Framebot.
 
@@ -47,6 +47,32 @@ make
 make install
 ```
 
+### Windows
+For windows builds, you're gonna need:
+- [Visual Studio 15](https://www.visualstudio.com)
+- [vcpkg](https://github.com/Microsoft/vcpkg)
+- [CMake](https://cmake.org/download/)
+
+Install dependencies with `vcpkg`
+```
+vcpkg install curl
+vcpkg install jansson
+```
+
+Assuming you installed `vcpkg` inside `C:\tools\vcpkg`
+```
+mkdir build
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake
+cmake --build .
+```
+
+To install you need a prompt with admin rights
+```
+cmake --build . --target INSTALL --config Release
+```
+
+Builds with `MinGW` are not supported yet.
 ## Usage
 
 See our [Examples](examples/) folder.
