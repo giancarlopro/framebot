@@ -15,7 +15,7 @@ char *vsformat (char *formats, va_list params) {
 }
 
 
-char * api_ltoa(long int n){
+char * api_ltoa(int64_t n){
     char * str;
 
     str = calloc(1, STRLONG);
@@ -39,6 +39,6 @@ int api_atoi(char * str_int){
     return atoi(str_int);
 }
 
-long int api_atol(char * str_long){
+int64_t api_atol(char * str_long){
     return atol(str_long);
 }

@@ -26,7 +26,7 @@ int main (int argc, char **argv) {
     Framebot *updates = get_updates(inbot, NULL, 0, 100, 0, "inline_query");
     Update *queries = NULL;
 
-    long int last_update = 0;
+    int64_t last_update = 0;
 
     while (1) {
         if (updates->up_inline_query) {

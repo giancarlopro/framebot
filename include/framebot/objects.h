@@ -2,12 +2,12 @@
 #define OBJECTS_H
 
 typedef struct _error{
-    long int error_code;
+    int64_t error_code;
     char *description;
 } Error;
 
 typedef struct _user{
-    long int id;
+    int64_t id;
     bool is_bot:1;
     char *first_name;
     char *last_name;
@@ -27,7 +27,7 @@ typedef struct _chat_photo{
 } ChatPhoto;
 
 typedef struct _chat{
-    long int id;
+    int64_t id;
     char *type;
     char *title;
     char *username;
@@ -44,8 +44,8 @@ typedef struct _chat{
 
 typedef struct _message_entity{
     char *type;
-    long int offset;
-    long int length;
+    int64_t offset;
+    int64_t length;
     char *url;
     User *user;
     struct _message_entity *next;
@@ -53,18 +53,18 @@ typedef struct _message_entity{
 
 typedef struct _audio{
     char *file_id;
-    long int duration;
+    int64_t duration;
     char *performer;
     char *title;
     char *mime_type;
-    long int file_size;
+    int64_t file_size;
 } Audio;
 
 typedef struct _photo_size{
     char *file_id;
     int width;
     int height;
-    long int file_size;
+    int64_t file_size;
     struct _photo_size *next;
 } PhotoSize;
 
@@ -73,7 +73,7 @@ typedef struct _document{
     PhotoSize *thumb;
     char *file_name;
     char *mime_type;
-    long int file_size;
+    int64_t file_size;
 } Document, Animation;
 
 typedef struct _game{
@@ -91,17 +91,17 @@ typedef struct _sticker{
     int height;
     PhotoSize *thumb;
     char *emoji;
-    long int file_size;
+    int64_t file_size;
 } Sticker;
 
 typedef struct _video{
     char *file_id;
     int width;
     int height;
-    long int duration;
+    int64_t duration;
     PhotoSize *thumb;
     char *mime_type;
-    long int file_size;
+    int64_t file_size;
 } Video;
 
 typedef struct video_note{
@@ -114,16 +114,16 @@ typedef struct video_note{
 
 typedef struct _voice{
     char *file_id;
-    long int duration;
+    int64_t duration;
     char *mime_type;
-    long int file_size;
+    int64_t file_size;
 } Voice;
 
 typedef struct _contact{
     char *phone_number;
     char *first_name;
     char *last_name;
-    long int user_id;
+    int64_t user_id;
 } Contact;
 
 typedef struct _location{
@@ -190,17 +190,17 @@ typedef struct _pre_checkout_query{
 } PreCheckoutQuery;
 
 typedef struct _message{
-    long int message_id;
+    int64_t message_id;
     User *from;
-    long int date;
+    int64_t date;
     Chat *chat;
     User *forward_from;
     Chat *forward_from_chat;
-    long int forward_from_message_id;
+    int64_t forward_from_message_id;
     char *forward_signature;
-    long int forward_date;
+    int64_t forward_date;
     struct _message *reply_to_message;
-    long int edit_date;
+    int64_t edit_date;
     char *media_group_id;
     char *author_signature;
     char *text;
@@ -226,8 +226,8 @@ typedef struct _message{
     bool group_chat_created:1;
     bool supergroup_chat_created:1;
     bool channel_chat_created:1;
-    long int migrate_to_chat_id;
-    long int migrate_from_chat_id;
+    int64_t migrate_to_chat_id;
+    int64_t migrate_from_chat_id;
     struct _message *pinned_message;
     Invoice *invoice;
     SuccessfulPayment *successful_payment;
@@ -261,7 +261,7 @@ typedef struct _callback_query{
 } CallbackQuery;
 
 typedef struct _update{
-    long int update_id;
+    int64_t update_id;
     Message *message;
     Message *edited_message;
     Message *channel_post;
@@ -275,7 +275,7 @@ typedef struct _update{
 } Update;
 
 typedef struct {
-    long int update_id;
+    int64_t update_id;
     Update *up_message;
     Update *up_edited_message;
     Update *up_channel_post;
@@ -290,7 +290,7 @@ typedef struct {
 typedef struct _chat_member {
     User *user;
     char *status;
-    long int until_date;
+    int64_t until_date;
     bool can_be_edited:1;
     bool can_change_info:1;
     bool can_post_messages:1;
@@ -320,12 +320,12 @@ typedef struct _user_profile_photos{
 } UserProfilePhotos;
 
 typedef struct _callback_game{
-    long int user_id;
-    long int score;
+    int64_t user_id;
+    int64_t score;
     bool force:1;
     bool disable_edit_message:1;
-    long int chat_id;
-    long int message_id;
+    int64_t chat_id;
+    int64_t message_id;
     char *inline_message_id;
 } CallbackGame;
 
@@ -333,7 +333,7 @@ typedef struct _callback_game{
  
 //User functions
 User *user(
-    long int id, bool is_bot, const char *first_name, const char *last_name,
+    int64_t id, bool is_bot, const char *first_name, const char *last_name,
     const char *username, const char *language_code);
 void user_add(User *origin, User *next);
 void user_free(User *usr);
@@ -349,8 +349,8 @@ MessageEntity *message_entity_get(MessageEntity *message_entity, int index);
 
 //Audio functions
 Audio *audio(
-    const char *file_id, long int duration, const char *performer,
-    const char *title, const char *mime_type, long int file_size);
+    const char *file_id, int64_t duration, const char *performer,
+    const char *title, const char *mime_type, int64_t file_size);
 void audio_free(Audio *audio);
 
 void photo_size_free(PhotoSize *photoSize);
@@ -360,12 +360,12 @@ size_t photo_size_len(PhotoSize *ophoto_sise);
 
 Document *document(
     const char *file_id, PhotoSize *thumb, const char *file_name,
-    const char *mime_type, long int file_size);
+    const char *mime_type, int64_t file_size);
 void document_free(Document *document);
 
 Animation *animation(
     const char *file_id, PhotoSize *thumb, const char *file_name,
-    const char *mime_type,long int file_size);
+    const char *mime_type,int64_t file_size);
 void animation_free(Animation *animation);
 
 Game *game(
@@ -375,20 +375,20 @@ void game_free(Game *game);
 
 Sticker *sticker(
     const char *file_id, int width, int height,PhotoSize *thumb,
-    const char *emoji, long int file_size);
+    const char *emoji, int64_t file_size);
 void sticker_free(Sticker *_sticker);
 
 Video *video(
-    const char *file_id, int width, int height, long int duration,
-    PhotoSize *thumb, const char *mime_type,long int file_size);
+    const char *file_id, int width, int height, int64_t duration,
+    PhotoSize *thumb, const char *mime_type,int64_t file_size);
 void video_free(Video *_video);
 
-Voice *voice(const char *file_id, long int duration,const char *mime_type,
-    long int file_size);
+Voice *voice(const char *file_id, int64_t duration,const char *mime_type,
+    int64_t file_size);
 void voice_free(Voice *_voice);
 
 Contact *contact(const char *phone_number,const char *first_name,
-    const char *last_name,long int user_id);
+    const char *last_name,int64_t user_id);
 void contact_free(Contact *_contact);
 
 Location *location(float latitude,float longitude);
@@ -407,7 +407,7 @@ ChosenInlineResult *chosen_inline_result (const char *result_id, User *from,
     Location *location, const char *inline_message_id, const char *query);
 void chosen_inline_result_free(ChosenInlineResult *cir);
 
-Update *update(long int update_id, Message *message, Message *edited_message,
+Update *update(int64_t update_id, Message *message, Message *edited_message,
     Message *channel_post, Message *edited_channel_post,
     InlineQuery *inline_query, ChosenInlineResult *chosen_inline_result,
     CallbackQuery *callback_query, ShippingQuery *shipping_query,
@@ -417,7 +417,7 @@ void update_add(Update *dest, Update *src);
 Update *update_get(Update *u, int index);
 size_t update_len(Update *u);
 
-ChatMember *chat_member(User *user, const char *status, long int until_date,
+ChatMember *chat_member(User *user, const char *status, int64_t until_date,
     bool can_be_edited, bool can_change_info, bool can_post_messages,
     bool can_edit_messages, bool can_delete_messages, bool can_invite_users,
     bool can_restrict_members, bool can_pin_messages, bool can_promote_members,
@@ -466,16 +466,16 @@ SuccessfulPayment *successful_payment(const char *currency, long total_amount,
     const char *provider_payment_charge_id);
 void successful_payment_free(SuccessfulPayment *spayment);
 
-File *file(const char *file_id, long int file_size, const char *file_path);
+File *file(const char *file_id, int64_t file_size, const char *file_path);
 void file_free(File *ofile);
 
-UserProfilePhotos *user_profile_photos(long int total_count, PhotoSize ** photo_size);
+UserProfilePhotos *user_profile_photos(int64_t total_count, PhotoSize ** photo_size);
 void user_profile_photos_free(UserProfilePhotos *oupp);
 
 ChatPhoto *chat_photo(const char *small_file_id, const char *big_file_id);
 void chat_photo_free(ChatPhoto *ochat_photo);
 
-void error(long int error_code, const char *description);
+void error(int64_t error_code, const char *description);
 void error_free();
 Error *get_error();
 

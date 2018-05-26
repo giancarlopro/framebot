@@ -23,7 +23,7 @@
 
 Bot * _bot = NULL;
 char *username = NULL;
-long int chat_id = 0;
+int64_t chat_id = 0;
 int valid_username = 0;
 char *filename = NULL;
 Message *result = NULL;
@@ -32,8 +32,8 @@ int _videonote(){
 
 	printf(WHITE "Send videonote ... \n");
 
-	/* Bot * bot, char * chat_id, char * filename, long int duration,
-    long int length, bool disable_notification, long int reply_to_message_id,
+	/* Bot * bot, char * chat_id, char * filename, int64_t duration,
+    int64_t length, bool disable_notification, int64_t reply_to_message_id,
     char * reply_markup */
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);

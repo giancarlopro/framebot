@@ -30,7 +30,7 @@ static Error *_error = NULL;
 /**
  ** Funcations error
  **/
-void error(long int error_code, const char *description){
+void error(int64_t error_code, const char *description){
     Error *oerror = (Error *) malloc(sizeof(Error));
     if(!oerror)
         oerror = NULL;

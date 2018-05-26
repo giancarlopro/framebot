@@ -51,8 +51,8 @@ User *get_me (Bot *bot) {
  * Returns the updates list
  * https://core.telegram.org/bots/api#getupdates
  */ 
-Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
-                     long int timeout, char *allowed_updates) {
+Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t limit,
+                     int64_t timeout, char *allowed_updates) {
 
     refjson *s_json = NULL;
     Update *up = NULL;
@@ -93,7 +93,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int l
  * https://core.telegram.org/bots/api#sendmessage
  */
 Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
-            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id,
+            bool disable_web_page_preview, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup) {
     Message * message;
     refjson *s_json;
@@ -114,8 +114,8 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
     return message;
 }
 
-Message * send_message_chat (Bot *bot, long int chat_id, char *text, char *parse_mode,
-            bool disable_web_page_preview, bool disable_notification, long int reply_to_message_id,
+Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char *parse_mode,
+            bool disable_web_page_preview, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup) {
     Message * message;
     char * cchat_id;
@@ -153,7 +153,7 @@ Chat *get_chat (Bot *bot, char *chat_id) {
 }
 
 
-Chat * get_chat_chat(Bot *bot, long int chat_id){
+Chat * get_chat_chat(Bot *bot, int64_t chat_id){
     Chat * chat;
     char * cchat_id;
 
@@ -190,7 +190,7 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
 }
 
 
-int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
+int set_chat_title_chat (Bot *bot, int64_t chat_id, char *title) {
     int result;
     char * cchat_id;
 
@@ -208,7 +208,7 @@ int set_chat_title_chat (Bot *bot, long int chat_id, char *title) {
  * Returns the requested ChatMember object.
  * https://core.telegram.org/bots/api#getchatmember
  */
-ChatMember *get_chat_member (Bot *bot, char *chat_id, long int user_id) {
+ChatMember *get_chat_member (Bot *bot, char *chat_id, int64_t user_id) {
     refjson *s_json;
     ChatMember * chat_member;
 
@@ -226,7 +226,7 @@ ChatMember *get_chat_member (Bot *bot, char *chat_id, long int user_id) {
 }
 
 
-ChatMember *get_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
+ChatMember *get_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id) {
     ChatMember * chat_member;
     char * cchat_id;
 
@@ -263,7 +263,7 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description) {
 
 
 
-bool set_chat_description_chat (Bot *bot, long int chat_id, char *description) {
+bool set_chat_description_chat (Bot *bot, int64_t chat_id, char *description) {
     bool result;
     char * cchat_id;
 
@@ -300,7 +300,7 @@ int get_chat_members_count (Bot *bot, char *chat_id) {
 
 
 
-int get_chat_members_count_chat (Bot *bot, long int chat_id) {
+int get_chat_members_count_chat (Bot *bot, int64_t chat_id) {
     int result;
     char * cchat_id;
 
@@ -318,7 +318,7 @@ int get_chat_members_count_chat (Bot *bot, long int chat_id) {
  * Ban a chat user
  * https://core.telegram.org/bots/api#kickchatmember
  */
-bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date) {
+bool kick_chat_member (Bot *bot, char *chat_id, int64_t user_id, int64_t until_date) {
     bool result;
     refjson *s_json;
 
@@ -335,7 +335,7 @@ bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until
     return result;
 }
 
-bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date) {
+bool kick_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, int64_t until_date) {
     bool result;
     char * cchat_id;
 
@@ -357,7 +357,7 @@ bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long i
  * Returns True on success.
  * https://core.telegram.org/bots/api#restrictchatmember
  */
-bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date,
+bool restrict_chat_member (Bot *bot, char *chat_id, int64_t user_id, int64_t until_date,
             bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
             bool can_add_web_page_previews) {
 
@@ -382,7 +382,7 @@ bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id, long int u
 }
 
 
-bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date,
+bool restrict_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, int64_t until_date,
             bool can_send_messages, bool can_send_media_messages, bool can_send_other_messages,
             bool can_add_web_page_previews) {
     bool result;
@@ -410,7 +410,7 @@ bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id, lo
  * Returns True on success.
  * https://core.telegram.org/bots/api#unbanchatmember
  */
-bool unban_chat_member (Bot *bot, char *chat_id, long int user_id) {
+bool unban_chat_member (Bot *bot, char *chat_id, int64_t user_id) {
     int result;
     refjson *s_json;
 
@@ -429,7 +429,7 @@ bool unban_chat_member (Bot *bot, char *chat_id, long int user_id) {
 
 
 
-bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id) {
+bool unban_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id) {
     bool result;
     char * cchat_id;
 
@@ -466,7 +466,7 @@ bool leave_chat (Bot *bot, char *chat_id) {
 
 
 
-bool leave_chat_chat (Bot *bot, long int chat_id) {
+bool leave_chat_chat (Bot *bot, int64_t chat_id) {
     bool result;
     char * cchat_id;
 
@@ -491,7 +491,7 @@ bool leave_chat_chat (Bot *bot, long int chat_id) {
  * Returns True on success.
  * https://core.telegram.org/bots/api#promotechatmember
  */
-bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
+bool promote_chat_member (Bot *bot, char *chat_id, int64_t user_id, bool can_change_info,
             bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
             bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
             bool can_promote_members) {
@@ -519,7 +519,7 @@ bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_ch
 }
 
 
-bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
+bool promote_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, bool can_change_info,
             bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
             bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
             bool can_promote_members) {
@@ -567,7 +567,7 @@ char *export_chat_invite_link (Bot *bot, char *chat_id) {
 }
 
 
-char *export_chat_invite_link_chat (Bot *bot, long int chat_id) {
+char *export_chat_invite_link_chat (Bot *bot, int64_t chat_id) {
     char * invite_link, *cchat_id;
 
     cchat_id = api_ltoa(chat_id);
@@ -615,7 +615,7 @@ int set_chat_photo(Bot *bot, char * chat_id, char *filename){
     return result;
 }
 
-int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename){
+int set_chat_photo_chat(Bot *bot, int64_t chat_id, char *filename){
     bool result;
     char * cchat_id;
 
@@ -650,7 +650,7 @@ int delete_chat_photo(Bot *bot, char *chat_id){
     return btrue;
 }
 
-int delete_chat_photo_chat(Bot *bot, long int chat_id){
+int delete_chat_photo_chat(Bot *bot, int64_t chat_id){
     bool result;
     char * cchat_id;
 
@@ -688,7 +688,7 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id) {
     return chat_member_adm;
 }
 
-ChatMember *get_chat_administrators_chat(Bot *bot, long int chat_id){
+ChatMember *get_chat_administrators_chat(Bot *bot, int64_t chat_id){
     ChatMember *chat_member_adm;
     char *cchat_id;
 
@@ -704,7 +704,7 @@ ChatMember *get_chat_administrators_chat(Bot *bot, long int chat_id){
 /**
  * https://core.telegram.org/bots/api#pinchatmessage
  */
-bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification) {
+bool pin_chat_message (Bot *bot, char *chat_id, int64_t message_id, bool disable_notification) {
     int result;
     refjson *s_json;
 
@@ -721,7 +721,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disabl
     return result;
 }
 
-bool pin_chat_message_chat(Bot *bot, long int chat_id, long int message_id, bool disable_notification) {
+bool pin_chat_message_chat(Bot *bot, int64_t chat_id, int64_t message_id, bool disable_notification) {
     bool result;
     char * cchat_id;
 
@@ -756,7 +756,7 @@ bool unpin_chat_message(Bot *bot, char *chat_id){
     return result;
 }
 
-bool unpin_chat_message_chat(Bot *bot, long int chat_id){
+bool unpin_chat_message_chat(Bot *bot, int64_t chat_id){
     bool result;
     char * cchat_id;
 
@@ -863,7 +863,7 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, long user_id,
  */
 Message * send_photo(Bot * bot, char * chat_id, char * filename,
                              char * caption, char *parse_mode, bool disable_notification,
-                             long int reply_to_message_id, char * reply_markup){
+                             int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
@@ -917,8 +917,8 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
 
 
 
-Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -940,8 +940,8 @@ Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * c
  * https://core.telegram.org/bots/api#sendaudio
  */
 Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
-            long int duration, char * performer, char * title, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            int64_t duration, char * performer, char * title, bool disable_notification,
+            int64_t reply_to_message_id, char * reply_markup){
     
     Message * message;
 
@@ -1005,9 +1005,9 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, 
 
 
 
-Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
-            long int duration, char * performer, char * title, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+            int64_t duration, char * performer, char * title, bool disable_notification,
+            int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1029,7 +1029,7 @@ Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * c
  * https://core.telegram.org/bots/api#senddocument
  */
 Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
 
@@ -1080,8 +1080,8 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
 
 
 
-Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption, char *parse_mode,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1102,9 +1102,9 @@ Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char 
  * sendVideo
  * https://core.telegram.org/bots/api#sendvideo
  */
-Message * send_video(Bot * bot, char * chat_id, char * filename, long int duration,
-            long int width, long int height, char * caption, char *parse_mode, bool supports_streaming,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duration,
+            int64_t width, int64_t height, char * caption, char *parse_mode, bool supports_streaming,
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
@@ -1172,9 +1172,9 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, long int durati
 
 
 
-Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int duration,
-            long int width, long int height, char * caption, char *parse_mode, bool supports_streaming,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t duration,
+            int64_t width, int64_t height, char * caption, char *parse_mode, bool supports_streaming,
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1195,7 +1195,7 @@ Message * send_video_chat(Bot * bot, long int chat_id, char * filename, long int
  * https://core.telegram.org/bots/api#sendvoice
  */
 Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
-            long int duration, bool disable_notification, long int reply_to_message_id,
+            int64_t duration, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup){
     Message * message;
 
@@ -1252,8 +1252,8 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, 
 
 
 
-Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, char *parse_mode, long int duration,
-            bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, char *parse_mode, int64_t duration,
+            bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1274,8 +1274,8 @@ Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * ca
  * sendVideoNote
  * https://core.telegram.org/bots/api#sendvideonote
  */
-Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,
-            long int length, bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
+            int64_t length, bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
@@ -1328,8 +1328,8 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int d
 
 
 
-Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename, long int duration,
-            long int length, bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename, int64_t duration,
+            int64_t length, bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1357,8 +1357,8 @@ Error * show_error(){
  * forwardMessage
  * https://core.telegram.org/bots/api#forwardmessage
  */
-Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,
-            bool disable_notification, long int message_id){
+Message * forward_message_from (Bot * bot, int64_t chat_id, char * from_chat_id,
+            bool disable_notification, int64_t message_id){
 
     Message * message;
     char * cchat_id;
@@ -1374,8 +1374,8 @@ Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id
 
 
 
-Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id, 
-            bool disable_notification, long int message_id){
+Message * forward_message_from_chat (Bot * bot, char * chat_id, int64_t from_chat_id, 
+            bool disable_notification, int64_t message_id){
 
     Message * message;
     char * cfrom_chat_id;
@@ -1392,7 +1392,7 @@ Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_ch
 
 
 Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id, 
-            bool disable_notification, long int message_id){
+            bool disable_notification, int64_t message_id){
     Message * message;
     refjson *s_json;
 
@@ -1411,8 +1411,8 @@ Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
 
 
 
-Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id, 
-            bool disable_notification, long int message_id){
+Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id, 
+            bool disable_notification, int64_t message_id){
 
     Message * message;
     char * cchat_id, *cfrom_chat_id;
@@ -1435,8 +1435,8 @@ Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_
  * https://core.telegram.org/bots/api#sendlocation
  */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
-            float longitude, long int live_period, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            float longitude, int64_t live_period, bool disable_notification,
+            int64_t reply_to_message_id, char * reply_markup){
     Message * message;
     refjson *s_json;
 
@@ -1457,8 +1457,8 @@ Message * send_location (Bot * bot, char * chat_id, float latitude,
 
 
 
-Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
-            long int live_period, bool disable_notification, long int reply_to_message_id,
+Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float logitude,
+            int64_t live_period, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup){
 
     Message * message;
@@ -1480,7 +1480,7 @@ Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float
  * https://core.telegram.org/bots/api#sendcontact
  */
 Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id,
+            char * last_name, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup){
     refjson *s_json;
     Message * message;
@@ -1502,8 +1502,8 @@ Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * fi
 
 
 
-Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id, char * reply_markup){
+Message * send_contact_chat(Bot * bot, int64_t chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, int64_t reply_to_message_id, char * reply_markup){
     Message * message;
     char * cchat_id;
 
@@ -1537,7 +1537,7 @@ int send_chat_action(Bot * bot, char * chat_id, char * action){
     return result > 0  ? 1 : 0;
 }
 
-int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
+int send_chat_action_chat(Bot * bot, int64_t chat_id, char * action){
     int result;
     char * cchat_id;
 
@@ -1557,7 +1557,7 @@ int send_chat_action_chat(Bot * bot, long int chat_id, char * action){
  */
 Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            int64_t reply_to_message_id, char * reply_markup){
     refjson *s_json;
     Message * message;
 
@@ -1578,9 +1578,9 @@ Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
 
 
 
-Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
+Message * send_venue_chat(Bot * bot, int64_t chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup){
+            int64_t reply_to_message_id, char * reply_markup){
     Message * message;
     char * cchat_id;
 
@@ -1600,7 +1600,7 @@ Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float lon
  * editMessageLiveLocation
  * https://core.telegram.org/bots/api#editmessagelivelocation
  */
-Message * edit_message_live_location(Bot * bot, char * chat_id, long int message_id,
+Message * edit_message_live_location(Bot * bot, char * chat_id, int64_t message_id,
             char * inline_message_id, float latitude, float longitude, char * reply_markup){
     Message * message;
     refjson *s_json;
@@ -1618,7 +1618,7 @@ Message * edit_message_live_location(Bot * bot, char * chat_id, long int message
     return message;
 }
 
-Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+Message * edit_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t message_id,
             char * inline_message_id, float latitude, float longitude, char * reply_markup){
     Message * message;
     char * cchat_id;
@@ -1637,7 +1637,7 @@ Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int 
  * stopMessageLiveLocation
  * https://core.telegram.org/bots/api#stopmessagelivelocation
  */
-Message * stop_message_live_location(Bot * bot, char * chat_id, long int message_id,
+Message * stop_message_live_location(Bot * bot, char * chat_id, int64_t message_id,
             char * inline_message_id, char * reply_markup){
     refjson *s_json;
     Message * message;
@@ -1656,7 +1656,7 @@ Message * stop_message_live_location(Bot * bot, char * chat_id, long int message
     return message;
 }
 
-Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+Message * stop_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t message_id,
             char * inline_message_id, char * reply_markup){
     Message * message;
     char * cchat_id;
@@ -1675,7 +1675,7 @@ Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int 
  * editMessageText
  * https://core.telegram.org/bots/api#editmessagetext
  */
-Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
+Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
     char *inline_message_id, char *text, char *parse_mode,
     bool disable_web_page_preview, char *reply_markup){
     Message *message;
@@ -1695,7 +1695,7 @@ Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
     return message;
 }
 
-Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
+Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
     char *inline_message_id, char *text, char *parse_mode,
     bool disable_web_page_preview, char *reply_markup){
     Message *message;
@@ -1717,7 +1717,7 @@ Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
  * https://core.telegram.org/bots/api#editmessagecaption
  */
 Message *edit_message_caption(Bot *bot, char *chat_id,
-    long int message_id, char *inline_message_id, char *caption,
+    int64_t message_id, char *inline_message_id, char *caption,
     char *parse_mode, char *reply_markup){
     Message *message;
     refjson *s_json;
@@ -1735,8 +1735,8 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
     return message;
 }
 
-Message *edit_message_caption_chat(Bot *bot, long int chat_id,
-    long int message_id, char *inline_message_id, char *caption,
+Message *edit_message_caption_chat(Bot *bot, int64_t chat_id,
+    int64_t message_id, char *inline_message_id, char *caption,
     char *parse_mode, char *reply_markup){
     Message *message;
     char *cchat_id;
@@ -1756,7 +1756,7 @@ Message *edit_message_caption_chat(Bot *bot, long int chat_id,
  * editMessageReplyMarkup
  * https://core.telegram.org/bots/api#editmessagereplymarkup
  */
-Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
+Message *edit_message_reply_markup(Bot *bot, char *chat_id, int64_t message_id,
         char *inline_message_id, char *reply_markup){
     Message *message;
     refjson *s_json;
@@ -1774,7 +1774,7 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
     return message;
 }
 
-Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
+Message *edit_message_reply_markup_chat(Bot *bot, int64_t chat_id, int64_t message_id,
         char *inline_message_id, char *reply_markup){
     Message *message;
     char *cchat_id;
@@ -1793,7 +1793,7 @@ Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int mes
  * deleteMessage
  * https://core.telegram.org/bots/api#deletemessage
  */
-bool delete_message(Bot *bot, char *chat_id, long int message_id){
+bool delete_message(Bot *bot, char *chat_id, int64_t message_id){
     bool result;
     refjson *s_json;
 
@@ -1810,7 +1810,7 @@ bool delete_message(Bot *bot, char *chat_id, long int message_id){
     return result;
 }
 
-bool delete_message_chat(Bot *bot, long int chat_id, long int message_id){
+bool delete_message_chat(Bot *bot, int64_t chat_id, int64_t message_id){
     bool result;
     char *cchat_id;
 
@@ -1827,7 +1827,7 @@ bool delete_message_chat(Bot *bot, long int chat_id, long int message_id){
  * setChatStickerSet
  * https://core.telegram.org/bots/api#setchatstickerset
  */
-bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
+bool set_chat_sticker_set(Bot *bot, char *chat_id, int64_t sticker_set_name){
     bool result;
     refjson *s_json;
 
@@ -1844,7 +1844,7 @@ bool set_chat_sticker_set(Bot *bot, char *chat_id, long int sticker_set_name){
     return result;
 }
 
-bool set_chat_sticker_set_chat(Bot *bot, long int chat_id, long int sticker_set_name){
+bool set_chat_sticker_set_chat(Bot *bot, int64_t chat_id, int64_t sticker_set_name){
     bool result;
     char *cchat_id;
 
@@ -1877,7 +1877,7 @@ bool delete_chat_sticker_set(Bot *bot, char *chat_id){
     return result;
 }
 
-bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
+bool delete_chat_sticker_set_chat(Bot *bot, int64_t chat_id){
     bool result;
     char *cchat_id;
 
@@ -1893,7 +1893,7 @@ bool delete_chat_sticker_set_chat(Bot *bot, long int chat_id){
 /*
  * https://core.telegram.org/bots/api#answerinlinequery
  */
-bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_t cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter) {
     bool result;
     refjson *s_json;

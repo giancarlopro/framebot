@@ -229,14 +229,32 @@
 #include <string.h>
 
 #if defined __linux__ || defined __FreeBSD__
-#include <unistd.h>
-#define scpy(a, b, c) strncpy(a, b, c)
+#   include <unistd.h>
+#   include <stdint.h>
+#   define scpy(a, b, c) strncpy(a, b, c)
+#   if UINTPTR_MAX != 0xffffffffffffffff
+        typedef uint32_t int64_t;
+        typedef uint32_t uint64_t;
+#   endif
 #elif _WIN32
-#include <Windows.h>
-#include <io.h>
-#define scpy(a, b, c) strcpy_s(a, c, b)
+#   include <Windows.h>
+#   include <io.h>
+#   define scpy(a, b, c) strcpy_s(a, c, b)
+    typedef __int8 int8_t;
+    typedef unsigned __int8 uint8_t;
+    typedef __int16 int16_t;
+    typedef unsigned uint16_t;
+    typedef __int32 int32_t;
+    typedef unsigned __int32 uint32_t;
+#   if _WIN64
+        typedef __int64 int64_t;
+        typedef unsigned __int64 uint64_t;
+#   else
+        typedef unsigned __int32 int64_t;
+        typedef unsigned __int32 uint64_t;
+#   endif
 #else
-# error "Only Windows, Linux and FreeBSD are supported at the moment."
+#   error "Only Windows, Linux and FreeBSD are supported at the moment."
 #endif
 
 #include <limits.h>
@@ -278,109 +296,109 @@ Error * show_error();
 
 /** Available methods **/
 User * get_me(Bot *bot);
-Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,
-            long int timeout, char *allowed_updates);
+Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t limit,
+            int64_t timeout, char *allowed_updates);
 
 /* sendMessage */
 Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
             bool disable_web_page_preview, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
-Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,
+            int64_t reply_to_message_id, char * reply_markup);
+Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char * parse_mode,
             bool disable_web_page_preview, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
+            int64_t reply_to_message_id, char * reply_markup);
 
 /* ForwardMessage */
-Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,
-        bool disable_notification, long int message_id);
-Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id,
-        bool disable_notification, long int message_id);
+Message * forward_message_from (Bot * bot, int64_t chat_id, char * from_chat_id,
+        bool disable_notification, int64_t message_id);
+Message * forward_message_from_chat (Bot * bot, char * chat_id, int64_t from_chat_id,
+        bool disable_notification, int64_t message_id);
 Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
-        bool disable_notification, long int message_id);
-Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,
-        bool disable_notification, long int message_id);
+        bool disable_notification, int64_t message_id);
+Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id,
+        bool disable_notification, int64_t message_id);
 
 /* sendphoto */
 Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
-        bool disable_notification, long int reply_to_message_id, char * reply_markup);
-Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, long int reply_to_message_id, char * reply_markup);
+        bool disable_notification, int64_t reply_to_message_id, char * reply_markup);
+Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
+        bool disable_notification, int64_t reply_to_message_id, char * reply_markup);
 
 /* sendaudio */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, long int duration,
-        char * performer, char * title, bool disable_notification, long int reply_to_message_id,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+        char * performer, char * title, bool disable_notification, int64_t reply_to_message_id,
         char * reply_markup);
-Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode, long int duration,
-        char * performer, char * title, bool disable_notification, long int reply_to_message_id,
+Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+        char * performer, char * title, bool disable_notification, int64_t reply_to_message_id,
         char * reply_markup);
 
 /* senddocument */
 Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
-Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
+        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
+        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
 
 /* sendvideo */
-Message * send_video(Bot * bot, char * chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, char *parse_mode, bool supports_streaming,bool disable_notification, long int reply_to_message_id,
+Message * send_video(Bot * bot, char * chat_id, char * video, int64_t duration, int64_t width,
+        int64_t height, char * caption, char *parse_mode, bool supports_streaming,bool disable_notification, int64_t reply_to_message_id,
          char * reply_markup);
-Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,
-        long int height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, long int reply_to_message_id,
+Message * send_video_chat(Bot * bot, int64_t chat_id, char * video, int64_t duration, int64_t width,
+        int64_t height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, int64_t reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, long int duration,
-        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
-Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, char * parse_mode, long int duration,
-        bool disable_notification, long int reply_to_message_id,  char * reply_markup);
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
 
-Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,
-        long int length, bool disable_notification, long int reply_to_message_id,  char * reply_markup);
+Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
+        int64_t length, bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
 
-Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,
-        long int duration, long int length, bool disable_notification, long int reply_to_message_id,
+Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename,
+        int64_t duration, int64_t length, bool disable_notification, int64_t reply_to_message_id,
         char * reply_markup);
 
 // sendMediaGroup
 
 /* sendlocation */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
-            float longitude, long int live_period, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
-Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,
-            long int live_period, bool disable_notification, long int reply_to_message_id,
+            float longitude, int64_t live_period, bool disable_notification,
+            int64_t reply_to_message_id, char * reply_markup);
+Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float logitude,
+            int64_t live_period, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup);
 
 /* editMessageLiveLocation */
-Message * edit_message_live_location(Bot * bot, char * chat_id, long int message_id,
+Message * edit_message_live_location(Bot * bot, char * chat_id, int64_t message_id,
         char * inline_message_id, float latitude, float longitude, char * reply_markup);
-Message * edit_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+Message * edit_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t message_id,
         char * inline_message_id, float latitude, float longitude, char * reply_markup);
 
 /* stopMessageLiveLocation */
-Message * stop_message_live_location(Bot * bot, char * chat_id, long int message_id,
+Message * stop_message_live_location(Bot * bot, char * chat_id, int64_t message_id,
             char * inline_message_id, char * reply_markup);
-Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,
+Message * stop_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t message_id,
             char * inline_message_id, char * reply_markup);
 
 /* sendVenue */
 Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
-Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,
+            int64_t reply_to_message_id, char * reply_markup);
+Message * send_venue_chat(Bot * bot, int64_t chat_id, float latitude, float longitude,
             char * title, char * address, char * foursquare_id, bool disable_notification,
-            long int reply_to_message_id, char * reply_markup);
+            int64_t reply_to_message_id, char * reply_markup);
 
 /* sendContact */
 Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id,
+            char * last_name, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup);
-Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, long int reply_to_message_id,
+Message * send_contact_chat(Bot * bot, int64_t chat_id, char * phone_number, char * first_name,
+            char * last_name, bool disable_notification, int64_t reply_to_message_id,
             char * reply_markup);
 
 /* sendChatAction */
 int send_chat_action(Bot * bot, char * chat_id, char * action);
-int send_chat_action_chat(Bot * bot, long int chat_id, char * action);
+int send_chat_action_chat(Bot * bot, int64_t chat_id, char * action);
 
 /* getUserProfilePhotos */
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char *user_id,
@@ -393,108 +411,108 @@ File * get_file(Bot * bot, const char * file_id);
 int file_download(Bot * bot, File * ofile, char *path);
 
 /* kickChatMember */
-bool kick_chat_member (Bot *bot, char *chat_id, long int user_id, long int until_date);
-bool kick_chat_member_chat (Bot *bot, long int chat_id, long int user_id, long int until_date);
+bool kick_chat_member (Bot *bot, char *chat_id, int64_t user_id, int64_t until_date);
+bool kick_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, int64_t until_date);
 
 /* unbanChatMember */
-bool unban_chat_member (Bot *bot, char *chat_id, long int user_id);
-bool unban_chat_member_chat (Bot *bot, long int chat_id, long int user_id);
+bool unban_chat_member (Bot *bot, char *chat_id, int64_t user_id);
+bool unban_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id);
 
 /* restrictChatMember */
-bool restrict_chat_member (Bot *bot, char *chat_id, long int user_id,
-        long int until_date, bool can_send_messages,
+bool restrict_chat_member (Bot *bot, char *chat_id, int64_t user_id,
+        int64_t until_date, bool can_send_messages,
         bool can_send_media_messages, bool can_send_other_messages,
         bool can_add_web_page_previews);
-bool restrict_chat_member_chat (Bot *bot, long int chat_id, long int user_id,
-        long int until_date, bool can_send_messages,
+bool restrict_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id,
+        int64_t until_date, bool can_send_messages,
         bool can_send_media_messages, bool can_send_other_messages,
         bool can_add_web_page_previews);
 
 /* promoteChatMember */
-bool promote_chat_member (Bot *bot, char *chat_id, long int user_id, bool can_change_info,
+bool promote_chat_member (Bot *bot, char *chat_id, int64_t user_id, bool can_change_info,
         bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
         bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
         bool can_promote_members);
-bool promote_chat_member_chat (Bot *bot, long int chat_id, long int user_id, bool can_change_info,
+bool promote_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, bool can_change_info,
         bool can_post_messages, bool can_edit_messages, bool can_delete_messages,
         bool can_invite_users, bool can_restrict_members, bool can_pin_messages,
         bool can_promote_members);
 
 /* exportChatInviteLink */
 char *export_chat_invite_link (Bot *bot, char *chat_id);
-char *export_chat_invite_link_chat (Bot *bot, long int chat_id);
+char *export_chat_invite_link_chat (Bot *bot, int64_t chat_id);
 
 /* setChatPhoto */
 int set_chat_photo(Bot *bot, char * chat_id, char *filename);
-int set_chat_photo_chat(Bot *bot, long int chat_id, char *filename);
+int set_chat_photo_chat(Bot *bot, int64_t chat_id, char *filename);
 
 /* deleteChatPhoto */
 int delete_chat_photo(Bot *bot, char *chat_id);
-int delete_chat_photo_chat(Bot *bot, long int chat_id);
+int delete_chat_photo_chat(Bot *bot, int64_t chat_id);
 
 /* setChatTitle */
 int set_chat_title (Bot *bot, char *chat_id, char *title);
-int set_chat_title_chat (Bot *bot, long int chat_id, char *title);
+int set_chat_title_chat (Bot *bot, int64_t chat_id, char *title);
 
 /* setChatDescription */
 bool set_chat_description (Bot *bot, char *chat_id, char *description);
-bool set_chat_description_chat (Bot *bot, long int chat_id, char *description);
+bool set_chat_description_chat (Bot *bot, int64_t chat_id, char *description);
 
 /* pinChatMessage */
-bool pin_chat_message (Bot *bot, char *chat_id, long int message_id, bool disable_notification);
-bool pin_chat_message_chat(Bot *bot, long int chat_id, long int message_id, bool disable_notification);
+bool pin_chat_message (Bot *bot, char *chat_id, int64_t message_id, bool disable_notification);
+bool pin_chat_message_chat(Bot *bot, int64_t chat_id, int64_t message_id, bool disable_notification);
 
 /* unpinChatMessage */
 bool unpin_chat_message(Bot *bot, char *chat_id);
-bool unpin_chat_message_chat(Bot *bot, long int chat_id);
+bool unpin_chat_message_chat(Bot *bot, int64_t chat_id);
 
 /* leaveChat */
 bool leave_chat (Bot *bot, char *chat_id);
-bool leave_chat_chat (Bot *bot, long int chat_id);
+bool leave_chat_chat (Bot *bot, int64_t chat_id);
 
 /* getChat */
 Chat *get_chat(Bot *bot, char *chat_id);
-Chat *get_chat_chat(Bot *bot, long int chat_id);
+Chat *get_chat_chat(Bot *bot, int64_t chat_id);
 
 /* getChatAdministrators */
 ChatMember *get_chat_administrators (Bot *bot, char *chat_id);
-ChatMember *get_chat_administrators_chat(Bot *bot, long int chat_id);
+ChatMember *get_chat_administrators_chat(Bot *bot, int64_t chat_id);
 
 /* getChatMembersCount */
 int get_chat_members_count (Bot *bot, char *chat_id);
-int get_chat_members_count_chat (Bot *bot, long int chat_id);
+int get_chat_members_count_chat (Bot *bot, int64_t chat_id);
 
 /* getChatMember */
-ChatMember *get_chat_member(Bot *bot, char *chat_id, long int user_id);
-ChatMember *get_chat_member_chat(Bot *bot, long int chat_id, long int user_id);
+ChatMember *get_chat_member(Bot *bot, char *chat_id, int64_t user_id);
+ChatMember *get_chat_member_chat(Bot *bot, int64_t chat_id, int64_t user_id);
 
 /** Updating messages **/
-Message *edit_message_text(Bot *bot, char *chat_id, long int message_id,
+Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
     char *inline_message_id, char *text, char *parse_mode,
     bool disable_web_page_preview, char *reply_markup);
-Message *edit_message_text_chat(Bot *bot, long int chat_id, long int message_id,
+Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
     char *inline_message_id, char *text, char *parse_mode,
     bool disable_web_page_preview, char *reply_markup);
 
 /* editMessageText */
 Message *edit_message_caption(Bot *bot, char *chat_id,
-    long int message_id, char *inline_message_id, char *caption,
+    int64_t message_id, char *inline_message_id, char *caption,
     char * parse_mode, char *reply_markup);
-Message *edit_message_caption_chat(Bot *bot, long int chat_id,
-    long int message_id, char *inline_message_id, char *caption,
+Message *edit_message_caption_chat(Bot *bot, int64_t chat_id,
+    int64_t message_id, char *inline_message_id, char *caption,
     char * parse_mode, char *reply_markup);
 
 /* editMessageCaption */
-Message *edit_message_reply_markup(Bot *bot, char *chat_id, long int message_id,
+Message *edit_message_reply_markup(Bot *bot, char *chat_id, int64_t message_id,
         char *inline_message_id, char *reply_markup);
-Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,
+Message *edit_message_reply_markup_chat(Bot *bot, int64_t chat_id, int64_t message_id,
         char *inline_message_id, char *reply_markup);
 
 /* delete message */
-bool delete_message(Bot *bot, char *chat_id, long int message_id);
-bool delete_message_chat(Bot *bot, long int chat_id, long int message_id);
+bool delete_message(Bot *bot, char *chat_id, int64_t message_id);
+bool delete_message_chat(Bot *bot, int64_t chat_id, int64_t message_id);
 
-bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal,
+bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_t cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter);
 
 #endif

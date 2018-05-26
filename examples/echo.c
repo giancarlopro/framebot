@@ -7,7 +7,7 @@ int main (int argc, char **argv) {
         exit(-1);
     }
 
-    long int last_offset = 0;
+    int64_t last_offset = 0;
     Bot *echo;
     Framebot *frame_update;
     Update *message, *temp;

@@ -21,7 +21,7 @@
 
 Bot * _bot = NULL;
 char *username = NULL;
-long int chat_id = 0;
+int64_t chat_id = 0;
 int valid_username = 0;
 char *filename = NULL;
 Message *result = NULL;

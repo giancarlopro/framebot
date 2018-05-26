@@ -22,7 +22,7 @@
 
 Bot * _bot = NULL;
 char *username = NULL;
-long int chat_id = 0;
+int64_t chat_id = 0;
 int valid_username = 0;
 char *filename = NULL;
 Message *result = NULL;
@@ -31,8 +31,8 @@ int _document(){
 
 	printf(WHITE "Send document ... \n");
 
-	/* Bot * bot, long int chat_id, char * filename, char * caption,
-       bool disable_notification, long int reply_to_message_id, char * reply_markup */
+	/* Bot * bot, int64_t chat_id, char * filename, char * caption,
+       bool disable_notification, int64_t reply_to_message_id, char * reply_markup */
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
