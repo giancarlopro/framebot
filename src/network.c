@@ -33,7 +33,7 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
     json->content = (char *)realloc(json->content, json->size + finalsz + 1);
 
     if (json->content) {
-        strcpy(json->content, (char *)data);
+        scpy(json->content, (char *)data, finalsz);
         json->size += finalsz;
         json->content[json->size] = '\0';
 
@@ -49,10 +49,7 @@ MemStore * call_method(const char *token, const char *method){
     size_t url_size = API_URL_LEN + fstrlen( token ) + fstrlen( method ) + 2;
     char * url = ( char * ) calloc(1,  url_size );
 
-    strcpy( url, API_URL );
-    strcat( url, token );
-    strcat( url, "/" );
-    strcat( url, method );
+    snprintf( url, url_size, "%s%s%c%s", API_URL, token, '/', method);
 
     url[url_size - 1] = '\0';
 
@@ -90,10 +87,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
     url_size = API_URL_FILE_LEN + fstrlen(token) + fstrlen(ofile->file_path) + 2;
     url = (char *)calloc(1, url_size);
 
-    strcpy(url, API_URL_FILE);
-    strcat(url, token);
-    strcat(url, "/");
-    strcat(url, ofile->file_path);
+    snprintf( url, url_size, "%s%s%c%s", API_URL_FILE, token, '/', ofile->file_path);
 
     url[url_size - 1] = '\0';
 
@@ -136,7 +130,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
 }
 
 MemStore * call_method_upload(const char * token, IFile ifile){
-    char method[25];
+    char *method;
     CURL * curl;
     CURLcode res;
     curl_mime * form = NULL;
@@ -149,7 +143,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
 
         switch(ifile.type){
             case SENDPHOTO:
-                strcpy(method, "sendPhoto");
+                method = "sendPhoto";
 
                 /* Unique identifier for the target */
                 if(ifile.photo.chat_id != NULL){
@@ -203,7 +197,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SENDAUDIO:
-                strcpy(method, "sendAudio");
+                method = "sendAudio";
 
                 /* Fill in the file upload field */
                 if(ifile.audio.chat_id != NULL){
@@ -278,7 +272,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SENDDOCUMENT:
-                strcpy(method, "sendDocument");
+                method = "sendDocument";
 
                 /* Unique identifier for the target */
                 if(ifile.document.chat_id != NULL){
@@ -332,7 +326,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SENDVIDEO:
-                strcpy(method, "sendVideo");
+                method = "sendVideo";
 
                 /* Unique identifier for the target */
                 if(ifile.video.chat_id != NULL){
@@ -414,7 +408,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SENDVOICE:
-                strcpy(method, "sendVoice");
+                method = "sendVoice";
 
                 /* Fill in the file upload field */
                 if(ifile.voice.chat_id != NULL){
@@ -474,7 +468,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SENDVIDEONOTE:
-                strcpy(method, "sendVideoNote");
+                method = "sendVideoNote";
 
                 /* Fill in the file upload field */
                 if(ifile.videonote.chat_id != NULL){
@@ -528,7 +522,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
                 }
             break;
             case SETCHATPHOTO:
-                strcpy(method, "setChatPhoto");
+                method = "setChatPhoto";
 
                 /* Fill in the file upload field */
                 if(ifile.chatphoto.chat_id != NULL){
@@ -558,10 +552,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
         url_size = API_URL_LEN + fstrlen(token) + fstrlen(method) + 2;
         url = calloc(1, url_size);
 
-        strcpy(url, API_URL);
-        strcat(url, token);
-        strcat(url, "/");
-        strcat(url, method);
+        snprintf( url, url_size, "%s%s/%s", API_URL, token, method);
 
         url[url_size - 1] = '\0';
 
@@ -592,13 +583,3 @@ MemStore * call_method_upload(const char * token, IFile ifile){
     return NULL;
 }
 
-MemStore *call_method_wp(char *token, char *method, char *params) {
-    size_t len = fstrlen(method) + fstrlen(params) + 1;
-    char *tmp = (char *)calloc(1, len);
-
-    MemStore *ms = call_method(token, tmp);
-
-    free(tmp);
-
-    return ms;
-}

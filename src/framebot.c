@@ -291,7 +291,7 @@ int get_chat_members_count (Bot *bot, char *chat_id) {
     if(!s_json)
         return -1;
 
-    result = json_integer_value(s_json->content);
+    result = (int)json_integer_value(s_json->content);
 
     close_json(s_json);
 
@@ -802,7 +802,6 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
 File * get_file (Bot * bot, const char * file_id){
 
     refjson *s_json;
-    int ok = 0;
 
     s_json = generic_method_call(bot->token, API_getfile, file_id);
 

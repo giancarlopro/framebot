@@ -227,17 +227,14 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <time.h>
-#include <errno.h>
-
 
 #if defined __linux__ || defined __FreeBSD__
 #include <unistd.h>
-#include <sys/stat.h>
-#include <time.h>
+#define scpy(a, b, c) strncpy(a, b, c)
 #elif _WIN32
 #include <Windows.h>
 #include <io.h>
+#define scpy (a, b, c) strcpy_s(a, c, b)
 #else
 # error "Only Windows, Linux and FreeBSD are supported at the moment."
 #endif

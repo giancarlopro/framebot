@@ -3,8 +3,12 @@
 char * alloc_string(const char * str){
 
     if (str) {
-        char *nstr = (char *) malloc(fstrlen(str) + 1);
-        strcpy(nstr, str);
+        size_t sizestr = fstrlen(str) + 1;
+        char *nstr = (char *) calloc(1, sizestr);
+        if(!nstr)
+            return NULL;
+
+        scpy(nstr, str, sizestr);
 
         return nstr;
     }

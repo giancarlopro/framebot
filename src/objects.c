@@ -1321,7 +1321,7 @@ UserProfilePhotos *user_profile_photos(long int total_count, PhotoSize ** photos
 }
 
 void user_profile_photos_free(UserProfilePhotos *oupp){
-    size_t i, m = 0;
+    size_t i;
 
     PhotoSize *photo, *upp_n;
 

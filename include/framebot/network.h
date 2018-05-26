@@ -7,7 +7,7 @@
 #define API_URL_LEN 28
 
 #define API_URL_FILE "https://api.telegram.org/file/bot"
-#define API_URL_FILE_LEN 33
+#define API_URL_FILE_LEN 35
 
 #define SENDPHOTO 100
 #define SENDAUDIO 200

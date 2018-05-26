@@ -39,8 +39,8 @@ int _photo(){
 	}
 	else{
 		Error *error = get_error();
-		printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
-		exit(-1);
+		if(error)
+			printf(RED"false\ncode:%ld | description:%s\n"COLOR_RESET, error->error_code, error->description);
 	}
 
 	printf(WHITE "Send username ......... " COLOR_RESET);
@@ -116,16 +116,20 @@ int main(int argc, char *argv[]){
 	username = argv[2];
 
 	Framebot *update = NULL;
+	Update *_update;
 
 	update = get_updates(_bot, update, 0, 0, 0, "message");
+	_update = update->up_message;
 
-	while(update->up_message){
-		if(strcmp(update->up_message->message->from->username, argv[2]) == 0){
+	while(_update){
+		if(strcmp(_update->message->from->username, argv[2]) == 0){
 			valid_username = 1;
-			chat_id = update->up_message->message->from->id;
+			chat_id = _update->message->from->id;
 			_photo();
 			break;
 		}
+
+		_update = _update->next;
 	}
 
 	if(valid_username == 0)
