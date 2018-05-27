@@ -100,7 +100,7 @@ User * user_parse(json_t *json){
         object->id = json_integer_value(id);
 
         is_bot = json_object_get(puser, "is_bot");
-        object->is_bot = json_is_true(is_bot);
+        object->is_bot = json_boolean_value(is_bot);
 
         first_name = json_object_get(puser, "first_name");
         object->first_name = alloc_string(json_string_value(first_name));
@@ -625,16 +625,16 @@ Message * message_parse(json_t *json){
         message->edit_date = json_integer_value( edit_date );
 
         delete_chat_photo = json_object_get( pmessage, "delete_chat_photo" );
-        message->delete_chat_photo = json_integer_value( delete_chat_photo );
+        message->delete_chat_photo = json_boolean_value( delete_chat_photo );
 
         group_chat_created = json_object_get( pmessage, "group_chat_created" );
-        message->group_chat_created = json_integer_value( group_chat_created );
+        message->group_chat_created = json_boolean_value( group_chat_created );
 
         supergroup_chat_created = json_object_get( pmessage, "supergroup_chat_created" );
-        message->supergroup_chat_created = json_integer_value( supergroup_chat_created );
+        message->supergroup_chat_created = json_boolean_value( supergroup_chat_created );
 
         channel_chat_created = json_object_get( pmessage, "channel_chat_created" );
-        message->channel_chat_created = json_integer_value( channel_chat_created );
+        message->channel_chat_created = json_boolean_value( channel_chat_created );
 
         migrate_to_chat_id = json_object_get( pmessage, "migrate_to_chat_id" );
         message->migrate_to_chat_id = json_integer_value( migrate_to_chat_id );
