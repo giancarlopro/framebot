@@ -38,7 +38,7 @@ int _videonote(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 0, 0, 0 , 0, NULL);
+	result = send_video_note_chat(_bot, chat_id, filename, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -50,7 +50,7 @@ int _videonote(){
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 0, 0, 0 , 0, NULL);
+	result = send_video_note_chat(_bot, chat_id, filename, 0, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -62,7 +62,7 @@ int _videonote(){
 
 	printf(WHITE "Send duration ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 0, 0 , 0, NULL);
+	result = send_video_note_chat(_bot, chat_id, filename, 10, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -74,7 +74,7 @@ int _videonote(){
 
 	printf(WHITE "Send length ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 0 , 0, NULL);
+	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -86,7 +86,8 @@ int _videonote(){
 
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 1, 0, NULL);
+	get_notification(1);
+	result = send_video_note_chat(_bot, chat_id, filename, 10, 10, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -98,7 +99,7 @@ int _videonote(){
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message *forward = send_video_note_chat(_bot, chat_id, filename, 10, 10, 1, result->message_id, NULL);
+	Message *forward = send_video_note_chat(_bot, chat_id, filename, 10, 10, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(forward);

@@ -40,7 +40,7 @@ int _func(){
 	
 	printf("message ........ ");
 	result  = send_message_chat (_bot, chat_id, text, NULL,
-            0, 0, 0, NULL);
+            0, 0, NULL);
 	if(result){
 		printf("ok\n");
 	}
@@ -91,8 +91,7 @@ int _func(){
 
 
 	printf("forward_message_from_chat ............. ");
-	Message * c = forward_message_chat (_bot, chat_id, chat_id, 
-            0, result->message_id);
+	Message * c = forward_message_chat (_bot, chat_id, chat_id, result->message_id);
 	if(c){
 		printf("ok\n");
 		message_free(c);
@@ -113,7 +112,7 @@ int _func(){
 
 	printf("send_location_chat ............ ");
 	Message * d = send_location_chat (_bot, chat_id, -25.064949, -130.101544,
-            400, 1, 0, NULL);
+            400, 1, NULL);
 	if(d){
 		printf("ok\n");
 		message_free(d);

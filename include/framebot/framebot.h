@@ -261,7 +261,7 @@
 #endif
 
 /* type bool */
-typedef int bool;
+typedef int32_t bool;
 #define true  1
 #define false 0
 
@@ -292,71 +292,71 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t lim
 
 /* sendMessage */
 Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
-            bool disable_web_page_preview, bool disable_notification,
+            bool disable_web_page_preview,
             int64_t reply_to_message_id, char * reply_markup);
 Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char * parse_mode,
-            bool disable_web_page_preview, bool disable_notification,
+            bool disable_web_page_preview,
             int64_t reply_to_message_id, char * reply_markup);
 
 /* ForwardMessage */
 Message * forward_message_from (Bot * bot, int64_t chat_id, char * from_chat_id,
-        bool disable_notification, int64_t message_id);
+        int64_t message_id);
 Message * forward_message_from_chat (Bot * bot, char * chat_id, int64_t from_chat_id,
-        bool disable_notification, int64_t message_id);
+        int64_t message_id);
 Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
-        bool disable_notification, int64_t message_id);
+        int64_t message_id);
 Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id,
-        bool disable_notification, int64_t message_id);
+        int64_t message_id);
 
 /* sendphoto */
 Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
-        bool disable_notification, int64_t reply_to_message_id, char * reply_markup);
+        int64_t reply_to_message_id, char * reply_markup);
 Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, int64_t reply_to_message_id, char * reply_markup);
+        int64_t reply_to_message_id, char * reply_markup);
 
 /* sendaudio */
 Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
-        char * performer, char * title, bool disable_notification, int64_t reply_to_message_id,
+        char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
 Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
-        char * performer, char * title, bool disable_notification, int64_t reply_to_message_id,
+        char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
 
 /* senddocument */
 Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+        int64_t reply_to_message_id,  char * reply_markup);
 Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
-        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+        int64_t reply_to_message_id,  char * reply_markup);
 
 /* sendvideo */
 Message * send_video(Bot * bot, char * chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, char *parse_mode, bool supports_streaming,bool disable_notification, int64_t reply_to_message_id,
+        int64_t height, char * caption, char *parse_mode, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
 Message * send_video_chat(Bot * bot, int64_t chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, char *parse_mode, bool supports_streaming, bool disable_notification, int64_t reply_to_message_id,
+        int64_t height, char * caption, char *parse_mode, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */
 Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
-        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+        int64_t reply_to_message_id,  char * reply_markup);
 Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
-        bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+        int64_t reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
-        int64_t length, bool disable_notification, int64_t reply_to_message_id,  char * reply_markup);
+        int64_t length, int64_t reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename,
-        int64_t duration, int64_t length, bool disable_notification, int64_t reply_to_message_id,
+        int64_t duration, int64_t length, int64_t reply_to_message_id,
         char * reply_markup);
 
 // sendMediaGroup
 
 /* sendlocation */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
-            float longitude, int64_t live_period, bool disable_notification,
+            float longitude, int64_t live_period,
             int64_t reply_to_message_id, char * reply_markup);
 Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float logitude,
-            int64_t live_period, bool disable_notification, int64_t reply_to_message_id,
+            int64_t live_period, int64_t reply_to_message_id,
             char * reply_markup);
 
 /* editMessageLiveLocation */
@@ -373,19 +373,17 @@ Message * stop_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t me
 
 /* sendVenue */
 Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
-            char * title, char * address, char * foursquare_id, bool disable_notification,
+            char * title, char * address, char * foursquare_id,
             int64_t reply_to_message_id, char * reply_markup);
 Message * send_venue_chat(Bot * bot, int64_t chat_id, float latitude, float longitude,
-            char * title, char * address, char * foursquare_id, bool disable_notification,
+            char * title, char * address, char * foursquare_id,
             int64_t reply_to_message_id, char * reply_markup);
 
 /* sendContact */
 Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, int64_t reply_to_message_id,
-            char * reply_markup);
+            char * last_name, int64_t reply_to_message_id, char * reply_markup);
 Message * send_contact_chat(Bot * bot, int64_t chat_id, char * phone_number, char * first_name,
-            char * last_name, bool disable_notification, int64_t reply_to_message_id,
-            char * reply_markup);
+            char * last_name, int64_t reply_to_message_id, char * reply_markup);
 
 /* sendChatAction */
 int send_chat_action(Bot * bot, char * chat_id, char * action);
@@ -393,9 +391,9 @@ int send_chat_action_chat(Bot * bot, int64_t chat_id, char * action);
 
 /* getUserProfilePhotos */
 UserProfilePhotos * get_user_profile_photos(Bot * bot, char *user_id,
-    long offset, long limit);
-UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, long user_id,
-    long offset, long limit);
+    int64_t offset, int64_t limit);
+UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, int64_t user_id,
+    int64_t offset, int64_t limit);
 
 /* getFile */
 File * get_file(Bot * bot, const char * file_id);
@@ -450,8 +448,8 @@ bool set_chat_description (Bot *bot, char *chat_id, char *description);
 bool set_chat_description_chat (Bot *bot, int64_t chat_id, char *description);
 
 /* pinChatMessage */
-bool pin_chat_message (Bot *bot, char *chat_id, int64_t message_id, bool disable_notification);
-bool pin_chat_message_chat(Bot *bot, int64_t chat_id, int64_t message_id, bool disable_notification);
+bool pin_chat_message (Bot *bot, char *chat_id, int64_t message_id);
+bool pin_chat_message_chat(Bot *bot, int64_t chat_id, int64_t message_id);
 
 /* unpinChatMessage */
 bool unpin_chat_message(Bot *bot, char *chat_id);
@@ -505,5 +503,8 @@ bool delete_message_chat(Bot *bot, int64_t chat_id, int64_t message_id);
 
 bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_t cache_time, bool is_personal,
     char *next_offset, char *switch_pm_text, char *switch_pm_parameter);
+
+void set_notification(bool disable_notification);
+bool get_notification();
 
 #endif

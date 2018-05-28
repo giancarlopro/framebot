@@ -31,7 +31,7 @@ int _message(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter chat_id", NULL, 0, 0, 0, NULL);
+	result = send_message_chat(_bot, chat_id, "parameter chat_id", NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -43,7 +43,7 @@ int _message(){
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter username", NULL, 0, 0, 0, NULL);
+	result = send_message_chat(_bot, chat_id, "parameter username", NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -55,7 +55,7 @@ int _message(){
 
 	printf(WHITE "Send parse_mode HTML ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter parse_mode = MODE_HTML%0Abold = <b>bold</b>, <strong>bold</strong>%0Aitalic = <i>italic</i>, <em>italic</em>%0Agithub = <a href=\"https://github.com/giancarlopro/framebot\">inline URL</a>", MODE_HTML, 0, 0, 0, NULL);
+	result = send_message_chat(_bot, chat_id, "parameter parse_mode = MODE_HTML%0Abold = <b>bold</b>, <strong>bold</strong>%0Aitalic = <i>italic</i>, <em>italic</em>%0Agithub = <a href=\"https://github.com/giancarlopro/framebot\">inline URL</a>", MODE_HTML, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -67,7 +67,7 @@ int _message(){
 
 	printf(WHITE "Send parse_mode MARKDOWN ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter parse_mode = MODE_MARKDOWN%0Abold = *bold text*%0Aitalic = _italic text_%0A[inline URL](https://github.com/giancarlopro/framebot)%0A```block_languagepre-formatted fixed-width code block```", MODE_MARKDOWN, 0, 0, 0, NULL);
+	result = send_message_chat(_bot, chat_id, "parameter parse_mode = MODE_MARKDOWN%0Abold = *bold text*%0Aitalic = _italic text_%0A[inline URL](https://github.com/giancarlopro/framebot)%0A```block_languagepre-formatted fixed-width code block```", MODE_MARKDOWN, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -79,7 +79,7 @@ int _message(){
 
 	printf(WHITE "Send disable_web_page_preview (not thumb)........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter disable_web_page_preview https://github.com/giancarlopro/framebot", NULL, 1, 0, 0, NULL);
+	result = send_message_chat(_bot, chat_id, "parameter disable_web_page_preview https://github.com/giancarlopro/framebot", NULL, 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -91,7 +91,8 @@ int _message(){
 
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_message_chat(_bot, chat_id, "parameter disable_notification", NULL, 1, 1, 0, NULL);
+	set_notification(1);
+	result = send_message_chat(_bot, chat_id, "parameter disable_notification", NULL, 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -103,7 +104,7 @@ int _message(){
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message * forward = send_message_chat(_bot, chat_id, "parameter reply_to_message_id", NULL, 1, 0, result->message_id, NULL);
+	Message * forward = send_message_chat(_bot, chat_id, "parameter reply_to_message_id", NULL, 1, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(forward);
