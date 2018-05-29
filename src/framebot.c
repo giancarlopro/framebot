@@ -1,7 +1,6 @@
 #include <framebot/framebot.h>
 
-static bool notification = 0;
-
+static int32_t notification = 0;
 
 parse_mode id_mode = { .mode = "", .nmode = 0 };
 
