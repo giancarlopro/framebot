@@ -227,29 +227,20 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdint.h>
+#include <limits.h>
+#include <ctype.h>
 
 #if defined __linux__ || defined __FreeBSD__
 #   include <unistd.h>
-#   include <stdint.h>
 #   define scpy(a, b, c) strncpy(a, b, c)
-#   if UINTPTR_MAX != 0xffffffffffffffff
-        typedef int32_t int64_t;
-        typedef uint32_t uint64_t;
-#   endif
 #elif _WIN32
 #   include <Windows.h>
 #   include <io.h>
 #   define scpy(a, b, c) strcpy_s(a, c, b)
-#   if !_WIN64
-        typedef __int64 int64_t;
-        typedef unsigned __int64 uint64_t;
-#   endif
 #else
 #   error "Only Windows, Linux and FreeBSD are supported at the moment."
 #endif
-
-#include <limits.h>
-#include <ctype.h>
 
 #ifdef _MSC_VER
 //cURL Fix
