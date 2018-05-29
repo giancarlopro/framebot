@@ -3,10 +3,7 @@
 static bool notification = 0;
 
 
-parse_mode id_mode = 
-{
-    "", 0
-};
+parse_mode id_mode = { .mode = "", .nmode = 0 };
 
 void framebot_init () {
     network_init();
