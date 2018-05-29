@@ -1,5 +1,13 @@
 #include <framebot/framebot.h>
 
+static bool notification = 0;
+
+
+parse_mode id_mode = 
+{
+    "", 0
+};
+
 void framebot_init () {
     network_init();
 }
@@ -92,14 +100,14 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t lim
  *  - Change the type of 'chat_id'
  * https://core.telegram.org/bots/api#sendmessage
  */
-Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
+Message * send_message (Bot *bot, char * chat_id, char *text,
             bool disable_web_page_preview, int64_t reply_to_message_id,
             char * reply_markup) {
     Message * message;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_SENDMESSAGE,
-        chat_id, text, PARSE_MODE(parse_mode),
+        chat_id, text, id_mode.mode,
         DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview),
         DISABLE_NOTIFICATION(get_notification()),
         reply_to_message_id, REPLY_MARKUP(reply_markup));
@@ -114,7 +122,7 @@ Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
     return message;
 }
 
-Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char *parse_mode,
+Message * send_message_chat (Bot *bot, int64_t chat_id, char *text,
             bool disable_web_page_preview, int64_t reply_to_message_id,
             char * reply_markup) {
     Message * message;
@@ -123,7 +131,7 @@ Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char *parse_
     cchat_id = api_ltoa(chat_id);
 
 
-    message =  send_message(bot, cchat_id, text, parse_mode,
+    message =  send_message(bot, cchat_id, text,
         disable_web_page_preview, reply_to_message_id,
         reply_markup);
 
@@ -862,7 +870,7 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, int64_t user_id,
  * https://core.telegram.org/bots/api#sendphoto
  */
 Message * send_photo(Bot * bot, char * chat_id, char * filename,
-                             char * caption, char *parse_mode,
+                             char * caption,
                              int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
@@ -880,7 +888,7 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
      * photos by file_id), 0-200 characters */
     ifile.photo.caption = caption;
 
-    ifile.photo.parse_mode = PARSE_MODE(parse_mode);
+    ifile.photo.parse_mode = id_mode.mode;
 
     /* Sends the message silently */
     ifile.photo.disable_notification = DISABLE_NOTIFICATION(get_notification());
@@ -917,7 +925,7 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
 
 
 
-Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
         int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -925,7 +933,7 @@ Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_photo(bot, cchat_id, filename, caption, parse_mode,
+    message = send_photo(bot, cchat_id, filename, caption,
                                  reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
@@ -938,7 +946,7 @@ Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
  * sendAudio
  * https://core.telegram.org/bots/api#sendaudio
  */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
             int64_t duration, char * performer, char * title,
             int64_t reply_to_message_id, char * reply_markup){
     
@@ -957,7 +965,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, 
     /* Audio caption, 0-200 characters */
     ifile.audio.caption = caption;
 
-    ifile.audio.caption = PARSE_MODE(parse_mode);
+    ifile.audio.caption = id_mode.mode;
 
     /* Duration of the audio in seconds */
     ifile.audio.duration = DURATION(duration);
@@ -1004,7 +1012,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, 
 
 
 
-Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
             int64_t duration, char * performer, char * title,
             int64_t reply_to_message_id, char * reply_markup){
 
@@ -1013,7 +1021,7 @@ Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_audio(bot, cchat_id, filename, caption, parse_mode, duration,
+    message = send_audio(bot, cchat_id, filename, caption, duration,
                                  performer, title, reply_to_message_id, reply_markup);
 
     free(cchat_id);
@@ -1026,7 +1034,7 @@ Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
  * sendDocument
  * https://core.telegram.org/bots/api#senddocument
  */
-Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1045,7 +1053,7 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
      * Documents by file_id), 0-200 characters */
     ifile.document.caption = caption;
 
-    ifile.document.parse_mode = PARSE_MODE(parse_mode);
+    ifile.document.parse_mode = id_mode.mode;
 
     /* Sends the message silently */
     ifile.document.disable_notification = DISABLE_NOTIFICATION(get_notification());
@@ -1078,7 +1086,7 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
 
 
 
-Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1086,7 +1094,7 @@ Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char *
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_document(bot, cchat_id, filename, caption, parse_mode,
+    message = send_document(bot, cchat_id, filename, caption,
                                  reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
@@ -1100,7 +1108,7 @@ Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char *
  * https://core.telegram.org/bots/api#sendvideo
  */
 Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duration,
-            int64_t width, int64_t height, char * caption, char *parse_mode, bool supports_streaming,
+            int64_t width, int64_t height, char * caption, bool supports_streaming,
             int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
@@ -1126,10 +1134,8 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duratio
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
 
-    ifile.video.caption = PARSE_MODE(parse_mode);
-
     /* parse mode MODE_HTML or MODE_MARKDOWN */
-    ifile.video.parse_mode = PARSE_MODE(parse_mode);
+    ifile.video.parse_mode = id_mode.mode;
 
 
     ifile.video.supports_streaming = STREAMING(supports_streaming);
@@ -1170,7 +1176,7 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duratio
 
 
 Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t duration,
-            int64_t width, int64_t height, char * caption, char *parse_mode, bool supports_streaming,
+            int64_t width, int64_t height, char * caption, bool supports_streaming,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1178,7 +1184,7 @@ Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t d
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_video(bot, cchat_id, filename, duration, width, height, caption, parse_mode,
+    message = send_video(bot, cchat_id, filename, duration, width, height, caption,
                 supports_streaming, reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
@@ -1191,7 +1197,7 @@ Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t d
  * sendVoice
  * https://core.telegram.org/bots/api#sendvoice
  */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
             int64_t duration, int64_t reply_to_message_id,
             char * reply_markup){
     Message * message;
@@ -1209,7 +1215,7 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, 
     /* Audio caption, 0-200 characters */
     ifile.voice.caption = caption;
 
-    ifile.voice.parse_mode = PARSE_MODE(parse_mode);
+    ifile.voice.parse_mode = id_mode.mode;
 
     /* Duration of the audio in seconds */
     ifile.voice.duration = DURATION(duration);
@@ -1249,7 +1255,7 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, 
 
 
 
-Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, char *parse_mode, int64_t duration,
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1257,7 +1263,7 @@ Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * cap
     
     cchat_id = api_ltoa(chat_id);
 
-    message = send_voice(bot, cchat_id, filename, caption, parse_mode, duration,
+    message = send_voice(bot, cchat_id, filename, caption, duration,
                                  reply_to_message_id, REPLY_MARKUP(reply_markup));
 
     free(cchat_id);
@@ -1670,13 +1676,13 @@ Message * stop_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t me
  * https://core.telegram.org/bots/api#editmessagetext
  */
 Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
-    char *inline_message_id, char *text, char *parse_mode,
+    char *inline_message_id, char *text,
     bool disable_web_page_preview, char *reply_markup){
     Message *message;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageText, chat_id, message_id,
-        inline_message_id, text, PARSE_MODE(parse_mode),
+        inline_message_id, text, id_mode.mode,
         DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview), REPLY_MARKUP(reply_markup));
 
     if(!s_json)
@@ -1690,7 +1696,7 @@ Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
 }
 
 Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
-    char *inline_message_id, char *text, char *parse_mode, bool disable_web_page_preview,
+    char *inline_message_id, char *text, bool disable_web_page_preview,
     char *reply_markup){
 
     Message *message;
@@ -1699,7 +1705,7 @@ Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_text(bot, cchat_id, message_id,
-        inline_message_id, text, parse_mode,
+        inline_message_id, text,
         disable_web_page_preview, reply_markup);
 
     free(cchat_id);
@@ -1713,12 +1719,12 @@ Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
  */
 Message *edit_message_caption(Bot *bot, char *chat_id,
     int64_t message_id, char *inline_message_id, char *caption,
-    char *parse_mode, char *reply_markup){
+    char *reply_markup){
     Message *message;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
-        message_id, inline_message_id, caption, parse_mode, REPLY_MARKUP(reply_markup));
+        message_id, inline_message_id, caption, id_mode.mode, REPLY_MARKUP(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1732,14 +1738,14 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
 
 Message *edit_message_caption_chat(Bot *bot, int64_t chat_id,
     int64_t message_id, char *inline_message_id, char *caption,
-    char *parse_mode, char *reply_markup){
+    char *reply_markup){
     Message *message;
     char *cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_caption(bot, cchat_id, message_id,
-        inline_message_id, caption, PARSE_MODE(parse_mode), reply_markup);
+        inline_message_id, caption, reply_markup);
 
     free(cchat_id);
 
@@ -1906,12 +1912,29 @@ bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_
     return result;
 }
 
-static bool notification = 0;
-
 void set_notification(bool disable_notification){
     notification = disable_notification > 0 ? 1 : 0;
 }
 
 bool get_notification(){
     return notification;
+}
+
+void set_parse_mode(int32_t mode){
+    if(mode == 1){
+        id_mode.mode = MODE_MARKDOWN;
+        id_mode.nmode = 1;
+    }
+    else if(mode == 2){
+        id_mode.mode = MODE_HTML;
+        id_mode.nmode = 2;
+    }
+    else{
+        id_mode.mode = "";
+        id_mode.nmode = 0;
+    }
+}
+
+int32_t get_parse_mode(){
+    return id_mode.nmode;
 }

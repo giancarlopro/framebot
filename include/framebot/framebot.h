@@ -291,10 +291,10 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t lim
             int64_t timeout, char *allowed_updates);
 
 /* sendMessage */
-Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,
+Message * send_message (Bot *bot, char * chat_id, char *text,
             bool disable_web_page_preview,
             int64_t reply_to_message_id, char * reply_markup);
-Message * send_message_chat (Bot *bot, int64_t chat_id, char *text, char * parse_mode,
+Message * send_message_chat (Bot *bot, int64_t chat_id, char *text,
             bool disable_web_page_preview,
             int64_t reply_to_message_id, char * reply_markup);
 
@@ -309,37 +309,37 @@ Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id
         int64_t message_id);
 
 /* sendphoto */
-Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption, char *parse_mode,
+Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption,
         int64_t reply_to_message_id, char * reply_markup);
-Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
+Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
         int64_t reply_to_message_id, char * reply_markup);
 
 /* sendaudio */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, int64_t duration,
         char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
-Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
         char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
 
 /* senddocument */
-Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption, char * parse_mode,
+Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,
         int64_t reply_to_message_id,  char * reply_markup);
-Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, char * parse_mode,
+Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
         int64_t reply_to_message_id,  char * reply_markup);
 
 /* sendvideo */
 Message * send_video(Bot * bot, char * chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, char *parse_mode, bool supports_streaming, int64_t reply_to_message_id,
+        int64_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
 Message * send_video_chat(Bot * bot, int64_t chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, char *parse_mode, bool supports_streaming, int64_t reply_to_message_id,
+        int64_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, int64_t duration,
         int64_t reply_to_message_id,  char * reply_markup);
-Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, char * parse_mode, int64_t duration,
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
         int64_t reply_to_message_id,  char * reply_markup);
 
 Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
@@ -477,19 +477,19 @@ ChatMember *get_chat_member_chat(Bot *bot, int64_t chat_id, int64_t user_id);
 
 /** Updating messages **/
 Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
-    char *inline_message_id, char *text, char *parse_mode,
+    char *inline_message_id, char *text,
     bool disable_web_page_preview, char *reply_markup);
 Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
-    char *inline_message_id, char *text, char *parse_mode,
+    char *inline_message_id, char *text,
     bool disable_web_page_preview, char *reply_markup);
 
 /* editMessageText */
 Message *edit_message_caption(Bot *bot, char *chat_id,
     int64_t message_id, char *inline_message_id, char *caption,
-    char * parse_mode, char *reply_markup);
+    char *reply_markup);
 Message *edit_message_caption_chat(Bot *bot, int64_t chat_id,
     int64_t message_id, char *inline_message_id, char *caption,
-    char * parse_mode, char *reply_markup);
+    char *reply_markup);
 
 /* editMessageCaption */
 Message *edit_message_reply_markup(Bot *bot, char *chat_id, int64_t message_id,
@@ -506,5 +506,8 @@ bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_
 
 void set_notification(bool disable_notification);
 bool get_notification();
+
+void set_parse_mode(int32_t mode);
+int32_t get_parse_mode();
 
 #endif

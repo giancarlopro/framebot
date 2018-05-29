@@ -1,6 +1,11 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
+typedef struct _parse_mode{
+    char *mode;
+    int32_t nmode;
+} parse_mode;
+
 typedef struct _error{
     int64_t error_code;
     char *description;

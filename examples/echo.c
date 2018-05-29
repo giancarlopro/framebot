@@ -23,7 +23,7 @@ int main (int argc, char **argv) {
 
     while (temp) {
         if (temp->message) {
-            if (send_message_chat (echo, temp->message->from->id, temp->message->text, NULL, 0, temp->message->message_id, NULL)) {
+            if (send_message_chat (echo, temp->message->from->id, temp->message->text, 0, temp->message->message_id, NULL)) {
                 printf("Sended: \"%s\" to %s!\n", temp->message->text, temp->message->from->username);
             }
         }

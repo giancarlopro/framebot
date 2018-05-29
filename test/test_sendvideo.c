@@ -37,7 +37,7 @@ int _video(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -51,7 +51,7 @@ int _video(){
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 0, 0, 0, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -65,7 +65,7 @@ int _video(){
 
 	printf(WHITE "Send duration ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 0, 0, NULL, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 0, 0, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -79,7 +79,7 @@ int _video(){
 
 	printf(WHITE "Send width ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 0, NULL, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 0, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -93,7 +93,7 @@ int _video(){
 
 	printf(WHITE "Send height ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 10, NULL, NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 10, NULL, 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -107,7 +107,7 @@ int _video(){
 
 	printf(WHITE "Send caption ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -121,7 +121,7 @@ int _video(){
 
 	printf(WHITE "Send parse_mode ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "<b>caption</b>", MODE_HTML, 0, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "<b>caption</b>", 0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -135,7 +135,7 @@ int _video(){
 
 	printf(WHITE "Send supports_streaming ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -149,7 +149,7 @@ int _video(){
 
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, 0, NULL);
+	result = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", 1, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -162,7 +162,7 @@ int _video(){
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message *forward = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", NULL, 1, result->message_id, NULL);
+	Message *forward = send_video_chat(_bot, chat_id, filename, 10, 10, 1, "caption", 1, result->message_id, NULL);
 	if(forward){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(forward);

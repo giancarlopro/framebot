@@ -32,7 +32,7 @@ int _voice(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_voice_chat(_bot, chat_id, filename, NULL, NULL,
+	result = send_voice_chat(_bot, chat_id, filename, NULL,
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -45,7 +45,7 @@ int _voice(){
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_voice_chat(_bot, chat_id, filename, NULL, NULL,
+	result = send_voice_chat(_bot, chat_id, filename, NULL,
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -58,7 +58,7 @@ int _voice(){
 
 	printf(WHITE "Send caption ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_voice_chat(_bot, chat_id, filename, "caption", NULL,
+	result = send_voice_chat(_bot, chat_id, filename, "caption",
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -71,7 +71,7 @@ int _voice(){
 
 	printf(WHITE "Send duration ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_voice_chat(_bot, chat_id, filename, "duration", NULL,
+	result = send_voice_chat(_bot, chat_id, filename, "duration",
             10, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -85,7 +85,7 @@ int _voice(){
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
 	get_notification(1);
-	result = send_voice_chat(_bot, chat_id, filename, "disable_notification", NULL,
+	result = send_voice_chat(_bot, chat_id, filename, "disable_notification",
             0, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
@@ -98,7 +98,7 @@ int _voice(){
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message * forward = send_voice_chat(_bot, chat_id, filename, "reply_to_message_id", NULL,
+	Message * forward = send_voice_chat(_bot, chat_id, filename, "reply_to_message_id",
             0, result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);

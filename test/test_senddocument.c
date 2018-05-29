@@ -36,7 +36,7 @@ int _document(){
 
 	printf(WHITE "Send chat_id ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_document_chat(_bot, chat_id, filename, NULL, NULL, 0, NULL);
+	result = send_document_chat(_bot, chat_id, filename, NULL, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -49,7 +49,7 @@ int _document(){
 
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_document_chat(_bot, chat_id, filename, NULL, NULL, 0, NULL);
+	result = send_document_chat(_bot, chat_id, filename, NULL, 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -62,7 +62,7 @@ int _document(){
 
 	printf(WHITE "Send caption ........." COLOR_RESET);
 	fflush(stdout);
-	result = send_document_chat(_bot, chat_id, filename, "caption", NULL, 0, NULL);
+	result = send_document_chat(_bot, chat_id, filename, "caption", 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);
@@ -76,7 +76,7 @@ int _document(){
 	printf(WHITE "Send disable_notification ........." COLOR_RESET);
 	fflush(stdout);
 	set_notification(1);
-	result = send_document_chat(_bot, chat_id, filename, "caption", NULL, 0, NULL);
+	result = send_document_chat(_bot, chat_id, filename, "caption", 0, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 	}
@@ -88,7 +88,7 @@ int _document(){
 
 	printf(WHITE "Send reply_to_message_id ........." COLOR_RESET);
 	fflush(stdout);
-	Message * forward = send_document_chat(_bot, chat_id, filename, "caption", NULL, result->message_id, NULL);
+	Message * forward = send_document_chat(_bot, chat_id, filename, "caption", result->message_id, NULL);
 	if(result){
 		printf(BLUE "OK\n" COLOR_RESET);
 		message_free(result);

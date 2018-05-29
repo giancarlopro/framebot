@@ -39,7 +39,7 @@ Message *result = NULL;
 int _func(){
 	
 	printf("message ........ ");
-	result  = send_message_chat (_bot, chat_id, text, NULL,
+	result  = send_message_chat (_bot, chat_id, text,
             0, 0, NULL);
 	if(result){
 		printf("ok\n");
@@ -162,7 +162,7 @@ int _func(){
 
 	printf("send edit_message_text ............. ");
 	Message *f = edit_message_text_chat(_bot, chat_id, result->message_id,
-    NULL, "Mudou - MUDOU", NULL, 0, NULL);
+    NULL, "Mudou - MUDOU", 0, NULL);
     if(f){
     	printf("ok\n");
     	message_free(f);
