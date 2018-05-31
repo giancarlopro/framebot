@@ -1,8 +1,12 @@
 #include <framebot/framebot.h>
 
-static int32_t notification = 0;
+static bool notification = 0;
 
-parse_mode id_mode = { .mode = "", .nmode = 0 };
+struct _parse_mode{
+    char *mode;
+    int32_t nmode:2;
+};
+struct _parse_mode id_mode = { .mode = "", .nmode = 0 };
 
 void framebot_init () {
     network_init();
@@ -1918,11 +1922,11 @@ bool get_notification(){
 
 void set_parse_mode(int32_t mode){
     if(mode == 1){
-        id_mode.mode = MODE_MARKDOWN;
+        id_mode.mode = "Markdown";
         id_mode.nmode = 1;
     }
     else if(mode == 2){
-        id_mode.mode = MODE_HTML;
+        id_mode.mode = "HTML";
         id_mode.nmode = 2;
     }
     else{

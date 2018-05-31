@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <framebot/framebot.h>
 
+
 static Error *_error = NULL;
 
 

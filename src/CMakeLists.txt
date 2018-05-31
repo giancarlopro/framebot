@@ -16,10 +16,10 @@ if(UNIX)
 		message(SEND_ERROR "Only Linux, FreeBSD and Windows are supported at this time.")
 	endif()
 
-	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c)
+	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c payments.c)
 	target_link_libraries(framebot_ ${JANSSON_LIB} ${CURL_LIBRARIES})
 
-	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c)
+	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c payments.c)
 	target_link_libraries(framebot ${JANSSON_LIB} ${CURL_LIBRARIES})
 
 	install(TARGETS framebot_ LIBRARY DESTINATION lib)
@@ -32,7 +32,7 @@ if(UNIX)
 endif()
 
 if(WIN32)
-	add_library(framebot framebot.c memory.c objects.c json.c network.c format.c util.c)
+	add_library(framebot framebot.c memory.c objects.c json.c network.c format.c util.c payments.c)
 	target_link_libraries(framebot ${JANSSON_LIB} ${CURL_LIBRARIES})
 	install(TARGETS framebot ARCHIVE DESTINATION lib)
 endif()

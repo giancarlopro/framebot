@@ -190,25 +190,53 @@
 &switch_pm_text=%s\
 &switch_pm_parameter=%s"
 
+#define API_sendInvoice "sendInvoice\
+?chat_id=%ld\
+&title=%s\
+&description=%s\
+&payload=%s\
+&provider_token=%s\
+&start_parameter=%s\
+&currency=%s\
+&prices=%s\
+&provider_data=%s\
+&photo_url=%s\
+&photo_size=%lu\
+&photo_width=%u\
+&photo_height%u\
+&need_name=%s\
+&need_phone_number=%s\
+&need_email=%s\
+&need_shipping_address=%s\
+&send_phone_number_to_provider=%s\
+&send_email_to_provider=%s\
+&is_flexible=%s\
+&disable_notification=%s\
+&reply_to_message_id=%ld\
+&reply_markup=%s"
+
 /* analyze parameter API methods */
 #define PARSE_MODE(p) (p == NULL ? "" : p) 
-#define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "0")
-#define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "0")
+#define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "false")
+#define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "false")
 #define REPLY_MARKUP(p) (p == NULL ? "" : p)
 
-#define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_SEND_OTHER_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_ADD_WEB_PAGE_PREVIEWS(p) (p > 0 ? "true" : "0")
+#define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_SEND_OTHER_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_ADD_WEB_PAGE_PREVIEWS(p) (p > 0 ? "true" : "false")
 
-#define CAN_CHANGE_INFO(p) (p > 0 ? "true" : "0")
-#define CAN_POST_MESSAGES(p) (p > 0 ? "true": "0")
-#define CAN_EDIT_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_DELETE_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_INVITE_USERS(p) (p > 0 ? "true": "0")
-#define CAN_RESTRICT_MEMBERS(p) (p > 0 ? "true" : "0")
-#define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "0")
-#define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "0")
+#define CAN_CHANGE_INFO(p) (p > 0 ? "true" : "false")
+#define CAN_POST_MESSAGES(p) (p > 0 ? "true": "false")
+#define CAN_EDIT_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_DELETE_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_INVITE_USERS(p) (p > 0 ? "true": "false")
+#define CAN_RESTRICT_MEMBERS(p) (p > 0 ? "true" : "false")
+#define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "false")
+#define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "false")
+
+#define PHOTO_URL(p) (p > 0 ? "true" : "false")
+#define PROVIDER_DATA(p) (p > 0 ? "true" : "false")
 
 #define STREAMING(p) (p > 0 ? api_ltoa(p) : NULL)
 #define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)
@@ -256,9 +284,9 @@ typedef int32_t bool;
 #define true  1
 #define false 0
 
-/* parameter parse_mode */
-#define MODE_HTML "HTML"
-#define MODE_MARKDOWN "Markdown"
+#define MODE_MARKDOWN 1
+#define MODE_HTML 2
+#define MODE_NULL 0
 
 #include <curl/curl.h>
 #include <jansson.h>
@@ -269,6 +297,7 @@ typedef int32_t bool;
 #include <framebot/json.h>
 #include <framebot/format.h>
 #include <framebot/util.h>
+#include <framebot/payments.h>
 
 
 void framebot_init();
