@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <framebot/framebot.h>
 
+
 refjson * start_json(char * json){
     refjson *s_json = NULL;
     json_t *root, *ok;
@@ -394,10 +395,10 @@ Sticker * sticker_parse(json_t *json){
         object->file_id = alloc_string(json_string_value(file_id));
 
         width = json_object_get(psticker,"width");
-        object->width = json_integer_value(width);
+        object->width = (int)json_integer_value(width);
 
         height = json_object_get(psticker,"height");
-        object->height = json_integer_value(height);
+        object->height = (int)json_integer_value(height);
 
         thumb = json_object_get(psticker,"thumb");
         object->thumb = photo_size_parse(thumb);
@@ -429,10 +430,10 @@ Video * video_parse(json_t *json){
         object->file_id = alloc_string(json_string_value(file_id));
 
         width = json_object_get(pvideo,"width");
-        object->width = json_integer_value(width);
+        object->width = (int)json_integer_value(width);
 
         height = json_object_get(pvideo,"height");
-        object->height = json_integer_value(height);
+        object->height = (int)json_integer_value(height);
 
         duration = json_object_get(pvideo,"duration");
         object->duration = json_integer_value(duration);
