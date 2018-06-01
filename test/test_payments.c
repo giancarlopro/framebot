@@ -55,7 +55,7 @@ void test_invoice(){
 	printf(WHITE "Send invoice(photo) ........." COLOR_RESET);
 	fflush(stdout);
 	/* add_img_invoice(char *photo_url, uint64_t photo_size, uint32_t photo_width, uint32_t photo_heigth) */
-	add_img_invoice("https://telegram.org/img/t_logo.png", 0, 0, 0);
+	add_img_invoice("https://telegram.org/img/t_logo.png", 0, 50, 50);
 	result = send_invoice(_bot, chat_id, "title", "1 - test(description)", "(param_payload)", "para_start_parameter", prices,
      NULL, 0, NULL);
 	remove_image_invoice(); /* remove invoice image */

@@ -184,6 +184,7 @@ void remove_image_invoice(){
     if(i->photo_url != NULL)
         free(i->photo_url);
 
+    i->photo_url = NULL;
     i->photo_size = 0;
     i->photo_width = 0;
     i->photo_heigth = 0;

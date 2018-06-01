@@ -258,7 +258,7 @@
 #define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "false")
 #define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "false")
 
-#define PHOTO_URL(p) (p > 0 ? "true" : "false")
+#define PHOTO_URL(p) (p == NULL ? "" : p)
 #define PROVIDER_DATA(p) (p > 0 ? "true" : "false")
 
 #define STREAMING(p) (p > 0 ? api_ltoa(p) : NULL)
