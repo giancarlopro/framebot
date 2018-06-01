@@ -238,6 +238,17 @@
 &reply_to_message_id=%ld\
 &reply_markup=%s"
 
+#define API_answerShippingQuery "answerShippingQuery\
+?shipping_query_id=%ld\
+&ok=%s\
+&shipping_options=%s\
+&error_message=%s"
+
+#define API_answerPreCheckoutQuery "answerPreCheckoutQuery\
+?pre_checkout_query_id=%s\
+&ok=%s\
+&error_message=%s"
+
 /* analyze parameter API methods */
 #define PARSE_MODE(p) (p == NULL ? "" : p) 
 #define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "false")
@@ -260,6 +271,9 @@
 
 #define PHOTO_URL(p) (p == NULL ? "" : p)
 #define PROVIDER_DATA(p) (p > 0 ? "true" : "false")
+#define OK(p) (p > 0 ? "true" : "false")
+#define SHIPPING_OPTIONS(p) (p == NULL ? "" : p)
+#define ERROR_MESSAGE(p) (p == NULL ? "" : p)
 
 #define STREAMING(p) (p > 0 ? api_ltoa(p) : NULL)
 #define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)

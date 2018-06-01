@@ -101,5 +101,7 @@ void option_payment(bool n_name, bool n_phone, bool n_email, bool n_shipping_add
 bool s_email_to_provider, bool is_flexible);
 Message *send_invoice(Bot *bot, int64_t chat_id, char * title, char *description, char *payload, char *start_parameter, char *prices,
      char *provider_data, int64_t reply_to_message_id, char *reply_markup);
+bool answerPreCheckoutQuery(Bot *bot, char *pre_checkout_query_id, char *ok, char *error_message);
+
 
 #endif

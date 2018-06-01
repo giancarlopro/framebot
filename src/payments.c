@@ -206,6 +206,11 @@ void option_payment(bool n_name, bool n_phone, bool n_email, bool n_shipping_add
 
 }
 
+/*
+ * https://core.telegram.org/bots/api#sendinvoice
+ *
+ *
+ */
 Message *send_invoice(Bot *bot, int64_t chat_id, char * title, char *description, char *payload, char *start_parameter, char *prices,
      char *provider_data, int64_t reply_to_message_id, char *reply_markup){
 
@@ -227,4 +232,44 @@ Message *send_invoice(Bot *bot, int64_t chat_id, char * title, char *description
     close_json ( s_json );
 
     return message;
+}
+
+
+/*
+ * https://core.telegram.org/bots/api#answershippingquery
+ */
+bool answerShippingQuery(Bot *bot, char *shipping_query_id, bool ok, char *shipping_options, char *error_message){
+
+    bool result;
+    refjson *s_json;
+
+    s_json = generic_method_call(bot->token, API_answerShippingQuery,
+        shipping_query_id, OK(ok), SHIPPING_OPTIONS(shipping_options),
+        ERROR_MESSAGE(error_message));
+
+    result = json_is_true(s_json->content);
+
+    close_json(s_json);
+
+    return result;
+}
+
+
+/*
+ * https://core.telegram.org/bots/api#answerprecheckoutquery
+ *
+ */
+bool answerPreCheckoutQuery(Bot *bot, char *pre_checkout_query_id, char *ok, char *error_message){
+
+    bool result;
+    refjson *s_json;
+
+    s_json = generic_method_call(bot->token, API_answerPreCheckoutQuery,
+        pre_checkout_query_id, OK(ok), ERROR_MESSAGE(error_message));
+
+    result = json_is_true(s_json->content);
+
+    close_json(s_json);
+
+    return result;
 }
