@@ -254,6 +254,8 @@
 #define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "false")
 #define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "false")
 #define REPLY_MARKUP(p) (p == NULL ? "" : p)
+#define ALLOWED_UPDATES(p) (p == NULL ? "" : p)
+#define LIMIT(p) (p < 1 ? 100 : p)
 
 #define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "false")
 #define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "false")

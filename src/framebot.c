@@ -89,7 +89,7 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t lim
     Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
-        offset, limit, timeout, STRING_NULL(allowed_updates) );
+        offset, LIMIT(limit), timeout, ALLOWED_UPDATES(allowed_updates) );
 
     if( !framebot ){
         framebot = calloc(1, sizeof( Framebot ));
