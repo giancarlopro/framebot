@@ -139,6 +139,10 @@ static char *currency[SIZECURRENCY] =
 };
 
 
+/*
+ * ( currency ) https://core.telegram.org/bots/api#sendinvoice 
+ */
+
 bool set_currency(uint32_t code){
     if(code >= SIZECURRENCY)
         return false;
@@ -153,16 +157,25 @@ int32_t get_currency(){
     return s_invoice.currency_code;
 }
 
-
+/*
+ * ( provider_token ) https://core.telegram.org/bots/api#sendinvoice 
+ */
 int32_t set_provider_token(char *token){
     if(token == 0)
         return false;
+
+    if(s_invoice.ptoken != NULL)
+        free(s_invoice.ptoken);
 
     s_invoice.ptoken = alloc_string(token);
 
     return true;
 }
 
+
+/*
+ * ( photo_url photo_size photo_width photo_height ) https://core.telegram.org/bots/api#sendinvoice
+ */
 void add_img_invoice(char *photo_url, uint64_t photo_size, uint32_t photo_width, uint32_t photo_heigth){
     struct _img_invoice *i;
 
@@ -191,6 +204,11 @@ void remove_image_invoice(){
     i->photo_heigth = 0;
 }
 
+
+/*
+ * ( need_name need_phone_number need_email need_shipping_address send_phone_number_to_provider send_email_to_provider is_flexible )
+ * https://core.telegram.org/bots/api#sendinvoice
+ */
 void option_payment(bool n_name, bool n_phone, bool n_email, bool n_shipping_address, bool s_phone_to_provider,
     bool s_email_to_provider, bool is_flexible){
     struct _option_invoice *op;
@@ -209,8 +227,6 @@ void option_payment(bool n_name, bool n_phone, bool n_email, bool n_shipping_add
 
 /*
  * https://core.telegram.org/bots/api#sendinvoice
- *
- *
  */
 Message *send_invoice(Bot *bot, int64_t chat_id, char * title, char *description, char *payload, char *start_parameter, char *prices,
      char *provider_data, int64_t reply_to_message_id, char *reply_markup){
