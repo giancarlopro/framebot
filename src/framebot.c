@@ -82,7 +82,7 @@ User *get_me (Bot *bot) {
  * Returns the updates list
  * https://core.telegram.org/bots/api#getupdates
  */ 
-Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t limit,
+Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int32_t limit,
                      int64_t timeout, char *allowed_updates) {
 
     refjson *s_json = NULL;

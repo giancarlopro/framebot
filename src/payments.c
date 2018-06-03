@@ -138,6 +138,7 @@ static char *currency[SIZECURRENCY] =
 "ZAR"  /* South African Rand .................. ZAR 12.66      ZAR 126,694.98    */
 };
 
+
 bool set_currency(uint32_t code){
     if(code >= SIZECURRENCY)
         return false;
@@ -247,6 +248,9 @@ bool answerShippingQuery(Bot *bot, char *shipping_query_id, bool ok, char *shipp
         shipping_query_id, OK(ok), SHIPPING_OPTIONS(shipping_options),
         ERROR_MESSAGE(error_message));
 
+    if(!s_json)
+        return -1;
+
     result = json_is_true(s_json->content);
 
     close_json(s_json);
@@ -259,13 +263,16 @@ bool answerShippingQuery(Bot *bot, char *shipping_query_id, bool ok, char *shipp
  * https://core.telegram.org/bots/api#answerprecheckoutquery
  *
  */
-bool answerPreCheckoutQuery(Bot *bot, char *pre_checkout_query_id, char *ok, char *error_message){
+bool answerPreCheckoutQuery(Bot *bot, char *pre_checkout_query_id, bool ok, char *error_message){
 
     bool result;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerPreCheckoutQuery,
         pre_checkout_query_id, OK(ok), ERROR_MESSAGE(error_message));
+
+    if(!s_json)
+        return -1;
 
     result = json_is_true(s_json->content);
 

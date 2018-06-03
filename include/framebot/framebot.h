@@ -30,7 +30,7 @@
 
 #define API_GETUPDATES "getUpdates\
 ?offset=%ld\
-&limit=%ld\
+&limit=%d\
 &timeout=%ld\
 &allowed_updates=%s"
 
@@ -239,7 +239,7 @@
 &reply_markup=%s"
 
 #define API_answerShippingQuery "answerShippingQuery\
-?shipping_query_id=%ld\
+?shipping_query_id=%s\
 &ok=%s\
 &shipping_options=%s\
 &error_message=%s"
@@ -346,7 +346,7 @@ Error * show_error();
 
 /** Available methods **/
 User * get_me(Bot *bot);
-Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int64_t limit,
+Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int32_t limit,
             int64_t timeout, char *allowed_updates);
 
 /* sendMessage */
