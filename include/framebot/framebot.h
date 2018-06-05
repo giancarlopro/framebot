@@ -256,7 +256,7 @@
 #define IFILE_LONG(p) (p > 0 ? api_ltoa(p) : NULL)
 #define IFILE_INT(p) (p > 0 ? api_itoa(p) : NULL)
 
-#define ffree(p) (p == NULL ? NULL : free(p))
+#define ffree(p) (p == NULL ? p : free(p))
 
 #define fstrlen(p) (p == NULL ? 0 : strlen(p))
 
