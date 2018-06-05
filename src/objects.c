@@ -48,8 +48,8 @@ void error(int64_t error_code, const char *description){
 void error_free(){
     if(_error){
         if(_error->description)
-            free(_error->description);
-        free(_error);
+            ffree(_error->description);
+        ffree(_error);
         _error = NULL;
     }
 }
@@ -75,18 +75,18 @@ void user_add(User *origin, User *next){
 
 void user_free(User *usr){
     if(usr->first_name)
-        free(usr->first_name);
+        ffree(usr->first_name);
 
     if(usr->last_name)
-        free(usr->last_name);
+        ffree(usr->last_name);
 
     if(usr->username)
-        free(usr->username);
+        ffree(usr->username);
     
     if(usr->language_code)
-        free(usr->language_code);
+        ffree(usr->language_code);
 
-    free(usr);
+    ffree(usr);
     usr = NULL;
 }
 
@@ -108,11 +108,11 @@ Bot *bot(const char *token, User *user){
 void bot_free(Bot *bot){
 
     if(bot->token)
-        free(bot->token);
+        ffree(bot->token);
 
     user_free(bot->user);
 
-    free(bot);
+    ffree(bot);
 }
 
 /**
@@ -122,36 +122,36 @@ void bot_free(Bot *bot){
 void chat_free(Chat *cht){
 
     if(cht->type)
-        free(cht->type);
+        ffree(cht->type);
 
     if(cht->title)
-        free(cht->title);
+        ffree(cht->title);
 
     if(cht->username)
-        free(cht->username);
+        ffree(cht->username);
 
     if(cht->first_name)
-        free(cht->first_name);
+        ffree(cht->first_name);
 
     if(cht->last_name)
-        free(cht->last_name);
+        ffree(cht->last_name);
 
     if(cht->photo)
         chat_photo_free(cht->photo);
 
     if(cht->description)
-        free(cht->description);
+        ffree(cht->description);
 
     if(cht->invite_link)
-        free(cht->invite_link);
+        ffree(cht->invite_link);
 
     if(cht->pinned_message)
         message_free(cht->pinned_message);
 
     if(cht->sticker_set_name)
-        free(cht->sticker_set_name);
+        ffree(cht->sticker_set_name);
 
-    free(cht);
+    ffree(cht);
     cht = NULL;
 }
 
@@ -162,15 +162,15 @@ void chat_free(Chat *cht){
 void message_entity_free(MessageEntity *msgett){
 
     if(msgett->type)
-        free(msgett->type);
+        ffree(msgett->type);
 
     if(msgett->url)
-        free(msgett->url);
+        ffree(msgett->url);
 
     if(msgett->user)
         user_free(msgett->user);
 
-    free(msgett);
+    ffree(msgett);
 }
 
 void message_entity_add(MessageEntity *dest, MessageEntity *src){
@@ -213,18 +213,18 @@ MessageEntity *message_entity_get(MessageEntity *message_entity, int index){
 
 void audio_free(Audio *audio){
     if(audio->file_id)
-        free(audio->file_id);
+        ffree(audio->file_id);
 
     if(audio->performer)
-        free(audio->performer);
+        ffree(audio->performer);
 
     if(audio->title)
-        free(audio->title);
+        ffree(audio->title);
 
     if(audio->mime_type)
-        free(audio->mime_type);
+        ffree(audio->mime_type);
 
-    free(audio);
+    ffree(audio);
     audio = NULL;
 }
 
@@ -235,9 +235,9 @@ void audio_free(Audio *audio){
 void photo_size_free(PhotoSize *photoSize){
     if(photoSize != NULL){
         if(photoSize->file_id)
-            free(photoSize->file_id);
+            ffree(photoSize->file_id);
 
-        free(photoSize);
+        ffree(photoSize);
     }
 
     photoSize = NULL;
@@ -282,86 +282,86 @@ size_t photo_size_len(PhotoSize *ophoto_size){
 }
 
 void document_free(Document *document){
-    free(document->file_id);
+    ffree(document->file_id);
     if(document->thumb)
         photo_size_free(document->thumb);
-    free(document->file_name);
-    free(document->mime_type);
-    free(document);
+    ffree(document->file_name);
+    ffree(document->mime_type);
+    ffree(document);
     document = NULL;
 }
 
 
 void animation_free(Animation *animation){
-    free(animation->file_id);
-    free(animation->file_name);
-    free(animation->mime_type);
+    ffree(animation->file_id);
+    ffree(animation->file_name);
+    ffree(animation->mime_type);
     photo_size_free(animation->thumb);
-    free(animation);
+    ffree(animation);
     animation = NULL;
 }
 
 void game_free(Game *game){
-    free(game->title);
-    free(game->description);
+    ffree(game->title);
+    ffree(game->description);
     photo_size_free(game->photo);
-    free(game->text);
+    ffree(game->text);
     message_entity_free(game->text_entities);
     animation_free(game->animation);
-    free(game);
+    ffree(game);
     game = NULL;
 }
 
 
 void sticker_free(Sticker *_sticker){
     if(_sticker->file_id)
-        free(_sticker->file_id);
+        ffree(_sticker->file_id);
 
     if(_sticker->emoji)
-        free(_sticker->emoji);
+        ffree(_sticker->emoji);
 
     if(_sticker->thumb)
         photo_size_free(_sticker->thumb);
 
-    free(_sticker);
+    ffree(_sticker);
     _sticker = NULL;
 }
 
 
 void video_free(Video *_video){
     if(_video->file_id)
-        free(_video->file_id);
+        ffree(_video->file_id);
     if(_video->mime_type)
-        free(_video->mime_type);
+        ffree(_video->mime_type);
     if(_video->thumb)
-        free(_video->thumb);
-    free(_video);
+        ffree(_video->thumb);
+    ffree(_video);
     _video = NULL;
 }
 
 
 void voice_free(Voice *_voice){
     if(_voice->file_id)
-        free(_voice->file_id);
+        ffree(_voice->file_id);
     if(_voice->mime_type)
-        free(_voice->mime_type);
-    free(_voice);
+        ffree(_voice->mime_type);
+    ffree(_voice);
     _voice = NULL;
 }
 
 void contact_free(Contact *_contact){
     if(_contact->phone_number)
-        free(_contact->phone_number);
+        ffree(_contact->phone_number);
     if(_contact->first_name)
-        free(_contact->first_name);
+        ffree(_contact->first_name);
     if(_contact->last_name)
-        free(_contact->last_name);
-    free(_contact);
+        ffree(_contact->last_name);
+    ffree(_contact);
     _contact = NULL;
 }
 
 void location_free(Location *_location){
-    free(_location);
+    ffree(_location);
     _location = NULL;
 }
 
@@ -370,12 +370,12 @@ void venue_free(Venue *_venue){
     if(_venue->location)
         location_free(_venue->location);
     if(_venue->title)
-        free(_venue->title);
+        ffree(_venue->title);
     if(_venue->address)
-        free(_venue->address);
+        ffree(_venue->address);
     if(_venue->foursquare_id)
-        free(_venue->foursquare_id);
-    free(_venue);
+        ffree(_venue->foursquare_id);
+    ffree(_venue);
     _venue = NULL;
 }
 
@@ -487,24 +487,24 @@ void message_free(Message *message){
         successful_payment_free(message->successful_payment);
 
     if(message->text)
-        free(message->text);
+        ffree(message->text);
 
     if(message->caption)
-        free(message->caption);
+        ffree(message->caption);
 
     if(message->new_chat_title)
-        free(message->new_chat_title);
+        ffree(message->new_chat_title);
 
     if(message->forward_signature)
-        free(message->forward_signature);
+        ffree(message->forward_signature);
 
     if(message->author_signature)
-        free(message->author_signature);
+        ffree(message->author_signature);
     
     if(message->media_group_id)
-        free(message->media_group_id);
+        ffree(message->media_group_id);
 
-    free(message);
+    ffree(message);
     message = NULL;
 }
 
@@ -523,15 +523,15 @@ void update_free(Update *oupdate){
         message_free(oupdate->edited_channel_post);
 
     if(oupdate->inline_query)
-        free(oupdate->inline_query);
+        ffree(oupdate->inline_query);
 
     if(oupdate->chosen_inline_result)
-        free(oupdate->chosen_inline_result);
+        ffree(oupdate->chosen_inline_result);
 
     if(oupdate->callback_query)
-        free(oupdate->callback_query);
+        ffree(oupdate->callback_query);
 
-    free(oupdate);
+    ffree(oupdate);
 }
 
 void update_add(Update *dest, Update *src) {
@@ -576,9 +576,9 @@ void chat_member_free(ChatMember *chatMember) {
         user_free(chatMember->user);
 
     if(chatMember->status)
-        free(chatMember->status);
+        ffree(chatMember->status);
 
-    free(chatMember);
+    ffree(chatMember);
     chatMember = NULL;
 }
 
@@ -622,28 +622,28 @@ size_t chat_member_len (ChatMember *chatMember) {
 
 void chosen_inline_result_free(ChosenInlineResult *cir){
     if(cir->result_id){
-        free(cir->result_id);
+        ffree(cir->result_id);
     }
 
     if(cir->from){
         user_free(cir->from);
-        free(cir->from);
+        ffree(cir->from);
     }
 
     if(cir->location) {
         location_free(cir->location);
-        free(cir->location);
+        ffree(cir->location);
     }
 
     if(cir->inline_message_id){
-        free(cir->inline_message_id);
+        ffree(cir->inline_message_id);
     }
 
     if(cir->query){
-        free(cir->query);
+        ffree(cir->query);
     }
 
-    free(cir);
+    ffree(cir);
     cir = NULL;
 }
 
@@ -655,7 +655,7 @@ void chosen_inline_result_free(ChosenInlineResult *cir){
 
 void inline_query_free(InlineQuery *inline_query){
     if(inline_query->id)
-        free(inline_query->id);
+        ffree(inline_query->id);
 
     if(inline_query->from)
         user_free(inline_query->from);
@@ -664,12 +664,12 @@ void inline_query_free(InlineQuery *inline_query){
         location_free(inline_query->location);
 
     if(inline_query->query)
-        free(inline_query->query);
+        ffree(inline_query->query);
 
     if(inline_query->offset)
-        free(inline_query->offset);
+        ffree(inline_query->offset);
 
-    free(inline_query);
+    ffree(inline_query);
     inline_query = NULL;
 }
 
@@ -680,7 +680,7 @@ void inline_query_free(InlineQuery *inline_query){
 
 void callback_query_free(CallbackQuery *callback_query){
     if(callback_query->id)
-        free(callback_query->id);
+        ffree(callback_query->id);
 
     if(callback_query->from)
         user_free(callback_query->from);
@@ -689,18 +689,18 @@ void callback_query_free(CallbackQuery *callback_query){
         message_free(callback_query->message);
 
     if(callback_query->chat_instance)
-        free(callback_query->chat_instance);
+        ffree(callback_query->chat_instance);
 
     if(callback_query->inline_message_id)
-        free(callback_query->inline_message_id);
+        ffree(callback_query->inline_message_id);
 
     if(callback_query->data)
-        free(callback_query->data);
+        ffree(callback_query->data);
 
     if(callback_query->game_short_name)
-        free(callback_query->game_short_name);
+        ffree(callback_query->game_short_name);
 
-    free(callback_query);
+    ffree(callback_query);
     callback_query = NULL;
 }
 
@@ -711,12 +711,12 @@ void callback_query_free(CallbackQuery *callback_query){
 
 void video_note_free(VideoNote *video_note){
     if(video_note->file_id)
-        free(video_note->file_id);
+        ffree(video_note->file_id);
 
     if(video_note->thumb)
         photo_size_free(video_note->thumb);
 
-    free(video_note);
+    ffree(video_note);
     video_note = NULL;
 }
 
@@ -726,18 +726,18 @@ void video_note_free(VideoNote *video_note){
  **/
 void invoice_free(Invoice *invoice){
     if(invoice->title)
-        free(invoice->title);
+        ffree(invoice->title);
 
     if(invoice->description)
-        free(invoice->description);
+        ffree(invoice->description);
 
     if(invoice->start_parameter)
-        free(invoice->start_parameter);
+        ffree(invoice->start_parameter);
 
     if(invoice->currency)
-        free(invoice->currency);
+        ffree(invoice->currency);
 
-    free(invoice);
+    ffree(invoice);
     invoice = NULL;
 }
 
@@ -747,18 +747,18 @@ void invoice_free(Invoice *invoice){
  **/
 void shipping_query_free(ShippingQuery *shipping_query){
     if(shipping_query->id)
-        free(shipping_query->id);
+        ffree(shipping_query->id);
 
     if(shipping_query->from)
         user_free(shipping_query->from);
 
     if(shipping_query->invoice_payload)
-        free(shipping_query->invoice_payload);
+        ffree(shipping_query->invoice_payload);
 
     if(shipping_query->shipping_address)
         shipping_address_free(shipping_query->shipping_address);
 
-    free(shipping_query);
+    ffree(shipping_query);
     shipping_query = NULL;
 }
 
@@ -768,24 +768,24 @@ void shipping_query_free(ShippingQuery *shipping_query){
  **/
 void shipping_address_free(ShippingAddress *shipping_address){
     if(shipping_address->country_code)
-        free(shipping_address->country_code);
+        ffree(shipping_address->country_code);
 
     if(shipping_address->state)
-        free(shipping_address->state);
+        ffree(shipping_address->state);
 
     if(shipping_address->city)
-        free(shipping_address->city);
+        ffree(shipping_address->city);
 
     if(shipping_address->street_line1)
-        free(shipping_address->street_line1);
+        ffree(shipping_address->street_line1);
 
     if(shipping_address->street_line2)
-        free(shipping_address->street_line2);
+        ffree(shipping_address->street_line2);
 
     if(shipping_address->post_code)
-        free(shipping_address->post_code);
+        ffree(shipping_address->post_code);
 
-    free(shipping_address);
+    ffree(shipping_address);
     shipping_address = NULL;
 }
 
@@ -796,24 +796,24 @@ void shipping_address_free(ShippingAddress *shipping_address){
 void pre_checkout_query_free(PreCheckoutQuery *pcq){
 
     if(pcq->id)
-        free(pcq->id);
+        ffree(pcq->id);
 
     if(pcq->from)
         user_free(pcq->from);
 
     if(pcq->currency)
-        free(pcq->currency);
+        ffree(pcq->currency);
 
     if(pcq->invoice_payload)
-        free(pcq->invoice_payload);
+        ffree(pcq->invoice_payload);
 
     if(pcq->shipping_option_id)
-        free(pcq->shipping_option_id);
+        ffree(pcq->shipping_option_id);
 
     if(pcq->order_info)
         order_info_free(pcq->order_info);
 
-    free(pcq);
+    ffree(pcq);
     pcq = NULL;
 }
 
@@ -823,18 +823,18 @@ void pre_checkout_query_free(PreCheckoutQuery *pcq){
  **/
 void order_info_free(OrderInfo *order_info){
     if(order_info->name)
-        free(order_info->name);
+        ffree(order_info->name);
 
     if(order_info->phone_number)
-        free(order_info->phone_number);
+        ffree(order_info->phone_number);
 
     if(order_info->email)
-        free(order_info->email);
+        ffree(order_info->email);
 
     if(order_info->shipping_address)
         shipping_address_free(order_info->shipping_address);
 
-    free(order_info);
+    ffree(order_info);
     order_info = NULL;
 }
 
@@ -844,24 +844,24 @@ void order_info_free(OrderInfo *order_info){
  **/
 void successful_payment_free(SuccessfulPayment *spayment){
     if(spayment->currency)
-        free(spayment->currency);
+        ffree(spayment->currency);
 
     if(spayment->invoice_payload)
-        free(spayment->invoice_payload);
+        ffree(spayment->invoice_payload);
 
     if(spayment->shipping_option_id)
-        free(spayment->shipping_option_id);
+        ffree(spayment->shipping_option_id);
 
     if(spayment->order_info)
         order_info_free(spayment->order_info);
 
     if(spayment->telegram_payment_charge_id)
-        free(spayment->telegram_payment_charge_id);
+        ffree(spayment->telegram_payment_charge_id);
 
     if(spayment->provider_payment_charge_id)
-        free(spayment->provider_payment_charge_id);
+        ffree(spayment->provider_payment_charge_id);
 
-    free(spayment);
+    ffree(spayment);
     spayment = NULL;
 }
 
@@ -871,12 +871,12 @@ void successful_payment_free(SuccessfulPayment *spayment){
  **/
 void file_free(File *ofile){
     if(ofile->file_id)
-        free(ofile->file_id);
+        ffree(ofile->file_id);
 
     if(ofile->file_path)
-        free(ofile->file_path);
+        ffree(ofile->file_path);
 
-    free(ofile);
+    ffree(ofile);
     ofile = NULL;
 }
 
@@ -901,10 +901,10 @@ void user_profile_photos_free(UserProfilePhotos *oupp){
                 photo = upp_n;
             }
         }
-        free(oupp->photos);
+        ffree(oupp->photos);
     }
 
-    free(oupp);
+    ffree(oupp);
     oupp = NULL;
 }
 
@@ -914,12 +914,12 @@ void user_profile_photos_free(UserProfilePhotos *oupp){
  **/
 void chat_photo_free(ChatPhoto *ochat_photo){
     if(ochat_photo->small_file_id)
-        free(ochat_photo->small_file_id);
+        ffree(ochat_photo->small_file_id);
 
     if(ochat_photo->big_file_id)
-        free(ochat_photo->big_file_id);
+        ffree(ochat_photo->big_file_id);
 
-    free(ochat_photo);
+    ffree(ochat_photo);
     ochat_photo = NULL;
 }
 
@@ -1031,5 +1031,5 @@ void framebot_free(Framebot *framebot) {
         update_free(framebot->up_pre_checkout_query);
     }
 
-    free(framebot);
+    ffree(framebot);
 }

@@ -24,12 +24,14 @@
 #include <framebot/framebot.h>
 
 static bool notification = 0;
+static int32_t mode = 0;
 
-struct _parse_mode{
-    char *mode;
-    int32_t nmode:2;
+char *parse_mode[3] =
+{
+"Markdown",
+"HTML",
+""
 };
-struct _parse_mode id_mode = { .mode = "", .nmode = 0 };
 
 void framebot_init () {
     network_init();
@@ -89,26 +91,24 @@ Framebot *get_updates (Bot *bot, Framebot *framebot, int64_t offset, int32_t lim
     Update *up = NULL;
 
     s_json = generic_method_call(bot->token, API_GETUPDATES,
-        offset, LIMIT(limit), timeout, ALLOWED_UPDATES(allowed_updates) );
+        offset, LIMIT_UPDATE(limit), timeout, CONVERT_URL_STRING(allowed_updates));
+
+    if(s_json == NULL){
+        return framebot;
+    }
 
     if( !framebot ){
         framebot = calloc(1, sizeof( Framebot ));
     }
 
-    if(!s_json){
-        return framebot;
-    }
-
     size_t length, i;
     length = json_array_size(s_json->content);
-    if(length == 0){
-        close_json(s_json);
-        return framebot;
-    }
+    if(length > 0){
 
-    for (i = 0; i < length; i++) {
-        up = update_parse(json_array_get(s_json->content, i));
-        framebot_add( framebot, up );
+        for (i = 0; i < length; i++) {
+            up = update_parse(json_array_get(s_json->content, i));
+            framebot_add( framebot, up );
+        }
     }
 
     close_json(s_json);
@@ -130,10 +130,10 @@ Message * send_message (Bot *bot, char * chat_id, char *text,
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_SENDMESSAGE,
-        chat_id, text, id_mode.mode,
-        DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview),
-        DISABLE_NOTIFICATION(get_notification()),
-        reply_to_message_id, REPLY_MARKUP(reply_markup));
+        chat_id, text, parse_mode[get_parse_mode()],
+        CONVERT_URL_BOOLEAN(disable_web_page_preview),
+        CONVERT_URL_BOOLEAN(get_notification()),
+        reply_to_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -158,7 +158,7 @@ Message * send_message_chat (Bot *bot, int64_t chat_id, char *text,
         disable_web_page_preview, reply_to_message_id,
         reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -192,7 +192,7 @@ Chat * get_chat_chat(Bot *bot, int64_t chat_id){
 
     chat = get_chat(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return chat;
 }
@@ -223,13 +223,13 @@ int set_chat_title (Bot *bot, char *chat_id, char *title) {
 
 int set_chat_title_chat (Bot *bot, int64_t chat_id, char *title) {
     int result;
-    char * cchat_id;
+    char *cchat_id;
 
     cchat_id = api_ltoa(chat_id);
 
     result = set_chat_title (bot, cchat_id, title);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -265,7 +265,7 @@ ChatMember *get_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id) {
 
     chat_member = get_chat_member (bot, cchat_id, user_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return chat_member;
 }
@@ -302,7 +302,7 @@ bool set_chat_description_chat (Bot *bot, int64_t chat_id, char *description) {
 
     result = set_chat_description (bot, cchat_id, description);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -313,7 +313,7 @@ bool set_chat_description_chat (Bot *bot, int64_t chat_id, char *description) {
  * Returns the number of members in the given chat
  *https://core.telegram.org/bots/api#getchatmemberscount
  */ 
-int get_chat_members_count (Bot *bot, char *chat_id) {
+uint32_t get_chat_members_count (Bot *bot, char *chat_id) {
     int result;
     refjson *s_json;
 
@@ -331,7 +331,7 @@ int get_chat_members_count (Bot *bot, char *chat_id) {
 
 
 
-int get_chat_members_count_chat (Bot *bot, int64_t chat_id) {
+uint32_t get_chat_members_count_chat (Bot *bot, int64_t chat_id) {
     int result;
     char * cchat_id;
 
@@ -339,7 +339,7 @@ int get_chat_members_count_chat (Bot *bot, int64_t chat_id) {
 
     result = get_chat_members_count (bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -374,7 +374,7 @@ bool kick_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, int64_t 
 
     result = kick_chat_member (bot, cchat_id, user_id, until_date);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -397,10 +397,10 @@ bool restrict_chat_member (Bot *bot, char *chat_id, int64_t user_id, int64_t unt
 
     s_json = generic_method_call(bot->token, API_restrictChatMember,
         chat_id, user_id, until_date,
-        CAN_SEND_MESSAGES(can_send_messages),
-        CAN_SEND_MEDIA_MESSAGES(can_send_media_messages),
-        CAN_SEND_OTHER_MESSAGES(can_send_other_messages),
-        CAN_ADD_WEB_PAGE_PREVIEWS(can_add_web_page_previews) );
+        CONVERT_URL_BOOLEAN(can_send_messages),
+        CONVERT_URL_BOOLEAN(can_send_media_messages),
+        CONVERT_URL_BOOLEAN(can_send_other_messages),
+        CONVERT_URL_BOOLEAN(can_add_web_page_previews) );
 
     if(!s_json)
         return -1;
@@ -425,7 +425,7 @@ bool restrict_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, int6
             can_send_messages, can_send_media_messages, can_send_other_messages,
             can_add_web_page_previews);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -468,7 +468,7 @@ bool unban_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id) {
 
     result = unban_chat_member (bot, cchat_id, user_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -505,7 +505,7 @@ bool leave_chat_chat (Bot *bot, int64_t chat_id) {
 
     result = leave_chat (bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -530,14 +530,14 @@ bool promote_chat_member (Bot *bot, char *chat_id, int64_t user_id, bool can_cha
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_promoteChatMember,
-        chat_id, user_id, CAN_CHANGE_INFO(can_change_info),
-        CAN_POST_MESSAGES(can_post_messages),
-        CAN_EDIT_MESSAGES(can_edit_messages),
-        CAN_DELETE_MESSAGES(can_delete_messages),
-        CAN_INVITE_USERS(can_invite_users),
-        CAN_RESTRICT_MEMBERS(can_restrict_members),
-        CAN_PIN_MESSAGES(can_pin_messages),
-        CAN_PROMOTE_MEMBERS(can_promote_members));
+        chat_id, user_id, CONVERT_URL_BOOLEAN(can_change_info),
+        CONVERT_URL_BOOLEAN(can_post_messages),
+        CONVERT_URL_BOOLEAN(can_edit_messages),
+        CONVERT_URL_BOOLEAN(can_delete_messages),
+        CONVERT_URL_BOOLEAN(can_invite_users),
+        CONVERT_URL_BOOLEAN(can_restrict_members),
+        CONVERT_URL_BOOLEAN(can_pin_messages),
+        CONVERT_URL_BOOLEAN(can_promote_members));
 
     if(!s_json)
         return -1;
@@ -564,7 +564,7 @@ bool promote_chat_member_chat (Bot *bot, int64_t chat_id, int64_t user_id, bool 
             can_invite_users, can_restrict_members, can_pin_messages,
             can_promote_members);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -605,7 +605,7 @@ char *export_chat_invite_link_chat (Bot *bot, int64_t chat_id) {
 
     invite_link = export_chat_invite_link(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return invite_link;
 }
@@ -654,7 +654,7 @@ int set_chat_photo_chat(Bot *bot, int64_t chat_id, char *filename){
 
     result = set_chat_photo(bot, cchat_id, filename);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -689,7 +689,7 @@ int delete_chat_photo_chat(Bot *bot, int64_t chat_id){
 
     result = delete_chat_photo(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -727,7 +727,7 @@ ChatMember *get_chat_administrators_chat(Bot *bot, int64_t chat_id){
 
     chat_member_adm = get_chat_administrators(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return chat_member_adm;
 }
@@ -740,7 +740,7 @@ bool pin_chat_message (Bot *bot, char *chat_id, int64_t message_id) {
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_pinChatMessage, chat_id, message_id,
-        DISABLE_NOTIFICATION(get_notification()));
+        CONVERT_URL_BOOLEAN(get_notification()));
 
     if(!s_json)
         return -1;
@@ -760,7 +760,7 @@ bool pin_chat_message_chat(Bot *bot, int64_t chat_id, int64_t message_id) {
 
     result = pin_chat_message(bot, cchat_id, message_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -795,7 +795,7 @@ bool unpin_chat_message_chat(Bot *bot, int64_t chat_id){
 
     result = unpin_chat_message(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -812,7 +812,7 @@ refjson *generic_method_call (const char *token, char *formats, ...) {
 
     char *method_base = vsformat(formats, params);
     MemStore *response = call_method(token, method_base);
-    free(method_base);
+    ffree(method_base);
 
     if(response){
         s_json = start_json(response->content);
@@ -883,7 +883,7 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, int64_t user_id,
 
     oupp = get_user_profile_photos(bot, cuser_id, offset, limit);
 
-    free(cuser_id);
+    ffree(cuser_id);
 
     return oupp;
 }
@@ -892,15 +892,14 @@ UserProfilePhotos * get_user_profile_photos_chat (Bot * bot, int64_t user_id,
  * sendPhoto
  * https://core.telegram.org/bots/api#sendphoto
  */
-Message * send_photo(Bot * bot, char * chat_id, char * filename,
-                             char * caption,
+Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption,
                              int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
 
     ifile.type = SENDPHOTO;
-    
+
     /* Unique identifier for the target */
     ifile.photo.chat_id = chat_id;
 
@@ -911,31 +910,27 @@ Message * send_photo(Bot * bot, char * chat_id, char * filename,
      * photos by file_id), 0-200 characters */
     ifile.photo.caption = caption;
 
-    ifile.photo.parse_mode = id_mode.mode;
+    ifile.photo.parse_mode = parse_mode[get_parse_mode()];
 
     /* Sends the message silently */
-    ifile.photo.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.photo.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.photo.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.photo.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.photo.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.photo.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
-    if(!input)
+    ffree(ifile.photo.reply_to_message_id);
+    if(!input){
         return NULL;
+    }
 
     s_json = start_json(input->content);
-
-    if(!s_json)
-        return NULL;
-
-    free(ifile.photo.reply_to_message_id);
     mem_store_free(input);
-
     if(!s_json)
         return NULL;
 
@@ -957,9 +952,9 @@ Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
     cchat_id = api_ltoa(chat_id);
 
     message = send_photo(bot, cchat_id, filename, caption,
-                                 reply_to_message_id, REPLY_MARKUP(reply_markup));
+                                 reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -970,7 +965,7 @@ Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
  * https://core.telegram.org/bots/api#sendaudio
  */
 Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
-            int64_t duration, char * performer, char * title,
+            int32_t duration, char * performer, char * title,
             int64_t reply_to_message_id, char * reply_markup){
     
     Message * message;
@@ -988,11 +983,10 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     /* Audio caption, 0-200 characters */
     ifile.audio.caption = caption;
 
-    ifile.audio.caption = id_mode.mode;
+    ifile.audio.caption = parse_mode[get_parse_mode()];
 
     /* Duration of the audio in seconds */
-    ifile.audio.duration = DURATION(duration);
-
+    ifile.audio.duration = IFILE_INT(duration);
 
     /* Performer */
     ifile.audio.performer = performer;
@@ -1001,28 +995,24 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
     ifile.audio.title = title;
 
     /* Sends the message silently */
-    ifile.audio.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.audio.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.audio.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.audio.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.audio.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.audio.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    ffree(ifile.audio.duration);
+    ffree(ifile.audio.reply_to_message_id);
     if(!input)
         return NULL;
 
     s_json = start_json(input->content);
-    if(!s_json)
-        return NULL;
-
-    free(ifile.audio.duration);
-    free(ifile.audio.reply_to_message_id);
     mem_store_free(input);
-
     if(!s_json)
         return NULL;
 
@@ -1036,7 +1026,7 @@ Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption,
 
 
 Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption,
-            int64_t duration, char * performer, char * title,
+            int32_t duration, char * performer, char * title,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1047,7 +1037,7 @@ Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
     message = send_audio(bot, cchat_id, filename, caption, duration,
                                  performer, title, reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1076,30 +1066,28 @@ Message * send_document(Bot * bot, char * chat_id, char * filename, char * capti
      * Documents by file_id), 0-200 characters */
     ifile.document.caption = caption;
 
-    ifile.document.parse_mode = id_mode.mode;
+    ifile.document.parse_mode = parse_mode[get_parse_mode()];
 
     /* Sends the message silently */
-    ifile.document.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.document.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.document.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.document.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.document.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.document.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    ffree(ifile.document.reply_to_message_id);
     if(!input)
         return NULL;
 
     s_json = start_json(input->content);
-
+    mem_store_free(input);
     if(!s_json)
         return NULL;
-
-    free(ifile.document.reply_to_message_id);
-    mem_store_free(input);
 
     message = message_parse(s_json->content);
 
@@ -1118,9 +1106,9 @@ Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char *
     cchat_id = api_ltoa(chat_id);
 
     message = send_document(bot, cchat_id, filename, caption,
-                                 reply_to_message_id, REPLY_MARKUP(reply_markup));
+                                 reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1130,8 +1118,8 @@ Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char *
  * sendVideo
  * https://core.telegram.org/bots/api#sendvideo
  */
-Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duration,
-            int64_t width, int64_t height, char * caption, bool supports_streaming,
+Message * send_video(Bot * bot, char * chat_id, char * filename, int32_t duration,
+            int32_t width, int32_t height, char * caption, bool supports_streaming,
             int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
@@ -1146,48 +1134,46 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duratio
     ifile.video.filename = filename;
 
     /* Duration of the audio in seconds */
-    ifile.video.duration = DURATION(duration);
+    ifile.video.duration = IFILE_INT(duration);
 
     /* Video width */
-    ifile.video.width = WIDTH(width);
+    ifile.video.width = IFILE_INT(width);
 
     /* Video height */
-    ifile.video.height = HEIGHT(height);
+    ifile.video.height = IFILE_INT(height);
 
     /* Audio caption, 0-200 characters */
     ifile.video.caption = caption;
 
     /* parse mode MODE_HTML or MODE_MARKDOWN */
-    ifile.video.parse_mode = id_mode.mode;
+    ifile.video.parse_mode = parse_mode[get_parse_mode()];
 
 
-    ifile.video.supports_streaming = STREAMING(supports_streaming);
+    ifile.video.supports_streaming = CONVERT_URL_BOOLEAN(supports_streaming);
 
     /* Sends the message silently */
-    ifile.video.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.video.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.video.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.video.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.video.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.video.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    ffree(ifile.video.duration);
+    ffree(ifile.video.width);
+    ffree(ifile.video.height);
+    ffree(ifile.video.reply_to_message_id);
     if(!input)
         return NULL;
 
     s_json = start_json(input->content);
+    mem_store_free(input);
     if(!s_json)
         return NULL;
-
-    free(ifile.video.duration);
-    free(ifile.video.width);
-    free(ifile.video.height);
-    free(ifile.video.reply_to_message_id);
-    mem_store_free(input);
-
 
     message = message_parse(s_json->content);
 
@@ -1198,8 +1184,8 @@ Message * send_video(Bot * bot, char * chat_id, char * filename, int64_t duratio
 
 
 
-Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t duration,
-            int64_t width, int64_t height, char * caption, bool supports_streaming,
+Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int32_t duration,
+            int32_t width, int32_t height, char * caption, bool supports_streaming,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1208,9 +1194,9 @@ Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t d
     cchat_id = api_ltoa(chat_id);
 
     message = send_video(bot, cchat_id, filename, duration, width, height, caption,
-                supports_streaming, reply_to_message_id, REPLY_MARKUP(reply_markup));
+                supports_streaming, reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1221,7 +1207,7 @@ Message * send_video_chat(Bot * bot, int64_t chat_id, char * filename, int64_t d
  * https://core.telegram.org/bots/api#sendvoice
  */
 Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
-            int64_t duration, int64_t reply_to_message_id,
+            int32_t duration, int64_t reply_to_message_id,
             char * reply_markup){
     Message * message;
 
@@ -1238,34 +1224,30 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
     /* Audio caption, 0-200 characters */
     ifile.voice.caption = caption;
 
-    ifile.voice.parse_mode = id_mode.mode;
+    ifile.voice.parse_mode = parse_mode[get_parse_mode()];
 
     /* Duration of the audio in seconds */
-    ifile.voice.duration = DURATION(duration);
+    ifile.voice.duration = IFILE_INT(duration);
 
     /* Sends the message silently */
-    ifile.voice.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.voice.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.voice.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.voice.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.voice.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.voice.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    ffree(ifile.voice.duration);
+    ffree(ifile.voice.reply_to_message_id);
     if(!input)
         return NULL;
 
     s_json = start_json(input->content);
-    if(!s_json)
-        return NULL;
-
-    free(ifile.voice.duration);
-    free(ifile.voice.reply_to_message_id);
     mem_store_free(input);
-
     if(!s_json)
         return NULL;
 
@@ -1278,7 +1260,7 @@ Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption,
 
 
 
-Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int32_t duration,
             int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
@@ -1287,9 +1269,9 @@ Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * cap
     cchat_id = api_ltoa(chat_id);
 
     message = send_voice(bot, cchat_id, filename, caption, duration,
-                                 reply_to_message_id, REPLY_MARKUP(reply_markup));
+                                 reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1299,8 +1281,8 @@ Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * cap
  * sendVideoNote
  * https://core.telegram.org/bots/api#sendvideonote
  */
-Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
-            int64_t length, int64_t reply_to_message_id, char * reply_markup){
+Message * send_video_note(Bot * bot, char * chat_id, char * filename, int32_t duration,
+            int32_t length, int64_t reply_to_message_id, char * reply_markup){
     Message * message;
 
     IFile ifile;
@@ -1314,35 +1296,33 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t du
     ifile.videonote.filename = filename;
 
     /* Duration of the audio in seconds */
-    ifile.videonote.duration = DURATION(duration);
+    ifile.videonote.duration = IFILE_INT(duration);
 
     /* Video width and height */
-    ifile.videonote.length = LENGTH(length);
+    ifile.videonote.length = IFILE_INT(length);
 
     /* Sends the message silently */
-    ifile.videonote.disable_notification = DISABLE_NOTIFICATION(get_notification());
+    ifile.videonote.disable_notification = CONVERT_URL_BOOLEAN(get_notification());
 
     /* If the message is a reply, ID of the original message */
-    ifile.videonote.reply_to_message_id = REPLY_TO_MESSAGE_ID(reply_to_message_id);
+    ifile.videonote.reply_to_message_id = IFILE_LONG(reply_to_message_id);
 
-    ifile.videonote.reply_markup = REPLY_MARKUP(reply_markup);
+    ifile.videonote.reply_markup = CONVERT_URL_STRING(reply_markup);
 
     MemStore * input;
     refjson *s_json;
 
     input = call_method_upload(bot->token, ifile);
+    ffree(ifile.videonote.duration);
+    ffree(ifile.videonote.length);
+    ffree(ifile.videonote.reply_to_message_id);
     if(!input)
         return NULL;
 
     s_json = start_json(input->content);
+    mem_store_free(input);
     if(!s_json)
         return NULL;
-
-    free(ifile.videonote.duration);
-    free(ifile.videonote.length);
-    free(ifile.videonote.reply_to_message_id);
-    mem_store_free(input);
-
 
     message = message_parse(s_json->content);
 
@@ -1353,8 +1333,8 @@ Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t du
 
 
 
-Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename, int64_t duration,
-            int64_t length, int64_t reply_to_message_id, char * reply_markup){
+Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename, int32_t duration,
+            int32_t length, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1362,9 +1342,9 @@ Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename, int6
     cchat_id = api_ltoa(chat_id);
 
     message = send_video_note(bot, cchat_id, filename, duration, length,
-                reply_to_message_id, REPLY_MARKUP(reply_markup));
+                reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1392,7 +1372,7 @@ Message * forward_message_from (Bot * bot, int64_t chat_id, char * from_chat_id,
 
     message =  forward_message(bot, cchat_id, from_chat_id, message_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1409,7 +1389,7 @@ Message * forward_message_from_chat (Bot * bot, char * chat_id, int64_t from_cha
 
     message =  forward_message(bot, chat_id, cfrom_chat_id, message_id);
 
-    free(cfrom_chat_id);
+    ffree(cfrom_chat_id);
 
     return message;
 }
@@ -1422,7 +1402,7 @@ Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_forwardMessage, chat_id, from_chat_id,
-        DISABLE_NOTIFICATION(get_notification()), message_id);
+        CONVERT_URL_BOOLEAN(get_notification()), message_id);
 
     if(!s_json)
         return NULL;
@@ -1448,8 +1428,8 @@ Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id
 
     message =  forward_message(bot, cchat_id, cfrom_chat_id, message_id);
 
-    free(cchat_id);
-    free(cfrom_chat_id);
+    ffree(cchat_id);
+    ffree(cfrom_chat_id);
 
     return message;
 }
@@ -1460,15 +1440,15 @@ Message * forward_message_chat (Bot * bot, int64_t chat_id, int64_t from_chat_id
  * https://core.telegram.org/bots/api#sendlocation
  */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
-            float longitude, int64_t live_period, int64_t reply_to_message_id,
+            float longitude, int32_t live_period, int64_t reply_to_message_id,
             char * reply_markup){
     Message * message;
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_sendLocation,
         chat_id, latitude, longitude, live_period,
-        DISABLE_NOTIFICATION(get_notification()),
-        reply_to_message_id, REPLY_MARKUP(reply_markup));
+        CONVERT_URL_BOOLEAN(get_notification()),
+        reply_to_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1483,7 +1463,7 @@ Message * send_location (Bot * bot, char * chat_id, float latitude,
 
 
 Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float logitude,
-            int64_t live_period, int64_t reply_to_message_id, char * reply_markup){
+            int32_t live_period, int64_t reply_to_message_id, char * reply_markup){
 
     Message * message;
     char * cchat_id;
@@ -1493,7 +1473,7 @@ Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float 
     message = send_location(bot, cchat_id, latitude, logitude, live_period,
                 reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1510,8 +1490,8 @@ Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * fi
 
     s_json = generic_method_call(bot->token, API_sendContact,
         chat_id, phone_number, first_name, last_name,
-        DISABLE_NOTIFICATION(get_notification()),
-        reply_to_message_id, REPLY_MARKUP(reply_markup));
+        CONVERT_URL_BOOLEAN(get_notification()),
+        reply_to_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1535,7 +1515,7 @@ Message * send_contact_chat(Bot * bot, int64_t chat_id, char * phone_number, cha
     message = send_contact(bot, cchat_id, phone_number, first_name, last_name,
         reply_to_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1568,7 +1548,7 @@ int send_chat_action_chat(Bot * bot, int64_t chat_id, char * action){
 
     result = send_chat_action(bot, cchat_id, action);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -1586,8 +1566,8 @@ Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,
 
     s_json = generic_method_call(bot->token, API_sendVenue,
         chat_id, latitude, longitude, title, address, foursquare_id,
-        DISABLE_NOTIFICATION(get_notification()),
-        reply_to_message_id, REPLY_MARKUP(reply_markup));
+        CONVERT_URL_BOOLEAN(get_notification()),
+        reply_to_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1611,9 +1591,9 @@ Message * send_venue_chat(Bot * bot, int64_t chat_id, float latitude, float long
 
     message = send_venue(bot, cchat_id, latitude, longitude, title,
         address, foursquare_id, reply_to_message_id,
-        REPLY_MARKUP(reply_markup));
+        reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1629,7 +1609,7 @@ Message * edit_message_live_location(Bot * bot, char * chat_id, int64_t message_
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageLiveLocation,
-        chat_id, message_id, inline_message_id, latitude, longitude, REPLY_MARKUP(reply_markup));
+        chat_id, message_id, inline_message_id, latitude, longitude, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1649,9 +1629,9 @@ Message * edit_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t me
     cchat_id = api_ltoa(chat_id);
 
     message = edit_message_live_location(bot, cchat_id, message_id, inline_message_id,
-        latitude, longitude, REPLY_MARKUP(reply_markup));
+        latitude, longitude, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1667,7 +1647,7 @@ Message * stop_message_live_location(Bot * bot, char * chat_id, int64_t message_
 
     s_json = generic_method_call(bot->token, API_stopMessageLiveLocation,
                 chat_id, message_id, inline_message_id,
-                REPLY_MARKUP(reply_markup));
+                CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1687,9 +1667,9 @@ Message * stop_message_live_location_chat(Bot * bot, int64_t chat_id, int64_t me
     cchat_id = api_ltoa(chat_id);
 
     message = stop_message_live_location(bot, cchat_id, message_id,
-        inline_message_id, REPLY_MARKUP(reply_markup));
+        inline_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1705,8 +1685,8 @@ Message *edit_message_text(Bot *bot, char *chat_id, int64_t message_id,
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageText, chat_id, message_id,
-        inline_message_id, text, id_mode.mode,
-        DISABLE_WEB_PAGE_PREVIEW(disable_web_page_preview), REPLY_MARKUP(reply_markup));
+        inline_message_id, text, parse_mode[get_parse_mode()],
+        CONVERT_URL_BOOLEAN(disable_web_page_preview), CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1731,7 +1711,7 @@ Message *edit_message_text_chat(Bot *bot, int64_t chat_id, int64_t message_id,
         inline_message_id, text,
         disable_web_page_preview, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1747,7 +1727,7 @@ Message *edit_message_caption(Bot *bot, char *chat_id,
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageCaption, chat_id,
-        message_id, inline_message_id, caption, id_mode.mode, REPLY_MARKUP(reply_markup));
+        message_id, inline_message_id, caption, parse_mode[get_parse_mode()], CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1770,7 +1750,7 @@ Message *edit_message_caption_chat(Bot *bot, int64_t chat_id,
     message = edit_message_caption(bot, cchat_id, message_id,
         inline_message_id, caption, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1786,7 +1766,7 @@ Message *edit_message_reply_markup(Bot *bot, char *chat_id, int64_t message_id,
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_editMessageReplyMarkup, chat_id,
-        message_id, inline_message_id, REPLY_MARKUP(reply_markup));
+        message_id, inline_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -1808,7 +1788,7 @@ Message *edit_message_reply_markup_chat(Bot *bot, int64_t chat_id, int64_t messa
     message = edit_message_reply_markup(bot, cchat_id, message_id,
         inline_message_id, reply_markup);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return message;
 }
@@ -1842,7 +1822,7 @@ bool delete_message_chat(Bot *bot, int64_t chat_id, int64_t message_id){
 
     result = delete_message(bot, cchat_id, message_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -1876,7 +1856,7 @@ bool set_chat_sticker_set_chat(Bot *bot, int64_t chat_id, int64_t sticker_set_na
 
     result = set_chat_sticker_set(bot, cchat_id, sticker_set_name);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -1909,7 +1889,7 @@ bool delete_chat_sticker_set_chat(Bot *bot, int64_t chat_id){
 
     result = delete_chat_sticker_set(bot, cchat_id);
 
-    free(cchat_id);
+    ffree(cchat_id);
 
     return result;
 }
@@ -1923,7 +1903,7 @@ bool answer_inline_query( Bot *bot, char *inline_query_id, char *results, int64_
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerInlineQuery, inline_query_id, results,
-        cache_time, is_personal, STRING_NULL(next_offset), STRING_NULL(switch_pm_text), STRING_NULL(switch_pm_parameter));
+        cache_time, is_personal, CONVERT_URL_STRING(next_offset), CONVERT_URL_STRING(switch_pm_text), CONVERT_URL_STRING(switch_pm_parameter));
 
     if(!s_json)
         return -1;
@@ -1943,21 +1923,18 @@ bool get_notification(){
     return notification;
 }
 
-void set_parse_mode(int32_t mode){
-    if(mode == 1){
-        id_mode.mode = "Markdown";
-        id_mode.nmode = 1;
+void set_parse_mode(int32_t id_mode){
+    if(id_mode == 1){
+        mode = 1;
     }
-    else if(mode == 2){
-        id_mode.mode = "HTML";
-        id_mode.nmode = 2;
+    else if(id_mode == 2){
+        mode = 2;
     }
     else{
-        id_mode.mode = "";
-        id_mode.nmode = 0;
+        mode = 0;
     }
 }
 
 int32_t get_parse_mode(){
-    return id_mode.nmode;
+    return mode;
 }

@@ -250,39 +250,13 @@
 &error_message=%s"
 
 /* analyze parameter API methods */
-#define PARSE_MODE(p) (p == NULL ? "" : p) 
-#define DISABLE_WEB_PAGE_PREVIEW(p) (p > 0 ? "true" : "false")
-#define DISABLE_NOTIFICATION(p) (p > 0 ? "true" : "false")
-#define REPLY_MARKUP(p) (p == NULL ? "" : p)
-#define ALLOWED_UPDATES(p) (p == NULL ? "" : p)
-#define LIMIT(p) (p < 1 ? 100 : p)
+#define CONVERT_URL_BOOLEAN(p) (p > 0 ? "true" : "false")
+#define CONVERT_URL_STRING(p) (p == NULL ? "" : p)
+#define LIMIT_UPDATE(p) (p < 1 ? 100 : p)
+#define IFILE_LONG(p) (p > 0 ? api_ltoa(p) : NULL)
+#define IFILE_INT(p) (p > 0 ? api_itoa(p) : NULL)
 
-#define CAN_SEND_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_SEND_MEDIA_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_SEND_OTHER_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_ADD_WEB_PAGE_PREVIEWS(p) (p > 0 ? "true" : "false")
-
-#define CAN_CHANGE_INFO(p) (p > 0 ? "true" : "false")
-#define CAN_POST_MESSAGES(p) (p > 0 ? "true": "false")
-#define CAN_EDIT_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_DELETE_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_INVITE_USERS(p) (p > 0 ? "true": "false")
-#define CAN_RESTRICT_MEMBERS(p) (p > 0 ? "true" : "false")
-#define CAN_PIN_MESSAGES(p) (p > 0 ? "true" : "false")
-#define CAN_PROMOTE_MEMBERS(p) (p > 0 ? "true" : "false")
-
-#define PHOTO_URL(p) (p == NULL ? "" : p)
-#define PROVIDER_DATA(p) (p > 0 ? "true" : "false")
-#define OK(p) (p > 0 ? "true" : "false")
-#define SHIPPING_OPTIONS(p) (p == NULL ? "" : p)
-#define ERROR_MESSAGE(p) (p == NULL ? "" : p)
-
-#define STREAMING(p) (p > 0 ? api_ltoa(p) : NULL)
-#define DURATION(p) (p > 0 ? api_ltoa(p) : NULL)
-#define REPLY_TO_MESSAGE_ID(p) (p > 0 ? api_ltoa(p) : NULL)
-#define WIDTH(p) (p > 0 ? api_ltoa(p) : NULL)
-#define HEIGHT(p) (p > 0 ? api_ltoa(p) : NULL)
-#define LENGTH(p) (p > 0 ? api_ltoa(p) : NULL)
+#define ffree(p) (p == NULL ? NULL : free(p))
 
 #define fstrlen(p) (p == NULL ? 0 : strlen(p))
 
@@ -374,10 +348,10 @@ Message * send_photo_chat(Bot * bot, int64_t chat_id, char * filename, char * ca
         int64_t reply_to_message_id, char * reply_markup);
 
 /* sendaudio */
-Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, int64_t duration,
+Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, int32_t duration,
         char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
-Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
+Message * send_audio_chat(Bot * bot, int64_t chat_id, char * filename, char * caption, int32_t duration,
         char * performer, char * title, int64_t reply_to_message_id,
         char * reply_markup);
 
@@ -388,34 +362,34 @@ Message * send_document_chat(Bot * bot, int64_t chat_id, char * filename, char *
         int64_t reply_to_message_id,  char * reply_markup);
 
 /* sendvideo */
-Message * send_video(Bot * bot, char * chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
+Message * send_video(Bot * bot, char * chat_id, char * video, int32_t duration, int32_t width,
+        int32_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
-Message * send_video_chat(Bot * bot, int64_t chat_id, char * video, int64_t duration, int64_t width,
-        int64_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
+Message * send_video_chat(Bot * bot, int64_t chat_id, char * video, int32_t duration, int32_t width,
+        int32_t height, char * caption, bool supports_streaming, int64_t reply_to_message_id,
          char * reply_markup);
 
 /* sendvoice */
-Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, int64_t duration,
+Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, int32_t duration,
         int64_t reply_to_message_id,  char * reply_markup);
-Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int64_t duration,
+Message * send_voice_chat(Bot *bot, int64_t chat_id, char * filename, char * caption, int32_t duration,
         int64_t reply_to_message_id,  char * reply_markup);
 
-Message * send_video_note(Bot * bot, char * chat_id, char * filename, int64_t duration,
-        int64_t length, int64_t reply_to_message_id,  char * reply_markup);
+/* sendvideonote */
+Message * send_video_note(Bot * bot, char * chat_id, char * filename, int32_t duration,
+        int32_t length, int64_t reply_to_message_id,  char * reply_markup);
 
-Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename,
-        int64_t duration, int64_t length, int64_t reply_to_message_id,
-        char * reply_markup);
+Message * send_video_note_chat(Bot * bot, int64_t chat_id, char * filename, int32_t duration,
+        int32_t length, int64_t reply_to_message_id, char * reply_markup);
 
 // sendMediaGroup
 
 /* sendlocation */
 Message * send_location (Bot * bot, char * chat_id, float latitude,
-            float longitude, int64_t live_period,
+            float longitude, int32_t live_period,
             int64_t reply_to_message_id, char * reply_markup);
 Message * send_location_chat (Bot * bot, int64_t chat_id, float latitude, float logitude,
-            int64_t live_period, int64_t reply_to_message_id,
+            int32_t live_period, int64_t reply_to_message_id,
             char * reply_markup);
 
 /* editMessageLiveLocation */
@@ -527,8 +501,8 @@ ChatMember *get_chat_administrators (Bot *bot, char *chat_id);
 ChatMember *get_chat_administrators_chat(Bot *bot, int64_t chat_id);
 
 /* getChatMembersCount */
-int get_chat_members_count (Bot *bot, char *chat_id);
-int get_chat_members_count_chat (Bot *bot, int64_t chat_id);
+uint32_t get_chat_members_count (Bot *bot, char *chat_id);
+uint32_t get_chat_members_count_chat (Bot *bot, int64_t chat_id);
 
 /* getChatMember */
 ChatMember *get_chat_member(Bot *bot, char *chat_id, int64_t user_id);

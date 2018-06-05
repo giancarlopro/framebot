@@ -43,9 +43,9 @@ MemStore * mem_store() {
 
 void mem_store_free(MemStore * memStore) {
     if (memStore->content)
-        free(memStore->content);
+        ffree(memStore->content);
     
-    free(memStore);
+    ffree(memStore);
 }
 
 /* mem_write_callback is response of request Telegram */
@@ -87,7 +87,7 @@ MemStore * call_method(const char *token, const char *method){
     curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, mem_write_callback );
     curl_easy_setopt( curl, CURLOPT_URL, url );
 
-    free( url );
+    ffree( url );
 
     res = curl_easy_perform( curl );
 
@@ -121,7 +121,7 @@ int call_method_download(const char * token, char * namefile, File *ofile){
     curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYHOST, 0L);
     curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
-    free(url);
+    ffree(url);
 
     if(namefile){
         binary = fopen(namefile, "wb");
@@ -595,7 +595,7 @@ MemStore * call_method_upload(const char * token, IFile ifile){
         /* always cleanup */
         curl_easy_cleanup(curl);
 
-        free(url);
+        ffree(url);
         /* then cleanup the form */
         curl_mime_free(form);
 

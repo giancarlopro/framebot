@@ -165,7 +165,7 @@ int32_t set_provider_token(char *token){
         return false;
 
     if(s_invoice.ptoken != NULL)
-        free(s_invoice.ptoken);
+        ffree(s_invoice.ptoken);
 
     s_invoice.ptoken = alloc_string(token);
 
@@ -185,6 +185,10 @@ void add_img_invoice(char *photo_url, uint64_t photo_size, uint32_t photo_width,
 
     i = &s_invoice.img;
 
+    if(i->photo_url != NULL){
+        remove_image_invoice();
+    }
+
     i->photo_url = alloc_string(photo_url);
     i->photo_size = photo_size;
     i->photo_width = photo_width;
@@ -196,7 +200,7 @@ void remove_image_invoice(){
     i = &s_invoice.img;
 
     if(i->photo_url != NULL)
-        free(i->photo_url);
+        ffree(i->photo_url);
 
     i->photo_url = NULL;
     i->photo_size = 0;
@@ -236,10 +240,10 @@ Message *send_invoice(Bot *bot, int64_t chat_id, char * title, char *description
 
     s_json = generic_method_call(bot->token, API_sendInvoice,
         chat_id, title, description, payload, s_invoice.ptoken, start_parameter, currency[s_invoice.currency_code], prices,
-        PROVIDER_DATA(provider_data), PHOTO_URL(s_invoice.img.photo_url), s_invoice.img.photo_size, s_invoice.img.photo_width,
+        CONVERT_URL_STRING(provider_data), CONVERT_URL_STRING(s_invoice.img.photo_url), s_invoice.img.photo_size, s_invoice.img.photo_width,
         s_invoice.img.photo_heigth, s_invoice.option.n_name, s_invoice.option.n_phone, s_invoice.option.n_email, s_invoice.option.n_shipping_address,
         s_invoice.option.s_phone_to_provider, s_invoice.option.s_email_to_provider, s_invoice.option.is_flexible,
-        DISABLE_NOTIFICATION(get_notification()), reply_to_message_id, REPLY_MARKUP(reply_markup));
+        CONVERT_URL_BOOLEAN(get_notification()), reply_to_message_id, CONVERT_URL_STRING(reply_markup));
 
     if(!s_json)
         return NULL;
@@ -261,8 +265,8 @@ bool answerShippingQuery(Bot *bot, char *shipping_query_id, bool ok, char *shipp
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerShippingQuery,
-        shipping_query_id, OK(ok), SHIPPING_OPTIONS(shipping_options),
-        ERROR_MESSAGE(error_message));
+        shipping_query_id, CONVERT_URL_BOOLEAN(ok), CONVERT_URL_STRING(shipping_options),
+        CONVERT_URL_STRING(error_message));
 
     if(!s_json)
         return -1;
@@ -285,7 +289,7 @@ bool answerPreCheckoutQuery(Bot *bot, char *pre_checkout_query_id, bool ok, char
     refjson *s_json;
 
     s_json = generic_method_call(bot->token, API_answerPreCheckoutQuery,
-        pre_checkout_query_id, OK(ok), ERROR_MESSAGE(error_message));
+        pre_checkout_query_id, CONVERT_URL_BOOLEAN(ok), CONVERT_URL_STRING(error_message));
 
     if(!s_json)
         return -1;

@@ -67,7 +67,7 @@ void close_json( refjson *s_json ) {
         if(s_json->root)
             json_decref(s_json->root);
 
-        free(s_json);
+        ffree(s_json);
     }
 }
 
