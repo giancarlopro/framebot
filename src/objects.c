@@ -1031,31 +1031,86 @@ void framebot_add( Framebot *framebot, Update *update ){
 void framebot_free(Framebot *framebot) {
 
     if(framebot->up_message) {
-        update_free(framebot->up_message);
+        Update *u, *previous = framebot->up_message;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_edited_message) {
-        update_free(framebot->up_edited_message);
+        Update *u, *previous = framebot->up_edited_message;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_channel_post) {
-        update_free(framebot->up_channel_post);
+        Update *u, *previous = framebot->up_channel_post;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_edited_channel_post) {
-        update_free(framebot->up_edited_channel_post);
+        Update *u, *previous = framebot->up_edited_channel_post;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_inline_query) {
-        update_free(framebot->up_inline_query);
+        Update *u, *previous = framebot->up_inline_query;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_chosen_inline_result) {
-        update_free(framebot->up_chosen_inline_result);
+        Update *u, *previous = framebot->up_chosen_inline_result;
+
+        while(previous){
+            update_free(previous);
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_callback_query) {
-        update_free(framebot->up_callback_query);
+        Update *u, *previous = framebot->up_callback_query;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_shipping_query) {
-        update_free(framebot->up_shipping_query);
+        Update *u, *previous = framebot->up_shipping_query;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
     else if(framebot->up_pre_checkout_query) {
-        update_free(framebot->up_pre_checkout_query);
+        Update *u, *previous = framebot->up_pre_checkout_query;
+
+        while(previous){
+            u = previous->next;
+            update_free(previous);
+            previous = u;
+        }
     }
 
     ffree(framebot);
