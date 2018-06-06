@@ -16,10 +16,9 @@ int main (int argc, char **argv) {
         printf("Usage: ./inline BOT_TOKEN\n");
         exit(-1);
     }
-    framebot_init();
 
     char *result = alloc_string("[{\"type\":\"sticker\",\"id\":\"1\",\"sticker_file_id\":\"CAADAQADHAADDf4xFY94M8CVYwIeAg\"}]");
-    Bot *inbot = framebot(argv[1]);
+    Bot *inbot = framebot_init(argv[1]);
     if(!inbot)
     	return -1;
 

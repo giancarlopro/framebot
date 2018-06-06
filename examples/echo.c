@@ -12,9 +12,7 @@ int main (int argc, char **argv) {
     Framebot *frame_update;
     Update *message, *temp;
 
-    framebot_init();
-
-    echo = framebot(argv[1]);
+    echo = framebot_init(argv[1]);
 
 
     frame_update = get_updates(echo, NULL, last_offset, 100, 0, NULL);

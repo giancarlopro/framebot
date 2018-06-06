@@ -267,14 +267,13 @@ void test_invoice(){
 
 
 int main(int argc, char *argv[]){
-	framebot_init();
 
 	if(argc < 4){
 		fprintf(stderr, "payments <token> <provider token> <username>");
 		exit(-1);
 	} 
 
-	_bot = framebot(argv[1]);
+	_bot = framebot_init(argv[1]);
 	if(!_bot){
 		fprintf(stderr, "ERROR authentic");
 		exit(-1);

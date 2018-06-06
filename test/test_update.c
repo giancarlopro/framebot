@@ -26,13 +26,11 @@ int main(int argc, char **argv){
 		*inline_query, *chosen_inline_result, *callback_query, *shipping_query, *pre_checkout_query;
 	Error *error = NULL;
 
-	framebot_init();
-
 	if(argc < 2)
 		fprintf(stderr, "update <token>");
 
 
-    Bot *bot = framebot(argv[1]);
+    Bot *bot = framebot_init(argv[1]);
     if(!bot){
 		error = get_error();
 		if(error)

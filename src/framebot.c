@@ -33,16 +33,18 @@ char *parse_mode[3] =
 ""
 };
 
-void framebot_init () {
-    network_init();
-}
-
 
 /**
  * Authentic bot token
  */
-Bot * framebot (const char *token) {
+Bot * framebot_init (const char *token) {
+    static bool net = 0;
 	Bot *obot = bot(token, NULL);
+
+    if(net == 0){
+        network_init();
+        net = 1;
+    }
 
     User *bot_user = get_me(obot);
 

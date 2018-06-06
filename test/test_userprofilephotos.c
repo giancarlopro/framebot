@@ -23,12 +23,11 @@ void upp(UserProfilePhotos * oupp){
 
 
 int main(int argc, char *argv[]){
-	framebot_init();
 
 	if(argc < 3)
 		fprintf(stderr, "update <token> <id_user>");
 
-    _bot = framebot(argv[1]);
+    _bot = framebot_init(argv[1]);
     if(!_bot){
     	fprintf(stderr, "Error Authentic");
     	exit(-1);

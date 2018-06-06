@@ -313,8 +313,7 @@ typedef int32_t bool;
 #include <framebot/payments.h>
 
 
-void framebot_init();
-Bot * framebot(const char *token);
+Bot * framebot_init(const char *token);
 refjson *generic_method_call (const char *token, char *formats, ...);
 Error * show_error();
 
