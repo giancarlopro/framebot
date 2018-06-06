@@ -25,7 +25,7 @@
 #define OBJECTS_H
 
 typedef struct _error{
-    int64_t error_code;
+    int32_t error_code;
     char *description;
 } Error;
 
@@ -36,6 +36,7 @@ typedef struct _user{
     char *last_name;
     char *username;
     char *language_code;
+
     struct _user *next;
 } User;
 
@@ -71,6 +72,7 @@ typedef struct _message_entity{
     int64_t length;
     char *url;
     User *user;
+
     struct _message_entity *next;
 } MessageEntity;
 
@@ -88,6 +90,7 @@ typedef struct _photo_size{
     int width;
     int height;
     int64_t file_size;
+
     struct _photo_size *next;
 } PhotoSize;
 
@@ -294,6 +297,7 @@ typedef struct _update{
     CallbackQuery *callback_query;
     ShippingQuery *shipping_query;
     PreCheckoutQuery *pre_checkout_query;
+
 	struct _update *next;
 } Update;
 

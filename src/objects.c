@@ -35,7 +35,7 @@ void error(int64_t error_code, const char *description){
     if(!oerror)
         oerror = NULL;
 
-    oerror->error_code = error_code;
+    oerror->error_code = (int)error_code;
     oerror->description = alloc_string(description);
 
     if(_error)
@@ -62,6 +62,17 @@ Error *get_error(){
 /**
  ** functions user
  ** https://core.telegram.org/bots/api#user
+ **
+ ** typedef struct _user{
+ **   int64_t id;
+ **   bool is_bot:1;
+ **   char *first_name;
+ **   char *last_name;
+ **   char *username;
+ **   char *language_code;
+ **
+ **   struct _user *next;
+ ** } User;
  **/
 void user_add(User *origin, User *next){
     User *o = origin;
@@ -74,20 +85,16 @@ void user_add(User *origin, User *next){
 }
 
 void user_free(User *usr){
-    if(usr->first_name)
-        ffree(usr->first_name);
 
-    if(usr->last_name)
-        ffree(usr->last_name);
+    ffree(usr->first_name);
 
-    if(usr->username)
-        ffree(usr->username);
+    ffree(usr->last_name);
+
+    ffree(usr->username);
     
-    if(usr->language_code)
-        ffree(usr->language_code);
+    ffree(usr->language_code);
 
     ffree(usr);
-    usr = NULL;
 }
 
 
@@ -118,6 +125,22 @@ void bot_free(Bot *bot){
 /**
  ** functions Chat *
  ** https://core.telegram.org/bots/api#chat
+ **
+ ** typedef struct _chat{
+ **    int64_t id;
+ **    char *type;
+ **    char *title;
+ **    char *username;
+ **    char *first_name;
+ **    char *last_name;
+ **    bool all_members_are_administrators:1;
+ **    ChatPhoto *photo;
+ **    char *description;
+ **    char *invite_link;
+ **    struct _message *pinned_message;
+ **    char *sticker_set_name;
+ **    bool can_set_sticker_set:1;
+ **} Chat;
  **/
 void chat_free(Chat *cht){
 
@@ -152,7 +175,6 @@ void chat_free(Chat *cht){
         ffree(cht->sticker_set_name);
 
     ffree(cht);
-    cht = NULL;
 }
 
 /**
@@ -523,13 +545,21 @@ void update_free(Update *oupdate){
         message_free(oupdate->edited_channel_post);
 
     if(oupdate->inline_query)
-        ffree(oupdate->inline_query);
+        inline_query_free(oupdate->inline_query);
 
     if(oupdate->chosen_inline_result)
-        ffree(oupdate->chosen_inline_result);
+        chosen_inline_result_free(oupdate->chosen_inline_result);
 
     if(oupdate->callback_query)
-        ffree(oupdate->callback_query);
+        callback_query_free(oupdate->callback_query);
+
+    if(oupdate->shipping_query)
+        shipping_query_free(oupdate->shipping_query);
+
+    if(oupdate->pre_checkout_query)
+        pre_checkout_query_free(oupdate->pre_checkout_query);
+
+
 
     ffree(oupdate);
 }
@@ -644,7 +674,6 @@ void chosen_inline_result_free(ChosenInlineResult *cir){
     }
 
     ffree(cir);
-    cir = NULL;
 }
 
 
@@ -670,7 +699,6 @@ void inline_query_free(InlineQuery *inline_query){
         ffree(inline_query->offset);
 
     ffree(inline_query);
-    inline_query = NULL;
 }
 
 /**
@@ -759,7 +787,6 @@ void shipping_query_free(ShippingQuery *shipping_query){
         shipping_address_free(shipping_query->shipping_address);
 
     ffree(shipping_query);
-    shipping_query = NULL;
 }
 
 /**

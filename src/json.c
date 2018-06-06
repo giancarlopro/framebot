@@ -85,6 +85,21 @@ void error_parse(refjson * json){
     }
 }
 
+/**
+ ** functions user
+ ** https://core.telegram.org/bots/api#user
+ **
+ ** typedef struct _user{
+ **   int64_t id;
+ **   bool is_bot:1;
+ **   char *first_name;
+ **   char *last_name;
+ **   char *username;
+ **   char *language_code;
+ **
+ **   struct _user *next;
+ ** } User;
+ **/
 User * user_parse(json_t *json){
     User *object = NULL;
     json_t *puser = json;
@@ -122,6 +137,23 @@ User * user_parse(json_t *json){
     return NULL;
 }
 
+/**
+ ** typedef struct _chat{
+ **    int64_t id;
+ **    char *type;
+ **    char *title;
+ **    char *username;
+ **    char *first_name;
+ **    char *last_name;
+ **    bool all_members_are_administrators:1;
+ **    ChatPhoto *photo;
+ **    char *description;
+ **    char *invite_link;
+ **    struct _message *pinned_message;
+ **    char *sticker_set_name;
+ **    bool can_set_sticker_set:1;
+ **} Chat;
+ **/
 Chat * chat_parse(json_t *json){
     Chat *object = NULL;
     json_t * pchat = json;
@@ -594,6 +626,54 @@ ChosenInlineResult * chosen_inline_result_parse(json_t * json){
     return NULL;
 }
 
+/**
+ ** https://core.telegram.org/bots/api#message
+ **
+ **typedef struct _message{
+ **   int64_t message_id;
+ **   User *from;
+ **   int64_t date;
+ **   Chat *chat;
+ **   User *forward_from;
+ **   Chat *forward_from_chat;
+ **   int64_t forward_from_message_id;
+ **   char *forward_signature;
+ **   int64_t forward_date;
+ **   struct _message *reply_to_message;
+ **   int64_t edit_date;
+ **   char *media_group_id;
+ **   char *author_signature;
+ **   char *text;
+ **   MessageEntity *entities;//Array
+ **   MessageEntity *caption_entities;
+ **   Audio *audio;
+ **   Document *document;
+ **   Game *game;
+ **   PhotoSize *photo;//Array
+ **   Sticker *sticker;
+ **   Video *video;
+ **   Voice *voice;
+ **   VideoNote *video_note;
+ **   char *caption;
+ **   Contact *contact;
+ **   Location *location;
+ **   Venue *venue;
+ **   User *new_chat_members;
+ **   User *left_chat_member;
+ **   char *new_chat_title;
+ **   PhotoSize *new_chat_photo;//Array
+ **   bool delete_chat_photo:1;
+ **   bool group_chat_created:1;
+ **   bool supergroup_chat_created:1;
+ **   bool channel_chat_created:1;
+ **   int64_t migrate_to_chat_id;
+ **   int64_t migrate_from_chat_id;
+ **   struct _message *pinned_message;
+ **   Invoice *invoice;
+ **   SuccessfulPayment *successful_payment;
+ **   char *connected_website;
+ **} Message;
+ **/
 Message * message_parse(json_t *json){
     Message *message = NULL;
     json_t * pmessage = json;
