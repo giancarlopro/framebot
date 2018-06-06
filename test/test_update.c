@@ -21,7 +21,6 @@
 
 
 int main(int argc, char **argv){
-	size_t update_length, i;
 	Update *message, *edited_message, *channel_post, *edited_channel_post,
 		*inline_query, *chosen_inline_result, *callback_query, *shipping_query, *pre_checkout_query;
 	Error *error = NULL;
