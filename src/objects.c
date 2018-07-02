@@ -85,6 +85,8 @@ void user_add(User *origin, User *next){
 }
 
 void user_free(User *usr){
+    if(usr == NULL)
+        return ;
 
     ffree(usr->first_name);
 
@@ -102,7 +104,7 @@ void user_free(User *usr){
  ** functions bot
  **/
 Bot *bot(const char *token, User *user){
-    Bot *bot = (Bot *)malloc(sizeof(Bot));
+    Bot *bot = (Bot *)calloc(1, sizeof(Bot));
     if(!bot)
         return NULL;
 
@@ -113,6 +115,8 @@ Bot *bot(const char *token, User *user){
 }
 
 void bot_free(Bot *bot){
+    if(bot == NULL)
+        return ;
 
     if(bot->token)
         ffree(bot->token);
@@ -143,6 +147,8 @@ void bot_free(Bot *bot){
  **} Chat;
  **/
 void chat_free(Chat *cht){
+    if(cht == NULL)
+        return ;
 
     if(cht->type)
         ffree(cht->type);
@@ -159,8 +165,7 @@ void chat_free(Chat *cht){
     if(cht->last_name)
         ffree(cht->last_name);
 
-    if(cht->photo)
-        chat_photo_free(cht->photo);
+    chat_photo_free(cht->photo);
 
     if(cht->description)
         ffree(cht->description);
@@ -168,8 +173,7 @@ void chat_free(Chat *cht){
     if(cht->invite_link)
         ffree(cht->invite_link);
 
-    if(cht->pinned_message)
-        message_free(cht->pinned_message);
+    message_free(cht->pinned_message);
 
     if(cht->sticker_set_name)
         ffree(cht->sticker_set_name);
@@ -182,6 +186,8 @@ void chat_free(Chat *cht){
  ** https://core.telegram.org/bots/api#messageentity
  **/
 void message_entity_free(MessageEntity *msgett){
+    if(msgett == NULL)
+        return ;
 
     if(msgett->type)
         ffree(msgett->type);
@@ -189,8 +195,7 @@ void message_entity_free(MessageEntity *msgett){
     if(msgett->url)
         ffree(msgett->url);
 
-    if(msgett->user)
-        user_free(msgett->user);
+    user_free(msgett->user);
 
     ffree(msgett);
 }
@@ -234,6 +239,9 @@ MessageEntity *message_entity_get(MessageEntity *message_entity, int index){
 
 
 void audio_free(Audio *audio){
+    if(audio == NULL)
+        return ;
+
     if(audio->file_id)
         ffree(audio->file_id);
 
@@ -304,9 +312,10 @@ size_t photo_size_len(PhotoSize *ophoto_size){
 }
 
 void document_free(Document *document){
+    if(document == NULL)
+        return ;
     ffree(document->file_id);
-    if(document->thumb)
-        photo_size_free(document->thumb);
+    photo_size_free(document->thumb);
     ffree(document->file_name);
     ffree(document->mime_type);
     ffree(document);
@@ -315,6 +324,8 @@ void document_free(Document *document){
 
 
 void animation_free(Animation *animation){
+    if(animation == NULL)
+        return ;
     ffree(animation->file_id);
     ffree(animation->file_name);
     ffree(animation->mime_type);
@@ -324,6 +335,8 @@ void animation_free(Animation *animation){
 }
 
 void game_free(Game *game){
+    if(game == NULL)
+        return ;
     ffree(game->title);
     ffree(game->description);
     photo_size_free(game->photo);
@@ -336,6 +349,9 @@ void game_free(Game *game){
 
 
 void sticker_free(Sticker *_sticker){
+    if(_sticker == NULL)
+        return ;
+
     if(_sticker->file_id)
         ffree(_sticker->file_id);
 
@@ -346,11 +362,12 @@ void sticker_free(Sticker *_sticker){
         photo_size_free(_sticker->thumb);
 
     ffree(_sticker);
-    _sticker = NULL;
 }
 
 
 void video_free(Video *_video){
+    if(_video == NULL)
+        return ;
     if(_video->file_id)
         ffree(_video->file_id);
     if(_video->mime_type)
@@ -358,11 +375,12 @@ void video_free(Video *_video){
     if(_video->thumb)
         ffree(_video->thumb);
     ffree(_video);
-    _video = NULL;
 }
 
 
 void voice_free(Voice *_voice){
+    if(_voice == NULL)
+        return ;
     if(_voice->file_id)
         ffree(_voice->file_id);
     if(_voice->mime_type)
@@ -372,6 +390,8 @@ void voice_free(Voice *_voice){
 }
 
 void contact_free(Contact *_contact){
+    if(_contact == NULL)
+        return ;
     if(_contact->phone_number)
         ffree(_contact->phone_number);
     if(_contact->first_name)
@@ -383,12 +403,16 @@ void contact_free(Contact *_contact){
 }
 
 void location_free(Location *_location){
+    if(_location == NULL)
+        return ;
     ffree(_location);
     _location = NULL;
 }
 
 
 void venue_free(Venue *_venue){
+    if(_venue == NULL)
+        return ;
     if(_venue->location)
         location_free(_venue->location);
     if(_venue->title)
@@ -406,6 +430,9 @@ void venue_free(Venue *_venue){
  ** https://core.telegram.org/bots/api#message
  **/
 void message_free(Message *message){
+    if(message == NULL)
+        return ;
+
     if(message->from)
         user_free(message->from);
 
@@ -532,6 +559,8 @@ void message_free(Message *message){
 
 
 void update_free(Update *oupdate){
+    if(oupdate == NULL)
+        return ;
     if(oupdate->message)
         message_free(oupdate->message);
 
@@ -602,6 +631,8 @@ size_t update_len(Update *u) {
 
 
 void chat_member_free(ChatMember *chatMember) {
+    if(chatMember == NULL)
+        return ;
     if(chatMember->user)
         user_free(chatMember->user);
 
@@ -651,6 +682,8 @@ size_t chat_member_len (ChatMember *chatMember) {
  **/
 
 void chosen_inline_result_free(ChosenInlineResult *cir){
+    if(cir == NULL)
+        return ;
     if(cir->result_id){
         ffree(cir->result_id);
     }
@@ -683,6 +716,8 @@ void chosen_inline_result_free(ChosenInlineResult *cir){
  **/
 
 void inline_query_free(InlineQuery *inline_query){
+    if(inline_query == NULL)
+        return ;
     if(inline_query->id)
         ffree(inline_query->id);
 
@@ -707,6 +742,8 @@ void inline_query_free(InlineQuery *inline_query){
  **/
 
 void callback_query_free(CallbackQuery *callback_query){
+    if(callback_query == NULL)
+        return ;
     if(callback_query->id)
         ffree(callback_query->id);
 
@@ -738,6 +775,8 @@ void callback_query_free(CallbackQuery *callback_query){
  **/
 
 void video_note_free(VideoNote *video_note){
+    if(video_note == NULL)
+        return ;
     if(video_note->file_id)
         ffree(video_note->file_id);
 
@@ -753,6 +792,8 @@ void video_note_free(VideoNote *video_note){
  ** https://core.telegram.org/bots/api#invoice
  **/
 void invoice_free(Invoice *invoice){
+    if(invoice == NULL)
+        return ;
     if(invoice->title)
         ffree(invoice->title);
 
@@ -774,6 +815,8 @@ void invoice_free(Invoice *invoice){
  ** https://core.telegram.org/bots/api#shippingquery
  **/
 void shipping_query_free(ShippingQuery *shipping_query){
+    if(shipping_query == NULL)
+        return ;
     if(shipping_query->id)
         ffree(shipping_query->id);
 
@@ -794,6 +837,8 @@ void shipping_query_free(ShippingQuery *shipping_query){
  ** https://core.telegram.org/bots/api#shippingaddress
  **/
 void shipping_address_free(ShippingAddress *shipping_address){
+    if(shipping_address == NULL)
+        return ;
     if(shipping_address->country_code)
         ffree(shipping_address->country_code);
 
@@ -821,6 +866,8 @@ void shipping_address_free(ShippingAddress *shipping_address){
  ** https://core.telegram.org/bots/api#precheckoutquery
  **/
 void pre_checkout_query_free(PreCheckoutQuery *pcq){
+    if(pcq == NULL)
+        return ;
 
     if(pcq->id)
         ffree(pcq->id);
@@ -849,6 +896,8 @@ void pre_checkout_query_free(PreCheckoutQuery *pcq){
  ** https://core.telegram.org/bots/api#orderinfo
  **/
 void order_info_free(OrderInfo *order_info){
+    if(order_info == NULL)
+        return ;
     if(order_info->name)
         ffree(order_info->name);
 
@@ -870,6 +919,8 @@ void order_info_free(OrderInfo *order_info){
  ** https://core.telegram.org/bots/api#successfulpayment
  **/
 void successful_payment_free(SuccessfulPayment *spayment){
+    if(spayment == NULL)
+        return ;
     if(spayment->currency)
         ffree(spayment->currency);
 
@@ -897,6 +948,8 @@ void successful_payment_free(SuccessfulPayment *spayment){
  ** https://core.telegram.org/bots/api#file
  **/
 void file_free(File *ofile){
+    if(ofile == NULL)
+        return ;
     if(ofile->file_id)
         ffree(ofile->file_id);
 
@@ -917,6 +970,9 @@ void user_profile_photos_free(UserProfilePhotos *oupp){
     size_t i;
 
     PhotoSize *photo, *upp_n;
+
+    if(oupp == NULL)
+        return ;
 
     if(oupp->photos){
         for(i = 0; i < oupp->total_count; i++){
@@ -940,6 +996,8 @@ void user_profile_photos_free(UserProfilePhotos *oupp){
  ** https://core.telegram.org/bots/api#chatphoto
  **/
 void chat_photo_free(ChatPhoto *ochat_photo){
+    if(ochat_photo == NULL)
+        return ;
     if(ochat_photo->small_file_id)
         ffree(ochat_photo->small_file_id);
 
@@ -1029,6 +1087,8 @@ void framebot_add( Framebot *framebot, Update *update ){
 
 
 void framebot_free(Framebot *framebot) {
+    if(framebot == NULL)
+        return ;
 
     if(framebot->up_message) {
         Update *u, *previous = framebot->up_message;
