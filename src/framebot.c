@@ -24,15 +24,14 @@
 #include <framebot/framebot.h>
 
 static bool notification = 0;
-static int32_t mode = 0;
+static int32_t mode = 2;
 
 char *parse_mode[3] =
 {
-"Markdown",
-"HTML",
-""
+"Markdown", /* macro MODE_MARKDOWN */
+"HTML", /* macro MODE_HTML */
+"" /* macro MODE_NULL */
 };
-
 
 /**
  * Authentic bot token

@@ -297,9 +297,9 @@ typedef int32_t bool;
 #define true  1
 #define false 0
 
-#define MODE_MARKDOWN 1
-#define MODE_HTML 2
-#define MODE_NULL 0
+#define MODE_MARKDOWN 0
+#define MODE_HTML 1
+#define MODE_NULL 2
 
 #include <curl/curl.h>
 #include <jansson.h>
