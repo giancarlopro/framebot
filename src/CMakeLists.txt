@@ -16,16 +16,19 @@ if(UNIX)
 		message(SEND_ERROR "Only Linux, FreeBSD and Windows are supported at this time.")
 	endif()
 
+	set(curl /usr/local/lib/libcurl.so) 
+
 	add_library(framebot_ SHARED framebot.c memory.c objects.c json.c network.c format.c util.c payments.c)
-	target_link_libraries(framebot_ ${JANSSON_LIB} ${CURL_LIBRARIES})
+	target_link_libraries(framebot_ ${JANSSON_LIB} ${curl})
 
 	add_library(framebot STATIC framebot.c memory.c objects.c json.c network.c format.c util.c payments.c)
-	target_link_libraries(framebot ${JANSSON_LIB} ${CURL_LIBRARIES})
+	target_link_libraries(framebot ${JANSSON_LIB} ${curl})
 
 	install(TARGETS framebot_ LIBRARY DESTINATION lib)
 	install(TARGETS framebot ARCHIVE DESTINATION lib)
 
 	if(DEBUG EQUAL 1)
+		message(STATUS "DEBUG active")
 		add_definitions("-g")
 		add_definitions("-Wall")
 	endif()

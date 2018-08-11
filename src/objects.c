@@ -1009,7 +1009,7 @@ void chat_photo_free(ChatPhoto *ochat_photo){
 }
 
 void framebot_add( Framebot *framebot, Update *update ){
-    
+
     if( update->message ) {
         if(!framebot->up_message)
             framebot->up_message = update;
@@ -1081,7 +1081,7 @@ void framebot_add( Framebot *framebot, Update *update ){
             update_add(framebot->up_pre_checkout_query, update);
     }
 
-    framebot->update_id = UPDATE_ID_LAST(framebot, update);
+    framebot->update_id = update->update_id;
 
 }
 
