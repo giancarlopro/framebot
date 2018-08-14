@@ -23,9 +23,6 @@
 
 #include <framebot/framebot.h>
 
-static CURL *curl = NULL;
-static CURL *down_curl = NULL;
-
 /* start curl in framebot_init */
 void network_init(){
     curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -68,86 +65,95 @@ size_t mem_write_callback(void *data, size_t size, size_t nmemb, void *userp) {
 
 /* send data to telegram */
 MemStore * call_method(const char *token, const char *method){
+    static CURL *curl = NULL;
     CURLcode res;
-    size_t url_size = API_URL_LEN + fstrlen( token ) + fstrlen( method ) + 2;
-    char * url = ( char * ) calloc(1,  url_size );
+    size_t url_size;
+    char * url = NULL;
 
-    snprintf( url, url_size, "%s%s%c%s", API_URL, token, '/', method);
-
-    url[url_size - 1] = '\0';
-
-    MemStore *buff = mem_store();
-
-    if( !curl ){
+    if(curl == NULL){
         curl = curl_easy_init();
     }
-    curl_easy_setopt( curl, CURLOPT_SSL_VERIFYHOST, 0L );
-    curl_easy_setopt( curl, CURLOPT_SSL_VERIFYPEER, 0L );
-    curl_easy_setopt( curl, CURLOPT_WRITEDATA, (void *)buff );
-    curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, mem_write_callback );
-    curl_easy_setopt( curl, CURLOPT_URL, url );
 
-    ffree( url );
+    if(curl){
+        url_size = API_URL_LEN + fstrlen( token ) + fstrlen( method ) + 2;
+        url = calloc(1,  url_size );
 
-    res = curl_easy_perform( curl );
+        snprintf( url, url_size, "%s%s%c%s", API_URL, token, '/', method);
 
-    if( res == CURLE_OK ) {
-        return buff;
+        MemStore *buff = mem_store();
+
+        curl_easy_setopt( curl, CURLOPT_WRITEDATA, (void *)buff );
+        curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, mem_write_callback );
+        curl_easy_setopt( curl, CURLOPT_URL, url );
+
+        res = curl_easy_perform( curl );
+
+        ffree(url);
+
+        if( res == CURLE_OK )
+            return buff;
+        else
+            mem_store_free(buff);
     }
 
     return NULL;
 }
 
-int call_method_download(const char * token, char * namefile, File *ofile){
+int call_method_download(const char * token, char * dir, File *ofile){
+    CURL *curl = NULL;
     FILE * binary;
     CURLcode res;
     size_t url_size;
-    char *url;
+    char *url = NULL, namefile[30], *path = NULL;
+    time_t now_time = 0;
+    struct tm *itime = NULL;
 
     if(!ofile)
         return 0;
 
-    url_size = API_URL_FILE_LEN + fstrlen(token) + fstrlen(ofile->file_path) + 2;
-    url = (char *)calloc(1, url_size);
+    curl = curl_easy_init();
+    if(curl){
 
-    snprintf( url, url_size, "%s%s%c%s", API_URL_FILE, token, '/', ofile->file_path);
+        /* FILE */
+        time(&now_time);
+        itime = gmtime(&now_time);
 
-    url[url_size - 1] = '\0';
+        snprintf(namefile, 30, "file-%2d-%2d_%2d-%2d-%2d", itime->tm_mon, itime->tm_mday, itime->tm_hour, itime->tm_min, itime->tm_sec);
 
-    if(!down_curl)
-         down_curl = curl_easy_init();
+        if(dir){
+            path = calloc(1, fstrlen(dir) + fstrlen(namefile) + 3);
+            sprintf(path, "%s%c%s", dir, '/', namefile);
+            binary = fopen(path, "wb");
 
-    curl_easy_setopt(down_curl, CURLOPT_URL, url);
-    curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYHOST, 0L);
-    curl_easy_setopt(down_curl, CURLOPT_SSL_VERIFYPEER, 0L);
+            ffree(path);
+        }
+        else{
+            binary = fopen(namefile, "wb");
+        }
 
-    ffree(url);
+        if(binary == NULL)
+            return 0;
 
-    if(namefile){
-        binary = fopen(namefile, "wb");
+        /* DOWNLOAD */
+        url_size = API_URL_FILE_LEN + fstrlen(token) + fstrlen(ofile->file_path) + 2;
+        url = (char *)calloc(1, url_size);
+
+        snprintf( url, url_size, "%s%s%c%s", API_URL_FILE, token, '/', ofile->file_path);
+
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)binary);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+
+        ffree(url);
+
+        /* Perform the request, res will get the return code */
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        fclose(binary);
+
+        if(res == CURLE_OK)
+            return 1;
     }
-    else{
-        char name[10];
-        static int id = 0;
-        sprintf(name, "file%d", id++);
-
-        binary = fopen(name, "wb");
-    }
-
-    if(binary){
-        curl_easy_setopt(down_curl, CURLOPT_WRITEDATA, (void *)binary);
-        curl_easy_setopt(down_curl, CURLOPT_WRITEFUNCTION, NULL);
-    }
-    else{
-        return 0;
-    }
-
-    /* Perform the request, res will get the return code */
-    res = curl_easy_perform(down_curl);
-    fclose(binary);
-
-    if (res == CURLE_OK)
-        return 1;
 
     return 0;
 }
@@ -577,32 +583,30 @@ MemStore * call_method_upload(const char * token, IFile ifile){
 
         snprintf( url, url_size, "%s%s/%s", API_URL, token, method);
 
-        url[url_size - 1] = '\0';
-
         /* what URL that receives this POST */
         curl_easy_setopt(curl, CURLOPT_URL, url);
 
         /* only disable 100-continue header if explicitly requested */
         curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
-
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)buff);
-
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, mem_write_callback);
 
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
 
+        /* then cleanup the form */
+        curl_mime_free(form);
+
         /* always cleanup */
         curl_easy_cleanup(curl);
 
         ffree(url);
-        /* then cleanup the form */
-        curl_mime_free(form);
 
         if(res == CURLE_OK)
             return buff;
+        else
+            mem_store_free(buff);
     }
 
     return NULL;
 }
-

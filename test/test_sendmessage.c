@@ -41,6 +41,7 @@ int _message(){
 		exit(-1);
 	}
 
+
 	printf(WHITE "Send username ........." COLOR_RESET);
 	fflush(stdout);
 	result = send_message_chat(_bot, chat_id, "parameter username", 0, 0, NULL);

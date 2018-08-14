@@ -429,7 +429,7 @@ UserProfilePhotos * get_user_profile_photos_chat(Bot * bot, int64_t user_id,
 
 /* getFile */
 File * get_file(Bot * bot, const char * file_id);
-int file_download(Bot * bot, File * ofile, char *path);
+int file_download(Bot * bot, File * ofile, char *dir);
 
 /* kickChatMember */
 bool kick_chat_member (Bot *bot, char *chat_id, int64_t user_id, int64_t until_date);

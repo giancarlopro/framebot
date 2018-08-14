@@ -849,8 +849,8 @@ File * get_file (Bot * bot, const char * file_id){
     return ofile;
 }
 
-int file_download(Bot * bot, File * ofile, char *path){
-    return call_method_download(bot->token, path, ofile);
+int file_download(Bot * bot, File * ofile, char *dir){
+    return call_method_download(bot->token, dir, ofile);
 }
 
 /**
