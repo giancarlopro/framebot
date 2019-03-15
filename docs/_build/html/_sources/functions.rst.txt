@@ -4,7 +4,7 @@ Funções
 Aqui você encontra as funções implementadas pela biblioteca.
 
 Todas as funções disponíveis na API do Telegram, estão disponíveis na biblíoteca
-usando o formato lower case separando os nomes com underscore
+usando o formato lower case separando os nomes com underscore.
 
 Referencia completa
 -------------------
@@ -169,47 +169,47 @@ Referencia completa
 
 .. c:function:: User * get_me(const char *token)
 
-.. c:function:: Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit,   long int timeout, char *allowed_updates)
+.. c:function:: Framebot *get_updates (Bot *bot, Framebot *framebot, long int offset, long int limit, long int timeout, char *allowed_updates)
 
-.. c:function:: Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,   bool disable_web_page_preview, bool disable_notification,   long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_message (Bot *bot, char * chat_id, char *text, char * parse_mode,   bool disable_web_page_preview, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,   bool disable_web_page_preview, bool disable_notification,   long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_message_chat (Bot *bot, long int chat_id, char *text, char * parse_mode,   bool disable_web_page_preview, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,  bool disable_notification, long int message_id)
+.. c:function:: Message * forward_message_from (Bot * bot, long int chat_id, char * from_chat_id,  long int message_id)
 
-.. c:function:: Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id,  bool disable_notification, long int message_id)
+.. c:function:: Message * forward_message_from_chat (Bot * bot, char * chat_id, long int from_chat_id,  long int message_id)
 
-.. c:function:: Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,  bool disable_notification, long int message_id)
+.. c:function:: Message * forward_message (Bot * bot, char * chat_id, char * from_chat_id,  long int message_id)
 
-.. c:function:: Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,  bool disable_notification, long int message_id)
+.. c:function:: Message * forward_message_chat (Bot * bot, long int chat_id, long int from_chat_id,  long int message_id)
 
-.. c:function:: Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption,  bool disable_notification, long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_photo(Bot * bot, char * chat_id, char * filename, char * caption,  long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption,   bool disable_notification, long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_photo_chat(Bot * bot, long int chat_id, char * filename, char * caption, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,  char * performer, char * title, bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_audio(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,  char * performer, char * title, long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, long int duration,  char * performer, char * title, bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_audio_chat(Bot * bot, long int chat_id, char * filename, char * caption, long int duration,  char * performer, char * title, long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,  bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_document(Bot * bot, char * chat_id, char * filename, char * caption,  long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,  bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_document_chat(Bot * bot, long int chat_id, char * filename, char * caption,  long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_video(Bot * bot, char * chat_id, char * video, long int duration, long int width,  long int height, char * caption, bool disable_notification, long int reply_to_message_id,   char * reply_markup)
+.. c:function:: Message * send_video(Bot * bot, char * chat_id, char * video, long int duration, long int width,  long int height, char * caption, long int reply_to_message_id,   char * reply_markup)
 
-.. c:function:: Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,  long int height, char * caption, bool disable_notification, long int reply_to_message_id,   char * reply_markup)
+.. c:function:: Message * send_video_chat(Bot * bot, long int chat_id, char * video, long int duration, long int width,  long int height, char * caption, long int reply_to_message_id,   char * reply_markup)
 
-.. c:function:: Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,  bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_voice(Bot *bot, char * chat_id, char * filename, char * caption, long int duration,  long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,  bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_voice_chat(Bot *bot, long int chat_id, char * filename, char * caption, long int duration,  long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,  long int length, bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_video_note(Bot * bot, char * chat_id, char * filename, long int duration,  long int length, long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,  long int duration, long int length, bool disable_notification, long int reply_to_message_id,  char * reply_markup)
+.. c:function:: Message * send_video_note_chat(Bot * bot, long int chat_id, char * filename,  long int duration, long int length, long int reply_to_message_id,  char * reply_markup)
 
-.. c:function:: Message * send_location (Bot * bot, char * chat_id, float latitude,   float longitude, long int live_period, bool disable_notification,   long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_location (Bot * bot, char * chat_id, float latitude,   float longitude, long int live_period, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude,   long int live_period, bool disable_notification, long int reply_to_message_id,   char * reply_markup)
+.. c:function:: Message * send_location_chat (Bot * bot, long int chat_id, float latitude, float logitude, long int live_period, long int reply_to_message_id,   char * reply_markup)
 
 .. c:function:: Message * edit_message_live_location(Bot * bot, char * chat_id, long int message_id,  char * inline_message_id, float latitude, float longitude, char * reply_markup)
 
@@ -219,13 +219,13 @@ Referencia completa
 
 .. c:function:: Message * stop_message_live_location_chat(Bot * bot, long int chat_id, long int message_id,   char * inline_message_id, char * reply_markup)
 
-.. c:function:: Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,   char * title, char * address, char * foursquare_id, bool disable_notification,   long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_venue(Bot * bot, char * chat_id, float latitude, float longitude,   char * title, char * address, char * foursquare_id, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,   char * title, char * address, char * foursquare_id, bool disable_notification,   long int reply_to_message_id, char * reply_markup)
+.. c:function:: Message * send_venue_chat(Bot * bot, long int chat_id, float latitude, float longitude,   char * title, char * address, char * foursquare_id, long int reply_to_message_id, char * reply_markup)
 
-.. c:function:: Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,   char * last_name, bool disable_notification, long int reply_to_message_id,   char * reply_markup)
+.. c:function:: Message * send_contact(Bot * bot, char * chat_id, char * phone_number, char * first_name,   char * last_name, long int reply_to_message_id,   char * reply_markup)
 
-.. c:function:: Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,   char * last_name, bool disable_notification, long int reply_to_message_id,   char * reply_markup)
+.. c:function:: Message * send_contact_chat(Bot * bot, long int chat_id, char * phone_number, char * first_name,   char * last_name, long int reply_to_message_id,   char * reply_markup)
 
 .. c:function:: int send_chat_action(Bot * bot, char * chat_id, char * action)
 
@@ -314,4 +314,12 @@ Referencia completa
 .. c:function:: Message *edit_message_reply_markup_chat(Bot *bot, long int chat_id, long int message_id,  char *inline_message_id, char *reply_markup)
 
 .. c:function:: bool answerInlineQuery( Bot *bot, char *inline_query_id, char *results, long int cache_time, bool is_personal, char *next_offset, char *switch_pm_text, char *switch_pm_parameter)
+
+.. c:function:: void set_notification(bool disable_notification)
+
+.. c:function:: bool get_notification()
+
+.. c:function:: void set_parse_mode(int32_t mode)
+
+.. c:function:: int32_t get_parse_mode()
 
