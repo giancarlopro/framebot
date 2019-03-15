@@ -11,7 +11,7 @@ O código está disponível em `GitHub: Echo Bot`_.
 Estrutura básica
 ----------------
 
-Para este projeto, nós vamos receber o `token` do bot na chama do binário, ficando assim:
+Para este projeto, nós vamos receber o `token` do bot na chamada do binário, ficando assim:
 
 .. code-block:: shell
 
@@ -30,7 +30,8 @@ Para isso vamos criar nossa estrutura em c da seguinte forma:
          exit(-1);
       }
 
-      framebot_init(); // Inicializamos
+      Bot *echo;
+      echo = framebot_init(); // Inicializamos
 
       return 0;
    }
@@ -61,7 +62,7 @@ Onde:
    :c:data:`message` que vai conter nosso array de mensagens
 
 Agora vamos inicializar nosso objeto :c:type:`Bot` para podermos usar a API do Telegram.
-Para isso utilizamos a função :c:func:`framebot`, caso aconteça algum erro, ela retornará :c:type:`NULL`.
+Para isso utilizamos a função :c:func:`framebot_init`, caso aconteça algum erro, ela retornará :c:type:`NULL`.
 Vamos passar para a função nosso token que está localizado em :c:data:`argv[1]`.
 
 .. code-block:: c

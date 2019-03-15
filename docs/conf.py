@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Framebot'
-copyright = '2018, Giancarlo and Ródgger'
-author = 'Giancarlo and Ródgger'
+copyright = u'2018, Giancarlo and Ródgger'
+author = u'Giancarlo and Ródgger'
 
 # The short X.Y version
 version = ''
@@ -129,7 +129,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'Framebot.tex', 'Framebot Documentation',
-     'Giancarlo and Ródgger', 'manual'),
+     u'Giancarlo and Ródgger', 'manual'),
 ]
 
 
